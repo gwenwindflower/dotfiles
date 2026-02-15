@@ -1,0 +1,9 @@
+.DS_Store
+.env*
+*.local.toml
+*.local.yaml
+*.local.json
+__pycache__
+node_modules
+.pnpm-store
+.swp
