@@ -53,12 +53,11 @@ bind --user alt-super-c "zex ~/.claude/"
 # open nvim in current directory (via o.fish function)
 bind --user -M insert super-o o
 bind --user super-o o
-# open Mac Finder
+{{ if eq .chezmoi.os "darwin" }}
+# darwin only, no launching OS finder from linux
 bind --user -M insert alt-super-o "open ."
 bind --user alt-super-o "open ."
-
-# clearing and refreshing (e - erase)
-## just reload a 'fresh' sesh with pretty output, keep output on screen
+{{ end }}
 bind --user -M insert super-e "fresh -r"
 bind --user super-e "fresh -r"
 ## just clear the screen via `fresh`
