@@ -22,7 +22,9 @@ After significant exploration or changes, update these docs to prevent re-crawli
 
 Replicate `~/.charmschool` behavior using chezmoi idioms:
 
-- macOS (darwin) and Linux as first-class targets (macOS priority)
+- **macOS (darwin):** Full interactive workstation (all apps, fonts, tools, terminal emulators)
+- **Linux:** Stripped-down, dev-focused toolkit (CLI tools, languages, shell, editor)
+- Target Linux environments: **Fly.io Sprites** and **exe.dev VMs**
 - Maintainable, AI-agent-friendly structure
 - Preserve Catppuccin Frappe theming and Fish shell focus
 
@@ -31,12 +33,13 @@ Replicate `~/.charmschool` behavior using chezmoi idioms:
 ### File Structure
 
 ```text
-.chezmoidata/          # Data files (packages.yaml, fisher.yaml)
-.chezmoiscripts/       # Install/setup scripts
-  darwin/              # macOS-specific
-  linux/               # Linux-specific (future)
+.chezmoi.yaml.tmpl     # Machine type auto-detect (darwin-full / linux-dev)
+.chezmoidata/          # Data files (packages.yaml)
+.chezmoiscripts/       # Install/setup scripts (flat, OS logic in templates)
 dot_config/            # → ~/.config/
+private_dot_ssh/       # → ~/.ssh/ (SSH config + allowed_signers)
 nvim/                  # Symlinked, not copied
+claude/                # Claude Code config (symlinked, not copied)
 ```
 
 ### Naming Conventions
@@ -49,11 +52,21 @@ nvim/                  # Symlinked, not copied
 | `symlink_` | Creates symlink |
 | `.tmpl` | Process as Go template |
 
+### Key Template Variables
+
+| Variable | Purpose |
+| --- | --- |
+| `{{ .chezmoi.os }}` | `darwin` or `linux` |
+| `{{ .machine.type }}` | `darwin-full` or `linux-dev` |
+| `{{ .chezmoi.sourceDir }}` | Path to chezmoi source directory |
+| `{{ .packages.darwin.homebrew.* }}` | macOS package lists |
+| `{{ .packages.linux.homebrew.* }}` | Linux package lists |
+
 ### Script Naming
 
 Format: `run_[once_|onchange_][before_|after_]<order>-<name>.<ext>[.tmpl]`
 
-Example: `run_once_before_00-bootstrap.fish.tmpl`
+Example: `run_once_before_00-bootstrap.sh.tmpl`
 
 ### Commands (when user has chezmoi)
 
@@ -62,13 +75,15 @@ chezmoi diff              # Preview changes
 chezmoi apply --dry-run   # Safe test
 chezmoi cat <file>        # Render template
 chezmoi doctor            # Diagnose issues
+chezmoi data              # Show template variables
 ```
 
 ## Key Patterns
 
-@.claude/rules/rotz-to-chezmoi.md — Translation patterns
-@.claude/rules/fish-shell.md — Fish syntax and conventions
-@.claude/rules/git-style.md — Commit message style
+- **Darwin-only content:** Use `{{ if eq .chezmoi.os "darwin" }}` guards in `.tmpl` files, or OS-conditional `.chezmoiignore` entries
+- **DOTFILES_HOME:** Set in `00-env.fish.tmpl` to `{{ .chezmoi.sourceDir }}`. Use `$DOTFILES_HOME` in abbrs/functions instead of hardcoded paths
+- **Symlink sparingly:** Only symlink files modified by external tools (lockfiles, agent settings, skill dirs). Use `symlink_` prefix inline at target path, with source files at repo root in `.chezmoiignore`
+- **Copy by default:** Everything else uses normal chezmoi workflow — `dot_` prefix, optional `.tmpl` for templating
 
 ## Related Documentation
 

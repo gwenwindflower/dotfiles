@@ -168,3 +168,65 @@ packages:
         - wispr-flow
         - zed
         - zoom
+  linux:
+    homebrew:
+      taps:
+        - mutagen-io/mutagen
+        - oven-sh/bun
+        - stefanlogue/tools
+      formulae:
+        # Shell & prompt
+        - fish
+        - starship
+        # Navigation & search
+        - fd
+        - fzf
+        - ripgrep
+        - yazi
+        - zoxide
+        # File ops
+        - bat
+        - lsd
+        - rm-improved
+        - sd
+        - sevenzip
+        # Git ecosystem
+        - forgit
+        - gh
+        - git
+        - git-delta
+        - lazygit
+        - meteor
+        # Monitoring
+        - bottom
+        - k9s
+        - procs
+        # Editor
+        - neovim
+        # Dev tools
+        - age
+        - cmake
+        - go-task
+        - jless
+        - jq
+        - make
+        - mitmproxy
+        - sqlite
+        - yq
+        # Languages
+        - bun
+        - deno
+        - go
+        - mise
+        - pnpm
+        - ruby
+        - uv
+        # Networking
+        - mutagen
+        - wget
+        # Other
+        - 1password-cli
+        - moor
+        - mq
+        - prek
+        - vivid

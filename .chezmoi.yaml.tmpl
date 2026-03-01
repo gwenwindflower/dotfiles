@@ -1,0 +1,10 @@
+{{- $machineType := "" -}}
+{{- if eq .chezmoi.os "darwin" -}}
+{{-   $machineType = "darwin-full" -}}
+{{- else if eq .chezmoi.os "linux" -}}
+{{-   $machineType = "linux-dev" -}}
+{{- end -}}
+
+data:
+  machine:
+    type: {{ $machineType | quote }}

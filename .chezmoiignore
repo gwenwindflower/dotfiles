@@ -3,3 +3,17 @@ ARCHITECTURE.md
 CLAUDE.md
 PLAN.md
 README.md
+USER_TODO.md
+dot_config/fish/user_conf/AGENTS.md
+
+# Source files for symlinked targets
+# These are the actual files that symlink_ entries point to.
+# Without this ignore, chezmoi would also try to copy them to ~/nvim/ and ~/claude/.
+nvim/
+claude/
+
+{{ if ne .chezmoi.os "darwin" }}
+# Darwin-only configs (excluded on Linux)
+dot_config/kitty/
+dot_config/karabiner/
+{{ end }}

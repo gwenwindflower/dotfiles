@@ -26,11 +26,7 @@
       "Skill(gitignore)",
       "Skill(gh-cli-use)",
       "Skill(develop-agent-skills)",
-      "Skill(rotz-dotfiles)",
-      "Bash(tree:*)",
-      "Bash(ls:*)",
-      "Bash(fd:*)",
-      "Bash(find:*)"
+      "Skill(rotz-dotfiles)"
     ]
   }
 }

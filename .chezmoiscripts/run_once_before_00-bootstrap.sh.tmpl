@@ -1,0 +1,39 @@
+{{ if eq .chezmoi.os "darwin" "linux" -}}
+#!/bin/sh
+# Bootstrap: ensure Homebrew is installed and available
+# Runs once on first chezmoi apply (both macOS and Linux)
+
+set -eu
+
+log_info() { printf '\033[0;32m[INFO]\033[0m %s\n' "$1"; }
+log_error() { printf '\033[0;31m[ERROR]\033[0m %s\n' "$1"; }
+
+# Check if brew is already available
+if command -v brew >/dev/null 2>&1; then
+  log_info "Homebrew already installed"
+  exit 0
+fi
+
+log_info "Installing Homebrew..."
+if curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash; then
+  log_info "Homebrew installed successfully"
+else
+  log_error "Failed to install Homebrew"
+  exit 1
+fi
+
+# Make Homebrew available in this session
+{{ if eq .chezmoi.os "darwin" -}}
+if [ -x "/opt/homebrew/bin/brew" ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [ -x "/usr/local/bin/brew" ]; then
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
+{{ else -}}
+if [ -x "/home/linuxbrew/.linuxbrew/bin/brew" ]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+{{ end -}}
+{{ else -}}
+{{ fail (printf "unsupported OS: %s" .chezmoi.os) }}
+{{ end -}}

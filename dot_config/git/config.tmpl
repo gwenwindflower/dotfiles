@@ -1,0 +1,118 @@
+[user]
+  name = winnie
+  email = 91998347+gwenwindflower@users.noreply.github.com
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBvyZ1AjUa2VLcGaEBiVotTmsCSHV+k7fd/NqO90RcyL
+
+[gpg]
+  format = ssh
+
+[gpg "ssh"]
+{{ if eq .chezmoi.os "darwin" }}
+  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+{{ end }}
+  allowedSignersFile = ~/.ssh/allowed_signers
+
+[commit]
+  gpgsign = true
+
+[pull]
+  ff = only
+
+[rebase]
+  autoSquash = true
+  autoStash = true
+
+[merge]
+  ff = only
+  conflictstyle = zdiff3
+
+[fetch]
+  prune = true
+
+[rerere]
+  enabled = true
+
+[init]
+  defaultBranch = main
+
+[include]
+  path = ~/.config/delta/catppuccin.gitconfig
+
+[core]
+  pager = delta
+  excludesfile = ~/.config/git/ignore
+
+[delta]
+  line-numbers = true
+  navigate = true
+  hyperlinks = true
+  features = catppuccin-frappe
+
+[color]
+  ui = auto
+
+[color "branch"]
+  current = reverse bold cyan
+  local = bold "#ca9ee6"
+  remote = ul "#ef9f76"
+  upstream = bold green
+  plain = blue
+
+[color "decorate"]
+	branch = bold "#ca9ee6"
+	remoteBranch = ul "#ef9f76"
+	tag = reverse green
+	stash = bold yellow
+  HEAD = reverse bold cyan
+
+[color "log"]
+  commit = green
+  hash = green
+
+[color "status"]
+  added = bold green
+  updated = bold green
+  changed = bold "#ca9ee6"
+  deleted = bold red
+  untracked = bold "#85c1dc"
+  branch = reverse bold cyan
+  nobranch = reverse bold red
+  unmerged = reverse bold yellow
+
+[log]
+	graphColors = green, "#ca9ee6", "#ef9f76", blue, yellow, "#babbf1", magenta, cyan, "#ea999c"
+
+[pretty]
+	catppuccin-frappe = format:%C(magenta)%ad%C(reset) %s %C(green)%h%C(reset) %C(blue)(%an)%C(reset) %C(auto)%d
+  datecomp = format:%h %G? %ad %cd %s
+
+[alias]
+  graph = log --graph --pretty=catppuccin-frappe --date=human --all
+	r5 = log --graph --pretty=catppuccin-frappe --date=human -5
+	r10 = log --graph --pretty=catppuccin-frappe --date=human -10
+	r25 = log --graph --pretty=catppuccin-frappe --date=human -25
+  diary = log --pretty=catppuccin-frappe --date=human
+  my-diary = log --pretty=catppuccin-frappe --date=human --author "winnie"
+  autograph = log --pretty=catppuccin-frappe --date=human --show-signature --author "winnie"
+  datecomp = log --pretty=datecomp --date=short
+  s = status -sb
+  unstage = restore --staged
+  unstage-all = restore --staged .
+  fga = forgit add
+  fglo = forgit log
+  fgd = forgit diff
+  fgi = forgit ignore
+  fgbl = forgit blame
+  fgrb = forgit rebase
+  fgbd = forgit branch_delete
+  fgcb = forgit checkout_branch
+  fgct = forgit checkout_tag
+  fgcf = forgit checkout_file
+  fgcc = forgit checkout_commit
+  fgrc = forgit revert_commit
+  fgcl = forgit clean
+  fgrh = forgit reset_head
+  fgss = forgit stash_show
+  fgsp = forgit stash_push
+  fgcp = forgit cherry_pick
+  fgcpb = forgit cherry_pick_branch

@@ -6,9 +6,10 @@
 ## Goals
 
 - Idempotent and declarative (per chezmoi's philosophy)
-- Linux and macOS (darwin) BOTH first-class targets
-  - macOS is priority for interactive use; Linux support should not break macOS
-  - Linux-specific logic should allow quickly establishing a productive environment on containers, VMs, and VPS
+- **macOS (darwin):** Full interactive workstation — GUI apps, fonts, all tools, terminal emulators
+- **Linux:** Stripped-down, dev-focused toolkit — CLI tools, languages, shell, editor only
+  - Target environments: **Fly.io Sprites** and **exe.dev VMs** (persistent dev machines, not ephemeral containers)
+  - No GUI apps, no fonts, no macOS-only tools
 - Output state matches _the effects_ of current rotz-managed `~/.charmschool` behavior while using chezmoi idioms and best practices
 - AI-agent friendly: clear structure, good documentation, predictable patterns
 
@@ -43,17 +44,26 @@ Key behaviors:
 ├── config.yaml                  # rotz config (Fish shell, dotfiles path)
 │
 ├── agents/                      # AI coding tool configs
-│   ├── claude/                  # Claude Code (rules/, skills/)
-│   ├── copilot/                 # GitHub Copilot
-│   ├── crush/                   # CRUSH CLI
-│   └── opencode/                # OpenCode CLI
+│   ├── claude/                  # Claude Code (rules/, skills/, settings.json)
+│   │   ├── agents/              # Sub-agent definitions (writing-prose-editor.md)
+│   │   ├── rules/               # 5 rule docs
+│   │   ├── skills/              # 17 skills (incl. chezmoi, rotz-dotfiles)
+│   │   ├── _deactivated_skills/ # Inactive skills
+│   │   ├── settings.json        # Claude Code settings
+│   │   └── statusline.ts        # Status line config
+│   ├── codex/                   # OpenAI Codex (install stub)
+│   ├── copilot/                 # GitHub Copilot CLI (install stub)
+│   ├── opencode/                # OpenCode (config + install)
+│   ├── prompt_library/          # Reusable prompts
+│   └── tools/
+│       └── codemogger/          # Apple Silicon/Linux only
 │
-├── apps/                        # GUI applications (22 casks)
+├── apps/                        # GUI applications — DARWIN ONLY (22 casks)
 │   ├── defaults.yaml            # brew install --cask {{file_name name}}
 │   ├── karabiner-elements/      # Has config + dot.yaml
 │   └── .../dot.yaml             # Most just inherit defaults
 │
-├── tools/                       # CLI/TUI tools (71 formulae)
+├── tools/                       # CLI/TUI tools (67 formulae)
 │   ├── defaults.yaml            # brew install {{file_name name}}
 │   ├── bat/                     # Has config + dot.yaml
 │   ├── yazi/                    # Has multiple config files
@@ -62,47 +72,72 @@ Key behaviors:
 ├── shell/
 │   ├── fish/                    # Fish shell (primary)
 │   │   ├── dot.yaml             # Links + Fisher install
-│   │   ├── config.fish          # Main config
+│   │   ├── config.fish          # Main config (3 namespace for loops)
 │   │   ├── 00_plugin_config.fish
-│   │   ├── fish_plugins         # Fisher plugin list
-│   │   ├── functions/           # 89 Fish functions
-│   │   └── user_conf/           # 17 numbered config files
-│   ├── kitty/                   # Kitty terminal + themes
-│   ├── mux/                     # tmux + zellij configs
+│   │   ├── fish_plugins         # Fisher plugin list (6 plugins)
+│   │   ├── functions/           # 79 Fish functions (symlinked, incl plugin-generated)
+│   │   ├── user_conf/           # 17 numbered config files (symlinked, 0n/1n/2n namespaces)
+│   │   └── conf.d/              # Early-load configs (symlinked, incl plugin-generated)
+│   ├── kitty/                   # Kitty terminal + themes — DARWIN ONLY
+│   ├── tmux/                    # tmux config
 │   └── prompt/                  # Starship prompt
 │
 ├── editor/
 │   └── nvim/                    # Neovim (LazyVim)
 │       ├── init.lua
 │       ├── lazy-lock.json
+│       ├── lazyvim.json, stylua.toml
 │       ├── lua/config/          # autocmds, keymaps, options
-│       ├── lua/plugins/         # Plugin specs
-│       └── snippets/            # VSCode-format snippets
+│       ├── lua/plugins/         # Plugin specs (ai, colors, dash, lang, utils, ux)
+│       ├── snippets/            # VSCode-format snippets (7 language dirs)
+│       └── spell/               # Custom dictionary
 │
 ├── git/
-│   ├── gitconfig                # Main git config
+│   ├── gitconfig                # Main git config (SSH signing via 1Password)
 │   ├── gitignore_global
+│   ├── allowed_signers          # SSH allowed signers
 │   ├── delta/                   # Git delta pager theme
-│   └── gh/                      # GitHub CLI config
+│   ├── forgit/                  # forgit config
+│   ├── gh/                      # GitHub CLI config + gh-dash extension
+│   ├── graphite/                # DARWIN ONLY
+│   └── meteor/                  # DARWIN ONLY (commit message TUI)
 │
 ├── lang/                        # Language tooling
-│   ├── go/, python/, typescript/
+│   ├── go/, ruby/               # Install stubs
+│   ├── python/
+│   │   ├── ruff/                # Linter config
+│   │   └── uv/                  # uv config (uv.toml)
+│   ├── typescript/
+│   │   ├── bun/, deno/, pnpm/   # JS runtime install stubs
+│   │   └── deno/val-town/       # Val Town CLI (vt)
 │   └── mise/                    # Multi-version manager config
 │
-└── fonts/                       # Nerd fonts (6 casks)
+└── fonts/                       # Nerd fonts — DARWIN ONLY (5 casks)
 ```
 
 ### rotz Statistics
 
 | Category | Count |
 | --- | --- |
-| Total files | ~341 |
-| dot.yaml files | ~121 |
-| Fish functions | 89 |
-| Fish user_conf | 17 |
-| CLI tools | 71 |
+| Total files | ~375 |
+| dot.yaml files | ~123 |
+| Fish functions | 79 (incl. plugin-generated) |
+| CLI tools | 67 |
 | GUI apps | 22 |
-| Fonts | 6 |
+| Fonts | 5 |
+
+### Darwin-Only Items (exclude from Linux)
+
+These items are flagged `# TODO: only on Darwin, not devcontainers` in charmschool:
+
+| Category | Items |
+| --- | --- |
+| Entire directories | `apps/` (22 casks), `fonts/` (5 casks) |
+| Terminal | Kitty (`shell/kitty/`) |
+| Tools | cmus, databricks, duti, obsidian-cli, postgresql, qmk, spotify-player, xleak, youplot, yt-dlp |
+| Git tools | graphite, meteor (install only — meteor CLI is included on Linux) |
+| Shell configs | `04-containers.fish` (Orbstack — macOS only) |
+| Env vars | `OBSIDIAN_HOME`, `OBSIDIAN_DEFAULT_VAULT`, `MACOS_CONFIG_HOME` |
 
 ---
 
@@ -125,116 +160,163 @@ Key behaviors:
 - `.tmpl` suffix enables Go template processing
 - Scripts in `.chezmoiscripts/` run during apply
 
+### Machine Type Detection
+
+The `.chezmoi.yaml.tmpl` config template auto-detects machine type from OS:
+
+```yaml
+# darwin → darwin-full, linux → linux-dev
+data:
+  machine:
+    type: {{ $machineType | quote }}
+```
+
+Available via `{{ .machine.type }}` in templates. Values:
+
+- `darwin-full` — macOS interactive workstation (all apps, fonts, tools)
+- `linux-dev` — Linux dev VM (CLI tools, languages, shell, editor only)
+
+### Environment Variable: `DOTFILES_HOME`
+
+Set in `00-env.fish` to `~/.local/share/chezmoi`. Used by abbreviations and functions that reference the dotfiles source directory, replacing hardcoded `~/.charmschool` paths.
+
 ### chezmoi Target File Tree
 
 ```text
 ~/.local/share/chezmoi/
-├── .chezmoidata/                        # Template data
-│   ├── packages.yaml                    # ✅ Homebrew taps/formulae/casks
-│   └── fisher.yaml                      # Fisher plugins (to create)
+├── .chezmoi.yaml.tmpl                          # Machine type prompt
 │
-├── .chezmoiscripts/                     # Lifecycle scripts
-│   ├── darwin/
-│   │   ├── run_once_before_00-bootstrap.sh
-│   │   ├── run_onchange_10-install-packages.sh.tmpl
-│   │   ├── run_once_20-configure-shell.fish.tmpl
-│   │   ├── run_onchange_30-install-fisher.fish.tmpl
-│   │   └── run_onchange_40-yazi-plugins.fish.tmpl
-│   └── linux/                           # Future
+├── .chezmoidata/                               # Template data
+│   └── packages.yaml                           # Homebrew packages (darwin + linux sections)
+│
+├── .chezmoiscripts/                            # Lifecycle scripts (flat, OS logic in templates)
+│   ├── run_once_before_00-bootstrap.sh.tmpl    # Homebrew install (darwin + linux)
+│   ├── run_onchange_10-install-packages.sh.tmpl # brew bundle (darwin + linux)
+│   ├── run_once_20-configure-shell.sh.tmpl     # Fish to /etc/shells, chsh
+│   └── run_onchange_40-yazi-plugins.fish.tmpl  # ya pkg install (darwin only, future)
+│
+├── .chezmoiignore                              # Docs, OS-specific excludes
 │
 ├── dot_config/
 │   ├── fish/
-│   │   ├── config.fish.tmpl
-│   │   ├── fish_plugins
+│   │   ├── config.fish                         # Namespace for-loop loader
+│   │   ├── fish_plugins                        # Fisher plugin list
 │   │   ├── conf.d/
-│   │   │   └── 00_plugin_config.fish
-│   │   ├── user_conf/                   # 17 numbered files
-│   │   └── functions/                   # 89 functions
+    │   │    ├── autopair.fish
+    │   │    ├── fzf.fish
+    │   │    ├── git.fish
+    │   │    ├── no_auto_mise.fish
+    │   │    └── puffer_fish_key_bindings.fish
+│   │   ├── user_conf/                          # 17 numbered config files
+│   │   │   ├── 00-env.fish.tmpl                # Template: OS-specific paths, DOTFILES_HOME
+│   │   │   ├── 01-editor.fish
+│   │   │   ├── 02-git.fish
+│   │   │   ├── 03-ai.fish
+│   │   │   ├── 04-containers.fish.tmpl         # Template: Darwin-only (Orbstack)
+│   │   │   ├── 1n-*.fish                       # Language configs
+│   │   │   └── 2n-*.fish                       # Interactive configs
+│   │   └── functions/                          # Fish functions (user-authored)
 │   │
-│   ├── kitty/
+│   ├── kitty/                                  # DARWIN ONLY (via .chezmoiignore)
 │   │   ├── kitty.conf
 │   │   ├── current-theme.conf
 │   │   └── themes/
 │   │
-│   ├── starship.toml
+│   ├── starship.toml                           # Prompt config
 │   │
-│   ├── yazi/
-│   │   ├── yazi.toml
-│   │   ├── keymap.toml
-│   │   ├── theme.toml
+│   ├── nvim/                                   # Neovim config (mostly copied)
+│   │   ├── init.lua
+│   │   ├── symlink_lazy-lock.json.tmpl         # → source (updated by :Lazy)
+│   │   ├── symlink_lazyvim.json.tmpl           # → source (updated by LazyVim)
+│   │   ├── stylua.toml
+│   │   ├── lua/config/                         # autocmds, keymaps, options
+│   │   ├── lua/plugins/                        # Plugin specs
+│   │   ├── snippets/                           # VSCode-format snippets
+│   │   └── spell/                              # Custom dictionary
+│   │
+│   ├── yazi/                                   # File manager
+│   │   ├── yazi.toml, keymap.toml, theme.toml
 │   │   ├── package.toml
 │   │   └── init.lua
 │   │
-│   ├── mise/config.toml
+│   ├── mise/config.toml                        # Version manager
 │   │
-│   ├── git/
-│   │   ├── config
-│   │   └── ignore
+│   ├── git/                                    # XDG git config
+│   │   ├── config                              # Main gitconfig (refs ~/.ssh/allowed_signers)
+│   │   └── ignore                              # Global gitignore
 │   │
-│   ├── gh/config.yml
-│   ├── delta/catppuccin.gitconfig
-│   ├── tmux/tmux.conf
-│   └── zellij/config.kdl
+│   ├── gh/config.yml                           # GitHub CLI
+│   ├── gh-dash/config.yml                      # gh-dash extension config
+│   ├── delta/catppuccin.gitconfig              # Delta pager theme
+│   ├── meteor/config.json                      # Conventional commit helper
+│   ├── tmux/tmux.conf                          # tmux config
+│   └── bat/config                              # bat config (if exists)
 │
-├── private_dot_ssh/
-│   └── config.tmpl
+├── dot_claude/                                 # Claude Code config
+│   ├── symlink_settings.json.tmpl              # → source (edited by Claude Code)
+│   ├── symlink_skills.tmpl                     # → source (target for skill installs)
+│   └── rules/                                  # Agent rules (copied normally)
+│       └── *.md
 │
-├── symlink_dot_config/
-│   └── nvim.tmpl                        # → source-managed nvim/
+├── claude/                                     # Source for symlinked Claude Code files
+│   ├── settings.json                           # (in .chezmoiignore)
+│   └── skills/                                 # (in .chezmoiignore)
 │
-├── nvim/                                # Neovim (symlinked, not copied)
-│   ├── init.lua
-│   ├── lazy-lock.json
-│   ├── lua/config/
-│   ├── lua/plugins/
-│   └── snippets/
+├── nvim/                                       # Source for symlinked Neovim lockfiles
+│   ├── lazy-lock.json                          # (in .chezmoiignore)
+│   └── lazyvim.json                            # (in .chezmoiignore)
 │
-├── dot_gitconfig                        # Fallback include
+├── private_dot_ssh/                                # SSH config (cross-platform, 1Password agent forwarding)
+│   └── config                                  # SSH config
+│   └── allowed_signers                         # SSH signing (shared with git)
 │
-├── run_onchange_darwin-install-packages.sh.tmpl  # ⚠️ Move to .chezmoiscripts/
+├── dot_gitconfig                               # Fallback include → ~/.config/git/config
 │
-├── .chezmoiignore                       # ✅ Exists
-├── CLAUDE.md                            # ✅ Exists
-├── ARCHITECTURE.md                      # This file
-└── PLAN.md                              # Migration plan
+├── .chezmoiignore                              # OS-conditional ignores
+├── CLAUDE.md
+├── ARCHITECTURE.md                             # This file
+└── PLAN.md
 ```
 
 ---
 
 ## Key Design Decisions
 
-### 1. Neovim as Symlink (Not Copied)
+### 1. Minimal Symlinks for Externally-Modified Files
 
-**Rationale:** Neovim configs are frequently edited during use. A symlink allows:
+**Rationale:** Most configs follow normal chezmoi workflow (edit source, `chezmoi apply`). Only files modified by external tools need symlinks back to the source directory, so those changes persist immediately without a manual `chezmoi add` step.
 
-- Direct editing without `chezmoi edit`
-- `lazy-lock.json` updates to persist immediately
-- Better LazyVim/plugin development workflow
+**Symlinked files (modified by external tools):**
 
-**Implementation:**
+| File | External modifier | Source location |
+| --- | --- | --- |
+| `~/.config/nvim/lazy-lock.json` | Lazy.nvim (`:Lazy sync`) | `nvim/lazy-lock.json` |
+| `~/.config/nvim/lazyvim.json` | LazyVim framework | `nvim/lazyvim.json` |
+| `~/.claude/settings.json` | Claude Code itself | `claude/settings.json` |
+| `~/.claude/skills/` | Skill installation (package-manager-like) | `claude/skills/` |
 
-```go
-# symlink_dot_config/nvim.tmpl
-{{ .chezmoi.sourceDir }}/nvim
+**Implementation:** Symlink entries live inline at their target path using nested attributes:
+
+```text
+dot_config/nvim/symlink_lazy-lock.json.tmpl    # content: {{ .chezmoi.sourceDir }}/nvim/lazy-lock.json
+dot_claude/symlink_settings.json.tmpl          # content: {{ .chezmoi.sourceDir }}/claude/settings.json
 ```
 
-Creates `~/.config/nvim` → `~/.local/share/chezmoi/nvim`
+The actual source files live at the repo root (`nvim/`, `claude/`) and are listed in `.chezmoiignore` so chezmoi doesn't also try to deploy them as `~/nvim/` or `~/claude/`.
+
+**Everything else is copied normally** — Neovim's `init.lua`, `lua/`, `snippets/`, `spell/`, and Claude Code's `rules/` all go through standard chezmoi workflow.
 
 ### 2. Fish Directory Structure (Copied)
 
-**Rationale:** Unlike Neovim, Fish configs are rarely edited interactively. The copy model:
+**Rationale:** Fish configs are rarely edited interactively. The copy model:
 
 - Ensures clean separation between source and target
 - Allows template processing for OS-specific logic
 - Maintains chezmoi's state management
 
-### 3. Scripts Organized by OS
+### 3. Scripts: Flat Directory with OS Conditionals
 
-**Rationale:** Clear separation of platform-specific scripts:
-
-- `.chezmoiscripts/darwin/` for macOS
-- `.chezmoiscripts/linux/` for Linux (future)
-- Numeric prefixes for ordering (00-, 10-, 20-, etc.)
+**Rationale:** All scripts live in `.chezmoiscripts/` (no subdirectories). Each script uses `{{ if eq .chezmoi.os "darwin" }}` / `{{ else if eq .chezmoi.os "linux" }}` / `{{ else }}{{ fail }}` to handle OS-specific logic inline. This avoids duplicating near-identical scripts across per-OS directories and keeps the OS differences visible in a single file. Numeric prefixes control ordering (00-, 10-, 20-, etc.).
 
 ### 4. Git Config Location
 
@@ -250,9 +332,11 @@ Creates `~/.config/nvim` → `~/.local/share/chezmoi/nvim`
 
 All Homebrew packages in `.chezmoidata/packages.yaml`:
 
-- Single source of truth
-- Template-accessible via `{{ .packages.darwin.homebrew.* }}`
+- Single source of truth, split into `darwin` and `linux` sections
+- Template-accessible via `{{ .packages.darwin.homebrew.* }}` / `{{ .packages.linux.homebrew.* }}`
 - Easy to diff and audit
+- Darwin section: full set (111 formulae, 35 casks, 18 taps)
+- Linux section: dev-focused subset (~50 formulae, no casks, minimal taps)
 
 ### 6. No Tool-Specific Directories
 
@@ -261,6 +345,22 @@ Unlike rotz's `tools/<name>/` and `apps/<name>/` structure, chezmoi doesn't need
 - Package installation is centralized in data files
 - Config files go directly to their target paths
 - No need for `dot.yaml` per tool
+
+### 7. OS-Conditional Ignores
+
+`.chezmoiignore` uses template logic to exclude platform-specific files:
+
+```text
+{{ if ne .chezmoi.os "darwin" }}
+dot_config/kitty/
+{{ end }}
+```
+
+This prevents Darwin-only configs from being deployed on Linux.
+
+### 8. DOTFILES_HOME Environment Variable
+
+Set in `00-env.fish.tmpl` to `{{ .chezmoi.sourceDir }}` (resolves to `~/.local/share/chezmoi`). Replaces hardcoded `~/.charmschool` references in abbreviations and functions.
 
 ---
 
@@ -289,21 +389,56 @@ Unlike rotz's `tools/<name>/` and `apps/<name>/` structure, chezmoi doesn't need
 
 ---
 
+## Package Lists
+
+### Darwin Formulae (111)
+
+Full list maintained in `.chezmoidata/packages.yaml` — includes all 67 tools from charmschool plus language tooling, libraries, and build dependencies.
+
+### Darwin Casks (35)
+
+GUI apps (22), fonts (5), plus: 1password-cli, claude-code, copilot-cli, copilot-money, github, ia-presenter, mitmproxy, orion, zed.
+
+### Linux Formulae (~50, dev-focused)
+
+Core dev toolkit — no GUI apps, no fonts, no macOS-only tools:
+
+**Shell & prompt:** fish, starship
+**Navigation & search:** zoxide, yazi, fzf, ripgrep, fd
+**File ops:** bat, lsd, sd, rm-improved, 7zip
+**Git ecosystem:** git, delta, lazygit, forgit, meteor, gh
+**Monitoring:** bottom, procs, k9s
+**Editor:** neovim
+**Dev tools:** make, cmake, go-task, jless, jq, yq, sqlite, age
+**Languages:** go, ruby, deno, bun, pnpm, mise (→ node), uv (→ python)
+**Networking:** wget, mitmproxy, mutagen
+**Other:** 1password-cli, moor, vivid, prek, mq
+
+### Linux Taps (minimal)
+
+Only taps required for the Linux formulae list (e.g., `stefanlogue/tools` for meteor).
+
+---
+
 ## Script Categories
 
 ### Bootstrap (run_once_before)
 
-- `00-bootstrap.sh` — Ensure Homebrew exists (macOS)
+- `00-bootstrap.sh.tmpl` — Homebrew install, OS-conditional shellenv setup. Fails on unrecognized OS.
 
 ### Package Management (run_onchange)
 
-- `10-install-packages.sh.tmpl` — `brew bundle` from packages.yaml
-- `30-install-fisher.fish.tmpl` — Fisher + plugins
-- `40-yazi-plugins.fish.tmpl` — `ya pkg install`
+- `10-install-packages.sh.tmpl` — `brew bundle` from packages.yaml. Darwin: taps + formulae + casks. Linux: taps + formulae only. Fails on unrecognized OS.
 
-### Configuration (run_once)
+### Shell Configuration (run_once)
 
-- `20-configure-shell.fish.tmpl` — Add Fish to `/etc/shells`, chsh
+- `20-configure-shell.sh.tmpl` — Add Fish to `/etc/shells`, chsh. Linux adds brew shellenv preamble. Fails on unrecognized OS.
+
+### Plugin Management (run_onchange)
+
+- `40-yazi-plugins.fish.tmpl` — `ya pkg install` (darwin only, or shared if yazi plugins are cross-platform)
+
+**Note:** Fisher plugins are NOT installed via script. Fisher functions are tracked directly in `dot_config/fish/functions/` and sync via chezmoi. The `fish_plugins` file is managed as a regular file for reference.
 
 ---
 
@@ -326,7 +461,7 @@ All tools use **Catppuccin Frappe**:
 - Fish (via catppuccin/fish plugin)
 - Starship prompt
 - Git delta
-- Kitty terminal
+- Kitty terminal (darwin only)
 - Neovim (via plugin)
 - Yazi file manager
 - moor (CLI output highlighting)
@@ -334,12 +469,6 @@ All tools use **Catppuccin Frappe**:
 ---
 
 ## Future Considerations
-
-### Linux Support
-
-- Separate package management (apt, dnf, pacman)
-- Different paths for some tools
-- Conditional templates via `{{ if eq .chezmoi.os "linux" }}`
 
 ### External Sources (`.chezmoiexternal.yaml`)
 
