@@ -1,17 +1,19 @@
-# Documentation (not deployed to home)
+# in-repo dev files
 ARCHITECTURE.md
 CLAUDE.md
 PLAN.md
 README.md
-USER_TODO.md
-dot_config/fish/user_conf/AGENTS.md
-
+AGENTS.md
+.markdownlint.yaml
+opencode.json
+.claude/
 # Source files for symlinked targets
 # These are the actual files that symlink_ entries point to.
 # Without this ignore, chezmoi would also try to copy them to ~/nvim/ and ~/claude/.
 nvim/
 claude/
 agents/
+yazi_package.toml
 
 {{ if ne .chezmoi.os "darwin" }}
 # Darwin-only configs (excluded on Linux)
