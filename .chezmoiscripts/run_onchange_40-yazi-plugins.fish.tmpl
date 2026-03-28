@@ -1,0 +1,9 @@
+#!/usr/bin/env fish
+# Install/update yazi plugins when package.toml changes (run_onchange_)
+# package.toml hash: {{ include "dot_config/yazi/package.toml" | sha256sum }}
+
+if command -q ya
+    ya pkg install
+else
+    echo "ya not found, skipping yazi plugin install"
+end
