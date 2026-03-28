@@ -95,8 +95,6 @@ packages:
         - pillow
         - pnpm
         - poppler
-        - postgresql@16
-        - postgresql@17
         - postgresql@18
         - prek
         - presenterm
@@ -166,7 +164,6 @@ packages:
         - shortcat
         - slack
         - wispr-flow
-        - zed
         - zoom
   linux:
     homebrew:
@@ -206,11 +203,13 @@ packages:
         # Dev tools
         - age
         - cmake
+        - duckdb
         - go-task
         - jless
         - jq
         - make
         - mitmproxy
+        - pgcli
         - sqlite
         - yq
         # Languages
