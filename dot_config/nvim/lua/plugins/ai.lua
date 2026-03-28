@@ -92,7 +92,7 @@ return {
       prompt_library = {
         markdown = {
           dirs = {
-            "~/.charmschool/agents/shared/prompts",
+            "~/.agents/prompts",
           },
         },
       },
