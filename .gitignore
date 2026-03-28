@@ -7,3 +7,5 @@ __pycache__
 node_modules
 .pnpm-store
 .swp
+TODO.md
+OLD_PLAN__deprecated_ignore.md
