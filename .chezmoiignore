@@ -11,6 +11,7 @@ dot_config/fish/user_conf/AGENTS.md
 # Without this ignore, chezmoi would also try to copy them to ~/nvim/ and ~/claude/.
 nvim/
 claude/
+agents/
 
 {{ if ne .chezmoi.os "darwin" }}
 # Darwin-only configs (excluded on Linux)
