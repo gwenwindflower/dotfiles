@@ -37,12 +37,12 @@ There is a custom CLI tool available for skill management, written in Deno and i
 skillutil init <skill-name> [--path <output-directory>]
 ```
 
-If `--path` is not provided, the skill will be created in the shared skills directory (`agents/shared/skills/`), symlinked to `~/.agents/skills/` + any agent-specific locations (e.g. `~/.claude/skills/`). This makes it available to all agents, projects, and sessions. This is often desirable! If the skill reflects the user's git preferences, shell environment that applies everywhere, or even frontend skills that are applicable across any web project, you should consider making it a shared skill.
+If `--path` is not provided, the skill will be created in the shared skills directory (`agents/skills/`), symlinked to `~/.agents/skills/` + any agent-specific locations (e.g. `~/.claude/skills/`). This makes it available to all agents, projects, and sessions. This is often desirable! If the skill reflects the user's git preferences, shell environment that applies everywhere, or even frontend skills that are applicable across any web project, you should consider making it a shared skill.
 
 Examples:
 
 ```bash
-# Create a shared skill (default, agents/shared/skills/my-skill)
+# Create a shared skill (default, agents/skills/my-skill)
 skillutil init my-skill
 
 # Create a project-scoped skill

@@ -12,7 +12,7 @@
  *   deno task skillutil:install
  *   skillutil <command> [options]
  *
- * Templates are read from: agents/shared/skills/_skillutil/assets
+ * Templates are read from: agents/skills/_skillutil/assets
  */
 
 import { parse as parseYAML } from "@std/yaml";
@@ -29,7 +29,7 @@ const homeDir = Deno.env.get("HOME");
 if (!homeDir) throw new Error("HOME not set");
 
 // TODO: build `update` command with simple lock file for tracking like npx skills
-const SKILLS_DIR = join(homeDir, ".charmschool/agents/shared/skills");
+const SKILLS_DIR = join(homeDir, "agents/skills");
 const TEMPLATE_DIR = join(SKILLS_DIR, "_skillutil/assets");
 const SKILL_DEV_DIR = join(SKILLS_DIR, "develop-agent-skills");
 const DEACTIVATED_SKILLS = join(SKILLS_DIR, "_deactivated");
@@ -865,7 +865,7 @@ cli
 cli
 	.command("validate <skill-path:string>")
 	.description("Validate skill structure and frontmatter")
-	.example("Validate a skill", "skillutil validate agents/shared/skills/my-skill")
+	.example("Validate a skill", "skillutil validate agents/skills/my-skill")
 	.action(async (_options, skillPath) => {
 		const result = await validateSkill(skillPath);
 		console.log(result.message);

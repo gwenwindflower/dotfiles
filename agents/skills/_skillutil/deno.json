@@ -27,6 +27,6 @@
 		"skillutil": "deno run --allow-read --allow-write --allow-env=HOME --allow-net=platform.claude.com,code.claude.com,github.com,codeload.github.com --allow-run=tar skillutil.ts",
 		"skillutil:check": "deno check skillutil.ts",
 		"skillutil:test": "deno run --allow-read --allow-write --allow-run=deno,tar --allow-env=HOME,TMPDIR --allow-net=platform.claude.com,code.claude.com,github.com,codeload.github.com test-skillutil.ts",
-		"skillutil:install": "deno install --global --config ~/.charmschool/agents/shared/skills/_skillutil/deno.json --allow-read --allow-write --allow-env=HOME --allow-net=platform.claude.com,code.claude.com,github.com,codeload.github.com --allow-run=tar --name skillutil --force skillutil.ts"
+		"skillutil:install": "deno install --global --config ~/agents/skills/_skillutil/deno.json --allow-read --allow-write --allow-env=HOME --allow-net=platform.claude.com,code.claude.com,github.com,codeload.github.com --allow-run=tar --name skillutil --force skillutil.ts"
 	}
 }

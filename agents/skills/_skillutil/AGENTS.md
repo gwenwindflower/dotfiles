@@ -1,6 +1,6 @@
 # skillutil Lightweight CLI Utility for Agent Skills
 
-CLI tool for managing cross-agent Skills. Skills live in `agents/shared/skills/`, symlinked to `~/.agents/skills/` + any agent-specific locations (e.g. `~/.claude/skills/`).
+CLI tool for managing cross-agent Skills. Skills live in `agents/skills/`, symlinked to `~/.agents/skills/` + any agent-specific locations (e.g. `~/.claude/skills/`).
 
 For skill *usage* guidance (creating, editing, managing skills as an end user), see the [develop-agent-skills](../develop-agent-skills/SKILL.md) skill. This doc covers *developing* the skillutil tool itself.
 
@@ -8,7 +8,7 @@ For skill *usage* guidance (creating, editing, managing skills as an end user), 
 
 ### Development Workflow
 
-Development takes place in `~/.charmschool/agents/shared/skills/_skillutil/` — Deno tasks let you run against live source during development. Once an update is complete, install globally with `deno task skillutil:install`.
+Development takes place in `~/.charmschool/agents/skills/_skillutil/` — Deno tasks let you run against live source during development. Once an update is complete, install globally with `deno task skillutil:install`.
 
 ```bash
 # Run any command based on current source code
@@ -16,7 +16,7 @@ deno task skillutil <command> [args]
 
 # Examples
 deno task skillutil init my-skill
-deno task skillutil validate agents/shared/skills/my-skill
+deno task skillutil validate agents/skills/my-skill
 deno task skillutil --help
 
 # Type check the code
@@ -51,7 +51,7 @@ skillutil validate my-skill
 Create a new skill with proper structure:
 
 ```bash
-# Create in default location (agents/shared/skills/)
+# Create in default location (agents/skills/)
 deno task skillutil init my-awesome-skill
 
 # Create in custom location
@@ -80,7 +80,7 @@ deno task skillutil init my-skill --path ~/projects/skills
 Check skill structure and SKILL.md frontmatter:
 
 ```bash
-deno task skillutil validate agents/shared/skills/my-skill
+deno task skillutil validate agents/skills/my-skill
 ```
 
 Validates:
@@ -99,7 +99,7 @@ Fetch latest Anthropic documentation about agent skills:
 deno task skillutil refresh-docs
 ```
 
-Downloads to: `agents/shared/skills/develop-agent-skills/` (the overview.md and related reference docs)
+Downloads to: `agents/skills/develop-agent-skills/` (the overview.md and related reference docs)
 
 ### activate / deactivate
 
@@ -115,8 +115,8 @@ deno task skillutil activate old-skill
 
 **Paths**:
 
-- Active: `~/.charmschool/agents/shared/skills/`, symlinked to `~/.agents/skills/` + agent-specific paths
-- Deactivated: `~/.charmschool/agents/shared/skills/_deactivated/`
+- Active: `~/.charmschool/agents/skills/`, symlinked to `~/.agents/skills/` + agent-specific paths
+- Deactivated: `~/.charmschool/agents/skills/_deactivated/`
 
 ## Testing
 
