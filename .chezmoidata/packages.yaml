@@ -224,9 +224,12 @@ packages:
         # Networking
         - mutagen
         - wget
+        # Multiplexer
+        - tmux
         # Other
         - 1password-cli
         - moor
         - mq
         - prek
+        - tlrc
         - vivid

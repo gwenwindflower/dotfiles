@@ -98,6 +98,9 @@
   s = status -sb
   unstage = restore --staged
   unstage-all = restore --staged .
+  logd = -c diff.external=difft log -p --ext-diff
+  showd = -c diff.external=difft show --ext-diff
+  diffd = -c diff.external=difft diff
   fga = forgit add
   fglo = forgit log
   fgd = forgit diff
