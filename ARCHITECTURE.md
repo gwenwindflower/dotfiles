@@ -192,8 +192,7 @@ Set in `00-env.fish` to `~/.local/share/chezmoi`. Used by abbreviations and func
 ├── .chezmoiscripts/                            # Lifecycle scripts (flat, OS logic in templates)
 │   ├── run_once_before_00-bootstrap.sh.tmpl    # Homebrew install (darwin + linux)
 │   ├── run_onchange_10-install-packages.sh.tmpl # brew bundle (darwin + linux)
-│   ├── run_once_20-configure-shell.sh.tmpl     # Fish to /etc/shells, chsh
-│   └── run_onchange_40-yazi-plugins.fish.tmpl  # ya pkg install (darwin only, future)
+│   └── run_once_20-configure-shell.sh.tmpl     # Fish to /etc/shells, chsh
 │
 ├── .chezmoiignore                              # Docs, OS-specific excludes
 │
@@ -201,28 +200,17 @@ Set in `00-env.fish` to `~/.local/share/chezmoi`. Used by abbreviations and func
 │   ├── fish/
 │   │   ├── config.fish                         # Namespace for-loop loader
 │   │   ├── fish_plugins                        # Fisher plugin list
-│   │   ├── conf.d/
-    │   │    ├── autopair.fish
-    │   │    ├── fzf.fish
-    │   │    ├── git.fish
-    │   │    ├── no_auto_mise.fish
-    │   │    └── puffer_fish_key_bindings.fish
-│   │   ├── user_conf/                          # 17 numbered config files
-│   │   │   ├── 00-env.fish.tmpl                # Template: OS-specific paths, DOTFILES_HOME
-│   │   │   ├── 01-editor.fish
-│   │   │   ├── 02-git.fish
-│   │   │   ├── 03-ai.fish
-│   │   │   ├── 04-containers.fish.tmpl         # Template: Darwin-only (Orbstack)
-│   │   │   ├── 1n-*.fish                       # Language configs
-│   │   │   └── 2n-*.fish                       # Interactive configs
+│   │   ├── conf.d/                             # Early-load configs (plugin-generated)
+│   │   ├── user_conf/                          # Numbered config files (3 namespaces)
+│   │   │   ├── 0n — env, editor, git, AI, containers (templates for OS logic)
+│   │   │   ├── 1n — language configs (rust, typescript, go, python, ruby, mise)
+│   │   │   └── 2n — interactive (theme, prompt, abbrs, bindings, zoxide, fzf, mux)
 │   │   └── functions/                          # Fish functions (user-authored)
 │   │
 │   ├── kitty/                                  # DARWIN ONLY (via .chezmoiignore)
 │   │   ├── kitty.conf
 │   │   ├── current-theme.conf
 │   │   └── themes/
-│   │
-│   ├── starship.toml                           # Prompt config
 │   │
 │   ├── nvim/                                   # Neovim config (mostly copied)
 │   │   ├── init.lua
@@ -234,23 +222,26 @@ Set in `00-env.fish` to `~/.local/share/chezmoi`. Used by abbreviations and func
 │   │   ├── snippets/                           # VSCode-format snippets
 │   │   └── spell/                              # Custom dictionary
 │   │
-│   ├── yazi/                                   # File manager
-│   │   ├── yazi.toml, keymap.toml, theme.toml
-│   │   ├── package.toml
-│   │   └── init.lua
-│   │
-│   ├── mise/config.toml                        # Version manager
-│   │
-│   ├── git/                                    # XDG git config
-│   │   ├── config                              # Main gitconfig (refs ~/.ssh/allowed_signers)
-│   │   └── ignore                              # Global gitignore
-│   │
+│   ├── bat/                                    # bat pager config
+│   ├── delta/catppuccin.gitconfig              # Delta pager theme
+│   ├── fzf/                                    # fzf config (env vars)
 │   ├── gh/config.yml                           # GitHub CLI
 │   ├── gh-dash/config.yml                      # gh-dash extension config
-│   ├── delta/catppuccin.gitconfig              # Delta pager theme
+│   ├── git/                                    # XDG git config
+│   │   ├── config.tmpl                         # Main gitconfig (templated for OS)
+│   │   └── ignore                              # Global gitignore
+│   ├── karabiner/                              # DARWIN ONLY (via .chezmoiignore)
 │   ├── meteor/config.json                      # Conventional commit helper
+│   ├── mise/config.toml                        # Version manager
+│   ├── ripgrep/                                # ripgrep config
+│   ├── starship.toml                           # Prompt config
+│   ├── tlrc/                                   # tldr client config
 │   ├── tmux/tmux.conf                          # tmux config
-│   └── bat/config                              # bat config (if exists)
+│   ├── uv/uv.toml                              # Python package manager config
+│   └── yazi/                                   # File manager
+│       ├── yazi.toml, keymap.toml, theme.toml
+│       ├── package.toml
+│       └── init.lua
 │
 ├── dot_claude/                                 # Claude Code config
 │   ├── symlink_settings.json.tmpl              # → source (edited by Claude Code)
@@ -399,7 +390,7 @@ Full list maintained in `.chezmoidata/packages.yaml` — includes all 67 tools f
 
 GUI apps (22), fonts (5), plus: 1password-cli, claude-code, copilot-cli, copilot-money, github, ia-presenter, mitmproxy, orion, zed.
 
-### Linux Formulae (~50, dev-focused)
+### Linux Formulae (~55, dev-focused)
 
 Core dev toolkit — no GUI apps, no fonts, no macOS-only tools:
 
@@ -409,10 +400,11 @@ Core dev toolkit — no GUI apps, no fonts, no macOS-only tools:
 **Git ecosystem:** git, delta, lazygit, forgit, meteor, gh
 **Monitoring:** bottom, procs, k9s
 **Editor:** neovim
+**Multiplexer:** tmux
 **Dev tools:** make, cmake, go-task, jless, jq, yq, sqlite, age
 **Languages:** go, ruby, deno, bun, pnpm, mise (→ node), uv (→ python)
 **Networking:** wget, mitmproxy, mutagen
-**Other:** 1password-cli, moor, vivid, prek, mq
+**Other:** 1password-cli, moor, vivid, prek, mq, tlrc
 
 ### Linux Taps (minimal)
 
@@ -433,10 +425,6 @@ Only taps required for the Linux formulae list (e.g., `stefanlogue/tools` for me
 ### Shell Configuration (run_once)
 
 - `20-configure-shell.sh.tmpl` — Add Fish to `/etc/shells`, chsh. Linux adds brew shellenv preamble. Fails on unrecognized OS.
-
-### Plugin Management (run_onchange)
-
-- `40-yazi-plugins.fish.tmpl` — `ya pkg install` (darwin only, or shared if yazi plugins are cross-platform)
 
 **Note:** Fisher plugins are NOT installed via script. Fisher functions are tracked directly in `dot_config/fish/functions/` and sync via chezmoi. The `fish_plugins` file is managed as a regular file for reference.
 
@@ -461,9 +449,13 @@ All tools use **Catppuccin Frappe**:
 - Fish (via catppuccin/fish plugin)
 - Starship prompt
 - Git delta
+- Git color config (custom Catppuccin palette)
 - Kitty terminal (darwin only)
 - Neovim (via plugin)
 - Yazi file manager
+- bat (via theme)
+- fzf (via color opts)
+- vivid (LS_COLORS)
 - moor (CLI output highlighting)
 
 ---
