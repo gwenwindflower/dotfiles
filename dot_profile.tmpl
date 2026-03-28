@@ -1,0 +1,6 @@
+export SHELL="$HOMEBREW_PREFIX/bin/fish"
+{{ if eq .chezmoi.os "darwin" -}}
+export TEMP="$TMPDIR"
+# Required on macOS for signing commits via 1Password SSH agent
+export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+{{ end -}}
