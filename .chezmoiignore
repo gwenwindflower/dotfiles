@@ -13,7 +13,7 @@ opencode.json
 nvim/
 claude/
 agents/
-yazi_package.toml
+yazi/
 
 {{ if ne .chezmoi.os "darwin" }}
 # Darwin-only configs (excluded on Linux)
