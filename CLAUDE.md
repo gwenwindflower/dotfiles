@@ -2,8 +2,8 @@
 
 Cross-platform dotfiles managed with chezmoi. Fish shell primary, Catppuccin Frappe theming throughout.
 
-- **macOS (darwin-full):** Full interactive workstation — GUI apps, fonts, terminal emulators, all tools
-- **Linux (linux-dev):** Dev-focused CLI toolkit for persistent VMs (exe.dev, Fly.io Sprites)
+- **macOS:** Full interactive workstation — GUI apps, fonts, terminal emulators, all tools
+- **Linux:** Dev-focused CLI toolkit for persistent VMs (exe.dev, Fly.io Sprites)
 
 Recently migrated from rotz (`~/.charmschool`). The old repo is read-only reference; periodic adjustments may be needed as edge cases surface during transition.
 
@@ -16,7 +16,6 @@ Recently migrated from rotz (`~/.charmschool`). The old repo is read-only refere
 ## Repo Structure
 
 ```text
-.chezmoi.yaml.tmpl              # Auto-detects darwin-full / linux-dev
 .chezmoidata/packages.yaml      # Homebrew packages (darwin + linux sections)
 .chezmoiscripts/                # Lifecycle scripts (bootstrap, packages, shell, yazi plugins)
 .chezmoiignore                  # Excludes dev files + OS-conditional dirs
@@ -64,8 +63,6 @@ Two mechanisms, use whichever fits:
 - **In `.tmpl` files:** `{{ if eq .chezmoi.os "darwin" }}...{{ end }}`
 - **In `.chezmoiignore`:** Exclude entire dirs on non-darwin (kitty, karabiner)
 
-The `.chezmoi.yaml.tmpl` sets `{{ .machine.type }}` to `darwin-full` or `linux-dev`, available in all templates.
-
 ### Symlinks: only for externally-modified files
 
 chezmoi copies by default, which is the right call for almost everything — it enables templating, permissions control, and clean state management. **Only symlink files that external tools edit themselves:**
@@ -81,10 +78,6 @@ chezmoi copies by default, which is the right call for almost everything — it 
 Source files live at repo root in `.chezmoiignore` so chezmoi won't also deploy them as top-level home dirs. Each symlink is a `symlink_*.tmpl` file containing `{{ .chezmoi.sourceDir }}/path/to/source`.
 
 **When in doubt, copy.** Symlinks add complexity — they bypass template processing, require ignore entries, and create a second thing to reason about. Only reach for them when you'd otherwise lose data (tool writes to the file and chezmoi would overwrite it on next apply).
-
-### DOTFILES_HOME
-
-Set in `config.fish.tmpl` to `{{ .chezmoi.sourceDir }}`. Fish functions and abbreviations use `$DOTFILES_HOME` instead of hardcoded paths.
 
 ### Nerd Font icons
 
@@ -139,5 +132,4 @@ chezmoi state delete-bucket --bucket=scriptState  # Reset run_once tracking
 
 ## Related Docs
 
-- `MIGRATION.md` — Detailed structure, package lists, design decisions, and reference from the rotz (~/.charmschool) to chezmoi (~/.dotfiles) migration
 - `agents/skills/chezmoi/` — Full chezmoi skill with deep reference docs on attributes, templates, scripts, hooks

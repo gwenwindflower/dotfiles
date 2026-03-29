@@ -1,3 +1,8 @@
+---
+name: effective-sql
+description: Use when writing any SQL query beyond a throw-away script, if the SQL is going to be committed to version control, or if other people will read the query, load this skill and follow these patterns
+---
+
 # Writing SQL
 
 Write SQL as a clear pipeline of CTEs. Optimize early, name things precisely,

@@ -1,30 +1,22 @@
 local bookmarks = {
 	{ key = "@", path = "~", desc = " User Home" },
 	{ key = { "c", "f" }, path = "~/.config", desc = " User Config" },
-	{ key = { "c", "m" }, path = "~/.charmschool", desc = " My Dotfiles" },
-	{ key = { "c", "s" }, path = "~/.charmschool/agents/claude/skills", desc = " Agent Skills" },
+	{ key = "p", path = "~/dev", desc = " Projects" },
 	{ key = "w", path = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents", desc = "󰓥 Obsidian" },
-	{ key = { "c", "c" }, path = "~/.claude", desc = "󱜙 Claude Code Config" },
-	{
-		key = { "c", "d" },
-		path = "/Users/winnie/Library/Application Support/Claude",
-		desc = "󰢹 Claude Desktop Config",
-	},
-
-	{ key = { "b" }, path = "/usr/local/", desc = " Brew" },
 	{ key = { "l", "b" }, path = "~/.local/bin", desc = " Local bin" },
 	{ key = { "l", "s" }, path = "~/.local/share", desc = " Local share" },
-	{ key = { "c", "z" }, path = "~/.local/share/chezmoi", desc = "󰠧 Chez Moi" },
+	{ key = { "c", "m" }, path = "~/.local/share/chezmoi", desc = "󰠧 Chez Moi" },
+	{ key = { "c", "s" }, path = "~/.local/share/chezmoi/agents/skills", desc = " Agent Skills" },
+	{ key = { "c", "c" }, path = "~/.claude", desc = "󱜙 Claude Code Config" },
 	{ key = { "l", "n" }, path = "~/.local/share/nvim", desc = " Neovim Plugins" },
 	{ key = { "l", "v" }, path = "~/.local/share/nvim/lazy/LazyVim", desc = "󰒲 LazyVim Repo" },
-	{ key = { "m", "i" }, path = "~/.local/share/mise/installs/", desc = "󰭼 Mise Installs" },
 	{ key = { "l", "s" }, path = "~/.local/state", desc = " Local state" },
 	{ key = "$", path = "~/.cache", desc = " User Cache" },
+	{ key = { "b" }, path = "/usr/local/", desc = " Brew" },
 	{ key = { "r" }, path = "~/.cargo", desc = "  Cargo" },
 	{ key = { "r" }, path = "~/.go", desc = " Go Home" },
 	{ key = "*", path = "/", desc = " Root" },
 	{ key = "#", path = "/tmp", desc = " Temp" },
-	{ key = "p", path = "~/dev", desc = " Projects" },
 	{ key = { "d", "l" }, path = "~/Downloads", desc = " Downloads" },
 	{ key = { "d", "p" }, path = "~/Desktop", desc = " Desktop" },
 	{ key = { "d", "c" }, path = "~/Documents", desc = " Documents" },
@@ -33,6 +25,11 @@ local bookmarks = {
 	{ key = { "v", "v" }, path = "~/Movies", desc = " Video" },
 	{ key = { "a", "p" }, path = "/Applications", desc = " Applications" },
 	{ key = { "a", "s" }, path = "~/Library/Application Support", desc = " Application Support" },
+	{
+		key = { "c", "d" },
+		path = "/Users/winnie/Library/Application Support/Claude",
+		desc = "󰢹 Claude Desktop Config",
+	},
 }
 -- show git status symbols in yazi explorer
 require("git"):setup()

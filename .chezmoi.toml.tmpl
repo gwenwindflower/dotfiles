@@ -1,0 +1,10 @@
+{{- $brewPrefix := "/home/linuxbrew/.linuxbrew" -}}
+{{- if eq .chezmoi.os "darwin" -}}
+  {{- if eq .chezmoi.arch "arm64" -}}
+    {{- $brewPrefix = "/opt/homebrew" -}}
+  {{- else -}}
+    {{- $brewPrefix = "/usr/local" -}}
+  {{- end -}}
+{{- end -}}
+[data]
+brewPrefix = {{ $brewPrefix | quote }}

@@ -7,32 +7,36 @@ packages:
         - dbcli/tap
         - huseyinbabal/tap
         - jesseduffield/lazydocker
-        - miniscruff/changie
         - mutagen-io/mutagen
         - osx-cross/arm
         - osx-cross/avr
         - oven-sh/bun
         - pulumi/tap
         - qmk/qmk
+        - sidequery/tap
         - stefanlogue/tools
         - volllly/tap
-        - withgraphite/tap
         - yakitrak/yakitrak
       formulae:
         - age
+        - agent-browser
         - aom
         - asciinema
         - awscli
         - bat
         - bottom
         - bun
+        - chafa
         - changie
+        - chezmoi
+        - cloudflare-wrangler
         - cmake
         - cmus
         - cowsay
         - crush
         - databricks
         - deno
+        - difftastic
         - duckdb
         - dust
         - duti
@@ -48,6 +52,8 @@ packages:
         - gallery-dl
         - gh
         - git
+        - git-cliff
+        - git-crypt
         - git-delta
         - git-town
         - glow
@@ -56,20 +62,17 @@ packages:
         - go
         - go-task
         - gpgme
-        - graphite
         - gum
         - harfbuzz
         - hurl
         - hyperfine
         - imagemagick
-        - ipython
         - jless
         - jpeg-xl
         - jq
         - k9s
         - lazydocker
         - lazygit
-        - lazyssh
         - libheif
         - libraw
         - librsvg
@@ -84,20 +87,21 @@ packages:
         - mq
         - mutagen
         - neovim
+        - notesmd-cli
         - nvimpager
-        - obsidian-cli
         - opencode
         - openjpeg
         - pandoc
         - pango
-        - pass
         - pgcli
         - pillow
         - pnpm
         - poppler
         - postgresql@18
+        - potrace
         - prek
         - presenterm
+        - procs
         - pulumi
         - pygments
         - resvg
@@ -106,10 +110,12 @@ packages:
         - rm-improved
         - ruby
         - sc-im
+        - sd
         - sevenzip
         - ski
         - snitch
         - spotify_player
+        - sqlite
         - starship
         - taws
         - tesseract
@@ -122,30 +128,35 @@ packages:
         - vhs
         - vivid
         - wget
+        - woff2
+        - worktrunk
+        - yamlresume
         - yazi
         - youplot
         - yq
         - yt-dlp
-        - zellij
         - zoxide
       casks:
         - 1password
         - 1password-cli
         - anytype
         - arc
+        - basictex
         - cap
         - claude
         - claude-code
         - conductor
         - copilot-cli
         - copilot-money
+        - font-fontawesome
+        - font-linux-libertine
         - font-maple-mono
         - font-maple-mono-nf
         - font-mona-sans
         - font-monaspace-nf
         - font-monaspace-var
         - font-symbols-only-nerd-font
-        - github
+        - google-chrome
         - ia-presenter
         - karabiner-elements
         - linear-linear
