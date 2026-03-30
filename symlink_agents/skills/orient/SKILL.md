@@ -64,13 +64,13 @@ Use the following sequence, drawn from research on expert program comprehension 
 
 Read `README.md`, `README.rst`, or `README` at the project root. Also check for a `docs/` directory — read its index or table of contents if present. This gives the stated purpose and intended audience.
 
-*Source: Spinellis, "Code Reading: The Open Source Perspective" (2003) — start with the build system and README before reading any application code.*
+> Source: Spinellis, "Code Reading: The Open Source Perspective" (2003) — start with the build system and README before reading any application code.
 
 ### 3b. Directory tree
 
 Run `find . -maxdepth 3 -not -path '*/.git/*' -not -path '*/node_modules/*' -not -path '*/__pycache__/*' -not -path '*/.venv/*'` to get the top-level structure. Read the directory tree as an architectural table of contents — naming conventions (`src/`, `lib/`, `tests/`, `cmd/`, `pkg/`) reveal intent before any code is read.
 
-*Source: Spinellis (2003) — "directory tree as table of contents."*
+> Source: Spinellis (2003) — "directory tree as table of contents."
 
 ### 3c. Entry points
 
@@ -84,13 +84,13 @@ Identify and read the main entry points based on detected language:
 - **Ruby**: files in `bin/`, `lib/<gem-name>.rb`
 - **C/C++**: `main.c`, `main.cpp`, or the primary target in `CMakeLists.txt`
 
-*Source: Hermans, "The Programmer's Brain" (2021, Manning) — follow the entry point and call graph one level at a time.*
+> Source: Hermans, "The Programmer's Brain" (2021, Manning) — follow the entry point and call graph one level at a time.
 
 ### 3d. Test files
 
 Read 2–3 test files, prioritizing integration or end-to-end tests over unit tests. Tests are executable specifications — reading test names and assertions is one of the fastest ways to understand what a module is meant to do.
 
-*Source: Storey et al., "How Software Developers Use Tools, Cognitive Strategies, and Representations to Navigate Code" (IEEE TSE, 2006) — use the test suite as a specification.*
+> Source: Storey et al., "How Software Developers Use Tools, Cognitive Strategies, and Representations to Navigate Code" (IEEE TSE, 2006) — use the test suite as a specification.
 
 ### 3e. Core modules
 
@@ -100,7 +100,7 @@ Identify the 5–8 most important source files based on what you have learned. R
 
 Run `git log --oneline -20` to see recent activity. Run `git log --format="%f" | sort | uniq -c | sort -rn | head -10` to identify the most-edited files. High-churn files are usually the core of the system.
 
-*Source: Spolsky practitioner writing — "find the biggest, most-edited file; read git history to understand why code is the way it is."*
+> Source: Spolsky practitioner writing — "find the biggest, most-edited file; read git history to understand why code is the way it is."
 
 ---
 
@@ -161,7 +161,7 @@ Keep each section concise. This is a teaching scaffold, not documentation. Prior
 
 ## Step 5: Confirm to the user
 
-> **Note for skill maintainers**: Academic and practitioner sources for the exploration methodology in Steps 3a–3f are documented in [resources/orient-bibliography.md](resources/orient-bibliography.md). Load that file only if you need to update or cite sources — it is not needed during normal skill execution.
+> **Note for skill maintainers**: Academic and practitioner sources for the exploration methodology in Steps 3a–3f are documented in [the bibliography](bibliography.md). Load that file only if you need to update or cite sources — it is not needed during normal skill execution.
 
 Tell the user:
 
