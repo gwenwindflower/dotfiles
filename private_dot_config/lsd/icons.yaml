@@ -40,12 +40,11 @@ name:
   tests: 
   zzz: 󰒲
   zzz-rip: 󰮢
-  00_grand-central: 
-  01_agent-workbench: 
-  02_spellbook: 
-  03_sandboxes: 
-  04_forks: 
-  05_utils: 
+  01_agent-workbench: 󱜙
+  02_spellbook: 
+  03_sandboxes: 
+  04_forks: 
+  05_utils: 
 extension:
   go: 
   http: 󱂛

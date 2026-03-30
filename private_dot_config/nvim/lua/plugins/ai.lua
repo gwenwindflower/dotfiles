@@ -1,6 +1,7 @@
 return {
   {
     "olimorris/codecompanion.nvim",
+    version = "^19.0.0",
     opts = {
       interactions = {
         -- Claude Code via ACP as default main driver
@@ -27,7 +28,7 @@ return {
         },
         -- CLI agents — launch full terminal agents from within nvim
         cli = {
-          agent = "claude_code",
+          agent = "opencode",
           agents = {
             claude_code = {
               cmd = "claude",
@@ -92,7 +93,7 @@ return {
       prompt_library = {
         markdown = {
           dirs = {
-            "~/.agents/prompts",
+            "~/.charmschool/agents/shared/prompts",
           },
         },
       },
@@ -138,6 +139,7 @@ return {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
     },
+    lazy = true,
   },
   {
     "folke/sidekick.nvim",

@@ -20,7 +20,7 @@ Recently migrated from rotz (`~/.charmschool`). The old repo is read-only refere
 .chezmoiscripts/                # Lifecycle scripts (bootstrap, packages, shell, yazi plugins)
 .chezmoiignore                  # Excludes dev files + OS-conditional dirs
 
-dot_config/                     # → ~/.config/
+private_dot_config/                     # → ~/.config/
   fish/                         #   Single config.fish.tmpl + 91 functions + conf.d + completions
   nvim/                         #   LazyVim: lua/, snippets/, spell/, lockfile symlinks
   kitty/                        #   Darwin-only (excluded on linux via .chezmoiignore)

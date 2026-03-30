@@ -6,10 +6,10 @@ wk.add({
   { "<Leader>a", mode = { "n", "v" }, group = "ai", icon = { icon = "󱚤 ", color = "purple" } },
 })
 wk.add({
-  { "<LocalLeader>n", mode = { "n", "x" }, group = "align", icon = { icon = " ", color = "azure" } },
+  { "<LocalLeader>n", mode = { "n", "x" }, group = "align", icon = { icon = " ", color = "azure" } },
 })
 wk.add({
-  { "<LocalLeader>s", mode = { "n", "x" }, group = "snippet", icon = { icon = " ", color = "green" } },
+  { "<LocalLeader>s", mode = { "n", "x" }, group = "snippet", icon = { icon = " ", color = "green" } },
 })
 wk.add({
   { "<LocalLeader>nj", "<cmd>%!jq -S<cr>", mode = { "n" }, desc = "Sort JSON keys with jq" },
