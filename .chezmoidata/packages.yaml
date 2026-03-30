@@ -122,6 +122,7 @@ packages:
         - arc
         - basictex
         - cap
+        - chezmoi
         - claude
         - claude-code
         - copilot-cli
