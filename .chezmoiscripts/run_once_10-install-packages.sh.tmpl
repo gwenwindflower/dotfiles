@@ -7,16 +7,15 @@ set -euo pipefail
 
 {{ template "brew-preamble.sh" . }}
 
+{{- $taps := list -}}
+{{- if eq .chezmoi.os "darwin" -}}
+{{-   $taps = .packages.darwin.homebrew.taps -}}
+{{- else -}}
+{{-   $taps = .packages.linux.homebrew.taps -}}
+{{- end }}
+{{ if $taps -}}
 # Verify taps are available before installing packages that depend on them
-{{ if eq .chezmoi.os "darwin" -}}
-{{ range .packages.darwin.homebrew.taps -}}
-if ! brew tap-info {{ . | quote }} >/dev/null 2>&1; then
-  echo "ERROR: Required tap {{ . | quote }} is missing — run_once_05 may have failed" >&2
-  exit 1
-fi
-{{ end -}}
-{{ else -}}
-{{ range .packages.linux.homebrew.taps -}}
+{{ range $taps -}}
 if ! brew tap-info {{ . | quote }} >/dev/null 2>&1; then
   echo "ERROR: Required tap {{ . | quote }} is missing — run_once_05 may have failed" >&2
   exit 1

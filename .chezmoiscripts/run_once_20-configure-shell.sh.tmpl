@@ -3,9 +3,16 @@
 # Add Fish shell to allowed shells and set as default
 # Runs once on first chezmoi apply
 
+set -euo pipefail
+
 {{ template "brew-preamble.sh" . }}
 
 FISH_PATH="$(brew --prefix)/bin/fish"
+
+if [ ! -x "$FISH_PATH" ]; then
+  echo "ERROR: Fish not found at $FISH_PATH" >&2
+  exit 1
+fi
 
 if ! grep -qF "$FISH_PATH" /etc/shells; then
   echo "$FISH_PATH" | sudo tee -a /etc/shells >/dev/null
@@ -13,7 +20,13 @@ if ! grep -qF "$FISH_PATH" /etc/shells; then
 fi
 
 if [ "$SHELL" != "$FISH_PATH" ]; then
+{{- if eq .chezmoi.os "linux" }}
+  # Linux: chsh uses PAM and prompts for password even with sudo privs,
+  # so use sudo chsh which bypasses PAM authentication
+  sudo chsh -s "$FISH_PATH" "$(whoami)"
+{{- else }}
   chsh -s "$FISH_PATH"
+{{- end }}
   echo "[INFO] Changed default shell to Fish"
 fi
 {{ else -}}

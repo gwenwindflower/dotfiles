@@ -5,7 +5,6 @@
 # print, copy, paste
 abbr --add p echo
 abbr --add pp bat
-abbr --add cat bat
 abbr --add pcp fish_clipboard_copy
 abbr --add ppp fish_clipboard_paste
 # shell
@@ -15,7 +14,6 @@ abbr --add rrh fresh -g
 abbr --add fun functions
 abbr --add cmd command
 # processes
-abbr --add top btm
 abbr --add pps procs
 # dir and file management
 abbr --add cp. "pwd | fish_clipboard_copy"

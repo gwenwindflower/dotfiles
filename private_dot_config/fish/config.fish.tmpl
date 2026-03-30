@@ -7,7 +7,7 @@
 # =============================================================================
 
 # Homebrew (dynamic at chezmoi apply)
-{{ output "brew" "shellenv" "fish" -}}
+{{ output (joinPath .brewPrefix "bin/brew") "shellenv" "fish" -}}
 set -gx HOMEBREW_NO_ENV_HINTS 1
 
 {{ template "fish/00-core-env.fish" . }}
@@ -49,13 +49,13 @@ if status is-interactive
 {{ template "fish/23-bindings_macos.fish" . }}
 {{- end }}
 # zoxide init
-{{ output "zoxide" "init" "fish" }}
+{{ output (joinPath .brewPrefix "bin/zoxide") "init" "fish" }}
 
 # starship init
-{{ output "starship" "init" "fish" }}
+{{ output (joinPath .brewPrefix "bin/starship") "init" "fish" }}
 
 {{ template "fish/24-tools.fish" . }}
 
-set -gx LS_COLORS "{{ output "vivid" "generate" "catppuccin-frappe" }}"
+set -gx LS_COLORS "{{ output (joinPath .brewPrefix "bin/vivid") "generate" "catppuccin-frappe" }}"
 
 end # status is-interactive

@@ -1,4 +1,15 @@
 {{ if eq .chezmoi.os "darwin" "linux" -}}
+{{- $taps := list -}}
+{{- if eq .chezmoi.os "darwin" -}}
+{{-   $taps = .packages.darwin.homebrew.taps -}}
+{{- else -}}
+{{-   $taps = .packages.linux.homebrew.taps -}}
+{{- end -}}
+{{- if not $taps -}}
+#!/bin/sh
+# No taps defined for {{ .chezmoi.os }} — nothing to do
+exit 0
+{{ else -}}
 #!/bin/bash
 # Add Homebrew taps with retry and verification
 # Runs before package install (05 < 10)
@@ -35,19 +46,13 @@ verify_tap() {
   fi
 }
 
-{{ if eq .chezmoi.os "darwin" -}}
-{{ range .packages.darwin.homebrew.taps -}}
+{{ range $taps -}}
 add_tap {{ . | quote }}
 verify_tap {{ . | quote }}
-{{ end -}}
-{{ else -}}
-{{ range .packages.linux.homebrew.taps -}}
-add_tap {{ . | quote }}
-verify_tap {{ . | quote }}
-{{ end -}}
 {{ end -}}
 
 echo "All taps verified successfully"
+{{ end -}}
 {{ else -}}
 {{ fail (printf "unsupported OS: %s" .chezmoi.os) }}
 {{ end -}}

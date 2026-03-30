@@ -156,16 +156,8 @@ packages:
   linux:
     homebrew:
       taps:
-        - mutagen-io/mutagen
-        - oven-sh/bun
       formulae:
-        - age
         - bat
-        - bottom
-        - bun
-        - cmake
-        - deno
-        - duckdb
         - fd
         - fish
         - forgit
@@ -173,31 +165,17 @@ packages:
         - gh
         - git
         - git-delta
-        - go
-        - go-task
-        - jless
-        - jq
-        - k9s
         - lazygit
         - lsd
         - mise
-        - mq
-        - mutagen
         - neovim
         - pnpm
-        - prek
-        - procs
         - ripgrep
         - rm-improved
-        - ruby
         - sd
-        - sevenzip
-        - sqlite
         - starship
-        - tlrc
         - tmux
         - uv
-        - wget
         - yazi
         - yq
         - zoxide
