@@ -6,6 +6,7 @@ README.md
 AGENTS.md
 .markdownlint.yaml
 opencode.json
+biome.json
 .claude/
 # Source files for symlinked targets
 # These are the actual files that symlink_ entries point to.
