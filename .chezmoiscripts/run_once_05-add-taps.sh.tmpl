@@ -1,0 +1,53 @@
+{{ if eq .chezmoi.os "darwin" "linux" -}}
+#!/bin/bash
+# Add Homebrew taps with retry and verification
+# Runs before package install (05 < 10)
+
+set -euo pipefail
+
+{{ template "brew-preamble.sh" . }}
+
+MAX_RETRIES=3
+RETRY_DELAY=5
+
+add_tap() {
+  local tap="$1"
+  local attempt=1
+
+  while [ $attempt -le $MAX_RETRIES ]; do
+    if brew tap "$tap" 2>/dev/null; then
+      return 0
+    fi
+    echo "Tap '$tap' failed (attempt $attempt/$MAX_RETRIES), retrying in ${RETRY_DELAY}s..."
+    sleep $RETRY_DELAY
+    attempt=$((attempt + 1))
+  done
+
+  echo "ERROR: Failed to add tap '$tap' after $MAX_RETRIES attempts" >&2
+  exit 1
+}
+
+verify_tap() {
+  local tap="$1"
+  if ! brew tap-info "$tap" >/dev/null 2>&1; then
+    echo "ERROR: Tap '$tap' is not available after adding" >&2
+    exit 1
+  fi
+}
+
+{{ if eq .chezmoi.os "darwin" -}}
+{{ range .packages.darwin.homebrew.taps -}}
+add_tap {{ . | quote }}
+verify_tap {{ . | quote }}
+{{ end -}}
+{{ else -}}
+{{ range .packages.linux.homebrew.taps -}}
+add_tap {{ . | quote }}
+verify_tap {{ . | quote }}
+{{ end -}}
+{{ end -}}
+
+echo "All taps verified successfully"
+{{ else -}}
+{{ fail (printf "unsupported OS: %s" .chezmoi.os) }}
+{{ end -}}

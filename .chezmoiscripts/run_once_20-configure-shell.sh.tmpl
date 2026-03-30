@@ -1,23 +1,11 @@
-{{ if eq .chezmoi.os "darwin" -}}
+{{ if eq .chezmoi.os "darwin" "linux" -}}
 #!/bin/bash
-# Add Fish shell to allowed shells and set as default (macOS)
+# Add Fish shell to allowed shells and set as default
 # Runs once on first chezmoi apply
 
-FISH_PATH="$(brew --prefix)/bin/fish"
-{{ else if eq .chezmoi.os "linux" -}}
-#!/bin/bash
-# Add Fish shell to allowed shells and set as default (Linux)
-# Runs once on first chezmoi apply
-
-# Ensure brew is on PATH
-if [ -x "/home/linuxbrew/.linuxbrew/bin/brew" ]; then
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-fi
+{{ template "brew-preamble.sh" . }}
 
 FISH_PATH="$(brew --prefix)/bin/fish"
-{{ else -}}
-{{ fail (printf "unsupported OS: %s" .chezmoi.os) }}
-{{ end -}}
 
 if ! grep -qF "$FISH_PATH" /etc/shells; then
   echo "$FISH_PATH" | sudo tee -a /etc/shells >/dev/null
@@ -28,3 +16,6 @@ if [ "$SHELL" != "$FISH_PATH" ]; then
   chsh -s "$FISH_PATH"
   echo "[INFO] Changed default shell to Fish"
 fi
+{{ else -}}
+{{ fail (printf "unsupported OS: %s" .chezmoi.os) }}
+{{ end -}}

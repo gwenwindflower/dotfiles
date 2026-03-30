@@ -15,25 +15,16 @@ if command -v brew >/dev/null 2>&1; then
 fi
 
 log_info "Installing Homebrew..."
-if curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash; then
+if NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; then
   log_info "Homebrew installed successfully"
 else
   log_error "Failed to install Homebrew"
   exit 1
 fi
 
-# Make Homebrew available in this session
-{{ if eq .chezmoi.os "darwin" -}}
-if [ -x "/opt/homebrew/bin/brew" ]; then
-  eval "$(/opt/homebrew/bin/brew shellenv)"
-elif [ -x "/usr/local/bin/brew" ]; then
-  eval "$(/usr/local/bin/brew shellenv)"
-fi
-{{ else -}}
-if [ -x "/home/linuxbrew/.linuxbrew/bin/brew" ]; then
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-fi
-{{ end -}}
+# Verify brew is on PATH after install
+{{ template "brew-preamble.sh" . }}
+log_info "Homebrew verified on PATH: $(brew --prefix)"
 {{ else -}}
 {{ fail (printf "unsupported OS: %s" .chezmoi.os) }}
 {{ end -}}

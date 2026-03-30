@@ -1,35 +1,41 @@
-{{ if eq .chezmoi.os "darwin" -}}
+{{ if eq .chezmoi.os "darwin" "linux" -}}
 #!/bin/bash
-# Install macOS Homebrew packages (taps, formulae, casks)
-# Re-runs when packages.yaml changes (run_onchange_)
+# Install Homebrew packages (formulae + casks on darwin, formulae only on linux)
+# Taps are handled by run_once_05-add-taps.sh.tmpl
 
-brew bundle --file=/dev/stdin <<EOF
+set -euo pipefail
+
+{{ template "brew-preamble.sh" . }}
+
+# Verify taps are available before installing packages that depend on them
+{{ if eq .chezmoi.os "darwin" -}}
 {{ range .packages.darwin.homebrew.taps -}}
-tap {{ . | quote }}
+if ! brew tap-info {{ . | quote }} >/dev/null 2>&1; then
+  echo "ERROR: Required tap {{ . | quote }} is missing — run_once_05 may have failed" >&2
+  exit 1
+fi
 {{ end -}}
+{{ else -}}
+{{ range .packages.linux.homebrew.taps -}}
+if ! brew tap-info {{ . | quote }} >/dev/null 2>&1; then
+  echo "ERROR: Required tap {{ . | quote }} is missing — run_once_05 may have failed" >&2
+  exit 1
+fi
+{{ end -}}
+{{ end -}}
+
+brew bundle --no-lock --file=/dev/stdin <<EOF
+{{ if eq .chezmoi.os "darwin" -}}
 {{ range .packages.darwin.homebrew.formulae -}}
 brew {{ . | quote }}
 {{ end -}}
 {{ range .packages.darwin.homebrew.casks -}}
 cask {{ . | quote }}
 {{ end -}}
-EOF
-{{ else if eq .chezmoi.os "linux" -}}
-#!/bin/bash
-# Install Linux Homebrew packages (taps, formulae only — no casks)
-# Re-runs when packages.yaml changes (run_onchange_)
-
-# Ensure brew is on PATH for this script
-if [ -x "/home/linuxbrew/.linuxbrew/bin/brew" ]; then
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-fi
-
-brew bundle --file=/dev/stdin <<EOF
-{{ range .packages.linux.homebrew.taps -}}
-tap {{ . | quote }}
-{{ end -}}
+{{ else -}}
 {{ range .packages.linux.homebrew.formulae -}}
 brew {{ . | quote }}
+{{ end -}}
 {{ end -}}
 EOF
 {{ else -}}
