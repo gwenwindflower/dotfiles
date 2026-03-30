@@ -1,0 +1,18 @@
+{{ if eq .chezmoi.os "darwin" "linux" -}}
+#!/bin/bash
+# Install yazi plugins on first apply
+# Ongoing updates handled by run_onchange_ on package.toml changes
+
+set -euo pipefail
+
+{{ template "brew-preamble.sh" . }}
+
+if command -v ya >/dev/null 2>&1; then
+  echo "[INFO] Installing yazi plugins..."
+  ya pkg install
+else
+  echo "[WARN] ya not found, skipping yazi plugin install"
+fi
+{{ else -}}
+{{ fail (printf "unsupported OS: %s" .chezmoi.os) }}
+{{ end -}}

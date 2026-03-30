@@ -1,0 +1,18 @@
+{{ if eq .chezmoi.os "darwin" "linux" -}}
+#!/bin/bash
+# Build bat theme cache so custom themes (Catppuccin) are available
+# Needs to run after bat config + themes are deployed (files before scripts)
+
+set -euo pipefail
+
+{{ template "brew-preamble.sh" . }}
+
+if command -v bat >/dev/null 2>&1; then
+  echo "[INFO] Building bat cache..."
+  bat cache --build
+else
+  echo "[WARN] bat not found, skipping cache build"
+fi
+{{ else -}}
+{{ fail (printf "unsupported OS: %s" .chezmoi.os) }}
+{{ end -}}
