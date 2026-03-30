@@ -24,7 +24,7 @@ fi
 {{ end -}}
 {{ end -}}
 
-brew bundle --no-lock --file=/dev/stdin <<EOF
+brew bundle --file=/dev/stdin <<EOF
 {{ if eq .chezmoi.os "darwin" -}}
 {{ range .packages.darwin.homebrew.formulae -}}
 brew {{ . | quote }}
