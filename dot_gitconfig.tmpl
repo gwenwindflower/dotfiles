@@ -7,9 +7,9 @@
   format = ssh
 
 [gpg "ssh"]
-{{ if eq .chezmoi.os "darwin" }}
+{{- if eq .chezmoi.os "darwin" }}
   program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
-{{ end }}
+{{- end }}
   allowedSignersFile = ~/.ssh/allowed_signers
 
 [commit]
@@ -59,10 +59,10 @@
   plain = blue
 
 [color "decorate"]
-	branch = bold "#ca9ee6"
-	remoteBranch = ul "#ef9f76"
-	tag = reverse green
-	stash = bold yellow
+  branch = bold "#ca9ee6"
+  remoteBranch = ul "#ef9f76"
+  tag = reverse green
+  stash = bold yellow
   HEAD = reverse bold cyan
 
 [color "log"]
@@ -80,17 +80,17 @@
   unmerged = reverse bold yellow
 
 [log]
-	graphColors = green, "#ca9ee6", "#ef9f76", blue, yellow, "#babbf1", magenta, cyan, "#ea999c"
+  graphColors = green, "#ca9ee6", "#ef9f76", blue, yellow, "#babbf1", magenta, cyan, "#ea999c"
 
 [pretty]
-	catppuccin-frappe = format:%C(magenta)%ad%C(reset) %s %C(green)%h%C(reset) %C(blue)(%an)%C(reset) %C(auto)%d
+  catppuccin-frappe = format:%C(magenta)%ad%C(reset) %s %C(green)%h%C(reset) %C(blue)(%an)%C(reset) %C(auto)%d
   datecomp = format:%h %G? %ad %cd %s
 
 [alias]
   graph = log --graph --pretty=catppuccin-frappe --date=human --all
-	r5 = log --graph --pretty=catppuccin-frappe --date=human -5
-	r10 = log --graph --pretty=catppuccin-frappe --date=human -10
-	r25 = log --graph --pretty=catppuccin-frappe --date=human -25
+  r5 = log --graph --pretty=catppuccin-frappe --date=human -5
+  r10 = log --graph --pretty=catppuccin-frappe --date=human -10
+  r25 = log --graph --pretty=catppuccin-frappe --date=human -25
   diary = log --pretty=catppuccin-frappe --date=human
   my-diary = log --pretty=catppuccin-frappe --date=human --author "winnie"
   autograph = log --pretty=catppuccin-frappe --date=human --show-signature --author "winnie"
