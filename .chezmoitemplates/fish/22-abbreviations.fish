@@ -23,8 +23,8 @@ abbr --add mkd mkdir -p
 abbr --add rmd rmdir
 abbr --add mkt mktemp
 abbr --add mac macchina
-abbr --add cmx chmod +x
-abbr --add cmme chmod 700
+abbr --add chmx chmod +x
+abbr --add chme chmod 700
 # editor
 abbr --add v nvim
 abbr --add vi nvim
@@ -46,10 +46,13 @@ abbr --add --position anywhere -- -h '-h | bat -plhelp'
 abbr --add --position anywhere -- qq '>/dev/null'
 abbr --add --position anywhere -- qqq '>/dev/null 2>&1'
 # dotfiles
-abbr --add moi chezmoi
-abbr --add moid chezmoi cd
-abbr --add moie chezmoi edit
-abbr --add moia chezmoi apply
+abbr --add cm chezmoi
+abbr --add cmd chezmoi cd
+abbr --add cme chezmoi edit
+abbr --add cma chezmoi add
+abbr --add cmaf chezmoi add --follow
+abbr --add cmx chezmoi apply
+abbr --add cmc chezmoi cat
 # runners
 abbr --add t task
 abbr --add mk make
@@ -74,7 +77,7 @@ abbr --add dots "ee -e $DOTFILES_HOME"
 abbr --add conf "ee $XDG_CONFIG_HOME"
 abbr --add proj "ee $PROJECTS"
 abbr --add keeb "ee -e $PROJECTS_UTILS/tinybabykeeb"
-# Homebrew
+# brew
 abbr --add brx brewdo
 abbr --add bri "brew update; brew install"
 abbr --add brrm brew uninstall
@@ -148,16 +151,7 @@ abbr --add dbra dbtf run
 abbr --add dbtpo nvim ~/.dbt/profiles.yml
 abbr --add dbtpp bat ~/.dbt/profiles.yml
 # languages
-abbr --add mi mise
-abbr --add mia "mise activate fish | source"
-abbr --add mida mise deactivate
-abbr --add miu mise use
-abbr --add mii mise install
-abbr --add mir mise run
-abbr --add mic mise config
-abbr --add micl mise config list
-abbr --add mics mise config set
-abbr --add mipth $HOME/.local/share/mise/installs/
+## python
 abbr --add py python
 abbr --add pym python main.py
 abbr --add ip ipython
@@ -182,18 +176,23 @@ abbr --add uvi uv init
 abbr --add uvb uv build
 abbr --add va source .venv/bin/activate.fish
 abbr --add da deactivate
+## go
 abbr --add gor go run main.go
 abbr --add gord go run .
 abbr --add got go test
 abbr --add gotv go test -v
 abbr --add gob go build
+## rust
 abbr --add ruu rustup up
+## typescript
+### node
 abbr --add n npm
 abbr --add nx npx
 abbr --add ni npm install
 abbr --add nu npm update
 abbr --add nd npm run dev
 abbr --add nb npm run build
+### pnpm
 abbr --add pn pnpm
 abbr --add pnx pnpm dlx
 abbr --add pni pnpm install
@@ -204,6 +203,7 @@ abbr --add pnd pnpm dev
 abbr --add pnb pnpm build
 abbr --add pnl pnpm lint
 abbr --add pnf pnpm fix
+### bun
 abbr --add b bun
 abbr --add bi bun install
 abbr --add ba bun add
@@ -212,15 +212,28 @@ abbr --add bs bun start
 abbr --add br bun run
 abbr --add bt bun test
 abbr --add bx bunx
+### deno
 abbr --add d deno
 abbr --add dig deno install -grAf --root $DENO_HOME
 abbr --add dt deno task
+### mise
+abbr --add mi mise
+abbr --add mia "mise activate fish | source"
+abbr --add mida mise deactivate
+abbr --add miu mise use
+abbr --add mii mise install
+abbr --add mir mise run
+abbr --add mic mise config
+abbr --add micl mise config list
+abbr --add mics mise config set
+abbr --add mipth $HOME/.local/share/mise/installs/
 # git
-abbr --add g git
-abbr --add gcfg git config --global
-abbr --add gho gh repo view -w
-abbr --add ghd gh dash
+abbr --add ghro gh repo view -w
+abbr --add ghrc gh repo create
 abbr --add ghrcd gh repo create --push --public --source .
+abbr --add ghd gh dash
+abbr --add ghdo opo gh dash
+## interactive tools
 abbr --add gui lazygit
 abbr --add gcmm meteor
 abbr --add gfgii "git forgit ignore >> .gitignore"
@@ -243,9 +256,11 @@ abbr --add gfgss git forgit stash_show
 abbr --add gfgsp git forgit stash_push
 abbr --add gfgcp git forgit cherry_pick
 abbr --add gfgcpb git forgit cherry_pick_from_branch
+## worktrunk
 abbr --add wtsw wt switch
 abbr --add wtswc wt switch -c
 abbr --add wtm wt merge
+# media
 abbr --add spotify spotify_player
 abbr --add spt spotify_player
 abbr --add ytdl yt-dlp
