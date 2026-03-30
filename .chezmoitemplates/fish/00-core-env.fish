@@ -10,7 +10,11 @@ fish_add_path -g $HOME/.local/bin
 
 #  Terminal and Shell
 set -gx SHELL $HOMEBREW_PREFIX/bin/fish
-# TERM is set automatically by kitty to xterm-kitty
+# On macOS, kitty sets TERM=xterm-kitty automatically.
+# On Linux (SSH), kitty terminfo may not exist — use xterm-256color.
+{{ if eq .chezmoi.os "linux" -}}
+set -gx TERM xterm-256color
+{{- end }}
 
 #  GPG
 set -gx GPG_TTY (tty)
