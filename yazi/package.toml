@@ -1,17 +1,17 @@
 [[plugin.deps]]
 use = "yazi-rs/plugins:git"
-rev = "230b9c6"
-hash = "270915fa8282a19908449530ff66f7e2"
+rev = "1962818"
+hash = "26db011a778f261d730d4f5f8bf24b3f"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:full-border"
-rev = "230b9c6"
-hash = "3996fc74044bc44144b323686f887e1"
+rev = "1962818"
+hash = "6fa6a05a81c98dd000fbca3cca6e9682"
 
 [[plugin.deps]]
 use = "Rolv-Apneseth/starship"
-rev = "eca1861"
-hash = "e519d894e94ded741e06aae4d4775981"
+rev = "a837101"
+hash = "635b0feb9215772d22020eb0abf0bb34"
 
 [[plugin.deps]]
 use = "AnirudhG07/custom-shell"
@@ -20,17 +20,17 @@ hash = "8009873342496fdb042bba09e239eef3"
 
 [[plugin.deps]]
 use = "stelcodes/bunny"
-rev = "6ee99bc"
-hash = "417de633d0008580b386bd3358eea56f"
+rev = "71b14a3"
+hash = "18a2829738214fe9bca99a2fef19113d"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:toggle-pane"
-rev = "88990a6"
-hash = "8a7c58225816a163a6e8730c0adafbc8"
+rev = "1962818"
+hash = "4c0260feb50ea2437380690ffc241da7"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:types"
-rev = "b224ddf"
+rev = "1962818"
 hash = "4161cfa043b5ba3341d82c6869007b41"
 
 [[plugin.deps]]
@@ -40,10 +40,10 @@ hash = "5ac715d89e80eb7a22290be8176cd4e0"
 
 [[flavor.deps]]
 use = "yazi-rs/flavors:catppuccin-frappe"
-rev = "9e053d0"
-hash = "e25fb61c14484de843b52430a72b5196"
+rev = "9511cb0"
+hash = "1844f850b0c5d1af511c84399c95e3d7"
 
 [[flavor.deps]]
 use = "yazi-rs/flavors:catppuccin-latte"
-rev = "9e053d0"
-hash = "c6b710b2aa0fb9c6c7f1ec4db6146104"
+rev = "9511cb0"
+hash = "b8f46853c27707115f25f3423a47bd38"
