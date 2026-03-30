@@ -176,6 +176,7 @@ packages:
         - starship
         - tmux
         - uv
+        - vivid
         - yazi
         - yq
         - zoxide
