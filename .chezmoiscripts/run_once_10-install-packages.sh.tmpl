@@ -3,7 +3,7 @@
 # Install macOS Homebrew packages (taps, formulae, casks)
 # Re-runs when packages.yaml changes (run_onchange_)
 
-brew bundle --no-lock --file=/dev/stdin <<EOF
+brew bundle --file=/dev/stdin <<EOF
 {{ range .packages.darwin.homebrew.taps -}}
 tap {{ . | quote }}
 {{ end -}}
@@ -24,7 +24,7 @@ if [ -x "/home/linuxbrew/.linuxbrew/bin/brew" ]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
-brew bundle --no-lock --file=/dev/stdin <<EOF
+brew bundle --file=/dev/stdin <<EOF
 {{ range .packages.linux.homebrew.taps -}}
 tap {{ . | quote }}
 {{ end -}}
