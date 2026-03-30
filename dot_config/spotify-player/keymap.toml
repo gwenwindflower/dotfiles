@@ -1,0 +1,7 @@
+[[keymaps]]
+command = "Quit"
+key_sequence = "C-q"
+
+[[keymaps]]
+command = "PreviousPage"
+key_sequence = "q"

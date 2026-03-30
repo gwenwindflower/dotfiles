@@ -1,0 +1,121 @@
+# https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jesseduffield/lazygit/master/schema/config.json
+gui:
+  timeFormat: Jan 2 06
+  theme:
+    activeBorderColor:
+      - "#ca9ee6"
+      - bold
+    inactiveBorderColor:
+      - "#a5adce"
+    optionsTextColor:
+      - "#8caaee"
+    selectedLineBgColor:
+      - "#414559"
+    cherryPickedCommitBgColor:
+      - "#51576d"
+    cherryPickedCommitFgColor:
+      - "#ca9ee6"
+    unstagedChangesColor:
+      - "#e78284"
+    defaultFgColor:
+      - "#c6d0f5"
+    searchingActiveBorderColor:
+      - "#e5c890"
+  authorColors:
+    "winnie": "#f4b8e4"
+    "dependabot[bot]": "#8caaee"
+    "*": "#babbf1"
+  nerdFontsVersion: "3"
+git:
+  pagers:
+    - pager: 'delta --paging=never --features=catppuccin-frappe --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"'
+    - externalDiffCommand: difft --color=always
+  parseEmoji: true
+  overrideGpg: true
+os:
+  editPreset: "nvim-remote"
+keybinding:
+  universal:
+    createPatchOptionsMenu: <c-x>
+    scrollUpMain-alt1: <c-p>
+    scrollDownMain-alt1: <c-n>
+    gotoTop-alt: g
+    gotoBottom-alt: G
+customCommands:
+  - key: "C"
+    command: "meteor"
+    description: "Commit with meteor"
+    context: "files"
+    loadingText: "opening commitizen commit tool"
+    output: terminal
+  - key: "<c-a>"
+    context: "global"
+    description: "Interactive conventional commit"
+    prompts:
+      - type: "menu"
+        title: "Type of change"
+        key: "Type"
+        options:
+          - name: "✨ feature"
+            value: "feat"
+            key: "f"
+          - name: "🐛 fix"
+            value: "fix"
+            key: "x"
+          - name: "📚 documentation"
+            value: "docs"
+            key: "d"
+          - name: "🎨 formatting"
+            value: "style"
+            key: "s"
+          - name: "♻️ refactor"
+            value: "refactor"
+            key: "r"
+          - name: "🏎️ performance"
+            value: "perf"
+            key: "p"
+          - name: "🧪 testing"
+            value: "test"
+            key: "t"
+          - name: "🛠️ build system"
+            value: "build"
+            key: "b"
+          - name: "🚧 devops"
+            value: "ci"
+            key: "i"
+          - name: "🧰 tooling+tasks"
+            value: "chore"
+            key: "c"
+          - name: "📼 reverts"
+            value: "revert"
+            key: "z"
+          - name: "🤖 ai agents"
+            value: "agent"
+            key: "a"
+      - type: "input"
+        title: "Scope (optional):"
+        key: "Scope"
+        initialValue: ""
+      - type: "menu"
+        title: "Breaking change?"
+        key: "Breaking"
+        options:
+          - name: "no"
+            value: "no"
+            key: "n"
+          - name: "yes"
+            value: "yes"
+            key: "y"
+      - type: "input"
+        title: "Message:"
+        key: "Message"
+        initialValue: ""
+      - type: "confirm"
+        title: "Commit this?"
+        key: "Confirm"
+        body: |
+          {{.Form.Type}}{{ if .Form.Scope }}({{.Form.Scope}}){{ end }}{{ if eq .Form.Breaking "yes" }}!{{ end }}: {{.Form.Message}}
+    command: >-
+      git commit --message '{{.Form.Type}}{{ if .Form.Scope }}({{.Form.Scope}}){{ end }}{{ if eq .Form.Breaking "yes" }}!{{ end }}: {{.Form.Message}}'
+    loadingText: Committing conventionally...
