@@ -5,21 +5,28 @@
 
 set -euo pipefail
 
+{{ template "script-log.sh" }}
 {{ template "brew-preamble.sh" . }}
+
+log_step "Configuring default shell"
 
 FISH_PATH="$(brew --prefix)/bin/fish"
 
 if [ ! -x "$FISH_PATH" ]; then
-  echo "ERROR: Fish not found at $FISH_PATH" >&2
+  log_error "Fish not found at $FISH_PATH"
   exit 1
 fi
 
 if ! grep -qF "$FISH_PATH" /etc/shells; then
+  log_info "Adding $FISH_PATH to /etc/shells..."
   echo "$FISH_PATH" | sudo tee -a /etc/shells >/dev/null
-  echo "[INFO] Added $FISH_PATH to /etc/shells"
+  log_success "Added Fish to /etc/shells"
+else
+  log_info "Fish already in /etc/shells"
 fi
 
 if [ "$SHELL" != "$FISH_PATH" ]; then
+  log_info "Changing default shell to Fish..."
 {{- if eq .chezmoi.os "linux" }}
   # Linux: chsh uses PAM and prompts for password even with sudo privs,
   # so use sudo chsh which bypasses PAM authentication
@@ -27,7 +34,9 @@ if [ "$SHELL" != "$FISH_PATH" ]; then
 {{- else }}
   chsh -s "$FISH_PATH"
 {{- end }}
-  echo "[INFO] Changed default shell to Fish"
+  log_success "Default shell changed to Fish"
+else
+  log_info "Fish is already the default shell"
 fi
 {{ else -}}
 {{ fail (printf "unsupported OS: %s" .chezmoi.os) }}

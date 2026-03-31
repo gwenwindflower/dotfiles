@@ -16,7 +16,10 @@ exit 0
 
 set -euo pipefail
 
+{{ template "script-log.sh" }}
 {{ template "brew-preamble.sh" . }}
+
+log_step "Adding Homebrew taps"
 
 MAX_RETRIES=3
 RETRY_DELAY=5
@@ -29,29 +32,31 @@ add_tap() {
     if brew tap "$tap" 2>/dev/null; then
       return 0
     fi
-    echo "Tap '$tap' failed (attempt $attempt/$MAX_RETRIES), retrying in ${RETRY_DELAY}s..."
+    log_warn "Tap '$tap' failed (attempt $attempt/$MAX_RETRIES), retrying in ${RETRY_DELAY}s..."
     sleep $RETRY_DELAY
     attempt=$((attempt + 1))
   done
 
-  echo "ERROR: Failed to add tap '$tap' after $MAX_RETRIES attempts" >&2
+  log_error "Failed to add tap '$tap' after $MAX_RETRIES attempts"
   exit 1
 }
 
 verify_tap() {
   local tap="$1"
   if ! brew tap-info "$tap" >/dev/null 2>&1; then
-    echo "ERROR: Tap '$tap' is not available after adding" >&2
+    log_error "Tap '$tap' is not available after adding"
     exit 1
   fi
 }
 
 {{ range $taps -}}
+log_info "Tapping {{ . }}..."
 add_tap {{ . | quote }}
 verify_tap {{ . | quote }}
+log_success "{{ . }}"
 {{ end -}}
 
-echo "All taps verified successfully"
+log_success "All taps verified"
 {{ end -}}
 {{ else -}}
 {{ fail (printf "unsupported OS: %s" .chezmoi.os) }}

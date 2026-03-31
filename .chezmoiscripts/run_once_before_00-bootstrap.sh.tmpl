@@ -5,18 +5,19 @@
 
 set -eu
 
-log_info() { printf '\033[0;32m[INFO]\033[0m %s\n' "$1"; }
-log_error() { printf '\033[0;31m[ERROR]\033[0m %s\n' "$1"; }
+{{ template "script-log.sh" }}
+
+log_step "Bootstrap"
 
 # Check if brew is already available
 if command -v brew >/dev/null 2>&1; then
-  log_info "Homebrew already installed"
+  log_success "Homebrew already installed"
   exit 0
 fi
 
 log_info "Installing Homebrew..."
 if NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; then
-  log_info "Homebrew installed successfully"
+  log_success "Homebrew installed successfully"
 else
   log_error "Failed to install Homebrew"
   exit 1
@@ -24,7 +25,7 @@ fi
 
 # Verify brew is on PATH after install
 {{ template "brew-preamble.sh" . }}
-log_info "Homebrew verified on PATH: $(brew --prefix)"
+log_success "Homebrew verified on PATH: $(brew --prefix)"
 {{ else -}}
 {{ fail (printf "unsupported OS: %s" .chezmoi.os) }}
 {{ end -}}

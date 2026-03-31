@@ -5,7 +5,10 @@
 
 set -euo pipefail
 
+{{ template "script-log.sh" }}
 {{ template "brew-preamble.sh" . }}
+
+log_step "Installing Homebrew packages"
 
 {{- $taps := list -}}
 {{- if eq .chezmoi.os "darwin" -}}
@@ -17,10 +20,17 @@ set -euo pipefail
 # Verify taps are available before installing packages that depend on them
 {{ range $taps -}}
 if ! brew tap-info {{ . | quote }} >/dev/null 2>&1; then
-  echo "ERROR: Required tap {{ . | quote }} is missing — run_once_05 may have failed" >&2
+  log_error "Required tap {{ . | quote }} is missing — run_once_05 may have failed"
   exit 1
 fi
 {{ end -}}
+log_info "All required taps present"
+{{ end -}}
+
+{{ if eq .chezmoi.os "darwin" -}}
+log_info "Installing {{ len .packages.darwin.homebrew.formulae }} formulae and {{ len .packages.darwin.homebrew.casks }} casks..."
+{{ else -}}
+log_info "Installing {{ len .packages.linux.homebrew.formulae }} formulae..."
 {{ end -}}
 
 brew bundle --file=/dev/stdin <<EOF
@@ -37,6 +47,8 @@ brew {{ . | quote }}
 {{ end -}}
 {{ end -}}
 EOF
+
+log_success "Package installation complete"
 {{ else -}}
 {{ fail (printf "unsupported OS: %s" .chezmoi.os) }}
 {{ end -}}
