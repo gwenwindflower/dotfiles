@@ -28,6 +28,8 @@ abbr --add v nvim
 abbr --add vi nvim
 # ssh (kitten ssh — macOS only, kitty terminal)
 abbr --add sshk kitten ssh -A
+abbr --add ssha ssh -A
+abbr --add exe ssh exe.dev
 # tmux
 abbr --add tm tmux
 abbr --add tm? tstat
@@ -48,6 +50,7 @@ abbr --add cm chezmoi
 abbr --add cmd chezmoi cd
 abbr --add cme chezmoi edit
 abbr --add cma chezmoi add
+abbr --add cmaa chezmoi re-add
 abbr --add cmaf chezmoi add --follow
 abbr --add cmx chezmoi apply
 abbr --add cmc chezmoi cat
