@@ -257,6 +257,10 @@ abbr --add gfgss git forgit stash_show
 abbr --add gfgsp git forgit stash_push
 abbr --add gfgcp git forgit cherry_pick
 abbr --add gfgcpb git forgit cherry_pick_from_branch
+## difftastic
+abbr --add gdd git diffd
+abbr --add gshd git showd
+abbr --add glod git logd
 ## worktrunk
 abbr --add wtsw wt switch
 abbr --add wtswc wt switch -c
