@@ -68,15 +68,9 @@ return {
               { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
               {
                 icon = " ",
-                key = "z",
+                key = "c",
                 desc = "Chezmoi",
                 action = snacks_pick_chezmoi,
-              },
-              {
-                icon = " ",
-                key = "c",
-                desc = "Dotfiles",
-                action = ":lua Snacks.dashboard.pick('files', {cwd = '~/.charmschool'})",
               },
               { icon = " ", key = "s", desc = "Restore Session", section = "session" },
               { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy", enabled = package.loaded.lazy ~= nil },
