@@ -1,6 +1,4 @@
 # Shared logging helpers for chezmoi scripts
-# Include with: {{ template "script-log.sh" }}
-#
 # Colors: blue/cyan=info, yellow=warn, red=error, green=success, magenta=step/progress
 
 _log_reset='\033[0m'
