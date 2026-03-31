@@ -91,6 +91,7 @@ packages:
         - sqlite
         - starship
         - taws
+        - termframe
         - tlrc
         - tmux
         - tpm
