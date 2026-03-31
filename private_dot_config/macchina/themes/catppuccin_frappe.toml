@@ -4,4 +4,4 @@ visible = true
 glyph = "█"
 
 [custom_ascii]
-path = "/Users/winnie/dev/02_sandboxes/ascii-village/cinnamoroll_colorized.txt"
+path = "/Users/winnie/.config/macchina/cinnamoroll_colorized.txt"
