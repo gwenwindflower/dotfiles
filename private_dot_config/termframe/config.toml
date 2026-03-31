@@ -1,0 +1,229 @@
+#:schema https://raw.githubusercontent.com/pamburus/termframe/v0.8.3/schema/json/config.schema.json
+
+# Dark or light mode.
+# Possible values: [auto, dark, light].
+mode = "dark"
+
+#
+# Terminal settings.
+#
+# Width and height define restrictions on number of columns and rows respectively.
+# Can be specified as `auto`, as a single number or as a range with min/max/step/initial values.
+# If the detected size is outside of the specified range, it will be clamped to the nearest limit.
+# The `default` value is used as a preferred initial size when auto-sizing is enabled.
+#
+# Format options:
+# - `width = "auto"` - automatically detect terminal width based on the command output.
+# - `width = 80` - use exactly 80 columns.
+# - `width = { min = 80 }` - use at least 80 columns, auto-detected based on command output.
+# - `width = { max = 120 }` - use at most 120 columns, auto-detected based on command output.
+# - `width = { min = 80, max = 120 }` - use between 80-120 columns, auto-detected.
+# - `width = { min = 80, max = 120, step = 10 }` - use 80-120 columns, rounded to nearest multiple of 10.
+# - `width = { min = 80, max = 120, initial = 100 }` - prefer 100 columns, but allow 80-120 range.
+# - `width = { initial = 100 }` - prefer 100 columns, but allow auto-detection if needed.
+#
+# The `initial` value serves as:
+# - Initial size when no CLI override is provided
+# - Fallback when auto-detection fails or produces unreasonable results
+# - Preferred size that gets clamped to min/max constraints if specified
+[terminal]
+width = { min = 80, max = 240, step = 4, initial = 180 } # Number of terminal columns.
+height = { min = 24, max = 60, initial = 48 }            # Number of terminal rows.
+
+# Environment variables.
+[env]
+TERM = "xterm-256color"
+COLORTERM = "truecolor"
+
+# Color theme.
+# For the list of available themes, run `termframe --list-themes`.
+[theme]
+dark = "rose-pine-moon"  # Theme to be used in dark mode.
+light = "rose-pine-dawn" # Theme to be used in light mode.
+
+#
+# Font settings.
+#
+[font]
+#
+# Font family list in order of preference.
+# The first font from the list is used for font metrics calculations and embedding.
+# All fonts are included in the output document in the original order.
+family = [
+    "Maple Mono NF",
+    "JetBrains Mono",
+    "Fira Code",
+    "Source Code Pro",
+    "Cascadia Code",
+    "Consolas",
+    "Menlo",
+    "Monaco",
+    "DejaVu Sans Mono",
+    "monospace",
+    "Symbols Nerd Font Mono",
+    "Cascadia Mono",
+]
+#
+# Font size in pixels.
+size = 12
+#
+# Font weights per ANSI style.
+weights = { normal = "normal", bold = "bold", faint = "normal" }
+
+#
+# Text padding in `em` units.
+#
+[padding]
+horizontal = 0.8 # Horizontal padding.
+vertical = 0.6   # Vertical padding.
+
+#
+# Terminal window settings.
+#
+[window]
+enabled = true  # Enable or disable the terminal window in the output SVG file.
+shadow = true   # Enable or disable the shadow for the terminal window.
+style = "macos" # Terminal window style. For the list of available styles, run `termframe --list-window-styles`.
+
+#
+# Command display settings.
+#
+[command]
+show = false  # Show or hide the command in the terminal window.
+prompt = " ❯ " # Command prompt string.
+
+#
+# Syntax highlighting settings.
+#
+[syntax.theme]
+dark = "rose-pine-moon"  # Syntax highlighting theme for dark mode.
+light = "rose-pine-dawn" # Syntax highlighting theme for light mode.
+
+#
+# Rendering settings.
+#
+[rendering]
+#
+# Line height in em units, relative to the font size.
+line-height = 1.2
+#
+# Use bright colors for bold text.
+bold-is-bright = false
+#
+# Faint/dim text opacity.
+faint-opacity = 0.5
+
+#
+# SVG rendering settings.
+#
+[rendering.svg]
+#
+# Embed fonts in the output SVG file.
+embed-fonts = false
+#
+# Subset fonts to only include the characters used in the output SVG file.
+# Experimental feature, has compatibility issues with some browsers.
+subset-fonts = false
+#
+# Build palette using CSS variables for basic ANSI colors.
+var-palette = false
+#
+# Floating point precision for rendering.
+precision = 3
+#
+# Extra stroke over the filled background elements.
+# This is needed to avoid rendering artifacts in some browsers.
+stroke = 0.025
+
+# Font "Maple Mono NF".
+family = "Maple Mono NF"
+license = { type = "SIL Open Font License 1.1", link = "https://raw.githubusercontent.com/ryanoasis/nerd-fonts/refs/tags/v3.3.0/LICENSE" }
+files = [
+  "~/Library/Fonts/MapleMono-NF-Light.ttf",
+  "~/Library/Fonts/MapleMono-NF-LightItalic.ttf",
+  "~/Library/Fonts/MapleMono-NF-Regular.ttf",
+  "~/Library/Fonts/MapleMono-NF-Italic.ttf",
+]
+#
+# Font "JetBrains Mono".
+#
+[[fonts]]
+family = "JetBrains Mono"
+license = { type = "SIL Open Font License 1.1", link = "https://raw.githubusercontent.com/pamburus/fonts/refs/heads/main/JetBrainsMono/OFL.txt" }
+files = [
+    "https://raw.githubusercontent.com/pamburus/fonts/refs/heads/main/JetBrainsMono/fonts/variable/JetBrainsMono%5Bwght%5D.woff2",
+    "https://raw.githubusercontent.com/pamburus/fonts/refs/heads/main/JetBrainsMono/fonts/variable/JetBrainsMono-Italic%5Bwght%5D.woff2",
+]
+
+#
+# Font "Source Code Pro".
+#
+[[fonts]]
+family = "Source Code Pro"
+license = { type = "SIL Open Font License 1.1", link = "https://github.com/adobe-fonts/source-code-pro/blob/2.042R-u/1.062R-i/1.026R-vf/LICENSE.md" }
+files = [
+    "https://raw.githubusercontent.com/adobe-fonts/source-code-pro/refs/tags/2.042R-u/1.062R-i/1.026R-vf/WOFF2/VF/SourceCodeVF-Upright.ttf.woff2",
+    "https://raw.githubusercontent.com/adobe-fonts/source-code-pro/refs/tags/2.042R-u/1.062R-i/1.026R-vf/WOFF2/VF/SourceCodeVF-Italic.ttf.woff2",
+]
+
+#
+# Font "Fira Code".
+#
+[[fonts]]
+family = "Fira Code"
+license = { type = "SIL Open Font License 1.1", link = "https://github.com/tonsky/FiraCode/blob/6.2/LICENSE" }
+files = [
+    "https://raw.githubusercontent.com/pamburus/fonts/refs/heads/main/FiraCode/FiraCode-VF.woff2",
+]
+
+#
+# Font "Cascadia Mono".
+#
+[[fonts]]
+family = "Cascadia Mono"
+license = { type = "SIL Open Font License 1.1", link = "https://github.com/microsoft/cascadia-code/blob/v2407.24/LICENSE" }
+files = [
+    "https://fonts.gstatic.com/s/cascadiamono/v5/TUZozw5pquJF3iuizJDZYqr1aZcX10Xv02NxSQ7U.woff2",
+    "https://fonts.gstatic.com/s/cascadiamono/v5/TUZozw5pquJF3iuizJDZYqr1aZcXfGTK_Et7QTbt8w.woff2",
+    "https://fonts.gstatic.com/s/cascadiamono/v5/TUZozw5pquJF3iuizJDZYqr1aZcX30Xv02NxSQ7U.woff2",
+    "https://fonts.gstatic.com/s/cascadiamono/v5/TUZozw5pquJF3iuizJDZYqr1aZcX1kXv02NxSQ7U.woff2",
+    "https://fonts.gstatic.com/s/cascadiamono/v5/TUZozw5pquJF3iuizJDZYqr1aZcX0UXv02NxSQ7U.woff2",
+    "https://fonts.gstatic.com/s/cascadiamono/v5/TUZozw5pquJF3iuizJDZYqr1aZcX0EXv02NxSQ7U.woff2",
+    "https://fonts.gstatic.com/s/cascadiamono/v5/TUZozw5pquJF3iuizJDZYqr1aZcXaGTK_Et7QTbt8w.woff2",
+    "https://fonts.gstatic.com/s/cascadiamono/v5/TUZozw5pquJF3iuizJDZYqr1aZcX3UXv02NxSQ7U.woff2",
+    "https://fonts.gstatic.com/s/cascadiamono/v5/TUZozw5pquJF3iuizJDZYqr1aZcX3EXv02NxSQ7U.woff2",
+    "https://fonts.gstatic.com/s/cascadiamono/v5/TUZozw5pquJF3iuizJDZYqr1aZcX0kXv02NxSQ.woff2",
+    "https://fonts.gstatic.com/s/cascadiamono/v5/TUZ2zw5pquJF3iuizJDZYqr1aZcn0E_o8WFBSA.woff2",
+    "https://fonts.gstatic.com/s/cascadiamono/v5/TUZ2zw5pquJF3iuizJDZYqr1aTwG9WDA-2l5cTc.woff2",
+    "https://fonts.gstatic.com/s/cascadiamono/v5/TUZ2zw5pquJF3iuizJDZYqr1aZ8n0E_o8WFBSA.woff2",
+    "https://fonts.gstatic.com/s/cascadiamono/v5/TUZ2zw5pquJF3iuizJDZYqr1aZYn0E_o8WFBSA.woff2",
+    "https://fonts.gstatic.com/s/cascadiamono/v5/TUZ2zw5pquJF3iuizJDZYqr1aZEn0E_o8WFBSA.woff2",
+    "https://fonts.gstatic.com/s/cascadiamono/v5/TUZ2zw5pquJF3iuizJDZYqr1aZAn0E_o8WFBSA.woff2",
+    "https://fonts.gstatic.com/s/cascadiamono/v5/TUZ2zw5pquJF3iuizJDZYqr1aSgG9WDA-2l5cTc.woff2",
+    "https://fonts.gstatic.com/s/cascadiamono/v5/TUZ2zw5pquJF3iuizJDZYqr1aZ0n0E_o8WFBSA.woff2",
+    "https://fonts.gstatic.com/s/cascadiamono/v5/TUZ2zw5pquJF3iuizJDZYqr1aZwn0E_o8WFBSA.woff2",
+    "https://fonts.gstatic.com/s/cascadiamono/v5/TUZ2zw5pquJF3iuizJDZYqr1aZIn0E_o8WE.woff2",
+]
+
+#
+# Font "Symbols Nerd Font Mono".
+#
+[[fonts]]
+family = "Symbols Nerd Font Mono"
+license = { type = "SIL Open Font License 1.1", link = "https://raw.githubusercontent.com/ryanoasis/nerd-fonts/refs/tags/v3.3.0/LICENSE" }
+files = [
+    "https://raw.githubusercontent.com/pamburus/fonts/refs/heads/main/SymbolsNerdFontMono/nf-s01.woff2",
+    "https://raw.githubusercontent.com/pamburus/fonts/refs/heads/main/SymbolsNerdFontMono/nf-s02.woff2",
+    "https://raw.githubusercontent.com/pamburus/fonts/refs/heads/main/SymbolsNerdFontMono/nf-s03.woff2",
+    "https://raw.githubusercontent.com/pamburus/fonts/refs/heads/main/SymbolsNerdFontMono/nf-s04.woff2",
+    "https://raw.githubusercontent.com/pamburus/fonts/refs/heads/main/SymbolsNerdFontMono/nf-s05.woff2",
+    "https://raw.githubusercontent.com/pamburus/fonts/refs/heads/main/SymbolsNerdFontMono/nf-s06.woff2",
+    "https://raw.githubusercontent.com/pamburus/fonts/refs/heads/main/SymbolsNerdFontMono/nf-s07.woff2",
+    "https://raw.githubusercontent.com/pamburus/fonts/refs/heads/main/SymbolsNerdFontMono/nf-s08.woff2",
+    "https://raw.githubusercontent.com/pamburus/fonts/refs/heads/main/SymbolsNerdFontMono/nf-s09.woff2",
+    "https://raw.githubusercontent.com/pamburus/fonts/refs/heads/main/SymbolsNerdFontMono/nf-s10.woff2",
+    "https://raw.githubusercontent.com/pamburus/fonts/refs/heads/main/SymbolsNerdFontMono/nf-s11.woff2",
+    "https://raw.githubusercontent.com/pamburus/fonts/refs/heads/main/SymbolsNerdFontMono/nf-s12.woff2",
+    "https://raw.githubusercontent.com/pamburus/fonts/refs/heads/main/SymbolsNerdFontMono/nf-s13.woff2",
+    "https://raw.githubusercontent.com/pamburus/fonts/refs/heads/main/SymbolsNerdFontMono/nf-s14.woff2",
+]
