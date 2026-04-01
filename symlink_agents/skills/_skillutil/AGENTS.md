@@ -1,6 +1,6 @@
 # skillutil Lightweight CLI Utility for Agent Skills
 
-CLI tool for managing cross-agent Skills. Skills live in `agents/skills/`, symlinked to `~/.agents/skills/` + any agent-specific locations (e.g. `~/.claude/skills/`).
+CLI tool for managing cross-agent Skills. Skills live in `<chezmoi home>/symlink_agents/skills/`, which chezmoi's symlinks out to `~/.agents/skills/` + any agent-specific locations (e.g. `~/.claude/skills/`).
 
 For skill *usage* guidance (creating, editing, managing skills as an end user), see the [develop-agent-skills](../develop-agent-skills/SKILL.md) skill. This doc covers *developing* the skillutil tool itself.
 
@@ -8,7 +8,7 @@ For skill *usage* guidance (creating, editing, managing skills as an end user), 
 
 ### Development Workflow
 
-Development takes place in `~/.charmschool/agents/skills/_skillutil/` — Deno tasks let you run against live source during development. Once an update is complete, install globally with `deno task skillutil:install`.
+Internal development on the tool takes place in this directory `~/.local/share/chezmoi/symlink_agents/skills/_skillutil/` — Deno tasks let you run against live source during development. Once an update is complete, install globally with `deno task skillutil:install`.
 
 ```bash
 # Run any command based on current source code
@@ -16,7 +16,7 @@ deno task skillutil <command> [args]
 
 # Examples
 deno task skillutil init my-skill
-deno task skillutil validate agents/skills/my-skill
+deno task skillutil validate ../my-skill
 deno task skillutil --help
 
 # Type check the code
@@ -115,8 +115,8 @@ deno task skillutil activate old-skill
 
 **Paths**:
 
-- Active: `~/.charmschool/agents/skills/`, symlinked to `~/.agents/skills/` + agent-specific paths
-- Deactivated: `~/.charmschool/agents/skills/_deactivated/`
+- Active: `symlink_agents/skills/`, symlinked to `~/.agents/skills/` + agent-specific paths
+- Deactivated: `symlink_agents/skills/_deactivated/`
 
 ## Testing
 
