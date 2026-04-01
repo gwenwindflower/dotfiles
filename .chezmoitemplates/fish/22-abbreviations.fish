@@ -143,12 +143,21 @@ abbr --add dbx databricks
 abbr --add ddb duckdb
 abbr --add pg pgcli
 abbr --add sqli sqlite3
-abbr --add dbbs dbtf build -s
-abbr --add dbba dbtf build
-abbr --add dbts dbtf test -s
-abbr --add dbta dbtf test
-abbr --add dbrs dbtf run -s
-abbr --add dbra dbtf run
+## dbt
+### dbt core
+abbr --add dbbs uv run dbt build -s
+abbr --add dbba uv run dbt build
+abbr --add dbts uv run dbt test -s
+abbr --add dbta uv run dbt test
+abbr --add dbrs uv run dbt run -s
+abbr --add dbra uv run dbt run
+### dbt Fusion
+abbr --add dbfbs dbtf build -s
+abbr --add dbfba dbtf build
+abbr --add dbfts dbtf test -s
+abbr --add dbfta dbtf test
+abbr --add dbfrs dbtf run -s
+abbr --add dbfra dbtf run
 abbr --add dbtpo nvim ~/.dbt/profiles.yml
 abbr --add dbtpp bat ~/.dbt/profiles.yml
 # languages
