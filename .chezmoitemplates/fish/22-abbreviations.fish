@@ -1,7 +1,10 @@
 # =============================================================================
 # 22 — Abbreviations
 # =============================================================================
-
+#
+# edit this file
+abbr --add efab nvim ~/.local/share/chezmoi/.chezmoitemplates/fish/22-abbreviations.fish
+#
 # print, copy, paste
 abbr --add p echo
 abbr --add pp bat
@@ -53,6 +56,9 @@ abbr --add cma chezmoi add
 abbr --add cmaa chezmoi re-add
 abbr --add cmaf chezmoi add --follow
 abbr --add cmx chezmoi apply
+abbr --add cmxc chezmoi apply ~/.config/
+abbr --add cmxf chezmoi apply ~/.config/fish/
+abbr --add cmxv chezmoi apply ~/.config/fish/nvim/
 abbr --add cmc chezmoi cat
 # runners
 abbr --add t task
@@ -240,7 +246,7 @@ abbr --add mipth $HOME/.local/share/mise/installs/
 # git
 abbr --add ghro gh repo view -w
 abbr --add ghrc gh repo create
-abbr --add ghrcd gh repo create --push --public --source .
+abbr --add ghrcd gh repo create --push --private --source .
 abbr --add ghd gh dash
 abbr --add ghdo opo gh dash
 ## interactive tools
