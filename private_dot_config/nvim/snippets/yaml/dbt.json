@@ -1,71 +1,205 @@
 {
-  "dbt doc block expression": {
-    "body": [
-      "{{ doc('${1:docs_name}') }}"
-    ],
-    "description": "dbt doc block expression",
-    "prefix": [
-      "ddb",
-      "ddoc"
-    ]
-  },
-  "dbt environment variable": {
-    "body": [
-      "{{ env_var('${1:env_var_name}') }}"
-    ],
-    "description": "dbt environment variable",
-    "prefix": [
-      "denvvar"
-    ]
-  },
-  "dbt ref": {
-    "body": [
-      "ref('${1:model_name}')"
-    ],
-    "description": "Ref",
-    "prefix": [
-      "dr",
-      "ref"
-    ]
-  },
-  "dbt source": {
-    "body": [
-      "source('${1:source}', '${2:table_name}')"
-    ],
-    "description": "dbt source",
-    "prefix": [
-      "ds",
-      "source"
-    ]
-  },
-  "dbt unit Test": {
-    "body": [
-      "- name: ${1:test_name}",
-      "  description: '${2:description}'",
-      "  model: ${3:model_name}",
-      "  given:",
-      "    - input: ref('${4:input_ref}')",
-      "      rows:",
-      "        - {${5:fixture_field_1}: ${6:fixture_value_1}, ${7:fixture_field_2}: ${8:fixture_value_2}}",
-      "  expect:",
-      "    rows:",
-      "        - {${9:output_field_1}: ${10:output_value_1}, ${11:output_field_2}: ${12:output_value_2}}"
-    ],
-    "description": "dbt unit test boilerplate",
-    "prefix": [
-      "dut",
-      "dunit",
-      "unittest"
-    ]
-  },
-  "dbt variable expression": {
-    "body": [
-      "{{ var('${1:var_name}') }}"
-    ],
-    "description": "dbt variable expression",
-    "prefix": [
-      "dve",
-      "dvare"
-    ]
-  }
+	"dbt primary key tests": {
+		"body": ["data_tests:", "  - unique", "  - not_null"],
+		"description": "primary key data tests - unique and not_null",
+		"prefix": ["prk", "primary_key"]
+	},
+	"dbt doc block expression": {
+		"body": ["{{ doc('${1:docs_name}') }}"],
+		"description": "dbt doc block expression",
+		"prefix": ["ddb", "ddoc"]
+	},
+	"dbt environment variable": {
+		"body": ["{{ env_var('${1:env_var_name}') }}"],
+		"description": "dbt environment variable",
+		"prefix": ["denvvar"]
+	},
+	"dbt ref": {
+		"body": ["ref('${1:model_name}')"],
+		"description": "Ref",
+		"prefix": ["dr", "ref"]
+	},
+	"dbt source": {
+		"body": ["source('${1:source}', '${2:table_name}')"],
+		"description": "dbt source",
+		"prefix": ["ds", "source"]
+	},
+	"dbt unit Test": {
+		"body": [
+			"- name: ${1:test_name}",
+			"  description: '${2:description}'",
+			"  model: ${3:model_name}",
+			"  given:",
+			"    - input: ref('${4:input_ref}')",
+			"      rows:",
+			"        - {${5:fixture_field_1}: ${6:fixture_value_1}, ${7:fixture_field_2}: ${8:fixture_value_2}}",
+			"  expect:",
+			"    rows:",
+			"        - {${9:output_field_1}: ${10:output_value_1}, ${11:output_field_2}: ${12:output_value_2}}"
+		],
+		"description": "dbt unit test boilerplate",
+		"prefix": ["dut", "dunit", "unittest"]
+	},
+	"dbt variable expression": {
+		"body": ["{{ var('${1:var_name}') }}"],
+		"description": "dbt variable expression",
+		"prefix": ["dve", "dvare"]
+	},
+	"dbt_utils equal_rowcount": {
+		"body": [
+			"- dbt_utils.equal_rowcount:",
+			"    arguments:",
+			"      compare_model: ref('${1:other_model}')"
+		],
+		"description": "dbt_utils equal_rowcount - assert two relations have the same row count",
+		"prefix": ["durc", "equal_rowcount"]
+	},
+	"dbt_utils fewer_rows_than": {
+		"body": [
+			"- dbt_utils.fewer_rows_than:",
+			"    arguments:",
+			"      compare_model: ref('${1:other_model}')"
+		],
+		"description": "dbt_utils fewer_rows_than - assert model has fewer rows than another",
+		"prefix": ["dufr", "fewer_rows_than"]
+	},
+	"dbt_utils equality": {
+		"body": [
+			"- dbt_utils.equality:",
+			"    arguments:",
+			"      compare_model: ref('${1:other_model}')"
+		],
+		"description": "dbt_utils equality - assert two relations are identical",
+		"prefix": ["dueq", "equality"]
+	},
+	"dbt_utils equality (columns)": {
+		"body": [
+			"- dbt_utils.equality:",
+			"    arguments:",
+			"      compare_model: ref('${1:other_model}')",
+			"      compare_columns:",
+			"        - ${2:column_1}",
+			"        - ${3:column_2}"
+		],
+		"description": "dbt_utils equality - compare specific columns between two relations",
+		"prefix": ["dueqc", "equality_columns"]
+	},
+	"dbt_utils expression_is_true": {
+		"body": [
+			"- dbt_utils.expression_is_true:",
+			"    arguments:",
+			"      expression: \"${1:col_a + col_b = total}\""
+		],
+		"description": "dbt_utils expression_is_true - assert a SQL expression is true for all rows",
+		"prefix": ["duex", "expression_is_true"]
+	},
+	"dbt_utils recency": {
+		"body": [
+			"- dbt_utils.recency:",
+			"    arguments:",
+			"      datepart: ${1:day}",
+			"      field: ${2:created_at}",
+			"      interval: ${3:1}"
+		],
+		"description": "dbt_utils recency - assert data is at least as recent as a defined interval",
+		"prefix": ["durec", "recency"]
+	},
+	"dbt_utils at_least_one": {
+		"body": ["- dbt_utils.at_least_one"],
+		"description": "dbt_utils at_least_one - assert column has at least one non-null value",
+		"prefix": ["dualo", "at_least_one"]
+	},
+	"dbt_utils not_constant": {
+		"body": ["- dbt_utils.not_constant"],
+		"description": "dbt_utils not_constant - assert column is not the same value in every row",
+		"prefix": ["dunc", "not_constant"]
+	},
+	"dbt_utils not_empty_string": {
+		"body": ["- dbt_utils.not_empty_string"],
+		"description": "dbt_utils not_empty_string - assert column has no empty string values",
+		"prefix": ["dunes", "not_empty_string"]
+	},
+	"dbt_utils cardinality_equality": {
+		"body": [
+			"- dbt_utils.cardinality_equality:",
+			"    arguments:",
+			"      field: ${1:other_column}",
+			"      to: ref('${2:other_model}')"
+		],
+		"description": "dbt_utils cardinality_equality - assert matching cardinality between two columns",
+		"prefix": ["duce", "cardinality_equality"]
+	},
+	"dbt_utils not_null_proportion": {
+		"body": [
+			"- dbt_utils.not_null_proportion:",
+			"    arguments:",
+			"      at_least: ${1:0.95}"
+		],
+		"description": "dbt_utils not_null_proportion - assert minimum proportion of non-null values",
+		"prefix": ["dunnp", "not_null_proportion"]
+	},
+	"dbt_utils not_accepted_values": {
+		"body": [
+			"- dbt_utils.not_accepted_values:",
+			"    arguments:",
+			"      values: [${1:'value_1', 'value_2'}]"
+		],
+		"description": "dbt_utils not_accepted_values - assert column contains none of the given values",
+		"prefix": ["dunav", "not_accepted_values"]
+	},
+	"dbt_utils relationships_where": {
+		"body": [
+			"- dbt_utils.relationships_where:",
+			"    arguments:",
+			"      to: ref('${1:other_model}')",
+			"      field: ${2:foreign_key}",
+			"      from_condition: \"${3:id is not null}\"",
+			"      to_condition: \"${4:created_at >= '2020-01-01'}\""
+		],
+		"description": "dbt_utils relationships_where - assert referential integrity with row filters",
+		"prefix": ["durw", "relationships_where"]
+	},
+	"dbt_utils mutually_exclusive_ranges": {
+		"body": [
+			"- dbt_utils.mutually_exclusive_ranges:",
+			"    arguments:",
+			"      lower_bound_column: ${1:started_at}",
+			"      upper_bound_column: ${2:ended_at}",
+			"      partition_by: ${3:customer_id}",
+			"      gaps: ${4|allowed,not_allowed,required|}"
+		],
+		"description": "dbt_utils mutually_exclusive_ranges - assert ranges do not overlap",
+		"prefix": ["dumer", "mutually_exclusive_ranges"]
+	},
+	"dbt_utils sequential_values": {
+		"body": [
+			"- dbt_utils.sequential_values:",
+			"    arguments:",
+			"      interval: ${1:1}",
+			"      datepart: ${2:day}"
+		],
+		"description": "dbt_utils sequential_values - assert column contains sequential values",
+		"prefix": ["dusv", "sequential_values"]
+	},
+	"dbt_utils unique_combination_of_columns": {
+		"body": [
+			"- dbt_utils.unique_combination_of_columns:",
+			"    arguments:",
+			"      combination_of_columns:",
+			"        - ${1:column_1}",
+			"        - ${2:column_2}"
+		],
+		"description": "dbt_utils unique_combination_of_columns - assert uniqueness across column combination",
+		"prefix": ["duucc", "unique_combination_of_columns"]
+	},
+	"dbt_utils accepted_range": {
+		"body": [
+			"- dbt_utils.accepted_range:",
+			"    arguments:",
+			"      min_value: ${1:0}",
+			"      max_value: ${2:100}"
+		],
+		"description": "dbt_utils accepted_range - assert column values fall within a range",
+		"prefix": ["duar", "accepted_range"]
+	}
 }
