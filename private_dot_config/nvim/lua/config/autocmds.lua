@@ -61,6 +61,29 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+-- chezmoi.nvim's watch can't handle .chezmoitemplates/ files (no target mapping),
+-- so we manually apply config.fish when its template fragments are saved
+vim.api.nvim_create_autocmd("BufWritePost", {
+  group = augroup("chezmoi_fish_fragments"),
+  pattern = "*/.chezmoitemplates/fish/*.fish",
+  callback = function()
+    local src = vim.env.HOME .. "/.local/share/chezmoi/private_dot_config/fish/config.fish.tmpl"
+    vim.fn.jobstart({ "chezmoi", "apply", "--force", "--source-path", src }, {
+      detach = true,
+      on_exit = function(_, code)
+        vim.schedule(function()
+          if code == 0 then
+            vim.notify("chezmoi applied config.fish", vim.log.levels.INFO)
+          else
+            vim.notify("chezmoi apply failed (exit " .. code .. ")", vim.log.levels.WARN)
+          end
+        end)
+      end,
+    })
+  end,
+  desc = "Apply config.fish when fish template fragments change",
+})
+
 local wk = require("which-key")
 -- Markdown-specific keymaps (buffer-local, only active in markdown files)
 vim.api.nvim_create_autocmd("FileType", {
