@@ -3,7 +3,6 @@
 
 	"model": "github-copilot/claude-opus-4.6",
 	"small_model": "github-copilot/gpt-5.4-mini",
-
 	"permission": {
 		"bash": {
 			"* --help *": "allow",
@@ -51,31 +50,24 @@
 			"wc *": "allow",
 			"which *": "allow",
 			"yuzudraw-cli *": "allow",
+			"wt switch *": "allow",
+
+			"rip": "ask",
+			"git commit *": "ask",
+			"wt merge *": "ask",
 
 			"rm -rf *": "deny",
-			"rm -rf /*": "deny",
 			"sudo rm *": "deny",
 			"chmod -R 777 *": "deny",
 			"dd *": "deny",
 			"mkfs *": "deny",
-			"git push --force *": "deny",
-			"git push -f *": "deny",
+			"git push *": "deny",
 			"kubectl delete *": "deny",
 			"kubectl apply * --namespace=prod*": "deny",
 			"terraform destroy *": "deny",
-			"op *": "deny",
-			"chezmoi *": "deny"
+			"op *": "deny"
 		},
-		"skill": {
-			"chezmoi": "allow",
-			"develop-agent-skills": "allow",
-			"fish-functions": "allow",
-			"gh-cli-use": "allow",
-			"gitignore": "allow",
-			"neovim-config": "allow",
-			"neovim-plugin-development": "allow",
-			"rotz-dotfiles": "allow"
-		},
+		"skill": "allow",
 		"read": {
 			".env": "deny",
 			".env.*": "deny",
@@ -111,7 +103,7 @@
 			"*.p12": "deny",
 			"*.pfx": "deny",
 			"id_rsa": "deny",
-			"id_ed25520": "deny"
+			"id_ed25519": "deny"
 		}
 	},
 	// OPENCODE_CONFIG_DIR is set to ~/.agents in fish config, which gives us
