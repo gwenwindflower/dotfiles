@@ -29,7 +29,7 @@ const homeDir = Deno.env.get("HOME");
 if (!homeDir) throw new Error("HOME not set");
 
 // TODO: build `update` command with simple lock file for tracking like npx skills
-const SKILLS_DIR = join(homeDir, "agents/skills");
+const SKILLS_DIR = join(homeDir, ".agents/skills");
 const TEMPLATE_DIR = join(SKILLS_DIR, "_skillutil/assets");
 const SKILL_DEV_DIR = join(SKILLS_DIR, "develop-agent-skills");
 const DEACTIVATED_SKILLS = join(SKILLS_DIR, "_deactivated");
