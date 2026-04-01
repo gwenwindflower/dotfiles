@@ -30,6 +30,7 @@ return {
       opts = opts or {}
       opts.mappings = vim.tbl_extend("force", opts.mappings or {}, {
         ["%"] = { action = "closeopen", pair = "%%", neigh_pattern = "{" },
+        ["#"] = { action = "closeopen", pair = "##", neigh_pattern = "{" },
       })
       return opts
     end,
