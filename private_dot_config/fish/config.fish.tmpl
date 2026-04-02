@@ -13,10 +13,7 @@ set -gx HOMEBREW_NO_ENV_HINTS 1
 {{ template "fish/00-core-env.fish" . }}
 
 {{- if eq .chezmoi.os "darwin" }}
-# SSH (macOS only — on Linux, ssh agent forwarding handles this)
-set -gx SSH_AUTH_SOCK "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
-
-{{ template "fish/04-mac-tools.fish" . }}
+{{ template "fish/001-mac-env.fish" . }}
 {{- end }}
 
 # Dotfiles home
@@ -46,16 +43,23 @@ if status is-interactive
 {{ template "fish/22-abbreviations.fish" . }}
 {{ template "fish/23-bindings.fish" . }}
 {{- if eq .chezmoi.os "darwin" }}
-{{ template "fish/23-bindings_macos.fish" . }}
+{{ template "fish/23-bindings__macos.fish" . }}
 {{- end }}
-# zoxide init
-{{ output (joinPath .brewPrefix "bin/zoxide") "init" "fish" }}
 
-# starship init
-{{ output (joinPath .brewPrefix "bin/starship") "init" "fish" }}
 
-{{ template "fish/24-tools.fish" . }}
+# ─── Dynamic Tool Initializations ──────────────────────────────────────────────────────────────────
 
 set -gx LS_COLORS "{{ output (joinPath .brewPrefix "bin/vivid") "generate" "catppuccin-frappe" }}"
+
+# zoxide
+{{ output (joinPath .brewPrefix "bin/zoxide") "init" "fish" }}
+
+# starship
+{{ output (joinPath .brewPrefix "bin/starship") "init" "fish" "--print-full-init" }}
+
+# amoxide
+{{ output (joinPath .brewPrefix "bin/am") "init" "fish" }}
+
+  {{ template "fish/24-tools.fish" . }}
 
 end # status is-interactive
