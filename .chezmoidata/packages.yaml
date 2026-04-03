@@ -10,11 +10,14 @@ packages:
         - mutagen-io/mutagen
         - oven-sh/bun
         - pulumi/tap
+        - sassman/tap
         - stefanlogue/tools
         - yakitrak/yakitrak
       formulae:
         - age
         - agent-browser
+        - amoxide
+        - amoxide-tui
         - asciinema
         - awscli
         - bat
@@ -133,6 +136,8 @@ packages:
         - mitmproxy
         - monodraw
         - monologue
+        - notion
+        - notion-calendar
         - obsidian
         - orbstack
         - orion
