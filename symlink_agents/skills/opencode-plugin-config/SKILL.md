@@ -1,6 +1,6 @@
 ---
 name: opencode-plugin-config
-description: Use when asked to automate an action for OpenCode, for example run a formatter after edits, or running a script right before git commits, those are hooks and you should use this skill to implement them.
+description: Use when asked to automate an action for OpenCode, for example run a formatter after edits, or running a script right before git commits, those are plugins in OpenCode, and you should use this skill to implement them.
 ---
 
 # OpenCode Plugin Configuration
