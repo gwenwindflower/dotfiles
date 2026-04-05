@@ -2,17 +2,8 @@
 
 ## Temp Dirs while Sandboxed
 
-If you need a temp directory for a tool to run, but you're sandboxed from asking the usual $TMPDIR $TMP $TEMP env vars, here's a pattern you can use: you have a per-project temp directory for writing tasks, tracking transient session state, etc. Use that as you temp directory.
+`$TMPDIR` and `$TEMP` are automatically set to the sandbox-writable project temp dir via a `SessionStart` hook (`~/.claude/hooks/set-sandbox-tmpdir.sh`). All subprocesses inherit these, so tools like `go build`, `pytest`, `npm scripts`, etc. use the sandbox-safe path without manual intervention.
 
-For example:
+The dir follows the pattern `/private/tmp/claude-<uid>/<kebab-project-path>` and is created on session start if it doesn't exist.
 
-```bash
-GOTMPDIR=/private/tmp/claude-501/-Users-winnie-dev-rowing-machine
-```
-
-The pattern is:
-
-```bash
-ENV_VAR_NAME=/private/tmp/claude-501/-{path-to-project}
-# note the '-' before the path, and the kebab-casing of the path
-```
+If a tool needs a *different* temp env var (e.g. `GOTMPDIR`), point it at `$TMPDIR` — it's already set correctly.
