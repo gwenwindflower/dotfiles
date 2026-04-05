@@ -1,5 +1,5 @@
 function ghrel -d "Create a GitHub release via git-cliff + gh CLI"
-    argparse h/help d/draft p/prerelease n/dry-run -- $argv
+    argparse h/help d/draft p/prerelease n/dry-run no-changelog -- $argv
     or return
 
     if set -q _flag_help
@@ -10,6 +10,7 @@ function ghrel -d "Create a GitHub release via git-cliff + gh CLI"
         logirl help_flag d/draft "Create the release as a draft"
         logirl help_flag p/prerelease "Mark the release as a prerelease"
         logirl help_flag n/dry-run "Print what would happen without creating anything"
+        logirl help_flag "" no-changelog "Skip updating CHANGELOG.md"
         logirl help_header Requirements
         printf "  git-cliff, gh, git\n"
         return 0
@@ -50,26 +51,61 @@ function ghrel -d "Create a GitHub release via git-cliff + gh CLI"
         return 1
     end
 
-    # Generate release notes
+    # Dry run: show what would happen without side effects
+    # Note: release notes shown here may include the changelog commit pattern
+    # since we haven't actually committed it yet — the real run filters it out
+    if set -q _flag_dry_run
+        set -l notes (git cliff --bump --unreleased --strip all 2>/dev/null)
+        logirl warning "DRY-RUN mode"
+        printf "\n"
+        logirl info "Tag:        $tag"
+        logirl info "Draft:      "(set -q _flag_draft; and echo yes; or echo no)
+        logirl info "Prerelease: "(set -q _flag_prerelease; and echo yes; or echo no)
+        logirl info "Changelog:  "(set -q _flag_no_changelog; and echo skip; or echo update)
+        printf "\n"
+        logirl special "Release Notes"
+        printf "%s\n" $notes
+        return 0
+    end
+
+    # Update CHANGELOG.md first so the commit gets filtered from release notes
+    if not set -q _flag_no_changelog
+        logirl info "Updating CHANGELOG.md..."
+
+        # --prepend requires the file to exist; create it for first release
+        test -f CHANGELOG.md; or touch CHANGELOG.md
+
+        if not git cliff --bump --unreleased --prepend CHANGELOG.md 2>/dev/null
+            logirl error "git-cliff could not update CHANGELOG.md"
+            return 1
+        end
+
+        git add CHANGELOG.md
+        git commit -m "chore(release): update changelog for $tag"
+
+        if test $status -ne 0
+            logirl error "Failed to commit CHANGELOG.md"
+            return 1
+        end
+    end
+
+    # Push so the release tag points to a commit that exists on the remote
+    if not set -q _flag_no_changelog
+        logirl info "Pushing changelog commit..."
+
+        if not git push 2>/dev/null
+            logirl error "git push failed"
+            return 1
+        end
+    end
+
+    # Generate release notes (after changelog commit so it gets filtered out)
     logirl info "Generating release notes..."
     set -l notes (git cliff --bump --unreleased --strip all 2>/dev/null)
 
     if test $status -ne 0; or test -z "$notes"
         logirl error "git-cliff could not generate release notes"
         return 1
-    end
-
-    # Dry run output
-    if set -q _flag_dry_run
-        logirl warning "DRY-RUN mode"
-        printf "\n"
-        logirl info "Tag:        $tag"
-        logirl info "Draft:      "(set -q _flag_draft; and echo yes; or echo no)
-        logirl info "Prerelease: "(set -q _flag_prerelease; and echo yes; or echo no)
-        printf "\n"
-        logirl special "Release Notes"
-        printf "%s\n" $notes
-        return 0
     end
 
     # Build gh release create command
@@ -83,7 +119,7 @@ function ghrel -d "Create a GitHub release via git-cliff + gh CLI"
         set -a gh_args --prerelease
     end
 
-    # Create the release
+    # Create the release (tag is created at current HEAD, which now includes the changelog commit)
     logirl special "Creating release $tag..."
 
     printf "%s\n" $notes | gh $gh_args
