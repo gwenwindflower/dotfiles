@@ -52,16 +52,18 @@ abbr --add --position anywhere -- qqq '>/dev/null 2>&1'
 abbr --add cm chezmoi
 abbr --add cmd chezmoi cd
 abbr --add cme chezmoi edit
+abbr --add cmee ee -e ~/.local/share/chezmoi
 abbr --add cma chezmoi add
 abbr --add cmaa chezmoi re-add
 abbr --add cmaf chezmoi add --follow
 abbr --add cmx chezmoi apply
 abbr --add cmxc chezmoi apply ~/.config/
 abbr --add cmxf chezmoi apply ~/.config/fish/
-abbr --add cmxv chezmoi apply ~/.config/fish/nvim/
+abbr --add cmxv chezmoi apply ~/.config/nvim/
+abbr --add cmxa chezmoi apply ~/.agents/
 abbr --add cmc chezmoi cat
 # runners
-abbr --add t task
+abbr --add tk task
 abbr --add mk make
 # 'lazy' TUIs
 abbr --add lgt lazygit
@@ -74,16 +76,15 @@ abbr --add fzfopts "echo \$FZF_DEFAULT_OPTS | sed 's/^--//; s/ --/\n/g' | bat"
 abbr --add l lsd -lAg
 abbr --add ls lsd --classic
 abbr --add ll lsd -l
+abbr --add la lsd -lA
 abbr --add lg lsd -lg
-abbr --add la lsd -A
-abbr --add lla lsd -lA
 abbr --add lt lsd --tree
 # navigation
 abbr --add s z
-abbr --add dots "ee -e $DOTFILES_HOME"
+abbr --add dots "ee -e $DOTFILES"
 abbr --add conf "ee $XDG_CONFIG_HOME"
 abbr --add proj "ee $PROJECTS"
-abbr --add keeb "ee -e $PROJECTS_UTILS/tinybabykeeb"
+abbr --add keeb "ee -e $PROJECTS/05_utils/tinybabykeeb"
 # brew
 abbr --add brx brewdo
 abbr --add bri "brew update; brew install"
@@ -109,6 +110,9 @@ abbr --add bruse brew uses --installed
 abbr --add bruise brew uses --installed
 abbr --add brbg brew services
 abbr --add brsrv brew services
+# containers
+abbr --add dk docker
+abbr --add dkcu docker compose up
 # ai
 abbr --add oc opencode
 abbr --add occf ee $HOME/.config/opencode
@@ -116,7 +120,9 @@ abbr --add co copilot
 abbr --add cl claude
 abbr --add clcf ee $HOME/.claude
 abbr --add ccu bunx ccusage@latest
-abbr --add clyj yj $DOTFILES_HOME/agents/claude/settings.yaml --force
+## skills
+abbr --add sku skillutil
+# obsiidian and notes
 abbr --add notes "ee ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents"
 abbr --add ob notesmd-cli
 abbr --add obf "fd . --color always --hidden --ignore --extension md | fzf --preview '_fzf_preview_file {}'"
@@ -202,12 +208,11 @@ abbr --add gob go build
 abbr --add ruu rustup up
 ## typescript
 ### node
-abbr --add n npm
-abbr --add nx npx
-abbr --add ni npm install
-abbr --add nu npm update
-abbr --add nd npm run dev
-abbr --add nb npm run build
+abbr --add np npm
+abbr --add npi npm install
+abbr --add npu npm update
+abbr --add npd npm run dev
+abbr --add npb npm run build
 ### pnpm
 abbr --add pn pnpm
 abbr --add pnx pnpm dlx
@@ -220,18 +225,17 @@ abbr --add pnb pnpm build
 abbr --add pnl pnpm lint
 abbr --add pnf pnpm fix
 ### bun
-abbr --add b bun
-abbr --add bi bun install
-abbr --add ba bun add
-abbr --add bu bun upgrade
-abbr --add bs bun start
-abbr --add br bun run
-abbr --add bt bun test
-abbr --add bx bunx
+abbr --add bui bun install
+abbr --add bua bun add
+abbr --add buu bun upgrade
+abbr --add bus bun start
+abbr --add bur bun run
+abbr --add but bun test
+abbr --add bux bunx
 ### deno
-abbr --add d deno
+abbr --add dn deno
 abbr --add dig deno install -grAf --root $DENO_HOME
-abbr --add dt deno task
+abbr --add dnt deno task
 ### mise
 abbr --add mi mise
 abbr --add mia "mise activate fish | source"
