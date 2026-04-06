@@ -2,4 +2,5 @@ active_profiles = []
 
 [aliases]
 gri = "git rebase -i --autosquash HEAD~{{1}}"
+ltd = "lsd --tree --depth={{1}}"
 ssx = "ssh -A {{1}}.exe.xyz"
