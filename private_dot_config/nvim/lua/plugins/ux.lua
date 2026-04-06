@@ -96,9 +96,16 @@ return {
           },
           list = {
             selection = {
-              preselect = function(ctx)
+              preselect = function()
+                -- if you're inside a snippet, tab/shift-tab jumps through arguments
+                -- don't treat this as an 'accept' action for the completion menu
+                -- example: snippet with 3 args, you fill out all 3, realize arg 1 was wrong
+                -- shift-tab back to 1, then realize arg 2 needs to be updated as well
+                -- you don't want that second tab through from 1 to 2 within the already active snippet
+                -- to trigger the completion menu selection
                 return not require("blink.cmp").snippet_active({ direction = 1 })
               end,
+              auto_insert = false,
             },
           },
         },
