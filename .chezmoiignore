@@ -10,11 +10,10 @@ opencode.json
 biome.json
 # Source files for symlinked targets
 # These are the actual files that symlink_ entries point to.
-# Without this ignore, chezmoi would also try to copy them to ~/nvim/ and ~/claude/.
-symlink_*/
+symsource_*/
 
 {{ if ne .chezmoi.os "darwin" }}
 # Darwin-only configs (excluded on Linux)
 private_dot_config/kitty/
-private_dot_config/karabiner/
+private_dot_config/private_karabiner/
 {{ end }}
