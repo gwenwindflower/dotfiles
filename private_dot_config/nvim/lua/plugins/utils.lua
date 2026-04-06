@@ -1,5 +1,12 @@
 -- TODO: set up projects and sessions tooling
 return {
+  {
+    "gwenwindflower/provisions.nvim",
+    opts = {
+      env_dirs = { "~/.config/op/environments" },
+      preload = { "nvim" },
+    },
+  },
   -- Alignment tools
   -- TODO: figure out how the hell this works,
   -- my mental model of it is terrible and i can never
