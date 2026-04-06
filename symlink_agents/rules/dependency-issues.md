@@ -1,5 +1,8 @@
 # Responding to Dependency Issues in Package Managers
 
+> [!IMPORTANT]
+> These only apply if you're operating within a sandboxed environment. If you're not sandboxed, similar errors may be arising from a different set of permissions and guards, or normal access issues.
+
 It's important to consider whether your actions will affect the global environment or ignore safety checks before independently bashing through dependency issues.
 
 Let's say you're in a project using npm, and forced to remove and rebuild `node_modules`. While non-ideal, it's easy enough to rebuild and get back to a fresh working state.
