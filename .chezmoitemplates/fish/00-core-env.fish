@@ -46,3 +46,15 @@ set -gx OP_ENV_DIR $XDG_CONFIG_HOME/op/environments
 
 #  Project Bookmarks
 set -gx PROJECTS $HOME/dev
+
+#  Fish configs
+set -gx fish_greeting
+set -a fish_lsp_ignore_paths \
+    '**/.git/**', \
+    '**/node_modules/**', \
+    '**/vendor/**', \
+    '**/__pycache__/**', \
+    '**/docker/**', \
+    '**/containerized/**', \
+    '**/*.log', \
+    "**/*.tmpl"
