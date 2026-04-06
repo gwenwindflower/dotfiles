@@ -78,16 +78,16 @@ chezmoi copies by default, which is the right call for almost everything — it 
 | `~/.claude/settings.json` | Claude Code edits its own settings | `symlink_claude/` |
 | `~/.config/yazi/package.toml` | `ya pkg add` edits it | `symlink_yazi/` |
 | `~/.config/mise/config.toml` | `mise use` edits it | `symlink_mise/` |
-| `~/.agents/*`, `~/.claude/{rules,skills,agents,prompts}` | Shared agent content, skill installs | `symlink_agents/` |
 
 Source files live in `symlink_*/` dirs at repo root, excluded by `.chezmoiignore` so chezmoi won't deploy them as top-level home dirs. Each symlink is a `symlink_*.tmpl` file containing `{{ .chezmoi.sourceDir }}/symlink_*/path/to/source`.
 
 **When in doubt, copy.** Symlinks add complexity — they bypass template processing, require ignore entries, and create a second thing to reason about. Only reach for them when you'd otherwise lose data (tool writes to the file and chezmoi would overwrite it on next apply).
 
-- [ ] Shared agent dirs (skills, rules, etc.) do not need to be symlinked, and should be migrated to normal managed files
-  - sub-agents (agents/) are agent-specific and should be handled with those agents' configs
-  - prompts belong to CodeCompanion.nvim and should be managed for that plugin directly
-  - only rules and skills are truly shared, but they do not need to be symlinked as they are not edited externally
+#### Agent Config Symlinks
+
+There's a different set of symlinks related to coding agent configs, for a different use case. Some agent configs - specifically skills and rules - are largely compatible across agents. Because of this, many agents have standardized on using a unified `~/.agents/` directory for configs. Claude Code remains idiosyncratic with its own `~/.claude/` dir and `CLAUDE.md` files though. As such, we use `dot_agents/` as the source of truth for shared agent configs. Then, `dot_claude/` contains 2 symlinks to the `dot_agents/` target directories `~/.agents/skills` and `~/.agent/rules`, which map to `~/.claude/skills` and `~/.claude/rules` respectively. This way, shared configs can be edited in one place (`dot_agents/`), these are then applied out to `~/.agents/*` as normal, and Claude Code picks up those changes automatically via symlink without messing with duplication or drift.
+
+If other file relationships like this arise, where you need a set of files in 2 locations, this is the pattern to follow. Pick a unified source of truth to function like normal chezmoi-managed files, then symlink any secondary locations to those applied source-of-truth files.
 
 ### Nerd Font icons
 
