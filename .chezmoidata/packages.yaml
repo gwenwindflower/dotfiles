@@ -63,6 +63,7 @@ packages:
         - lsd
         - lua
         - luajit
+        - luarocks
         - macchina
         - mise
         - moor
