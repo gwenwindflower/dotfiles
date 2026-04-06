@@ -1,3 +1,4 @@
+# @fish-lsp-disable
 # Fish shell configuration — assembled by chezmoi from .chezmoitemplates/fish/
 # Do not edit the deployed ~/.config/fish/config.fish directly.
 # Edit fragments in ~/.local/share/chezmoi/.chezmoitemplates/fish/ instead.
@@ -14,6 +15,12 @@ set -gx HOMEBREW_NO_ENV_HINTS 1
 
 {{- if eq .chezmoi.os "darwin" }}
 {{ template "fish/001-mac-env.fish" . }}
+{{- end }}
+
+# On macOS, kitty sets TERM=xterm-kitty automatically.
+# On Linux (SSH), kitty terminfo may not exist — use xterm-256color.
+{{- if eq .chezmoi.os "linux" }}
+set -gx TERM xterm-256color
 {{- end }}
 
 # Dotfiles home
