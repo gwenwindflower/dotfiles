@@ -112,11 +112,15 @@
 			"id_ed25519": "deny"
 		}
 	},
-	// OPENCODE_CONFIG_DIR is set to ~/.agents in fish config, which gives us
-	// access to ~/.agents/{rules,skills,agents,prompts}
 	"instructions": [
-		"AGENTS.md",
+		// primary source of truth
+		// for multi-agent rules
 		"~/.agents/rules/*.md",
+		".agents/docs/**/*.md",
+		".agents/rules/**/*.md",
+		// project-local claude rules and docs
+		// should be used, but migrated to .agents
+		// if possible
 		".claude/docs/**/*.md",
 		".claude/rules/**/*.md"
 	],
