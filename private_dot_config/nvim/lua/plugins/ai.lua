@@ -4,29 +4,25 @@ return {
     version = "^19.0.0",
     opts = {
       interactions = {
-        -- Claude Code via ACP as default main driver
         chat = {
           adapter = {
-            name = "claude_code",
-            model = "opus",
+            name = "copilot",
+            model = "claude-opus-4.6",
           },
         },
-        -- Codex for more precise inline edits with less scope and context
         inline = {
           adapter = "copilot",
           model = "gpt-5.3-codex",
         },
-        -- Copilot direct for one-shot commands
         cmd = {
           adapter = "copilot",
           model = "gpt-5.3-codex",
         },
-        -- Cheap background tasks via Copilot (0.33x multiplier)
+        -- Cheap background tasks (0.33x multiplier)
         background = {
           adapter = "copilot",
           model = "gpt-5.4-mini",
         },
-        -- CLI agents — launch full terminal agents from within nvim
         cli = {
           agent = "opencode",
           agents = {
@@ -93,7 +89,7 @@ return {
       prompt_library = {
         markdown = {
           dirs = {
-            "~/.agents/prompts",
+            vim.fn.stdpath("config") .. "/codecompanion_prompts",
           },
         },
       },

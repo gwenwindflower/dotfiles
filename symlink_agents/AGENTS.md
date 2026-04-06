@@ -1,3 +1,3 @@
 # Multi-Agent Configs
 
-This directory contains the agent agnostic configuration (skills, rules, etc.) that work across all agents.
+This directory contains the agent-agnostic primitives that work across all agents. For the time being these are Agent Skills (skills/ dir) and 'rules', which are just modular docs included at session start with all the other context and base prompts (rules/ dir). Skills describe either specific context that doesn't need to be present in every session, or imperative knowledge for a workflow. They can include configs describing allowed tools, subagents to launch, etc. They also often contain their own modular reference docs for getting deeper context on specific variations of a workflow or problem space. Rules are simpler and more general - they apply broadly to every session. Things like git commit preferences, how to search docs well, what constitutes good writing, communication tone, user system management, etc.
