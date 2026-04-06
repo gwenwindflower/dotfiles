@@ -11,9 +11,9 @@ Create and enhance Fish shell functions with excellent developer experience, col
 
 ## Repository Context
 
-- **Location:** `shell/fish/functions/`
+- **Location:** `~/.config/fish/functions/` (chezmoi source: `private_dot_config/fish/functions/`)
 - **Filename convention:** `function_name.fish` (filename must match function name exactly)
-- **Linking:** You *do not* need to manually link functions, the entire shell/fish/functions/ directory is already symlinked to the correct location, adding functions in the dotfiles projects automatically makes them available in Fish
+- **Deployment:** Functions are managed by chezmoi and copied to `~/.config/fish/functions/` on `chezmoi apply`. Adding a new `.fish` file in the source dir makes it available after the next apply.
 - **Testing:** You work in a separate bash environment, to test commands requires `fish -c "[commands]"` - given that and the potentially dangerous effects of shell commands in development, you should have the user manually test for tasks using this Skill rather than validating yourself and reporting success. If you are instructed to test yourself, you will automatically pick up new functions without needing to reload anything, because you are always calling a new subshell.
 
 ## Instructions

@@ -130,29 +130,68 @@ my-plugin.nvim/
 │   └── *_spec.lua        -- Test files
 ├── doc/
 │   └── my-plugin.txt     -- Help documentation (:help my-plugin)
-├── lazy.lua              -- Recommended spec for lazy.nvim pkg system
+├── lazy.lua              -- Pkg spec: tells lazy.nvim this plugin needs setup()
 └── Makefile              -- make test
 ```
 
 ### Config Pattern
 
+`config.lua` defines your plugin's defaults — the keys users override via `opts` in their lazy spec. The full flow:
+
+1. You define a local `defaults` table in `config.lua` — your plugin's full configuration surface
+2. User writes `opts = { notify = false }` in their lazy spec
+3. lazy.nvim calls `require("my-plugin").setup({ notify = false })`
+4. `init.lua` delegates to `config.setup(opts)`, which merges user opts over defaults
+
+Only define keys that control **plugin behavior**. Do NOT put lazy.nvim spec fields (`event`, `cmd`, `keys`, `ft`) in your defaults — those control when lazy.nvim loads the plugin, not how it behaves. They belong in the user's spec or the `lazy.lua` pkg spec.
+
 ```lua
 -- lua/my-plugin/config.lua
 local M = {}
 
-M.defaults = {
-  option1 = true,
-  option2 = "default",
+-- Local defaults, not exposed directly. Users never touch this table —
+-- they configure the plugin through opts in their lazy spec.
+local defaults = {
+  enabled = true,
+  notify = true,
+  some_dir = "~/.config/my-plugin",
 }
 
-M.options = vim.deepcopy(M.defaults)
+-- Module-local merged config, accessed via __index metatable below
+local config = vim.deepcopy(defaults)
 
 function M.setup(opts)
-  M.options = vim.tbl_deep_extend("force", M.defaults, opts or {})
+  config = vim.tbl_deep_extend("force", {}, vim.deepcopy(defaults), opts or {})
+
+  -- Commands, autocmds, and other initialization go here — not in init.lua.
+  -- This keeps init.lua as a thin delegation layer.
+  vim.api.nvim_create_user_command("MyCommand", function(args)
+    require("my-plugin.commands").run(args)
+  end, { nargs = "?", desc = "My Plugin" })
+end
+
+-- Metatable allows direct access: require("my-plugin.config").notify
+setmetatable(M, {
+  __index = function(_, key)
+    return config[key]
+  end,
+})
+
+return M
+```
+
+```lua
+-- lua/my-plugin/init.lua — thin shell, delegates to config
+local M = {}
+
+function M.setup(opts)
+  require("my-plugin.config").setup(opts)
 end
 
 return M
 ```
+
+This pattern comes from folke's plugins (flash.nvim, sidekick.nvim). `init.lua` is a thin entry point — `config.lua` owns defaults, merging, command registration, and exposes the merged config via `__index`.
 
 ### Health Check
 
@@ -188,96 +227,107 @@ Health checks are especially important for plugins that shell out to external to
 
 ## lazy.nvim Integration
 
-Most Neovim users install plugins via [lazy.nvim](https://lazy.folke.io). Design plugins to work well with its conventions.
+Most Neovim users install plugins via [lazy.nvim](https://lazy.folke.io). Design plugins to work well with its conventions. See [lazy.folke.io/developers](https://lazy.folke.io/developers) for full reference.
 
-### The `opts` Convention
+### Two specs, two roles
 
-lazy.nvim calls `require("my-plugin").setup(opts)` automatically when you use the `opts` key in a spec. **Always prefer `opts` over `config`** — `config` is almost never needed:
+There are two places a lazy.nvim spec can live, and understanding the boundary between them is critical:
 
-```lua
--- User's plugin spec (this is what they write, not what you ship)
-{ "user/my-plugin.nvim", opts = { option1 = false } }
+1. **`lazy.lua` at the plugin repo root** (the "pkg spec") — shipped by the plugin author. Declares the minimal spec needed for the plugin to work: `opts = {}` if setup() is required, `cmd` for lazy-load triggers, `dependencies`, `build` steps. This is the plugin's baseline.
+2. **User's spec in their nvim config** (e.g. `lua/plugins/my-plugin.lua`) — written by the user. Adds their own `opts`, `event`, `keys`, etc. lazy.nvim deep-merges the user's spec on top of the pkg spec.
 
--- lazy.nvim automatically calls:
--- require("my-plugin").setup({ option1 = false })
-```
+The plugin author controls what the plugin *needs*. The user controls *when and how* it loads. Keep these concerns separate.
 
-This works out of the box if your plugin exports `M.setup(opts)`. No extra lazy.nvim-specific code needed in the plugin itself.
+### The `lazy.lua` pkg spec
 
-### Shipping a `lazy.lua`
-
-Include a `lazy.lua` at your plugin root to declare the recommended spec for your plugin. lazy.nvim's [pkg system](https://lazy.folke.io/packages) auto-detects this file and merges it into the user's spec. The plugin identifier (`"user/my-plugin.nvim"`) is required as the first positional element:
+If your plugin exports `M.setup(opts)`, ship a `lazy.lua` at the repo root so lazy.nvim knows to call it. lazy.nvim's [pkg system](https://lazy.folke.io/packages) auto-detects this file and merges it with the user's spec.
 
 ```lua
--- lazy.lua (at plugin root)
+-- lazy.lua (at plugin root) — minimal example
 return {
   "user/my-plugin.nvim",
-  cmd = { "MyCommand" },
+  opts = {},
 }
 ```
 
-This tells lazy.nvim how to best load your plugin without the user needing to figure out the right events or commands.
+The `opts = {}` is the key part — it tells lazy.nvim "call `require('my-plugin').setup(opts)` when this plugin loads." Without it, lazy.nvim loads the plugin files but never calls `setup()`.
 
-### Pkg Source Priority
+A more complete example with lazy-load triggers:
 
-lazy.nvim checks package sources in order — first match wins:
+```lua
+return {
+  "user/my-plugin.nvim",
+  cmd = { "MyCommand", "MyOtherCommand" },
+  opts = {},
+}
+```
 
-1. `lazy.lua` (recommended)
-2. `*-scm-1.rockspec` (luarocks native packages)
-3. `pkg.json` (experimental packspec)
+**What belongs in lazy.lua vs the user's spec:**
 
-The `lazy.lua` approach covers most plugins. Rockspec is for plugins that need C compilation or have non-Lua dependencies. Rockspec files are also auto-detected as a `build` source when a plugin lacks a `/lua` directory.
+| Concern | lazy.lua (plugin author) | User spec |
+| --- | --- | --- |
+| `opts = {}` (enable setup) | Yes | Override with their values |
+| `cmd` (command triggers) | Yes, if plugin creates commands | Can add more |
+| `event` / `keys` / `ft` | Rarely — user's choice | Yes |
+| `dependencies` | Only if required for function | Can add their own |
+| `build` | Yes, if plugin needs build steps | Can override |
+
+**Do not** put `event`, `keys`, or `ft` in `lazy.lua` unless the plugin fundamentally requires loading on a specific event to function. Those are user preferences about load timing.
+
+**Do not** put plugin-internal config keys (like custom options your plugin defines) in `lazy.lua` spec fields. Plugin config belongs in `config.lua` defaults, merged via `opts`. Spec fields like `event`, `cmd`, `keys` are lazy.nvim concepts — they control *when lazy.nvim loads the plugin*, not how the plugin behaves internally.
+
+### The `opts` convention
+
+When a spec has `opts` (table or function), lazy.nvim calls `require("my-plugin").setup(opts)` automatically. Always prefer `opts` over `config`:
+
+```lua
+-- GOOD: opts — lazy.nvim handles merging and calling setup()
+{ "user/my-plugin.nvim", opts = { option1 = false } }
+
+-- BAD: config — prevents opts merging from multiple specs
+{
+  "user/my-plugin.nvim",
+  config = function()
+    require("my-plugin").setup({ option1 = false })
+  end,
+}
+```
+
+When multiple specs exist for the same plugin (e.g. pkg spec + user spec), `opts` tables are deep-merged automatically. Using `config` instead breaks this merging.
 
 ### Dependencies
 
-Only declare `dependencies` when a plugin must be installed AND loaded before yours. **Lua libraries don't need explicit dependencies** — they load automatically when `require()`d:
+Only declare `dependencies` when a plugin must be installed AND loaded before yours. Lua libraries auto-load on `require()` — they don't need to be declared as dependencies:
 
 ```lua
--- DO: declare deps that must be loaded first
-{ "user/my-plugin.nvim", dependencies = { "nvim-telescope/telescope.nvim" } }
+-- GOOD: separate specs, plenary loads on demand
+{ "user/my-plugin.nvim", opts = {} },
+{ "nvim-lua/plenary.nvim", lazy = true },
 
--- DON'T: declare pure Lua libraries as deps (they auto-load on require)
--- { "user/my-plugin.nvim", dependencies = { "nvim-lua/plenary.nvim" } }  -- unnecessary
+-- BAD: forces plenary to load immediately when my-plugin loads
+{
+  "user/my-plugin.nvim",
+  opts = {},
+  dependencies = { "nvim-lua/plenary.nvim" },
+}
 ```
 
-Mark pure library dependencies as `lazy = true` if you do list them, so they defer loading until actually required.
+### Build steps
 
-### Build Steps
-
-The `build` property runs after install/update. Options:
+The `build` property runs after install/update:
 
 ```lua
 return {
   "user/my-plugin.nvim",
-  build = ":TSUpdate",           -- Neovim command (prefixed with ":")
-  -- build = "make",             -- shell command
-  -- build = "rockspec",         -- luarocks make
-  -- build = function(plugin)    -- Lua function (async coroutine)
-  --   coroutine.yield("Building...")  -- report progress
-  -- end,
-  -- build = { "make", ":TSUpdate" }, -- multiple steps (list)
+  build = ":TSUpdate",              -- Neovim command (prefix ":")
+  -- build = "make",                -- shell command
+  -- build = "rockspec",            -- luarocks make
+  -- build = function(plugin) end,  -- Lua function (async coroutine)
+  -- build = { "make", ":TSUpdate" }, -- multiple steps
 }
 ```
 
-If your plugin includes a `build.lua` at the root, lazy.nvim auto-detects and runs it.
-
-**Important**: Build functions run in parallel with other plugin builds. Never change the working directory — it affects other concurrent builds. Use `vim.fn.fnamemodify(debug.getinfo(1, "S").source:sub(2), ":p:h")` to get your build file's directory instead.
-
-### Lazy-Loading Triggers
-
-Design plugins so users can lazy-load them. Expose clear entry points:
-
-```lua
-return {
-  "user/my-plugin.nvim",
-  cmd = { "MyCommand" },           -- load on command
-  event = { "BufReadPost" },       -- load on event
-  ft = { "lua", "python" },        -- load on filetype
-  keys = { { "<leader>x", ... } }, -- load on keymap
-}
-```
-
-If your plugin creates user commands in `setup()`, those commands become natural lazy-load triggers via `cmd`.
+If a `build.lua` exists at the plugin root, lazy.nvim auto-detects and runs it. Build functions run in parallel — never change the working directory.
 
 ## Common Patterns
 

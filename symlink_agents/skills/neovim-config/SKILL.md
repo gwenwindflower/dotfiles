@@ -9,10 +9,10 @@ LazyVim provides the base configuration for Neovim on this system, which is then
 
 ## Repository Context
 
-- **Config location:** `editor/nvim/`
+- **Config location:** `~/.config/nvim/` (chezmoi source: `private_dot_config/nvim/`)
 - **Theme:** Catppuccin Frappe (consistent with terminal, bat, etc.)
 - **Focus areas:** Data work (dbt, SQL, Python) and Markdown authoring
-- **Snippets:** `editor/nvim/snippets/` (friendly-snippets format)
+- **Snippets:** `~/.config/nvim/snippets/` (chezmoi source: `private_dot_config/nvim/snippets/`)
 
 ## Configuration Files
 
@@ -120,7 +120,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 ### Add Snippets
 
-1. Create JSON file in `editor/nvim/snippets/<filetype>/<name>.json`
+1. Create JSON file in `~/.config/nvim/snippets/<filetype>/<name>.json` (chezmoi source: `private_dot_config/nvim/snippets/`)
 2. Follow friendly-snippets format
 3. Snippets auto-load for matching filetypes
 

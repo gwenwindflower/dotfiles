@@ -113,6 +113,17 @@ src/backend/.docs/using-drizzle-orm-with-supabase.md
 
 You will never need to know Drizzle details while working on the UX, or how to add a shadcn component while working on database models, which means you're more likely to load the right context at the right time, without the pre-loading forced by `rules/` directories or @reference file imports.
 
+### Rules vs. Docs
+
+- Rules define how something should be done, always. These can be concrete, imperative steps, or simply writing tone, best practices to search for docs, etc. The key differentiator is they always apply consistently.
+- Docs describe the state of something, how it works, not what to do. An API spec is a doc, a UX wireframe is a doc.
+
+For example: the commands available for a CLI and what they do, how to auth the CLI, these are docs. How you should use the CLI, what commands to run, how they fit into achieving goals, workflow patterns around them, these are rules.
+
+If a rule applies to all projects, it should live at the user level. If it's a project-specific workflow, it's a project-level rule.
+
+If a doc applies across all projects, or to global tools and workflows, it should become an Agent Skill. If a doc is specific to a project, it should live in that project's `.docs/` directory and be indexed in the AGENTS.md.
+
 ## The Living Document Workflow
 
 **Ideal workflow after significant work:**
@@ -166,7 +177,7 @@ This presents similar to the `.docs/` concept, putting modular files in a specif
 
 For very large projects, perhaps some big production monorepos, it could help split up a huge AGENTS.md that is genuinely necessary to cover all the critical context across the project, but this is uncommon.
 
-Support and configuration for a 'rules'-style concept varies. For example, Claude Code supports rules at the user level (`~/.claude/rules/`), or project level (`.claude/rules/`) and will load all of these files hierarchically on session start.
+Support and configuration for a 'rules'-style concept varies. For example, Claude Code supports rules at the user level (`~/.claude/rules/`), or project level (`.claude/rules/`) and will load all of these files hierarchically on session start. In a shared agent setup, rules live in `~/.agents/rules/` and are symlinked to agent-specific locations like `~/.claude/rules/`.
 
 Example 'rules' structure (**note:** the AGENTS.md does not contain an index list, the content of all the rules is automatically loaded):
 
@@ -227,7 +238,7 @@ These are the locations of the most common context files, assuming project root 
 
 ## Markdown Formatting
 
-AGENTS.md files should follow standard markdownlint rules. Detailed guidance is available in user-level rules (`~/.claude/rules/`):
+AGENTS.md files should follow standard markdownlint rules. Detailed guidance is available in user-level rules (`~/.agents/rules/`, symlinked to agent-specific paths like `~/.claude/rules/`):
 
 - **Code blocks**: Always specify a language. Use `text` for file trees and non-code content.
 - **Tables**: Use spaces around inner pipe edges (`| cell | cell |` not `|cell|cell|`).
