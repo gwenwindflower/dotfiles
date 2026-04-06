@@ -1,6 +1,6 @@
 local bookmarks = {
 	{ key = "@", path = "~", desc = " User Home" },
-	{ key = { "c", "f" }, path = "~/.local/share/chezmoi/private_dot_config", desc = " User Config" },
+	{ key = { "c", "f" }, path = "~/.config", desc = " User Config" },
 	{ key = "p", path = "~/dev", desc = " Projects" },
 	{ key = "w", path = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents", desc = "󰓥 Obsidian" },
 	{ key = { "l", "b" }, path = "~/.local/bin", desc = " Local bin" },
