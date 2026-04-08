@@ -5,6 +5,7 @@
 	"small_model": "github-copilot/gpt-5.4-mini",
 	"permission": {
 		"bash": {
+			"*": "ask",
 			"* --help *": "allow",
 			"* --version": "allow",
 			"bat *": "allow",
