@@ -62,6 +62,7 @@
 			"rip": "ask",
 			"git commit *": "ask",
 			"wt merge *": "ask",
+			"chezmoi apply *": "ask",
 
 			"rm -rf *": "deny",
 			"sudo rm *": "deny",
