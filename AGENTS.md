@@ -154,7 +154,7 @@ chezmoi doctor                  # Diagnose setup issues (allowed)
 
 ### Troubleshooting
 
-```
+```text
 chezmoi state delete-bucket --bucket=scriptState  # Reset run_once tracking (ask)
 chezmoi apply -n --verbose                        # Dry run with detailed output (allowed)
 ```
