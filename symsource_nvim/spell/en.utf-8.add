@@ -486,3 +486,10 @@ Tavily
 Exa
 toolchains
 whitespace
+Crossfade
+BaseHead
+ClientRouter
+rehype
+KaTeX
+mjs
+utils
