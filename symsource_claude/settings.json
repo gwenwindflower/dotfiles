@@ -204,7 +204,8 @@
 				"~/.local/share/pnpm/**",
 				"~/.bun/install/cache**",
 				"~/.cache/pnpm/**",
-				"~/Documents/YuzuDraw/**",
+				"~/.local/share/pnpm/**",
+				"~/.config/.wrangler/**",
 				"~/Library/Caches/go-build/**"
 			]
 		}
