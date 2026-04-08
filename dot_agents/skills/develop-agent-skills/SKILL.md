@@ -2,99 +2,77 @@
 name: develop-agent-skills
 description: Guide for creating and improving highly effective Agent Skills. Use when user wants to create a new skill, or when auditing and improving existing skills
 allowed-tools:
-  - Bash(skillutil *)
+  - Bash(rei *)
 ---
 
-# Skill Creator
+Create and improve Agent Skills: modular packages extending agents with specialized workflows, domain knowledge, and bundled resources.
 
-Guide for creating and improving Agent Skills: modular packages that extend Claude with specialized workflows, domain knowledge, and bundled resources. The primary guidance for this skill in the [overview](overview.md) file fetched from the Anthropic docs via `skillutil refresh-docs`. You do not need to run this command to start, this file already exist. You should always read this, any other reference docs are optional based on need.
+**Skills must be very terse and high signal.** Every line should earn its place — if a sentence doesn't change agent behavior, cut it. Skill content is loaded into context on every trigger; bloat directly costs tokens and dilutes the instructions that matter.
 
-> [!NOTE]
-> `skillutil` is available on PATH, in `~/.local/bin/skillutil`, there's no need to access the script directly.
+Reference docs: [overview.md](overview.md) is pulled from the official Agent Skills spec. Consult it when you need to look up schema details, frontmatter options, or structural rules — don't read it routinely. Other reference docs are similarly optional based on need.
 
-## Creating a New Skill
+## Workflow
 
-1. Read overview file
-2. Ask the user any clarifying questions about skill goals, preferences, or examples
-3. Plan contents (do you need additional files? Are scripts and assets appropriate?)
-4. Initialize the skill (run `skillutil init <skill-name>` or `skillutil init <skill-name> --path <output-directory>`)
-5. Edit the skill (write `SKILL.md`, add scripts, modular docs, and assets as needed)
-6. Validate structure and frontmatter schema (run `skillutil validate <skill-path>`)
+1. Ask clarifying questions about skill goals, preferences, or examples
+2. Plan contents (additional files? scripts? assets?)
+3. Consult [overview.md](overview.md) if you need schema or structural details
+4. Initialize with `rei init <skill-name>` (skip for existing skills)
+5. Write SKILL.md, add scripts, modular docs, and assets as needed
+6. Validate with `rei validate <skill-path>`
 
-Follow these steps in order, skipping only if there is a clear reason why they are not applicable. If the user tells you to skip validation, it's fine to do so.
+Follow in order. Skip steps only with clear reason. User can opt out of validation.
 
-## Editing an Existing Skill
+## `rei` CLI
 
-When editing an existing skill, first ask the user what they want to improve or add. Then follow steps 2-6 from the "Creating a New Skill" process above, skipping step 4 since the skill already exists.
+Skill management tool, available on PATH (`~/.local/bin/rei`).
 
-## `skillutil` Tool
-
-There is a custom CLI tool available for skill management, written in Deno and installed locally. Use it to create, validate, or fork third-party skills from GitHub.
-
-### Creation
+### Create
 
 ```bash
-skillutil init <skill-name> [--path <output-directory>]
+rei init my-skill                           # shared skill (~/.agents/skills/)
+rei init my-skill --path path/to/project    # project-scoped skill
+rei init --fork <GitHub repo url>           # fork external skill (must have SKILL.md in root)
 ```
 
-If `--path` is not provided, the skill will be created in the shared skills directory (`agents/skills/`), symlinked to `~/.agents/skills/` + any agent-specific locations (e.g. `~/.claude/skills/`). This makes it available to all agents, projects, and sessions. This is often desirable! If the skill reflects the user's git preferences, shell environment that applies everywhere, or even frontend skills that are applicable across any web project, you should consider making it a shared skill.
+Default (no `--path`): creates in `~/.local/share/chezmoi/dot_agents/skills/`, applied by chezmoi to `~/.agents/skills/` and agent-specific locations. Prefer shared skills for broadly applicable knowledge (git prefs, shell env, frontend patterns).
 
-Examples:
+Generates a scaffold with SKILL.md template, `scripts/`, `references/`, and `assets/` dirs. Customize or remove as needed.
+
+### Validate
 
 ```bash
-# Create a shared skill (default, agents/skills/my-skill)
-skillutil init my-skill
-
-# Create a project-scoped skill
-skillutil init my-skill --path path/to/project
-
-# Fork a GitHub repo as your skill base (must contain SKILL.md in root)
-skillutil init --fork <GitHub repo url>
+rei validate <skill-path>
 ```
 
-The script (unless forking):
-
-- Creates the skill directory at the specified path
-- Generates a SKILL.md template with proper frontmatter and TODO placeholders
-- Creates example resource directories: `scripts/`, `references/`, and `assets/`
-- Adds example files in each directory that can be customized or deleted
-
-After initialization, customize or remove the generated template files as needed.
-
-If forking, you will get the same structure as the external skill to start from, in the default or specified path.
-
-### Validation
+### Add External Skills
 
 ```bash
-skillutil validate <skill-path>
+rei add <GitHub repo url>    # works for single skills or directories, skips duplicates
 ```
 
-### Adding Third-Party Skills
+### Refresh Reference Docs
 
-It's usually better to use `skillutil` add for external skills. It works for single skills or a directory of skill files, and safely skips any duplicate skills that already exist with the same name in the user's skill library at the given level/path.
+If overview.md and other reference docs are >1 month old, update before relying on them:
 
 ```bash
-skillutil add <GitHub repo url>
+rei refresh-docs
 ```
 
-### Refresh Local Documentation
+### List and Manage
 
-The key reference docs from Anthropic are available in this skill's root directory, with `overview.md` as the main entry point.
+```bash
+rei list                         # active skills
+rei list --all                   # include deactivated
+rei deactivate <skill-name>     # hide without deleting
+rei activate <skill-name>       # restore
+```
 
-If these files were last modified more than a month ago, run `skillutil refresh-docs` to fetch updated documentation before relying on them for skill development.
+## Loading Model
 
-### Listing and Managing Skills
+1. **Startup**: Only name + description loaded — aim for <100 tokens each, this determines trigger quality
+2. **Triggered**: Full SKILL.md loaded — this is why terseness matters. Every token here competes with the user's actual task context. Link to modular docs for depth rather than inlining it
+3. **On demand**: References, assets, scripts loaded as needed — use many small modular files for progressive disclosure
 
-Skills can be deactivated without deleting, using the `skillutil deactivate <skill-name>` command. Deactivated skills will not be loaded in sessions but remain available for future use or editing. To reactivate, use `skillutil activate <skill-name>`. To see the list of active skills, run `skillutil list`, or include deactivated skills with `skillutil list --all`.
+## Full Schema
 
-## Skill Loading
-
-Understanding how skills load helps you write effective ones:
-
-1. **Startup**: Only name + description loaded (aim for <100 tokens each — this is what determines whether a skill gets triggered)
-2. **Triggered**: Full SKILL.md loaded into context — keep this tight, use markdown links to references/assets/scripts for deeper dives
-3. **Modules**: References, assets, and scripts loaded on demand, protecting context window space — by keeping SKILL.md concise and using many small modular files, you follow the correct progressive disclosure pattern
-
-## Full Schema Details
-
-If you need frontmatter or content properties beyond basic fields and structure, fetch the latest version of the full spec here: <https://agentskills.io/specification>
+Frontmatter and content spec beyond basics: <https://agentskills.io/specification>

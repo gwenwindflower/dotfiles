@@ -49,7 +49,7 @@
 			"printf *": "allow",
 			"pwd": "allow",
 			"rg *": "allow",
-			"skillutil *": "allow",
+			"rei *": "allow",
 			"task *": "allow",
 			"tree *": "allow",
 			"uname *": "allow",

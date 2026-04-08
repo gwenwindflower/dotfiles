@@ -10,7 +10,7 @@ Use your web tools first. All agents have tools for Search (getting a list of re
 
 To quickly execute semantic search across documentation context covering most major tools, you can use the ctx7 CLI. It is continually updated, re-chunked, and re-embedded. If the question relates to a popular tool, framework, or library, this should be your first stop.
 
-**IMPORTANT**: Context7 also manages Agent Skills — DO NOT use it for this. We have our own tools for that (`skillutil`). It will install them in an inaccessible location that is incompatible with our tools. Only use Context7 for searching documentation.
+**IMPORTANT**: Context7 also manages Agent Skills — DO NOT use it for this. We have our own tools for that (reishi - `rei` on the command line). It will install them in an inaccessible location that is incompatible with our tools. Only use Context7 for searching documentation.
 
 ## Basic Commands
 

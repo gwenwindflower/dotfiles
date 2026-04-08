@@ -5,8 +5,8 @@ Skills temporarily disabled but preserved for later reactivation.
 ## Commands
 
 ```bash
-skillutil deactivate <skill-name>  # Move skill here
-skillutil activate <skill-name>    # Restore to active
+rei deactivate 'skill-name'  # Move skill here (alias: `rei on`)
+rei activate 'skill-name'    # Restore to active (alias: `rei off`)
 ```
 
 ## Why Deactivate?
