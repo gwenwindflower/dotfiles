@@ -1,32 +1,38 @@
 ---
 name: obsidian-frontmatter-sync
-description: Manage Obsidian vault frontmatter with rematter — validate schemas, sync to external destinations (Astro, etc.) with media options, rename fields, manage filenames. Load whenever performing bulk operations in Obsidian vaults (or other collections of markdown with frontmatter).
+description: Manage Obsidian vault frontmatter as structured data with rematter CLI tool — validate schemas, sync to external destinations (Astro, etc.) with media options, rename fields, manage filenames. Load whenever performing bulk operations in Obsidian vaults (or other collections of markdown with frontmatter).
 ---
 
 # Obsidian Frontmatter Sync with rematter
 
-CLI tool for transforming and syncing Obsidian vault frontmatter.
+rematter is a CLI tool for transforming and syncing Obsidian vault frontmatter.
 
 ## Quick Start
 
 ```bash
 # Install
 uv tool install rematter
+# or with Homebrew
+brew install g15r/tap/rematter
 
 # Update
 uv tool upgrade rematter
+# or
+brew upgrade rematter
 
 # Update for new Python version or to clear issues
 uv tool install rematter --reinstall
+# not necessary with Homebrew, as it is self-contained via PyInstaller
 
 # Validate frontmatter against .rematter schema
 rematter validate ~/vault/sky
+# Will give you a report of any issues
 
-# Sync to an external destination (e.g. Astro content collection)
+# Sync to an external destination (e.g. Astro Content Collection)
 rematter sync ~/vault/sky --dest ~/site/src/content/sky
 
 # Dry-run any command to preview changes
-rematter sync ~/vault/sky -n
+rematter sync -n ~/vault/sky
 ```
 
 ## Config File (`.rematter.yaml`)
