@@ -1,49 +1,93 @@
 name:
-  .prettierd: 
-  .prettier: 
-  .pnpm: 
-  pnpm: 
-  deno: 
-  go.mod: 
-  .go: 
-  spotify-player: 
-  github-copilot: 
-  gh-copilot: 
-  .copilot: 
-  gh: 
-  .github: 
-  gh-dash: 
-  git: 
-  .git: 
-  .docker: 
-  .duckdb: 󰇥
-  chezmoi: 
-  .bun: 
+  # cloud and containers
   .aws: 
-  .ssh: 
-  applications: 
-  library: 󱉟
-  documents: 󱔗
-  movies: 
-  downloads: 
-  music: 
-  orbstack: 
+  .cups: 󰐪
+  .docker: 
   .orbstack: 
+  .ssh: 
+  .wrangler: 
+  orbstack: 
+  # data
+  .duckdb: 󰇥
+  .duckdb_history: 󰇥
+  .sqlfluff: 
+  .sqlfluffignore: 
+  # ai
+  .agents: 󱙺
+  .claude: 󱙺
+  .copilot: 
+  .crush: 󱙺
+  gh-copilot: 
+  github-copilot: 
+  # coding
+  # (languages, package managers, runtimes, etc.)
+  .astro: 
+  .bun: 
+  .bun_repl_history: 
+  .deno: 
+  .go: 
+  .ipython: 
+  .irb_history: 
+  .lesshst: 󱡴
+  .luarocks: 
+  .markdownlint.yaml: 
+  .pnpm: 
+  .prettier: 
+  .prettierd: 
+  .prettierignore: 
+  .prettierrc: 
+  .venv: 
+  TODO.md: 
+  build: 
+  deno.json: 
+  deno.lock: 
+  deno: 
+  dist: 󱓞
+  go.mod: 
+  go.sum: 
+  pnpm: 
+  requirements.in: 
+  tests: 
+  # user dirs
+  applications: 
+  dev: 
+  documents: 󱔗
+  downloads: 
+  library: 󱉟
+  movies: 
+  music: 
   pictures: 
   public: 
+  ## me and dotfiles
   users: 
   winnie: 
-  requirements.in: 
-  .ipython: 
-  .venv: 
-  tests: 
-  zzz: 󰒲
-  zzz-rip: 󰮢
+  chezmoi: 
+  ## dev dirs
   01_agent-workbench: 󱜙
   02_spellbook: 
   03_sandboxes: 
   04_forks: 
   05_utils: 
+  zzz-rip: 󰮢
+  zzz: 󰒲
+  # git and github
+  .critique: 
+  .git: 
+  .github: 
+  gh-dash: 
+  gh: 
+  git: 
+  # network
+  .mitmproxy: 
+  .chrome: 
+  .chrome-debug: 
+  # media
+  spotify-player: 
+  _library: 󰌳
 extension:
+  astro: 
+  db: 
+  duckdb: 
   go: 
   http: 󱂛
+  sqlite: 
