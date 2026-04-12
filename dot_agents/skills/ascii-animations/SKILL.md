@@ -157,10 +157,10 @@ Characters define the visual language. Useful palettes:
 
 | Purpose              | Characters                    |
 | -------------------- | ----------------------------- |
-| Botanical / organic  | ` ·.,:;*+~'"`                 |
+| Botanical / organic  | `·.,:;*+~'"`                 |
 | Box drawing          | `│┤┐└┘├─┬┴┼╔╗╚╝═║`            |
 | Dense / noisy        | `░▒▓█▄▀■□▪▫`                  |
-| Dot density gradient | ` .:-=+*#%@` (space to dense) |
+| Dot density gradient | `.:-=+*#%@` (space to dense) |
 | Sparkle / ethereal   | `·✦✧⋆˚°.`                     |
 | Matrix / digital     | `ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘ0123456789`    |
 
@@ -268,9 +268,9 @@ For grids larger than ~2000 cells at 24+ fps:
 
 Deep-dives for specific techniques. Load when the task calls for it:
 
-- [Wave patterns, sway, and physics-based movement](references/wave-and-movement.md)
-- [Color integration, gradients, and glow effects](references/color-and-glow.md)
-- [Particle systems (fire, sparks, confetti)](references/particle-systems.md)
-- [Full-screen compositing, parallax, and cellular automata](references/full-screen-and-compositing.md)
-- [UX flourishes: progress bars, spinners, typewriter, borders](references/ux-flourishes.md)
-- [Noise fields and procedural generation](references/noise-and-procedural.md)
+- [Wave patterns, sway, and physics-based movement](wave-and-movement.md)
+- [Color integration, gradients, and glow effects](color-and-glow.md)
+- [Particle systems (fire, sparks, confetti)](particle-systems.md)
+- [Full-screen compositing, parallax, and cellular automata](full-screen-and-compositing.md)
+- [UX flourishes: progress bars, spinners, typewriter, borders](ux-flourishes.md)
+- [Noise fields and procedural generation](noise-and-procedural.md)
