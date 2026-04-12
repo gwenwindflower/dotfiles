@@ -6,7 +6,7 @@ local bookmarks = {
 	{ key = { "l", "b" }, path = "~/.local/bin", desc = " Local bin" },
 	{ key = { "l", "s" }, path = "~/.local/share", desc = " Local share" },
 	{ key = { "c", "m" }, path = "~/.local/share/chezmoi", desc = "󰠧 Chez Moi" },
-	{ key = { "c", "s" }, path = "~/.local/share/chezmoi/symlink_agents", desc = " Agent Config" },
+	{ key = { "c", "s" }, path = "~/.local/share/chezmoi/dot_agents", desc = " Agent Config" },
 	{ key = { "c", "c" }, path = "~/.claude", desc = "󱜙 Claude Code Config" },
 	{ key = { "c", "o" }, path = "~/.local/share/chezmoi/private_dot_config/opencode", desc = "󱜙 OpenCode Config" },
 	{ key = { "l", "n" }, path = "~/.local/share/nvim", desc = " Neovim Plugins" },
