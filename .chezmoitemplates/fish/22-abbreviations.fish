@@ -182,7 +182,7 @@ abbr --add uvpy uv python
 abbr --add uvpyh "cd (uv python dir)"
 abbr --add uvpyi uv python install
 abbr --add uvpyls uv python list
-abbr --add uvpyu uv python upgrade
+abbr --add uvpyup uv python upgrade
 abbr --add uvt uv tool
 abbr --add uvti uv tool install
 abbr --add uvtid uv tool install . --reinstall
