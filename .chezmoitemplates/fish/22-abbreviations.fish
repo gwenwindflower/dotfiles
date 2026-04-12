@@ -254,6 +254,13 @@ abbr --add ghrc gh repo create
 abbr --add ghrcd gh repo create --push --private --source .
 abbr --add ghd gh dash
 abbr --add ghdo opo gh dash
+### blacksmith
+abbr --add bs blacksmith
+abbr --add bsau blacksmith auth status
+abbr --add bsal blacksmith auth login
+abbr --add bst blacksmith testbox
+abbr --add bstw blacksmith testbox warmup
+abbr --add bstr blacksmith testbox run
 ## interactive tools
 abbr --add gui lazygit
 abbr --add gcmm meteor
