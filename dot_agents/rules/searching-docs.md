@@ -4,7 +4,7 @@ If a user asks a question about syntax, package versions, some detail of a libra
 
 ## Searching and Fetching
 
-Use your web tools first. All agents have tools for Search (getting a list of results based on a query, often called the WebSearch tool or similar, or facilitated by an external tool like Exa or Tavily) and Fetch (getting the contents of single page - generally in markdown format which falls back to HTML if the site does not have AI-friendly markdown - often called the WebFetch tool or similar). Fetching is your friend for docs! Search is great to help you locate the docs, or if you need to find a good tutorial, or Q&A thread, etc. - but always prioritize the actual docs first.
+Use your web tools first. All agents have tools for Search (getting a list of results based on a query, often called the WebSearch tool or similar, or facilitated by an external tool like Exa or Tavily) and Fetch (getting the contents of single page - generally in markdown format which falls back to HTML if the site does not have AI-friendly markdown - often called the WebFetch tool or similar). Fetching is your friend for docs! Search is great to help you locate the docs, or if you need to find a good tutorial, or Q&A thread, etc. - but always prioritize the actual docs first. Use Fetch first before falling back to `curl`, you have a tendency to want to just `curl` that you need to work against.
 
 ## Using the Context7 CLI
 
