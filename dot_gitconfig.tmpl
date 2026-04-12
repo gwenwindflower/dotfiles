@@ -87,6 +87,8 @@
   datecomp = format:%h %G? %ad %cd %s
 
 [alias]
+  main = switch main
+  remain = rebase --interactive --autosquash main
   graph = log --graph --pretty=catppuccin-frappe --date=human --all
   r5 = log --graph --pretty=catppuccin-frappe --date=human -5
   r10 = log --graph --pretty=catppuccin-frappe --date=human -10
