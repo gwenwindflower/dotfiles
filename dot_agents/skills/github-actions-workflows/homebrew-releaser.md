@@ -1,15 +1,12 @@
----
-name: homebrew-tap-release
-description: Publish tools to the personal Homebrew tap at g15r/homebrew-tap via homebrew-releaser. Use when setting up Homebrew distribution for a new project, debugging a failed tap release, or reviewing the release workflow.
----
-
-# Homebrew Tap Release
+# Homebrew Tap Release (personal flow)
 
 Publish compiled binaries to the personal Homebrew tap at [g15r/homebrew-tap](https://github.com/g15r/homebrew-tap) using the [homebrew-releaser](https://github.com/Justintime50/homebrew-releaser) GitHub Action.
 
+> Before editing the workflow YAML below, follow the SKILL.md rules: verify the current runner image and look up the latest versions of every `uses:` action on the marketplace. The pins below may be stale.
+
 ## Tap details
 
-- **Owner**: `g15r` (GitHub org used for public packages)
+- **Owner**: `g15r`
 - **Tap repo**: `g15r/homebrew-tap`
 - **Formula folder**: `Formula/`
 - **Users install via**: `brew install g15r/tap/<formula>`
@@ -18,8 +15,8 @@ Publish compiled binaries to the personal Homebrew tap at [g15r/homebrew-tap](ht
 
 The release pipeline has two jobs triggered by `on: release: types: [published]`:
 
-1. **build** -- compile cross-platform binaries, package tarballs, upload as release assets
-2. **homebrew** -- `homebrew-releaser@v3` clones the tap repo, generates a Ruby formula from the release assets, and pushes it
+1. **build** — compile cross-platform binaries, package tarballs, upload as release assets
+2. **homebrew** — `homebrew-releaser` clones the tap repo, generates a Ruby formula from the release assets, and pushes it
 
 homebrew-releaser auto-generates the formula file (named after the repo), computes checksums, and commits to the tap. It also updates the tap README table when `update_readme_table: true`.
 
@@ -40,15 +37,13 @@ winline-0.4.0-linux-arm64.tar.gz
 winline-0.4.0-linux-amd64.tar.gz
 ```
 
-The download URL pattern homebrew-releaser constructs:
+Download URL pattern homebrew-releaser constructs:
 
 ```text
 https://github.com/{owner}/{repo}/releases/download/{tag}/{repo}-{version}-{os}-{arch}.tar.gz
 ```
 
 ## Target platforms
-
-Enable per-platform with boolean flags. All four are typically enabled:
 
 | Flag | Platform |
 | --- | --- |
@@ -129,7 +124,7 @@ Replace `<binary-name>` with the actual binary name (should match the repo name 
 
 ## Required secret
 
-`HOMEBREW_TAP_GITHUB_TOKEN` -- a GitHub PAT with `repo` scope, stored as a repository secret on the **source** repo (not the tap). It needs write access to `g15r/homebrew-tap`.
+`HOMEBREW_TAP_GITHUB_TOKEN` — a GitHub PAT with `repo` scope, stored as a repository secret on the **source** repo (not the tap). It needs write access to `g15r/homebrew-tap`.
 
 ## Key homebrew-releaser options
 
@@ -155,7 +150,7 @@ Replace `<binary-name>` with the actual binary name (should match the repo name 
 
 ## Troubleshooting
 
-- **Checksum mismatch**: tarball naming doesn't match the expected pattern -- verify `{repo}-{version}-{os}-{arch}.tar.gz` with no `v` prefix on version
+- **Checksum mismatch**: tarball naming doesn't match the expected pattern — verify `{repo}-{version}-{os}-{arch}.tar.gz` with no `v` prefix on version
 - **Formula not updating**: check that `HOMEBREW_TAP_GITHUB_TOKEN` has write access to the tap repo
 - **`brew audit` failures**: ensure semver tags (`v1.2.3`), valid `install` and `test` blocks
 - **Binary not found after install**: the `install` block must reference the exact filename inside the tarball
