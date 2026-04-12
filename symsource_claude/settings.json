@@ -66,11 +66,13 @@
 			"Skill(neovim-plugin-development)",
 			"Skill(rotz-dotfiles)",
 			"WebFetch(domain:agentskills.io)",
-			"WebFetch(domain:lunarmodules.github.io)",
+			"WebFetch(domain:backend.blacksmith.sh)",
 			"WebFetch(domain:chezmoi.io)",
 			"WebFetch(domain:claude.com)",
+			"WebFetch(domain:clireleases.blacksmith.sh)",
 			"WebFetch(domain:codecompanion.olimorris.dev)",
 			"WebFetch(domain:context7.com)",
+			"WebFetch(domain:docs.blacksmith.sh)",
 			"WebFetch(domain:docs.brew.sh)",
 			"WebFetch(domain:docs.deno.com)",
 			"WebFetch(domain:fishshell.com)",
@@ -79,6 +81,7 @@
 			"WebFetch(domain:jsr.io)",
 			"WebFetch(domain:lazy.folke.io)",
 			"WebFetch(domain:lazyvim.org)",
+			"WebFetch(domain:lunarmodules.github.io)",
 			"WebFetch(domain:neovim.io)",
 			"WebFetch(domain:opencode.ai)",
 			"WebFetch(domain:pkg.go.dev)",
@@ -194,6 +197,8 @@
 				"sum.golang.org",
 				"storage.googleapis.com",
 				"context7.com",
+				"backend.blacksmith.sh",
+				"clireleases.blacksmith.sh",
 				"jsr.io"
 			],
 			"allowLocalBinding": true
@@ -205,6 +210,8 @@
 				"~/.bun/install/cache**",
 				"~/.cache/pnpm/**",
 				"~/.local/share/pnpm/**",
+				"~/.blacksmith/**",
+				"~/.go/pkg/mod/cache/**",
 				"~/.config/.wrangler/**",
 				"~/Library/Caches/go-build/**"
 			]
@@ -256,5 +263,6 @@
 		]
 	},
 	"syntaxHighlightingDisabled": false,
-	"voiceEnabled": true
+	"voiceEnabled": true,
+	"skipDangerousModePermissionPrompt": true
 }
