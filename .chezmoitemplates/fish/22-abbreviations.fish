@@ -248,6 +248,7 @@ abbr --add micl mise config list
 abbr --add mics mise config set
 abbr --add mipth $HOME/.local/share/mise/installs/
 # git
+## github
 abbr --add ghro gh repo view -w
 abbr --add ghrc gh repo create
 abbr --add ghrcd gh repo create --push --private --source .
@@ -256,6 +257,7 @@ abbr --add ghdo opo gh dash
 ## interactive tools
 abbr --add gui lazygit
 abbr --add gcmm meteor
+### forgit
 abbr --add gfgii "git forgit ignore >> .gitignore"
 abbr --add gfg git forgit
 abbr --add gfga git forgit add
