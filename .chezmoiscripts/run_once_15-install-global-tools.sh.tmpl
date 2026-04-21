@@ -1,0 +1,60 @@
+{{ if eq .chezmoi.os "darwin" "linux" -}}
+#!/bin/bash
+# Install global CLIs managed by pnpm and uv
+# Runs after Homebrew packages (15 > 10) so both tools are available
+
+set -euo pipefail
+
+{{ template "script-log.sh" }}
+
+{{- $os := .chezmoi.os -}}
+{{- $pkgs := index .packages $os }}
+
+# --- pnpm globals ---
+
+{{ if and (hasKey $pkgs "pnpm") $pkgs.pnpm.globals -}}
+if ! command -v pnpm >/dev/null 2>&1; then
+  log_error "pnpm not found — Homebrew install may have failed"
+  exit 1
+fi
+
+log_step "Installing pnpm global packages"
+
+{{ range $pkgs.pnpm.globals -}}
+if pnpm ls -g {{ . | quote }} --depth=0 >/dev/null 2>&1; then
+  log_info "{{ . }} already installed"
+else
+  log_info "Installing {{ . }}..."
+  pnpm add -g {{ . | quote }}
+  log_success "{{ . }}"
+fi
+{{ end -}}
+
+log_success "pnpm global packages complete"
+{{ end -}}
+
+# --- uv tools (darwin only) ---
+
+{{ if and (hasKey $pkgs "uv") $pkgs.uv.tools -}}
+if ! command -v uv >/dev/null 2>&1; then
+  log_error "uv not found — Homebrew install may have failed"
+  exit 1
+fi
+
+log_step "Installing uv tools"
+
+{{ range $pkgs.uv.tools -}}
+if uv tool list 2>/dev/null | grep -q "^{{ . }} "; then
+  log_info "{{ . }} already installed"
+else
+  log_info "Installing {{ . }}..."
+  uv tool install {{ . | quote }}
+  log_success "{{ . }}"
+fi
+{{ end -}}
+
+log_success "uv tools complete"
+{{ end -}}
+{{ else -}}
+{{ fail (printf "unsupported OS: %s" .chezmoi.os) }}
+{{ end -}}

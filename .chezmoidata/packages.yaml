@@ -3,13 +3,17 @@ packages:
     homebrew:
       taps:
         - charmbracelet/tap
+        - columnar-tech/tap
         - databricks/tap
         - dbcli/tap
+        - dedene/tap
+        - g15r/tap
         - huseyinbabal/tap
         - jesseduffield/lazydocker
         - mutagen-io/mutagen
         - oven-sh/bun
         - pulumi/tap
+        - redpanda-data/tap
         - sassman/tap
         - stefanlogue/tools
         - yakitrak/yakitrak
@@ -54,7 +58,10 @@ packages:
         - go
         - go-task
         - gum
+        - harvestcli
+        - hcloud
         - hyperfine
+        - imagemagick
         - jless
         - jq
         - k9s
@@ -66,6 +73,7 @@ packages:
         - luarocks
         - macchina
         - mise
+        - mole
         - moor
         - mq
         - mutagen
@@ -82,6 +90,7 @@ packages:
         - procs
         - pulumi
         - pygments
+        - redpanda
         - resvg
         - rich-cli
         - ripgrep
@@ -105,6 +114,7 @@ packages:
         - vhs
         - vivid
         - wget
+        - winline
         - woff2
         - worktrunk
         - yazi
@@ -122,6 +132,7 @@ packages:
         - claude-code
         - copilot-cli
         - copilot-money
+        - dbc
         - font-maple-mono
         - font-maple-mono-nf
         - font-mona-sans
@@ -147,9 +158,22 @@ packages:
         - screen-studio
         - shortcat
         - slack
+        - tailscale-app
         - wispr-flow
         - zoom
+    pnpm:
+      globals:
+        - "@agentclientprotocol/claude-agent-acp"
+        - "@readwise/cli"
+    uv:
+      tools:
+        - ipython
+        - marimo
+        - rematter
   linux:
+    pnpm:
+      globals:
+        - "@agentclientprotocol/claude-agent-acp"
     homebrew:
       taps:
       formulae:
