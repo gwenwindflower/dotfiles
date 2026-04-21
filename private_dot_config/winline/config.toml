@@ -36,9 +36,17 @@ cache_ttl_seconds = 5
 [[layout.rows]]
 style           = "background"
 separator       = "powerline"
-first_separator = "powerline"
-last_separator  = "powerline"
-segments        = ["model", "directory", "git", "languages", "context"]
+first_separator = "round"
+last_separator  = "round"
+segments        = ["model", "directory", "languages"]
+
+[[layout.rows]]
+style           = "foreground"
+separator       = "none"
+first_separator = "none"
+last_separator  = "none"
+
+segments = ["git", "worktrees", "context"]
 
 # ─── Segments ─────────────────────────────────────────────────────────────────
 # Per-segment color and option overrides. Segments not included in any
@@ -68,8 +76,8 @@ color = "peach"
 # Most useful on "foreground"-style rows where the base bg is neutral.
 
 [segments.git]
-color             = "yellow"
-colorized_status  = false
+color             = "text"
+colorized_status  = true
 
 # ── Worktrees (opt-in) ───────────────────────────────────────────────────────
 # Shows a count badge of worktrees where a Claude session is waiting on input.
@@ -124,12 +132,14 @@ bar_empty  = "░"   # U+2591 LIGHT SHADE
 #   Mocha:     https://github.com/catppuccin/catppuccin#mocha
 
 [palette]
-mauve  = [202, 158, 230]  # #CA9EE6
-peach  = [239, 159, 118]  # #EF9F76
-yellow = [229, 200, 144]  # #E5C890
-green  = [166, 209, 137]  # #A6D189
-blue   = [137, 180, 250]  # #89B4FA
-pink   = [244, 184, 228]  # #F4B8E4
-maroon = [234, 153, 156]  # #EA999C
-base   = [ 48,  52,  70]  # #303446 — segment background
-crust  = [ 35,  38,  52]  # #232634 — text on segments (dark)
+mauve  = [202, 158, 230]   # #CA9EE6
+peach  = [239, 159, 118]   # #EF9F76
+yellow = [229, 200, 144]   # #E5C890
+green  = [166, 209, 137]   # #A6D189
+blue   = [137, 180, 250]   # #89B4FA
+pink   = [244, 184, 228]   # #F4B8E4
+maroon = [234, 153, 156]   # #EA999C
+lavender = [186, 187, 241] # #babbf1
+text   = [198, 208, 245]   # #c6d0f5 - text for foreground
+base   = [ 48,  52,  70]   # #303446 — background
+crust  = [ 35,  38,  52]   # #232634 — text on background (dark)
