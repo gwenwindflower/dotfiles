@@ -10,23 +10,27 @@ name:
   # data
   .duckdb: 󰇥
   .duckdb_history: 󰇥
-  .sqlfluff: 
-  .sqlfluffignore: 
+  .sqlfluff: 󱙋
+  .sqlfluffignore: 󱙋
   # ai
   .agents: 󱙺
   .claude: 󱙺
+  .docs: 
   .copilot: 
   .crush: 󱙺
   gh-copilot: 
   github-copilot: 
   # coding
   # (languages, package managers, runtimes, etc.)
+  .aliases: 
   .astro: 
   .bun: 
   .bun_repl_history: 
   .deno: 
   .go: 
   .ipython: 
+  .pytest_cache: 
+  .ruff_cache: 
   .irb_history: 
   .lesshst: 󱡴
   .luarocks: 
