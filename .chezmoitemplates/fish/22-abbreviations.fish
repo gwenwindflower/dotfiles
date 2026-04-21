@@ -32,6 +32,8 @@ abbr --add chme chmod 700
 # editor
 abbr --add v nvim
 abbr --add vi nvim
+# network
+abbr --add ipext "curl https://api64.ipify.org | fish_clipboard_copy"
 # ssh (kitten ssh — macOS only, kitty terminal)
 abbr --add sshk kitten ssh -A
 abbr --add ssha ssh -A
