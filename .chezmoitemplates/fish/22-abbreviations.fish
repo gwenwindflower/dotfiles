@@ -18,6 +18,9 @@ abbr --add fun functions
 abbr --add cmd command
 # processes
 abbr --add pps procs
+abbr --add ppsm procs --sortd usagemem
+abbr --add ppsc procs --sortd usagecpu
+abbr --add pps procs
 # dir and file management
 abbr --add cp. "pwd | fish_clipboard_copy"
 abbr --add mkd mkdir -p
