@@ -63,4 +63,13 @@ return {
       { "<LocalLeader>se", "<cmd>ScissorsEditSnippet<cr>", mode = { "n" }, desc = "Edit snippet" },
     },
   },
+  -- Treesitter grammar for vhs files
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = function(_, opts)
+      opts.ensure_installed = opts.ensure_installed or {}
+      table.insert(opts.ensure_installed, "vhs")
+      return opts
+    end,
+  },
 }
