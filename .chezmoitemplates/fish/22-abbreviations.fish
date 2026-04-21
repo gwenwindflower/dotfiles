@@ -240,7 +240,7 @@ abbr --add but bun test
 abbr --add bux bunx
 ### deno
 abbr --add dn deno
-abbr --add dig deno install -grAf --root $DENO_HOME
+abbr --add dncli deno install -grAf --root $DENO_HOME
 abbr --add dnt deno task
 ### mise
 abbr --add mi mise
