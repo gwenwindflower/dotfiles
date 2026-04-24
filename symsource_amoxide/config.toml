@@ -1,11 +1,12 @@
 active_profiles = []
 
+[shell.fish]
+use_abbr = true
+
 [aliases]
 comcomp = "{{1}} completion fish > /Users/winnie/.local/share/chezmoi/private_dot_config/fish/completions/{{1}}.fish"
 comcomps = "{{1}} completions fish > /Users/winnie/.local/share/chezmoi/private_dot_config/fish/completions/{{1}}.fish"
-d = "pnpm run dev"
 ddb = "duckdb --cmd '.read ~/dev/02_spellbook/pastel_duck_theme.sql'"
-dp = "pnpm run build; and pnpm run preview:workers"
 gri = "git rebase -i --autosquash HEAD~{{1}}"
 ltd = "lsd --tree --depth={{1}}"
 ssx = "ssh -A {{1}}.exe.xyz"
