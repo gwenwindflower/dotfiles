@@ -266,6 +266,7 @@
     "allowUnsandboxedCommands": false,
     "network": {
       "allowedDomains": [
+        "api.github.com",
         "backend.blacksmith.sh",
         "clireleases.blacksmith.sh",
         "context7.com",
