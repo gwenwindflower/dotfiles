@@ -1,34 +1,29 @@
 ---
 name: writing-prose
-description: Always use this skill when writing or editing prose. Do **NOT** use for agent context files, readmes, tool descriptions, or other functional writing tasks.
+description: "Improve narrative and expository writing: blog posts, articles, fiction, marketing copy, documentation prose. NOT for agent context files (AGENTS.md, rules, skills, memory), READMEs, tool descriptions, CLI help text, or any structured/functional markdown."
 ---
 
 # Writing Prose
 
-Apply these rules to any writing task: generating prose, or editing existing prose you're given to review and improve.
+Rules for generating or editing prose. Targets narrative and expository writing — blog posts, articles, essays, fiction, documentation aimed at human readers.
 
-These rules eliminate common patterns in low quality writing (both AI-generated and human) that frustrate readers with empty predictability, causing them to disengage.
+**Does NOT apply to:** AGENTS.md, rules, skills, memory files, READMEs, tool descriptions, CLI output, commit messages, or any functional/structured markdown. For agent context files, use the `agent-context-docs` skill instead.
 
 ## Core Principles
 
-1. **Write directly** - Use the active voice with clear, punchy word choices instead of stacking adjectives, emphasis filler, cliches, and predictable metaphors
-2. **Avoid formulaic patterns** - Sidestep binary contrasts, predictable opening phrases, and repetitive dramatic structures
+1. **Write directly** — active voice, clear word choices, no stacked adjectives or emphasis filler
+2. **Avoid formulaic patterns** — no binary contrasts, predictable openers, or repetitive dramatic structures
 
 ## Reference Files
 
-Full guidance is modularized in these guides:
-
-- [Phrases and Wording](phrases-and-wording.md)
-- [Voice and Flow](voice-and-flow.md)
+- [Phrases and Wording](phrases-and-wording.md) — words, phrases, and cliches to eliminate or scrutinize
+- [Voice and Flow](voice-and-flow.md) — sentence structure, rhythm, and rhetorical anti-patterns
 
 ## Editor Workflow
 
-After writing prose, you **MUST** start a review loop with the `writing-prose-editor` subagent. It will score the version of the work that you have generated or edited across 8 dimensions, assigning 1-5 points for each (40 points max). If the score is below 32, you must revise the prose based on the specific feedback provided by the editor and repeat the review loop until you achieve a passing score (≥ 32/40). **DO NOT** self-score or self-approve to bypass the editor's authority. They are your manager, you must go through their approval process.
+After writing prose, you **MUST** run a review loop with the `writing-prose-editor` subagent. It scores across 8 dimensions (1-5 pts each, 40 max). Revise and resubmit until score reaches 32/40. Do not self-score or bypass the editor.
 
-1. Write prose following the Core Principles
-2. Pass the full prose to the `writing-prose-editor` subagent
-3. Review the score and specific feedback
-4. If score < 32/40, revise based on the exact issues cited and repeat from step 2
-5. Present the final prose only once it passes (≥ 32/40)
-
-Iterate until passing. The editor is the authoritative scorer.
+1. Write following Core Principles
+2. Submit full prose to `writing-prose-editor` subagent
+3. If score < 32/40, revise based on cited issues, repeat from step 2
+4. Present only after passing (≥ 32/40)
