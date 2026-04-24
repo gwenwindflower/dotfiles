@@ -215,6 +215,10 @@
           {
             "type": "command",
             "command": "$HOME/.claude/hooks/set-sandbox-tmpdir.sh"
+          },
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/set-git-nosign.sh"
           }
         ]
       }
