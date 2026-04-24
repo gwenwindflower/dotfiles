@@ -1,3 +1,3 @@
 function cco
-    opo claude $argv
+    opo claude $argv --allow-dangerously-skip-permissions
 end
