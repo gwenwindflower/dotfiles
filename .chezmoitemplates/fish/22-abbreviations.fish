@@ -55,7 +55,7 @@ abbr --add --position anywhere -- qq '>/dev/null'
 abbr --add --position anywhere -- qqq '>/dev/null 2>&1'
 # dotfiles
 abbr --add cm chezmoi
-abbr --add cmd chezmoi cd
+abbr --add cmcd chezmoi cd
 abbr --add cme chezmoi edit
 abbr --add cmee ee -e ~/.local/share/chezmoi
 abbr --add cma chezmoi add
@@ -67,6 +67,7 @@ abbr --add cmxf chezmoi apply ~/.config/fish/
 abbr --add cmxv chezmoi apply ~/.config/nvim/
 abbr --add cmxa chezmoi apply ~/.agents/
 abbr --add cmc chezmoi cat
+abbr --add cmd chezmoi diff
 # runners
 abbr --add tk task
 abbr --add mk make
