@@ -13,3 +13,5 @@ node_modules
 .swp
 .git
 .claude/worktrees/**
+.sprite
+.sprites
