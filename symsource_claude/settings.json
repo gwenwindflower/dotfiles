@@ -284,6 +284,7 @@
     },
     "filesystem": {
       "allowWrite": [
+        "~/.agentbrowser",
         "~/.local/share/graveyard/**",
         "~/.blacksmith/**",
         "~/.bun/install/cache**",
