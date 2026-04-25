@@ -104,7 +104,7 @@ filters:
 ### Filter Operators
 
 | Operator | Description |
-|----------|-------------|
+| ---------- | ------------- |
 | `==` | equals |
 | `!=` | not equal |
 | `>` | greater than |
@@ -126,7 +126,7 @@ filters:
 ### File Properties Reference
 
 | Property | Type | Description |
-|----------|------|-------------|
+| ---------- | ------ | ------------- |
 | `file.name` | String | File name |
 | `file.basename` | String | File name without extension |
 | `file.path` | String | Full path to file |
@@ -177,7 +177,7 @@ formulas:
 Most commonly used functions. For the complete reference of all types (Date, String, Number, List, File, Link, Object, RegExp), see [FUNCTIONS_REFERENCE.md](references/FUNCTIONS_REFERENCE.md).
 
 | Function | Signature | Description |
-|----------|-----------|-------------|
+| ---------- | ----------- | ------------- |
 | `date()` | `date(string): date` | Parse string to date (`YYYY-MM-DD HH:mm:ss`) |
 | `now()` | `now(): date` | Current date and time |
 | `today()` | `today(): date` | Current date (time = 00:00:00) |
@@ -269,7 +269,7 @@ views:
 ## Default Summary Formulas
 
 | Name | Input Type | Description |
-|------|------------|-------------|
+| ------ | ------------ | ------------- |
 | `Average` | Number | Mathematical mean |
 | `Min` | Number | Smallest number |
 | `Max` | Number | Largest number |

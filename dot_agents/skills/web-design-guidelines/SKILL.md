@@ -24,7 +24,7 @@ Review a set of files for compliance with Web Interface Guidelines.
 
 **Remember**: fetch fresh guidelines before each review:
 
-```
+```text
 https://raw.githubusercontent.com/vercel-labs/web-interface-guidelines/main/command.md
 ```
 

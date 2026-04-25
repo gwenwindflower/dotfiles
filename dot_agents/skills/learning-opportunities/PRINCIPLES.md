@@ -4,13 +4,13 @@ This document provides the scientific rationale for the techniques in SKILL.md. 
 
 ## Core insight: We're often wrong about what helps us learn
 
-Misconceptions about learning are common and predict long-term performance differences between efficient and inefficient learning approaches. Our minds can confuse the *experience of effort* with *actual learning*. Also, our minds can confuse the *experience of fluency* with *actual knowledge*. Strategies that learners assume are productive because they feel high effort often aren't, whereas study strategies that feel easy to learners can often work better than we expect. At the same time, productive struggle is more productive than we realize, and learners need to encounter mistakes and feedback to progress. 
+Misconceptions about learning are common and predict long-term performance differences between efficient and inefficient learning approaches. Our minds can confuse the *experience of effort* with *actual learning*. Also, our minds can confuse the *experience of fluency* with *actual knowledge*. Strategies that learners assume are productive because they feel high effort often aren't, whereas study strategies that feel easy to learners can often work better than we expect. At the same time, productive struggle is more productive than we realize, and learners need to encounter mistakes and feedback to progress.
 
 Focusing on long-term learning outcomes, rather than short-term performance, helps learners.
 
 ---
 
-## The Generation Effect & The Power of Testing 
+## The Generation Effect & The Power of Testing
 
 **Finding:** Users encode information better when they produce it rather than passively consume it. Testing produces better delayed retention than passive consumption and passive review, even when immediate performance is worse.
 
@@ -70,9 +70,10 @@ Focusing on long-term learning outcomes, rather than short-term performance, hel
 
 **Mechanism:** Effort during encoding creates stronger, more durable learning. Specific and manageable challenges also promote knowledge transfer.
 
-**Risk in AI-assisted work:** Users often optimize for short-term performance (feeling fluent, moving fast) at the expense of long-term capability, while underestimating the learning gain from productive struggle. 
+**Risk in AI-assisted work:** Users often optimize for short-term performance (feeling fluent, moving fast) at the expense of long-term capability, while underestimating the learning gain from productive struggle.
 
 **Implications:**
+
 - Exercises should require effort without being frustrating
 - Struggle during learning is often a sign it's working, not failing
 - Slowing down can produce more value over time than optimizing for throughput
@@ -91,7 +92,7 @@ Focusing on long-term learning outcomes, rather than short-term performance, hel
 
 **Risk in AI-assisted work:** Generated code that's quickly produced can make users feel the illusion that they understand it even when they don't. The fluency of the output masks gaps in your mental model.
 
-**Application:** Encourage user to self-navigate through new files and do hands-on testing of their understanding. Unpack mental models by asking about consequences of specific changes. 
+**Application:** Encourage user to self-navigate through new files and do hands-on testing of their understanding. Unpack mental models by asking about consequences of specific changes.
 
 ### Effort Illusion
 
@@ -99,7 +100,7 @@ Focusing on long-term learning outcomes, rather than short-term performance, hel
 
 **Learner Misconception:** Grinding through tasks creates a sense of productivity that may not correspond to skill development. High output can coexist with skill stagnation.
 
-**Risk in AI-assisted work:** Shipping lots of code can feel like growth even when you're not building transferable understanding. Users may not notice production fatigue and burnout that decreases their ability to verification and self-monitoring. 
+**Risk in AI-assisted work:** Shipping lots of code can feel like growth even when you're not building transferable understanding. Users may not notice production fatigue and burnout that decreases their ability to verification and self-monitoring.
 
 **Application:** Use retrieval exercises to test actual understanding. Identify learning opportunities at major project turning points.
 
@@ -111,7 +112,8 @@ Focusing on long-term learning outcomes, rather than short-term performance, hel
 
 **Mechanism:** Passive exposure creates recognition and familiarity but is less efficient for long-term retention, whereas active processing builds retrieval and transfer.
 
-**Application:** 
+**Application:**
+
 - Asking "what do you think this does" beats explaining what it does
 - Having users locate code beats showing them code
 - Teach-it-back exercises test real understanding
@@ -145,6 +147,7 @@ Focusing on long-term learning outcomes, rather than short-term performance, hel
 **Finding:** Learners who monitor and adjust their own learning strategies outperform those who don't, independent of raw ability. Experts learn to harness strategic metacognitive practices to transcend their original cognitive constraints while problem-solving.
 
 **Key capabilities:**
+
 - Monitoring: Knowing when you understand vs. when you don't
 - Control: Adjusting strategies based on that monitoring
 - Calibration: Accurately judging your own competence
@@ -166,6 +169,7 @@ The combination of these principles points to a specific risk profile for AI-ass
 5. **Testing and retrieval underused** Fewer opportunities to benefit from testing
 
 The techniques in SKILL.md are designed to counteract these specific risks by reintroducing:
+
 - Active generation (predictions, explanations, sketches)
 - Retrieval practice (check-ins, teach-it-back, self-testing)
 - Deliberate pauses (spacing, reflection)
@@ -175,11 +179,11 @@ The techniques in SKILL.md are designed to counteract these specific risks by re
 
 ## Sources
 
-- Bjork, R. A., Dunlosky, J., & Kornell, N. (2013). Self-regulated learning: Beliefs, techniques, and illusions. Annual review of psychology, 64(1), 417-444. 
+- Bjork, R. A., Dunlosky, J., & Kornell, N. (2013). Self-regulated learning: Beliefs, techniques, and illusions. Annual review of psychology, 64(1), 417-444.
 - Dunlosky, J., Rawson, K. A., Marsh, E. J., Nathan, M. J., & Willingham, D. T. (2013). Improving students’ learning with effective learning techniques: Promising directions from cognitive and educational psychology. Psychological Science in the Public interest, 14(1), 4-58.
 - Ericsson, K. A., Hoffman, R. R., & Kozbelt, A. (Eds.). (2018). The Cambridge handbook of expertise and expert performance. Cambridge University Press.
 - Giebl, S., Mena, S., Storm, B. C., Bjork, E. L., & Bjork, R. A. (2021). Answer first or Google first? Using the Internet in ways that enhance, not impair, one’s subsequent retention of needed information. Psychology Learning & Teaching, 20(1), 58-75.
-- Hicks, C. M., Lee, C. S., & Foster-Marks, K. (2025, March 15). The New Developer: AI Skill Threat, Identity Change & Developer Thriving in the Transition to AI-Assisted Software Development. https://doi.org/10.31234/osf.io/2gej5_v2
+- Hicks, C. M., Lee, C. S., & Foster-Marks, K. (2025, March 15). The New Developer: AI Skill Threat, Identity Change & Developer Thriving in the Transition to AI-Assisted Software Development. <https://doi.org/10.31234/osf.io/2gej5_v2>
 - Kalyuga, S. (2007). Expertise reversal effect and its implications for learner-tailored instruction. Educational psychology review, 19(4), 509-539.
 - Kang, S. H. (2016). Spaced repetition promotes efficient and effective learning: Policy implications for instruction. Policy Insights from the Behavioral and Brain Sciences, 3(1), 12-19.
 - Kornell, N. (2009). Optimising learning using flashcards: Spacing is more effective than cramming. Applied Cognitive Psychology: The Official Journal of the Society for Applied Research in Memory and Cognition, 23(9), 1297-1317.
@@ -190,4 +194,4 @@ The techniques in SKILL.md are designed to counteract these specific risks by re
 - Soderstrom, N. C., & Bjork, R. A. (2015). Learning versus performance: An integrative review. Perspectives on Psychological Science, 10(2), 176-199.
 - Sweller, J., & Cooper, G. A. (1985). The use of worked examples as a substitute for problem solving in learning algebra. Cognition and instruction, 2(1), 59-89.
 - Tankelevitch, L., Kewenig, V., Simkute, A., Scott, A. E., Sarkar, A., Sellen, A., & Rintel, S. (2024, May). The metacognitive demands and opportunities of generative AI. In Proceedings of the 2024 CHI Conference on Human Factors in Computing Systems (pp. 1-24).
-- Hicks, C. (2025). Cognitive helmets for the AI bicycle: Part 1. *Fight for the Human*. https://www.fightforthehuman.com/cognitive-helmets-for-the-ai-bicycle-part-1/
+- Hicks, C. (2025). Cognitive helmets for the AI bicycle: Part 1. *Fight for the Human*. <https://www.fightforthehuman.com/cognitive-helmets-for-the-ai-bicycle-part-1/>

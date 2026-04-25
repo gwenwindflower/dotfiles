@@ -162,6 +162,7 @@ Understanding Slack's sidebar helps you navigate efficiently:
 ```
 
 Key refs to look for:
+
 - `@e12` - Home tab (usually)
 - `@e13` - DMs tab
 - `@e14` - Activity tab
@@ -171,6 +172,7 @@ Key refs to look for:
 ## Tabs in Slack
 
 After clicking on a channel, you'll see tabs:
+
 - **Messages** - Channel conversation
 - **Files** - Shared files
 - **Pins** - Pinned messages
@@ -289,6 +291,6 @@ echo "See activity.png, dms.png, and unreads.png for full details"
 
 ## References
 
-- **Slack docs**: https://slack.com/help
-- **Web experience**: https://app.slack.com
+- **Slack docs**: <https://slack.com/help>
+- **Web experience**: <https://app.slack.com>
 - **Keyboard shortcuts**: Type `?` in Slack for shortcut list

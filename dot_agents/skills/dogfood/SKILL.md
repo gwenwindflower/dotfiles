@@ -13,7 +13,7 @@ Systematically explore a web application, find issues, and produce a report with
 Only the **Target URL** is required. Everything else has sensible defaults -- use them unless the user explicitly provides an override.
 
 | Parameter | Default | Example override |
-|-----------|---------|-----------------|
+| ----------- | --------- | ----------------- |
 | **Target URL** | _(required)_ | `vercel.com`, `http://localhost:3000` |
 | **Session name** | Slugified domain (e.g., `vercel.com` -> `vercel-com`) | `--session my-session` |
 | **Output directory** | `./dogfood-output/` | `Output directory: /tmp/qa` |
@@ -26,7 +26,7 @@ Always use `agent-browser` directly -- never `npx agent-browser`. The direct bin
 
 ## Workflow
 
-```
+```text
 1. Initialize    Set up session, output dirs, report file
 2. Authenticate  Sign in if needed, save state
 3. Orient        Navigate to starting point, take initial snapshot
@@ -210,11 +210,11 @@ agent-browser --session {SESSION} close
 ## References
 
 | Reference | When to Read |
-|-----------|--------------|
+| ----------- | -------------- |
 | [references/issue-taxonomy.md](references/issue-taxonomy.md) | Start of session -- calibrate what to look for, severity levels, exploration checklist |
 
 ## Templates
 
 | Template | Purpose |
-|----------|---------|
+| ---------- | --------- |
 | [templates/dogfood-report-template.md](templates/dogfood-report-template.md) | Copy into output directory as the report file |

@@ -69,7 +69,7 @@ This approach downloads lazy.nvim on first run, caches to `.tests/`, and handles
 .PHONY: test
 
 test:
-	nvim -l tests/run.lua
+ nvim -l tests/run.lua
 ```
 
 ## Project Layout

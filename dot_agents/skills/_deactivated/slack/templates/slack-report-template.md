@@ -8,11 +8,13 @@
 ## Summary
 
 ### Unread Counts
+
 - **Activity**: [NUMBER] unreads
 - **Direct Messages**: [NUMBER] unreads
 - **Channels**: [NUMBER] channels with unreads
 
 ### Key Findings
+
 - [FINDING 1]
 - [FINDING 2]
 - [FINDING 3]
@@ -43,11 +45,13 @@ List of channels with unread messages:
 ## Channel Snapshot
 
 ### Total Channels Accessible
+
 - **Public Channels**: [NUMBER]
 - **Private Channels**: [NUMBER]
 - **Group DMs**: [NUMBER]
 
 ### Channel Categories
+
 - **External Connections**: [COUNT] channels
 - **Starred**: [COUNT] channels
 - **Main Channels**: [COUNT] channels
@@ -67,6 +71,7 @@ List of channels with unread messages:
 ## Key Conversations
 
 ### [TOPIC 1]: Channel #engineering
+
 - **Status**: Ongoing discussion
 - **Participants**: @alice, @bob, @charlie
 - **Latest Update**: [TIME]
@@ -77,6 +82,7 @@ List of channels with unread messages:
 **Notes**: [Additional context about the conversation]
 
 ### [TOPIC 2]: DM with @alice
+
 - **Unread Messages**: 2
 - **Last Message**: [TIME]
 - **Summary**: [Brief summary of conversation]
@@ -87,12 +93,14 @@ List of channels with unread messages:
 ## Search Results
 
 ### Query: "[SEARCH_TERM]"
+
 - **Results**: [NUMBER] messages
 - **Date Range**: [FROM] to [TO]
 - **Top Channels**: [LIST]
 - **Key Themes**: [PATTERNS OBSERVED]
 
 #### Sample Results
+
 1. **[Date/Time]** in #[channel]: [Message snippet]
 2. **[Date/Time]** in #[channel]: [Message snippet]
 3. **[Date/Time]** in #[channel]: [Message snippet]
@@ -102,6 +110,7 @@ List of channels with unread messages:
 ## Reactions & Engagement
 
 ### Most Reacted-To Messages
+
 | Message | Emoji | Count | Channel |
 |---------|-------|-------|---------|
 | "Shipped to production" | 🎉 | 8 | #engineering |
@@ -112,11 +121,13 @@ List of channels with unread messages:
 ## Team Insights
 
 ### Most Active Users (by message volume)
+
 1. @alice - [COUNT] messages
 2. @bob - [COUNT] messages
 3. @charlie - [COUNT] messages
 
 ### Most Active Times
+
 - Peak hour: [TIME]
 - Peak day: [DAY]
 - Average messages per hour: [NUMBER]
@@ -126,6 +137,7 @@ List of channels with unread messages:
 ## Issues / Observations
 
 ### [ISSUE 1]: [Title]
+
 **Severity**: [Critical/High/Medium/Low]
 **Description**: [What was observed]
 **Evidence**: See `issue-1-screenshot.png`
@@ -147,11 +159,13 @@ List of channels with unread messages:
 ## Appendix: Raw Data
 
 ### Snapshot Output
+
 ```
 [Paste snapshot -i output here]
 ```
 
 ### JSON Snapshot (for parsing)
+
 ```json
 [Paste snapshot --json output here]
 ```
