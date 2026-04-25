@@ -1,5 +1,5 @@
 ---
-name: agent-context-docs
+name: agent-context-engineering
 description: "Author and maintain AGENTS.md, rules, skills, memory files, and other agent context markdown. Load when creating, editing, or refactoring any agent-focused file, or after significant codebase exploration to preserve learning."
 ---
 
