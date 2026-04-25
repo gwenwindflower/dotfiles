@@ -34,6 +34,7 @@ Not everything needs internal docs. Focus on:
 - **Recent additions**: New dependencies or tools that existing team members haven't documented yet
 
 Skip documenting things that are:
+
 - Well-known standard library usage
 - Self-evident from reading the code
 - Already covered by inline comments or existing docs
@@ -62,12 +63,14 @@ Use WebFetch to pull documentation from authoritative sources:
 ### What to Extract
 
 From each source, pull only:
+
 - Configuration options the project actually uses (or should know about)
 - Gotchas, caveats, and version-specific behavior
 - Patterns and conventions that explain existing code choices
 - Migration paths relevant to the project's current version
 
 Discard:
+
 - Installation instructions (the project already has the dependency)
 - Basic tutorials (the team presumably knows the basics)
 - Features the project doesn't use
@@ -101,6 +104,7 @@ Choose based on what the project already has:
 ### Quality Checks
 
 Before finishing, verify:
+
 - [ ] Every section references actual project files or patterns, not generic advice
 - [ ] No raw copied documentation — everything is synthesized
 - [ ] Consistent voice and format with existing project docs
