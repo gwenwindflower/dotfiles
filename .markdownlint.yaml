@@ -1,3 +1,4 @@
 line-length: false
 no-duplicate-heading: false
 first-line-h1: false
+no-inline-html: false
