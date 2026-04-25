@@ -9,68 +9,95 @@ Create and improve Agent Skills: modular packages extending agents with speciali
 
 **Skills must be very terse and high signal.** Every line should earn its place — if a sentence doesn't change agent behavior, cut it. Skill content is loaded into context on every trigger; bloat directly costs tokens and dilutes the instructions that matter.
 
-Reference docs: [overview.md](overview.md) is pulled from the official Agent Skills spec. Consult it when you need to look up schema details, frontmatter options, or structural rules — don't read it routinely. Other reference docs are similarly optional based on need.
+Reference docs: [overview](overview.md) is pulled from the official Agent Skills spec. Consult it when you need to look up schema details, frontmatter options, or structural rules — don't read it routinely.
 
 ## Workflow
 
 1. Ask clarifying questions about skill goals, preferences, or examples
 2. Plan contents (additional files? scripts? assets?)
-3. Consult [overview.md](overview.md) if you need schema or structural details
-4. Initialize with `rei init <skill-name>` (skip for existing skills)
+3. Consult [overview](overview.md) if you need schema or structural details
+4. Scaffold with `rei skills new <skill-name>` (skip for existing skills)
 5. Write SKILL.md, add scripts, modular docs, and assets as needed
-6. Validate with `rei validate <skill-path>`
+6. Validate with `rei skills validate <skill-path>`
+7. Distribute to agent targets with `rei sync` (or `rei skills sync <name>`)
 
 Follow in order. Skip steps only with clear reason. User can opt out of validation.
 
 ## `rei` CLI
 
-Skill management tool, available on PATH (`~/.local/bin/rei`).
+Skill management lives under `rei skills`. Reishi keeps a single source of truth and syncs to every configured agent target (Claude, OpenCode, the shared `~/.agents/` location, etc.) via copy or symlink.
+
+Skills source defaults to `~/.config/reishi/skills/`. Run `rei config show` to see effective config and targets.
 
 ### Create
 
 ```bash
-rei init my-skill                           # shared skill (~/.agents/skills/)
-rei init my-skill --path path/to/project    # project-scoped skill
-rei init --fork <GitHub repo url>           # fork external skill (must have SKILL.md in root)
+rei skills new my-skill                           # scaffold in skills.source
+rei skills new my-skill --path path/to/project    # custom location
 ```
 
-Default (no `--path`): creates in `~/.local/share/chezmoi/dot_agents/skills/`, applied by chezmoi to `~/.agents/skills/` and agent-specific locations. Prefer shared skills for broadly applicable knowledge (git prefs, shell env, frontend patterns).
+Generates a scaffold with a SKILL.md template plus `scripts/` and `assets/` dirs. Customize or remove as needed. Modular reference docs go directly in the skill root, linked from SKILL.md.
 
-Generates a scaffold with SKILL.md template, `scripts/`, `references/`, and `assets/` dirs. Customize or remove as needed.
+#### Structure Example
+
+Here's a real skill called github-actions-workflows, which bundles reusable workflow templates, modular reference docs, and an installation script for scaffolding workflows into projects:
+
+```text
+ github-actions-workflows
+├──  assets
+│   ├──  ci.yml.tmpl
+│   ├──  release-build.yml.tmpl
+│   └──  release.yml.tmpl
+├──  scripts
+│   └──  executable_install-workflow.sh
+├──  ci.md
+├──  release-build.md
+├──  release.md
+└──  SKILL.md
+```
+
+For simple skills, delete the `assets/` and `scripts/` dirs after scaffolding to reduce clutter.
 
 ### Validate
 
 ```bash
-rei validate <skill-path>
+rei skills validate <skill-path>
 ```
 
 ### Add External Skills
 
 ```bash
-rei add <GitHub repo url>    # works for single skills or directories, skips duplicates
+rei skills add <github-tree-url>             # single skill or whole skills dir
+rei skills add -tp <github-tree-url>         # track for future pulls, prefix with org
 ```
 
-### Refresh Reference Docs
+`-t/--track` records the remote in the lockfile so `rei skills pull` can fetch updates later. `-p/--prefix` namespaces skills (infer from GitHub org, or pass an explicit value).
 
-If overview.md and other reference docs are >1 month old, update before relying on them:
+### Sync and Pull
 
 ```bash
-rei refresh-docs
+rei sync                              # sync all constructs (skills/rules/docs) to targets
+rei skills sync [name] [--dry-run]    # skills only; --check inspects without writing
+rei skills pull [name] [--check]      # fetch updates for tracked skills (network)
 ```
+
+`sync` is local-only and always safe. `pull` hits GitHub for tracked skills, with divergence protection — locally modified files stay put and remote versions land alongside as `<filename>_1.md`.
+
+Auto-sync runs after `skills new`, `add`, `activate`, `deactivate`, and `pull`.
 
 ### List and Manage
 
 ```bash
-rei list                         # active skills
-rei list --all                   # include deactivated
-rei deactivate <skill-name>     # hide without deleting
-rei activate <skill-name>       # restore
+rei skills list                       # active skills
+rei skills list --all                 # include deactivated
+rei skills deactivate <skill-name>    # hide without deleting
+rei skills activate <skill-name>      # restore
 ```
 
 ## Loading Model
 
 1. **Startup**: Only name + description loaded — aim for <100 tokens each, this determines trigger quality
-2. **Triggered**: Full SKILL.md loaded — this is why terseness matters. Every token here competes with the user's actual task context. Link to modular docs for depth rather than inlining it
+2. **Triggered**: Full SKILL.md loaded — this is why terseness matters. Every token here competes with the user's actual task context. Link to modular docs for depth rather than inlining it — reference links should be formatted as `[example](example.md)` pointing to files colocated with the SKILL.md
 3. **On demand**: References, assets, scripts loaded as needed — use many small modular files for progressive disclosure
 
 ## Full Schema
