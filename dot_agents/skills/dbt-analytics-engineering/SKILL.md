@@ -20,7 +20,7 @@ Load on demand based on task:
 | [planning-and-discovery.md](planning-and-discovery.md) | Building new models or exploring unfamiliar data |
 | [data-tests.md](data-tests.md) | Adding or reviewing data test coverage |
 | [unit-testing.md](unit-testing.md) | Adding unit tests to validate SQL logic |
-| [cli-reference.md](cli-reference.md) | Complex selectors, defer, run results, static analysis |
+| [cli-commands-reference.md](cli-commands-reference.md) | Complex selectors, defer, run results, static analysis |
 | [debugging.md](debugging.md) | Fixing parse, compilation, or database errors |
 | [semantic-layer.md](semantic-layer.md) | Creating or modifying semantic models, metrics, dimensions |
 | [semantic-layer-latest-spec.md](semantic-layer-latest-spec.md) | YAML for dbt Core 1.12+ or Fusion semantic layer |
@@ -125,7 +125,7 @@ from {{ source('ecom', 'orders') }}
 
 This is critical for cost control when iterating. Apply to staging models that read from large source tables. In dev, you get fast iteration with sampled data. In prod (or CI with deferral), the limit disappears and you get the full dataset.
 
-For inline exploration with `dbt show`, use `--limit` instead (and push limits early in CTEs -- see [cli-reference.md](cli-reference.md)).
+For inline exploration with `dbt show`, use `--limit` instead (and push limits early in CTEs -- see [cli-commands-reference.md](cli-commands-reference.md)).
 
 ### Quick Selector Reference
 
@@ -137,7 +137,7 @@ For inline exploration with `dbt show`, use `--limit` instead (and push limits e
 | `tag:x,config.mat:y` | Intersection (comma) |
 | `model_a model_b` | Union (space) |
 
-Full selector reference in [cli-reference.md](cli-reference.md).
+Full selector reference in [cli-commands-reference.md](cli-commands-reference.md).
 
 ### Variables
 
