@@ -1,0 +1,7 @@
+{
+  "tasks": {
+    "fix-tables": "deno run --allow-read --allow-write fix-md-tables.ts",
+    "check-tables": "deno run --allow-read fix-md-tables.ts --check",
+    "preview-tables": "deno run --allow-read fix-md-tables.ts --dry-run"
+  }
+}
