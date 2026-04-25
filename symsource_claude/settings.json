@@ -131,6 +131,7 @@
 			"WebFetch(domain:backend.blacksmith.sh)",
 			"WebFetch(domain:chezmoi.io)",
 			"WebFetch(domain:claude.com)",
+			"WebFetch(domain:cliffy.io)",
 			"WebFetch(domain:clireleases.blacksmith.sh)",
 			"WebFetch(domain:codecompanion.olimorris.dev)",
 			"WebFetch(domain:context7.com)",
@@ -276,6 +277,7 @@
 			"allowLocalBinding": true
 		},
 		"filesystem": {
+			"allowRead": ["~/.claude/**"],
 			"allowWrite": [
 				"~/.agentbrowser",
 				"~/.local/share/graveyard/**",
@@ -337,6 +339,7 @@
 		]
 	},
 	"syntaxHighlightingDisabled": false,
-	"voiceEnabled": true,
-	"skipDangerousModePermissionPrompt": true
+	"effortLevel": "medium",
+	"skipDangerousModePermissionPrompt": true,
+	"voiceEnabled": true
 }
