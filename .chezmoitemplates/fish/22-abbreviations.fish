@@ -234,15 +234,26 @@ abbr --add pnf pnpm fix
 ### bun
 abbr --add bui bun install
 abbr --add bua bun add
-abbr --add buu bun upgrade
+abbr --add bur bun remove
+abbr --add buup bun upgrade
 abbr --add bus bun start
-abbr --add bur bun run
 abbr --add but bun test
-abbr --add bux bunx
+abbr --add buru bun run
+abbr --add buc bun create
 ### deno
 abbr --add dn deno
 abbr --add dncli deno install -grAf --root $DENO_HOME
 abbr --add dnt deno task
+abbr --add dntt deno task test
+abbr --add dnti deno task install
+abbr --add dnf deno fmt
+abbr --add dnc deno check
+abbr --add dni deno install
+abbr --add dna deno add
+abbr --add dnu deno remove
+abbr --add dnq deno info
+abbr --add dnsh deno repl
+abbr --add dnru deno run
 ### mise
 abbr --add mi mise
 abbr --add mia "mise activate fish | source"
