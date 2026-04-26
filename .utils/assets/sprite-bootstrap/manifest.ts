@@ -16,7 +16,10 @@ export type DirEntry = {
 
 export const files: FileEntry[] = [
 	{ src: "dot_claude/CLAUDE.md", dest: "~/.claude/CLAUDE.md" },
-	{ src: "sprite-bootstrap/settings.json", dest: "~/.claude/settings.json" },
+	{
+		src: ".utils/assets/sprite-bootstrap/settings.json",
+		dest: "~/.claude/settings.json",
+	},
 	{
 		src: "dot_claude/hooks/executable_inject-commit-reminder.sh",
 		dest: "~/.claude/hooks/inject-commit-reminder.sh",
@@ -33,7 +36,7 @@ export const files: FileEntry[] = [
 		executable: true,
 	},
 	{
-		src: "sprite-bootstrap/fish/abbreviations.fish",
+		src: ".utils/assets/sprite-bootstrap/fish/abbreviations.fish",
 		dest: "~/.config/fish/conf.d/abbreviations.fish",
 	},
 ];

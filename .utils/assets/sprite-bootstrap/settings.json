@@ -1,4 +1,6 @@
 {
+  "model": "opus",
+  "effortLevel": "xhigh",
   "permissions": {
     "defaultMode": "auto",
     "deny": [

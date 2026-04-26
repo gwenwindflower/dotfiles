@@ -18,10 +18,10 @@
 //       --allow-write=$HOME,$TMPDIR,/tmp \
 //       --allow-env=HOME,TMPDIR \
 //       --allow-run=git,tar,sudo,chsh,which,id \
-//       https://raw.githubusercontent.com/gwenwindflower/dotfiles/main/sprite-bootstrap/main.ts'
+//       https://raw.githubusercontent.com/gwenwindflower/dotfiles/main/.utils/sprite-bootstrap.ts'
 
-import { dirname } from "jsr:@std/path@^1/dirname";
-import { dirs, files } from "./manifest.ts";
+import { dirname } from "@std/path/dirname";
+import { dirs, files } from "./assets/sprite-bootstrap/manifest.ts";
 
 const REPO = "gwenwindflower/dotfiles";
 const BRANCH = "main";
