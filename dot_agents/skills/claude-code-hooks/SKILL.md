@@ -1,5 +1,5 @@
 ---
-name: claude-code-hooks-config
+name: claude-code-hooks
 description: Configure Claude Code hooks in settings.json (PreToolUse, PostToolUse, SessionStart, Stop, etc.). Use when adding or debugging Claude Code hooks, or automating actions tied to Claude tool events. Skip for OpenCode automations (use opencode-plugin-config).
 ---
 
