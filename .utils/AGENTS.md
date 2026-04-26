@@ -44,3 +44,5 @@ The runner source lives at `scripts/test.ts`, copied from the `deno-tools` skill
 | --- | --- | --- | --- |
 | `fix-md-tables.ts` | `deno task fix-tables` | `deno task test:tables` | Fix markdown table spacing to compact style |
 | `generate-logo.ts` | `deno task logo` | `deno task test:logo` | Render text to SVG (one `<path>` per glyph) using a local font |
+| `lscolors_to_toml.ts` | `deno task lscolors` | `deno task test:lscolors` | Convert `$LS_COLORS` into yazi-compatible TOML rules |
+| `sprite-bootstrap.ts` | invoked remotely via `spritecan` fish function | — | Bootstrap a fresh Fly.io Sprite from the dotfiles repo. Assets and manifest live under `assets/sprite-bootstrap/` |
