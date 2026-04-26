@@ -19,7 +19,7 @@ OSes supported:
 .chezmoitemplates/fish/           # Fish config fragment templates (assembled into config.fish)
 
 private_dot_config/               # → ~/.config/
-  fish/                           #   Assembled config.fish.tmpl + 91 functions + conf.d + completions
+  fish/                           #   config.fish.tmpl + exact_functions/ + exact_completions/ + exact_conf.d/
   nvim/                           #   LazyVim: lua/, snippets/, spell/, lockfile symlinks
   kitty/                          #   Darwin-only (excluded on linux via .chezmoiignore)
   karabiner/                      #   Darwin-only
@@ -29,7 +29,7 @@ private_dot_config/               # → ~/.config/
   yazi/                           #   File manager (package.toml symlinked, rest copied)
   mise/, uv/                      #   Language version managers (mise config.toml symlinked)
   delta/, gh/, gh-dash/, meteor/  #   Git ecosystem
-  opencode/                       #   OpenCode config (opencode.jsonc + tui.jsonc)
+  opencode/                       #   OpenCode config (opencode.jsonc + tui.jsonc + exact_agents/)
   bottom/, cmus/, freeze/, glow/  #   System monitor, music player, code snapshots, markdown viewer
   k9s/, lazydocker/, lazygit/     #   Container/cluster/git TUI tools
   lsd/, macchina/                 #   ls replacement, system info
@@ -38,11 +38,12 @@ private_dot_config/               # → ~/.config/
 
 dot_claude/                       # → ~/.claude/
   keybindings.json, statusline.toml  # Copied normally
-  symlink_settings.json.tmpl      #   → symlink_claude/settings.json
-  symlink_{rules,skills,agents,prompts}.tmpl  # → symlink_agents/*
+  exact_hooks/, exact_agents/     # Pruned-on-apply collections
+  symlink_settings.json.tmpl      #   → symsource_claude/settings.json
+  symlink_{rules,skills,agents,prompts}.tmpl  # → dot_agents/exact_{rules,skills}/...
 
 dot_agents/                       # → ~/.agents/ (shared agent hub)
-  symlink_{rules,skills,agents,prompts}.tmpl  # → symlink_agents/*
+  exact_rules/, exact_skills/     # Pruned-on-apply collections (source of truth for shared agent config)
 
 dot_gitconfig.tmpl                # → ~/.gitconfig (main git config, templated for OS)
 dot_gitignore_global              # → ~/.gitignore_global
@@ -50,12 +51,11 @@ dot_bashrc, dot_zshrc             # Minimal configs (worktrunk init, starship, z
 dot_profile.tmpl, dot_zprofile.tmpl  # Login shells (SHELL export, darwin SSH agent)
 private_dot_ssh/                  # → ~/.ssh/ (allowed_signers)
 
-# Symlink source dirs (in .chezmoiignore, not deployed as ~/*)
-symlink_nvim/                     # lazy-lock.json, lazyvim.json
-symlink_claude/                   # settings.json
-symlink_yazi/                     # package.toml
-symlink_mise/                     # config.toml
-symlink_agents/                   # rules/, skills/, agents/, prompts/
+# Symlink source dirs (in .chezmoiignore as `symsource_*/`, not deployed as ~/*)
+symsource_nvim/                   # lazy-lock.json, lazyvim.json
+symsource_claude/                 # settings.json
+symsource_yazi/                   # package.toml
+symsource_mise/                   # config.toml
 ```
 
 ## Key Patterns
@@ -73,21 +73,45 @@ chezmoi copies by default, which is the right call for almost everything — it 
 
 | Symlinked file | Why | Source dir |
 | --- | --- | --- |
-| `~/.config/nvim/lazy-lock.json` | `:Lazy sync` updates it | `symlink_nvim/` |
-| `~/.config/nvim/lazyvim.json` | LazyVim framework updates it | `symlink_nvim/` |
-| `~/.claude/settings.json` | Claude Code edits its own settings | `symlink_claude/` |
-| `~/.config/yazi/package.toml` | `ya pkg add` edits it | `symlink_yazi/` |
-| `~/.config/mise/config.toml` | `mise use` edits it | `symlink_mise/` |
+| `~/.config/nvim/lazy-lock.json` | `:Lazy sync` updates it | `symsource_nvim/` |
+| `~/.config/nvim/lazyvim.json` | LazyVim framework updates it | `symsource_nvim/` |
+| `~/.claude/settings.json` | Claude Code edits its own settings | `symsource_claude/` |
+| `~/.config/yazi/package.toml` | `ya pkg add` edits it | `symsource_yazi/` |
+| `~/.config/mise/config.toml` | `mise use` edits it | `symsource_mise/` |
 
-Source files live in `symlink_*/` dirs at repo root, excluded by `.chezmoiignore` so chezmoi won't deploy them as top-level home dirs. Each symlink is a `symlink_*.tmpl` file containing `{{ .chezmoi.sourceDir }}/symlink_*/path/to/source`.
+Source files live in `symsource_*/` dirs at repo root, excluded by `.chezmoiignore` so chezmoi won't deploy them as top-level home dirs. Each symlink is a `symlink_*.tmpl` file containing `{{ .chezmoi.sourceDir }}/symsource_*/path/to/source`.
+
+> [!NOTE]
+> `symsource_` is a **repo-local naming convention**, not a chezmoi prefix — chezmoi has no built-in behavior tied to it. We use it purely so a single `symsource_*/` glob in `.chezmoiignore` excludes all symlink-target source dirs at once, and so these dirs are visually distinct from the chezmoi-meaningful `symlink_*` prefix used on actual managed files. Glance at a dir name and you immediately know which side of the symlink relationship it's on.
 
 **When in doubt, copy.** Symlinks add complexity — they bypass template processing, require ignore entries, and create a second thing to reason about. Only reach for them when you'd otherwise lose data (tool writes to the file and chezmoi would overwrite it on next apply).
 
 #### Agent Config Symlinks
 
-There's a different set of symlinks related to coding agent configs, for a different use case. Some agent configs - specifically skills and rules - are largely compatible across agents. Because of this, many agents have standardized on using a unified `~/.agents/` directory for configs. Claude Code remains idiosyncratic with its own `~/.claude/` dir and `CLAUDE.md` files though. As such, we use `dot_agents/` as the source of truth for shared agent configs. Then, `dot_claude/` contains 2 symlinks to the `dot_agents/` target directories `~/.agents/skills` and `~/.agent/rules`, which map to `~/.claude/skills` and `~/.claude/rules` respectively. This way, shared configs can be edited in one place (`dot_agents/`), these are then applied out to `~/.agents/*` as normal, and Claude Code picks up those changes automatically via symlink without messing with duplication or drift.
+There's a different set of symlinks related to coding agent configs, for a different use case. Some agent configs - specifically skills and rules - are largely compatible across agents. Because of this, many agents have standardized on using a unified `~/.agents/` directory for configs. Claude Code remains idiosyncratic with its own `~/.claude/` dir and `CLAUDE.md` files though. As such, we use `dot_agents/` as the source of truth for shared agent configs (deployed via `dot_agents/exact_skills/`, `dot_agents/exact_rules/`, etc.). Then, `dot_claude/` contains symlinks pointing at the applied `~/.agents/skills` and `~/.agents/rules` targets, which surface as `~/.claude/skills` and `~/.claude/rules` respectively. This way, shared configs are edited in one place (`dot_agents/exact_skills/` and friends), applied out to `~/.agents/*` with full reconciliation, and Claude Code picks up those changes via symlink without duplication or drift.
 
 If other file relationships like this arise, where you need a set of files in 2 locations, this is the pattern to follow. Pick a unified source of truth to function like normal chezmoi-managed files, then symlink any secondary locations to those applied source-of-truth files.
+
+### `exact_` dirs: full reconciliation for churn-prone collections
+
+By default chezmoi only adds and updates target files — it never deletes a target file just because the corresponding source file is gone. That's the right default for tool-config dirs that hold a single config file, since other tools may also write into the same target dir. But for our own collections of independently-named *functionality* files (functions, completions, hooks, skills, rules, etc.), it means renamed or deleted source files leave stale ghosts in the target.
+
+The `exact_` directory prefix opts a dir into full reconciliation: on `chezmoi apply`, anything in the target that doesn't exist in source gets deleted. Currently used on:
+
+| Source dir | Target |
+| --- | --- |
+| `private_dot_config/fish/exact_functions/` | `~/.config/fish/functions/` |
+| `private_dot_config/fish/exact_completions/` | `~/.config/fish/completions/` |
+| `private_dot_config/fish/exact_conf.d/` | `~/.config/fish/conf.d/` |
+| `dot_agents/exact_skills/` | `~/.agents/skills/` |
+| `dot_agents/exact_rules/` | `~/.agents/rules/` |
+| `dot_claude/exact_hooks/` | `~/.claude/hooks/` |
+| `dot_claude/exact_agents/` | `~/.claude/agents/` |
+| `private_dot_config/opencode/exact_agents/` | `~/.config/opencode/agents/` |
+
+**When to add `exact_`:** the dir is a collection of independently-named functionality files (not a single tool's mixed config), source-of-truth lives entirely in this repo, and renames/deletions are routine. **When to skip:** the dir holds a single config file, or an external tool also writes into the target (e.g. `~/.config/yazi/plugins/` is populated by `ya pkg install`, so `exact_` would delete those plugins on every apply).
+
+The prefix is stripped on deploy, so `dot_agents/exact_skills/` still produces `~/.agents/skills/` — no other refs need to change when adding it.
 
 ### Nerd Font icons
 
@@ -123,6 +147,7 @@ Scripts are a surface to minimize. Each is an imperative action that can fail. I
 | `dot_` | Adds leading `.` to target |
 | `private_` | Sets 0600/0700 permissions |
 | `executable_` | Sets +x permission |
+| `exact_` | Dirs only — target is reconciled to match source exactly (deletes anything not in source) |
 | `symlink_` | Creates symlink (content = target path) |
 | `.tmpl` | Process as Go template before deploying |
 
@@ -162,5 +187,5 @@ chezmoi apply -n --verbose                        # Dry run with detailed output
 
 ## Related Docs
 
-- `symlink_agents/skills/chezmoi/` — Full chezmoi skill with deep reference docs on attributes, templates, scripts, hooks
+- `~/.agents/skills/chezmoi/` (source: `dot_agents/exact_skills/chezmoi/`) — Full chezmoi skill with deep reference docs on attributes, templates, scripts, hooks
 - [chezmoi documentation](https://www.chezmoi.io) — Official docs, comprehensive reference for all features
