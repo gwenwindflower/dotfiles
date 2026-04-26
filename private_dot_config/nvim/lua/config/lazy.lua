@@ -13,7 +13,7 @@ require("lazy").setup({
     { import = "plugins" },
   },
   dev = {
-    path = "~/dev",
+    path = "~/dev/08_nvim/",
     patterns = { "gwenwindflower" },
     fallback = false,
   },
