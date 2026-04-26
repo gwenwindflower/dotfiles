@@ -3,13 +3,15 @@ name: agent-skills
 description: Create and improve highly effective Agent Skills. Use when user wants to create a new skill, or when auditing and improving existing skills
 allowed-tools:
   - Bash(rei *)
+  - WebFetch(domain:docs.agentskills.io)
+  - WebFetch(domain:code.claude.com)
 ---
 
 Create and improve Agent Skills: modular packages extending agents with specialized workflows, domain knowledge, and bundled resources.
 
 **Skills must be very terse and high signal.** Every line should earn its place — if a sentence doesn't change agent behavior, cut it. Skill content is loaded into context on every trigger; bloat directly costs tokens and dilutes the instructions that matter.
 
-Reference docs: [overview](overview.md) is pulled from the official Agent Skills spec. Consult it when you need to look up schema details, frontmatter options, or structural rules — don't read it routinely.
+Fetch the [latest docs](https://code.claude.com/docs/en/skills) before continuing with the detailed content here.
 
 ## Workflow
 
@@ -25,7 +27,7 @@ Follow in order. Skip steps only with clear reason. User can opt out of validati
 
 ## `rei` CLI
 
-Skill management lives under `rei skills`. Reishi keeps a single source of truth and syncs to every configured agent target (Claude, OpenCode, the shared `~/.agents/` location, etc.) via copy or symlink.
+Skills are managed globally with a tool called reishi, which the user created and maintains. Commands are accessed via `rei skills`. Reishi's config acts as the source of truth, then syncs to every configured agent target (Claude, OpenCode, the shared `~/.agents/` location, etc.) via copy or symlink.
 
 Skills source defaults to `~/.config/reishi/skills/`. Run `rei config show` to see effective config and targets.
 
@@ -79,6 +81,14 @@ rei skills add -tp <github-tree-url>         # track for future pulls, prefix wi
 
 `-t/--track` records the remote in the lockfile so `rei skills pull` can fetch updates later. `-p/--prefix` namespaces skills (infer from GitHub org, or pass an explicit value).
 
+#### Example
+
+```bash
+rei skills add -t https://github.com/readwiseio/readwise-skills/tree/master/skills -p readwise
+```
+
+This would add every skill in that directory, prefix them with `readwise_`, and track the source for future updates. The `readwise_` prefix is important to avoid name collisions and to signal provenance.
+
 ### Sync and Pull
 
 ```bash
@@ -103,8 +113,12 @@ rei skills activate <skill-name>      # restore
 ## Loading Model
 
 1. **Startup**: Only name + description loaded — aim for <100 tokens each, this determines trigger quality
-2. **Triggered**: Full SKILL.md loaded — this is why terseness matters. Every token here competes with the user's actual task context. Link to modular docs for depth rather than inlining it — reference links should be formatted as `[example](example.md)` pointing to files colocated with the SKILL.md
+2. **Triggered**: Full SKILL.md loaded — this is why terseness matters. Every token here competes with the user's actual task context — link to modular docs for depth rather than inlining it, using markdown links relative to the skill root
 3. **On demand**: References, assets, scripts loaded as needed — use many small modular files for progressive disclosure
+
+### Link format
+
+Reference links should be formatted as `[example](example.md)` or `[descriptive name](useful-reference-doc.md)`, do not include the extension in the label portion of the markdown link. When creating skills, these should point to files colocated with the SKILL.md. We've moved away from using an explicit `references/` directory, though you may see this in some externally sourced skills. Follow the pattern if it's already there, unless the user explicitly requests for you to refactor to a flatter structure.
 
 ## Full Schema
 
