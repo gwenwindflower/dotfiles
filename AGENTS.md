@@ -136,6 +136,7 @@ These compose freely: `private_dot_config/tmux/executable_pane-icon.sh` → `~/.
 - **Script re-runs:** `run_once_` scripts are tracked by filename + content hash. Renaming a script makes it run again. `run_onchange_` scripts re-run when the content (including template output) changes. Like the file attribute prefixes, these compose freely and there are many more.
 - **Symlink targets must be absolute:** Symlink template content should use `{{ .chezmoi.sourceDir }}/...` to produce absolute paths.
 - **Order of operations:** Before-scripts → file/symlink updates → after-scripts. Numeric prefixes control ordering within each phase.
+- **Never use `.tmpl` as a literal suffix in this tree:** chezmoi renders any `.tmpl` file as a Go template and strips the suffix on deploy. For template-style assets that aren't chezmoi templates (skill scaffolds, workflow stubs, etc.), use `.template`. If you need real templating for those assets, pick a non-Go format like Handlebars or Jinja so it can't collide with chezmoi.
 
 ## Commands
 
