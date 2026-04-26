@@ -31,7 +31,7 @@ interface TableIssue {
 // ── Table detection and fixing ─────────────────────────────────────────
 
 /** True if the line looks like part of a markdown table (starts with |). */
-function isTableLine(line: string): boolean {
+export function isTableLine(line: string): boolean {
   return /^\s*\|/.test(line);
 }
 
@@ -40,7 +40,7 @@ function isTableLine(line: string): boolean {
  * - Space after every opening | and before every closing |
  * - Trim cell content internally but preserve single space padding
  */
-function fixTableLine(line: string): string {
+export function fixTableLine(line: string): string {
   const trimmed = line.trim();
   if (!trimmed.startsWith("|") || !trimmed.endsWith("|")) return line;
 
@@ -54,7 +54,7 @@ function fixTableLine(line: string): string {
 
 // ── File processing ────────────────────────────────────────────────────
 
-function processContent(content: string, filePath: string): { output: string; issues: TableIssue[] } {
+export function processContent(content: string, filePath: string): { output: string; issues: TableIssue[] } {
   const lines = content.split("\n");
   const issues: TableIssue[] = [];
   let inCodeBlock = false;
@@ -192,4 +192,6 @@ async function main() {
   }
 }
 
-main();
+if (import.meta.main) {
+  main();
+}
