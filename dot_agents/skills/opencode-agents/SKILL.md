@@ -1,5 +1,5 @@
 ---
-name: develop-opencode-agents
+name: opencode-agents
 description: Create and configure OpenCode agents in markdown or JSON. Use when adding files under .opencode/agents/, fixing agent definitions, or setting agent permissions, mode, model, or tools.
 ---
 
