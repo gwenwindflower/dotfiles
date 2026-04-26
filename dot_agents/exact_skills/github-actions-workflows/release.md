@@ -21,7 +21,7 @@ Use semver tags (`v1.2.3`). The tag is the source of truth — everything downst
 
 ```yaml
 - name: Checkout
-  uses: actions/checkout@v4
+  uses: actions/checkout@v6
   with:
     fetch-depth: 0  # full history + all tags for git-cliff
 

@@ -14,13 +14,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.release.tag_name }}
 
       # >>> TOOLCHAIN_SETUP <<<
       # Example (Deno):
-      #   - uses: denoland/setup-deno@v2
+      #   - uses: denoland/setup-deno@v2.0.4  # no floating v2 tag — pin full semver
       #     with: { deno-version: v2.x }
 
       # >>> BUILD_COMMAND <<<

@@ -30,8 +30,8 @@ check:
   name: Lint, format, typecheck
   runs-on: ubuntu-latest
   steps:
-    - uses: actions/checkout@v4
-    - uses: denoland/setup-deno@v2
+    - uses: actions/checkout@v6
+    - uses: denoland/setup-deno@v2.0.4
       with:
         deno-version: v2.x
     - run: deno fmt --check
@@ -53,8 +53,8 @@ test:
     matrix:
       os: [ubuntu-latest, macos-latest]
   steps:
-    - uses: actions/checkout@v4
-    - uses: denoland/setup-deno@v2
+    - uses: actions/checkout@v6
+    - uses: denoland/setup-deno@v2.0.4
       with:
         deno-version: v2.x
     - run: deno task test:all
@@ -72,8 +72,8 @@ build:
   needs: test
   runs-on: ubuntu-latest
   steps:
-    - uses: actions/checkout@v4
-    - uses: denoland/setup-deno@v2
+    - uses: actions/checkout@v6
+    - uses: denoland/setup-deno@v2.0.4
       with:
         deno-version: v2.x
     - name: Cross-compile

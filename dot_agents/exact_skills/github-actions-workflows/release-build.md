@@ -28,7 +28,7 @@ Draft releases don't fire `published`, so the build is gated on an intentional r
 
 ```yaml
 - name: Checkout
-  uses: actions/checkout@v4
+  uses: actions/checkout@v6
   with:
     ref: ${{ github.event.release.tag_name }}
 ```
@@ -39,7 +39,7 @@ Always check out the tag, not the default branch. A commit pushed to `main` betw
 
 ```yaml
 - name: Setup Deno
-  uses: denoland/setup-deno@v2
+  uses: denoland/setup-deno@v2.0.4
   with:
     deno-version: v2.x
 

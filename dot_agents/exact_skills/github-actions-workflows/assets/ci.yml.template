@@ -20,16 +20,16 @@ jobs:
     name: Lint, format, typecheck
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       # >>> TOOLCHAIN_SETUP <<<
       # Replace with your language's setup action. Examples:
-      #   - uses: denoland/setup-deno@v2
+      #   - uses: denoland/setup-deno@v2.0.4  # no floating v2 tag — pin full semver
       #     with: { deno-version: v2.x }
-      #   - uses: actions/setup-go@v5
+      #   - uses: actions/setup-go@v6
       #     with: { go-version: stable, cache: true }
-      #   - uses: actions/setup-node@v4
-      #     with: { node-version: 20, cache: pnpm }
+      #   - uses: actions/setup-node@v6
+      #     with: { node-version: 22, cache: pnpm }
 
       # >>> CHECK_COMMANDS <<<
       # Replace with your project's lint/format/typecheck. Examples (Deno):
@@ -46,7 +46,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       # >>> TOOLCHAIN_SETUP <<<
 
@@ -58,7 +58,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       # >>> TOOLCHAIN_SETUP <<<
 

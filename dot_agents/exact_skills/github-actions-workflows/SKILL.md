@@ -31,7 +31,9 @@ Search the marketplace with WebFetch:
 https://github.com/marketplace?query={QUERY+TERMS}&type=actions
 ```
 
-Then fetch the action's repo `releases` or `tags` page to confirm the current version and read release notes for breaking changes. Pin to a major (`@v4`) for first-party `actions/*`; for third-party actions consider pinning to a full SHA when supply-chain risk matters.
+Then fetch the action's repo `releases` or `tags` page to confirm the current version and read release notes for breaking changes. Pin to a major (`@v6`) for first-party `actions/*`; for third-party actions consider pinning to a full SHA when supply-chain risk matters.
+
+**Confirm the major-only tag actually exists.** Many actions only publish full semver tags (`v2.0.4`) and never cut a floating `v2`. Examples seen in the wild: `denoland/setup-deno`, `astral-sh/setup-uv`. Using `@v2` against these silently fails with "unable to resolve action" at run time. Check the repo's `git/refs/tags` API or tags page — if there's no major-only ref, pin to the full `vX.Y.Z`.
 
 When multiple actions do the same thing, prefer: official `actions/*` > vendor-maintained > popular community action with recent commits. Note "last published" dates — abandoned actions are a liability.
 
