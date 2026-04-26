@@ -1,12 +1,14 @@
-active_profiles = []
-
-[shell.fish]
-use_abbr = true
-
 [aliases]
 comcomp = "{{1}} completion fish > /Users/winnie/.local/share/chezmoi/private_dot_config/fish/completions/{{1}}.fish"
 comcomps = "{{1}} completions fish > /Users/winnie/.local/share/chezmoi/private_dot_config/fish/completions/{{1}}.fish"
 ddb = "duckdb --cmd '.read ~/dev/02_spellbook/pastel_duck_theme.sql'"
 gri = "git rebase -i --autosquash HEAD~{{1}}"
 ltd = "lsd --tree --depth={{1}}"
+spc = "sprite console -s {{1}}"
+spd = "sprite destroy {{1}}"
+spls = "sprite list"
+spx = "sprite exec -s {{1}} {{2}}"
 ssx = "ssh -A {{1}}.exe.xyz"
+
+[shell.fish]
+use_abbr = true
