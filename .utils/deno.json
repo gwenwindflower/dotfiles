@@ -13,8 +13,10 @@
     "check-tables": "deno run --allow-read fix-md-tables.ts --check",
     "preview-tables": "deno run --allow-read fix-md-tables.ts --dry-run",
     "logo": "deno run --allow-read --allow-write --allow-env generate-logo.ts",
+    "lscolors": "deno run --allow-env lscolors_to_toml.ts",
     "test": "deno run --allow-read --allow-run=deno scripts/test.ts",
     "test:tables": "deno test --allow-read fix-md-tables_test.ts",
-    "test:logo": "deno test --allow-read --allow-env generate-logo_test.ts"
+    "test:logo": "deno test --allow-read --allow-env generate-logo_test.ts",
+    "test:lscolors": "deno test lscolors_to_toml_test.ts"
   }
 }
