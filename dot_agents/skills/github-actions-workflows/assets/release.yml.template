@@ -1,0 +1,64 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create GitHub release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history + all tags for git-cliff
+
+      - name: Install git-cliff
+        uses: taiki-e/install-action@v2
+        with:
+          tool: git-cliff
+
+      - name: Generate release notes
+        id: notes
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+
+          # --latest scopes to the most recent tag, --strip all drops header/footer
+          notes=$(git cliff --latest --strip all --tag "$TAG")
+
+          if [ -z "${notes//[[:space:]]/}" ]; then
+            echo "::error::git-cliff produced empty release notes for $TAG"
+            exit 1
+          fi
+
+          # Random heredoc delimiter prevents collision if notes contain "EOF"
+          delimiter="EOF_$(openssl rand -hex 8)"
+          {
+            echo "notes<<${delimiter}"
+            printf '%s\n' "$notes"
+            echo "${delimiter}"
+          } >> "$GITHUB_OUTPUT"
+
+          # Mirror to job summary for at-a-glance review
+          {
+            echo "## Release notes for \`$TAG\`"
+            echo ""
+            printf '%s\n' "$notes"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}
+          NOTES: ${{ steps.notes.outputs.notes }}
+        run: |
+          gh release create "$TAG" \
+            --title "$TAG" \
+            --notes "$NOTES" \
+            --verify-tag

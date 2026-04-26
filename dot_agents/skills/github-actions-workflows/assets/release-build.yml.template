@@ -1,0 +1,63 @@
+name: Build release artifacts
+
+# Fires when release.yml publishes a release. Draft releases do NOT trigger this.
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Compile, package, publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      # >>> TOOLCHAIN_SETUP <<<
+      # Example (Deno):
+      #   - uses: denoland/setup-deno@v2
+      #     with: { deno-version: v2.x }
+
+      # >>> BUILD_COMMAND <<<
+      # Must produce bin/@@BINARY@@-{darwin,linux}-{amd64,arm64}
+      # Example: - run: deno task compile:all
+
+      - name: Package tarballs + checksums
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          set -euo pipefail
+          for target in darwin-arm64 darwin-amd64 linux-arm64 linux-amd64; do
+            cp "bin/@@BINARY@@-${target}" bin/@@BINARY@@
+            tar -czf "@@REPO@@-${TAG}-${target}.tar.gz" -C bin @@BINARY@@
+            rm bin/@@BINARY@@
+          done
+
+          sha256sum @@REPO@@-*.tar.gz > "@@REPO@@-${TAG}-checksums.txt"
+
+          echo "### Artifacts" >> "$GITHUB_STEP_SUMMARY"
+          ls -la @@REPO@@-*.tar.gz @@REPO@@-*-checksums.txt | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload release assets
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.event.release.tag_name }}
+        run: gh release upload "$TAG" @@REPO@@-*.tar.gz "@@REPO@@-${TAG}-checksums.txt"
+
+      - name: Publish to Homebrew tap
+        uses: Justintime50/homebrew-releaser@v3
+        with:
+          homebrew_owner: @@HOMEBREW_OWNER@@
+          homebrew_tap: homebrew-tap
+          install: 'bin.install "@@BINARY@@"'
+          target_darwin_amd64: true
+          target_darwin_arm64: true
+          target_linux_amd64: true
+          target_linux_arm64: true
+          update_readme_table: true
+          github_token: ${{ secrets.HOMEBREW_TAP_GITHUB_TOKEN }}

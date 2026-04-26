@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Cancel superseded PR runs; never cancel main runs
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+permissions:
+  contents: read
+
+# check -> test -> build runs serially to fail fast on cheap signals
+jobs:
+  check:
+    name: Lint, format, typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # >>> TOOLCHAIN_SETUP <<<
+      # Replace with your language's setup action. Examples:
+      #   - uses: denoland/setup-deno@v2
+      #     with: { deno-version: v2.x }
+      #   - uses: actions/setup-go@v5
+      #     with: { go-version: stable, cache: true }
+      #   - uses: actions/setup-node@v4
+      #     with: { node-version: 20, cache: pnpm }
+
+      # >>> CHECK_COMMANDS <<<
+      # Replace with your project's lint/format/typecheck. Examples (Deno):
+      #   - run: deno fmt --check
+      #   - run: deno lint
+      #   - run: deno task check
+
+  test:
+    name: Test suite
+    needs: check
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      # >>> TOOLCHAIN_SETUP <<<
+
+      # >>> TEST_COMMAND <<<
+      # Example: - run: deno task test:all
+
+  build:
+    name: Test cross-compile across targets
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # >>> TOOLCHAIN_SETUP <<<
+
+      # >>> BUILD_COMMAND <<<
+      # Must produce bin/@@BINARY@@-{darwin,linux}-{amd64,arm64}
+      # Example: - run: deno task compile:all
+
+      - name: Verify binaries
+        run: |
+          set -euo pipefail
+          for target in darwin-arm64 darwin-amd64 linux-arm64 linux-amd64; do
+            test -f "bin/@@BINARY@@-${target}" || { echo "Missing bin/@@BINARY@@-${target}"; exit 1; }
+          done
+          ls -la bin/
