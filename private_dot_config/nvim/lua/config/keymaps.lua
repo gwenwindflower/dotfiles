@@ -33,3 +33,13 @@ wk.add({
     desc = "Send selection to CodeCompanionCLI",
   },
 })
+wk.add({
+  {
+    "<D-g>",
+    function()
+      Snacks.lazygit()
+    end,
+    mode = { "n" },
+    desc = "Lazygit (cwd)",
+  },
+})
