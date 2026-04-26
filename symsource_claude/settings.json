@@ -35,6 +35,7 @@
 			"Bash(chezmoi managed *)",
 			"Bash(chezmoi doctor *)",
 			"Bash(deno check *)",
+			"Bash(deno fmt *)",
 			"Bash(deno info *)",
 			"Bash(deno lint *)",
 			"Bash(deno task *)",
@@ -115,6 +116,7 @@
 			"Bash(which *)",
 			"Bash(wt list *)",
 			"Bash(wt status *)",
+			"Bash(wt switch *)",
 			"Bash(yq *)",
 			"Bash(yuzudraw-cli *)",
 			"Read(~/.cache/uv/**)",
@@ -160,6 +162,9 @@
 			"Read(.env)",
 			"Read(.env.*)",
 			"Read(*.env)",
+			"Read(**/.env)",
+			"Read(**/.env.*)",
+			"Read(**/*.env)",
 			"Read(~/.ssh/**)",
 			"Read(~/.aws/**)",
 			"Read(~/.gnupg/**)",
@@ -186,7 +191,7 @@
 			"Edit(*.p12)",
 			"Edit(*.pfx)",
 			"Edit(id_rsa)",
-			"Edit(id_ed25520)",
+			"Edit(id_ed25519)",
 			"Bash(rm -rf *)",
 			"Bash(rm -rf /*)",
 			"Bash(sudo rm *)",
@@ -277,7 +282,6 @@
 			"allowLocalBinding": true
 		},
 		"filesystem": {
-			"allowRead": ["~/.claude/**"],
 			"allowWrite": [
 				"~/.agentbrowser",
 				"~/.local/share/graveyard/**",
@@ -290,7 +294,8 @@
 				"~/Library/Caches/go-build/**",
 				"~/.local/share/pnpm/**",
 				"~/.cache/pnpm/**"
-			]
+			],
+			"allowRead": ["~/.claude/**"]
 		}
 	},
 	"spinnerTipsEnabled": false,
