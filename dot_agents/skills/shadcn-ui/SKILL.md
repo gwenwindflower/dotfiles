@@ -1,6 +1,6 @@
 ---
 name: shadcn-ui
-description: "Guide for working with shadcn/ui components in any project. Use when: (1) Adding shadcn components, (2) Customizing components with variants or styles, (3) Understanding the shadcn system architecture, (4) Troubleshooting shadcn setup or styling issues."
+description: Add, customize, and troubleshoot shadcn/ui components in any project. Use when working with shadcn components, variants, components.json, or the shadcn CLI.
 ---
 
 # shadcn/ui Components

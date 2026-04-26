@@ -1,6 +1,6 @@
 ---
 name: develop-opencode-agents
-description: Create and configure OpenCode agents (markdown or JSON). Use when creating new agents, fixing agent definitions, or configuring agent options like permissions, mode, model, tools.
+description: Create and configure OpenCode agents in markdown or JSON. Use when adding files under .opencode/agents/, fixing agent definitions, or setting agent permissions, mode, model, or tools.
 ---
 
 # OpenCode Agent Development

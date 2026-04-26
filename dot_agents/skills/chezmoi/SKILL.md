@@ -1,6 +1,6 @@
 ---
 name: chezmoi
-description: Manage dotfiles with chezmoi, load for any request using the tool or involving a user's dotfiles project.
+description: Manage dotfiles with chezmoi: source state, templates, scripts, file attributes (dot_, private_, executable_, .tmpl). Use when working inside a chezmoi-managed dotfiles repo (~/.local/share/chezmoi) or running chezmoi commands.
 ---
 
 # chezmoi Dotfile Management

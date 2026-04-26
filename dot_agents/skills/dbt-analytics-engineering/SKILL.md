@@ -1,6 +1,6 @@
 ---
 name: dbt-analytics-engineering
-description: Build, test, and maintain dbt projects. Covers model building, CLI usage, data and unit testing, semantic layer, debugging, and data discovery. Load when doing any dbt work.
+description: Build, test, and debug dbt projects: models, sources, data and unit tests, semantic layer, CLI. Use when editing files in a dbt project (dbt_project.yml, models/**/*.sql, schema.yml) or running dbt commands.
 allowed-tools: "Bash(dbt *), Bash(dbtf *), Bash(mf *), Bash(jq *), Bash(cat *), Bash(grep *), Bash(rg *), Read, Write, Edit, Glob, Grep"
 user-invocable: false
 metadata:

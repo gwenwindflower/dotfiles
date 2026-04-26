@@ -1,6 +1,6 @@
 ---
 name: effective-sql
-description: Use when writing any SQL query beyond a throw-away script, if the SQL is going to be committed to version control, or if other people will read the query, load this skill and follow these patterns
+description: Write maintainable SQL with CTE pipelines (import, transform, output). Use when writing non-trivial SQL meant to be committed, reviewed, or reused. Skip for one-off ad-hoc queries.
 ---
 
 # Writing SQL

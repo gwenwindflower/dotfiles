@@ -1,8 +1,6 @@
 ---
 name: fish-functions
-description: Write Fish shell functions in idiomatic fish syntax with delightful UX. Use when (1) Creating new Fish functions, (2) Refactoring or improving existing functions, (3) Adding flags, help text, or error handling, (4) Working with any `*.fish` files, (5) Converting bash/zsh scripts to Fish, (6) Debugging Fish syntax issues
-allowed-tools:
-  - WebFetch(domain:fishshell.com)
+description: Idiomatic fish shell scripting: functions, completions, abbreviations, conf.d, argparse. Use when editing .fish files or fish config under ~/.config/fish.
 ---
 
 # Fish Function Development

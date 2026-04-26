@@ -1,6 +1,6 @@
 ---
 name: obsidian-frontmatter-sync
-description: Manage Obsidian vault frontmatter as structured data with rematter CLI tool — validate schemas, sync to external destinations (Astro, etc.) with media options, rename fields, manage filenames. Load whenever performing bulk operations in Obsidian vaults (or other collections of markdown with frontmatter).
+description: Manage Obsidian vault frontmatter via the rematter CLI: validate schemas, sync to external destinations (Astro, etc.), rename fields, manage filenames. Use for bulk frontmatter operations across an Obsidian vault or any collection of markdown with frontmatter.
 ---
 
 # Obsidian Frontmatter Sync with rematter

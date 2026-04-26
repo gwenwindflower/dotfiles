@@ -1,6 +1,6 @@
 ---
 name: github-actions-workflows
-description: Author, audit, and scaffold GitHub Actions workflows. Editing .github/workflows/*.yml; searching runners or marketplace actions; debugging workflow failures; or scaffolding CI/release/build workflows for Supermodel Labs projects (including publishing to supermodellabs/homebrew-tap).
+description: Author, audit, and scaffold GitHub Actions workflows. Use when editing .github/workflows/*.yml, picking runners or marketplace actions, debugging workflow failures, or scaffolding CI/release workflows for Supermodel Labs projects.
 ---
 
 # GitHub Actions Workflows

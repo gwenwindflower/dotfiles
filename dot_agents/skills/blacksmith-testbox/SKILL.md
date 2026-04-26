@@ -1,10 +1,6 @@
 ---
 name: blacksmith-testbox
-description: >
-  Validate code changes against real CI. Use for all tests, builds,
-  migrations, and any command that depends on secrets or services.
-  Use when testing, validating, checking, verifying, or before any
-  commit or push.
+description: Run tests, builds, migrations, or any command needing real CI secrets/services on Blacksmith. Use when testing or validating code, or before any commit or push that should be verified against CI.
 ---
 
 # Blacksmith Testbox

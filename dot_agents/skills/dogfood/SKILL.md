@@ -1,6 +1,6 @@
 ---
 name: dogfood
-description: Systematically explore and test a web application to find bugs, UX issues, and other problems. Use when asked to "dogfood", "QA", "test this app/site/platform in the browser"
+description: Systematically explore a web app via agent-browser, find bugs and UX issues, and produce a report with reproduction evidence. Use when asked to dogfood, QA, or test a site/app/platform in the browser.
 allowed-tools: Bash(agent-browser *)
 ---
 

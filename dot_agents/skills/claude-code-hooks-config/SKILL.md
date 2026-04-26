@@ -1,6 +1,6 @@
 ---
 name: claude-code-hooks-config
-description: Use when asked to add or modify hooks for Claude Code specifically. Or, if the user is asking to automate an action, for example run a formatter after edits, or running a script right before git commits, those are hooks and you should use this skill to implement them.
+description: Configure Claude Code hooks in settings.json (PreToolUse, PostToolUse, SessionStart, Stop, etc.). Use when adding or debugging Claude Code hooks, or automating actions tied to Claude tool events. Skip for OpenCode automations (use opencode-plugin-config).
 ---
 
 # Adding or Modifying Hooks for Claude Code

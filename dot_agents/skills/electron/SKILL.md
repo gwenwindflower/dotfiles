@@ -1,6 +1,6 @@
 ---
 name: electron
-description: Automate Electron desktop apps (VS Code, Slack, Discord, Figma, Notion, Spotify, etc.) using agent-browser via Chrome DevTools Protocol
+description: Automate Electron desktop apps (VS Code, Slack, Discord, Figma, Notion, Spotify) via agent-browser over Chrome DevTools Protocol. Use when scripting or inspecting an Electron app from the terminal.
 allowed-tools: Bash(agent-browser *)
 ---
 

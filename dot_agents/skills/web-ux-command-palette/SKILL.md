@@ -1,6 +1,6 @@
 ---
 name: web-ux-command-palette
-description: "Build keyboard-driven command palettes using cmdk + shadcn/ui. Use when: (1) Adding command palette to web apps, (2) Implementing keyboard navigation, (3) Building spotlight-style search, (4) Setting up cmdk with shadcn components."
+description: Build keyboard-driven command palettes with cmdk + shadcn/ui. Use when adding a spotlight-style palette, command-K menu, or keyboard-nav search to a web app.
 ---
 
 # Command Palette Pattern

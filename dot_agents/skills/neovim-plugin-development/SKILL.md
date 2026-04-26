@@ -1,6 +1,6 @@
 ---
 name: neovim-plugin-development
-description: Write Neovim plugins in Lua with lazy.nvim compatibility. Covers vim.api, plugin structure, health checks, lazy.nvim integration (opts, pkg, dependencies, build, lazy-loading), testing with busted, and common patterns for commands, autocommands, floating windows, and async.
+description: Write Neovim plugins in Lua compatible with lazy.nvim: vim.api, plugin layout, health checks, lazy-loading, busted tests, floating windows, async. Use when authoring a Neovim plugin or its lazy.nvim spec. Skip for editing personal nvim config (use neovim-config).
 ---
 
 # Neovim Plugin Development

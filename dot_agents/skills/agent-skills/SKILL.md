@@ -1,6 +1,6 @@
 ---
 name: agent-skills
-description: Create and improve highly effective Agent Skills. Use when user wants to create a new skill, or when auditing and improving existing skills
+description: Author and audit Agent Skills. Use when creating a new skill, refactoring an existing one, or rewriting skill metadata (name, description, allowed-tools).
 allowed-tools:
   - Bash(rei *)
   - WebFetch(domain:docs.agentskills.io)

@@ -1,6 +1,6 @@
 ---
 name: agent-browser
-description: Simple browser automation CLI wrapping Playwright -- use for dynamic browser tasks like navigating or interacting with pages, screenshots, scraping data, etc. Prefer full Playwright for repeat automations that require scripting with a complete API.
+description: Browser automation CLI wrapping Playwright for one-shot tasks: navigation, page interaction, screenshots, scraping. Use when driving a live browser from the terminal. Skip for repeat automations that warrant a full Playwright script.
 allowed-tools: Bash(agent-browser:*)
 ---
 

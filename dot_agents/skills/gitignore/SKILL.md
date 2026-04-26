@@ -1,6 +1,6 @@
 ---
 name: gitignore
-description: Generate advanced and comprehensive .gitignore files based on project type, using stringent syntax for selecting and excluding files and directories.
+description: Generate or extend .gitignore files with project-aware patterns. Use when creating .gitignore, ignoring a new tool/language, or auditing existing rules.
 ---
 # .gitignore Creation and Management
 
