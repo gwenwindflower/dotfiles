@@ -1,6 +1,6 @@
 ---
-name: develop-agent-skills
-description: Guide for creating and improving highly effective Agent Skills. Use when user wants to create a new skill, or when auditing and improving existing skills
+name: agent-skills
+description: Create and improve highly effective Agent Skills. Use when user wants to create a new skill, or when auditing and improving existing skills
 allowed-tools:
   - Bash(rei *)
 ---
@@ -45,9 +45,9 @@ Here's a real skill called github-actions-workflows, which bundles reusable work
 ```text
  github-actions-workflows
 ├──  assets
-│   ├──  ci.yml.tmpl
-│   ├──  release-build.yml.tmpl
-│   └──  release.yml.tmpl
+│   ├──  ci.yml.template
+│   ├──  release-build.yml.template
+│   └──  release.yml.template
 ├──  scripts
 │   └──  executable_install-workflow.sh
 ├──  ci.md
@@ -57,6 +57,12 @@ Here's a real skill called github-actions-workflows, which bundles reusable work
 ```
 
 For simple skills, delete the `assets/` and `scripts/` dirs after scaffolding to reduce clutter.
+
+#### Template-Style Assets
+
+If a skill ships scaffolding files meant to be copied and customized (workflow stubs, config starters, etc.), **do not name them `*.tmpl`**. Skills often live inside chezmoi-managed trees, and chezmoi treats any `.tmpl` file as a Go template — it will render the file at apply time and strip the suffix, mangling content and changing the deployed filename. Use `.template` instead — it signals intent to humans and scripts without colliding with chezmoi.
+
+If you need *real* templating for those assets (variable substitution, conditionals), pick a format that can't collide with Go templates: Handlebars, Jinja, envsubst-style `${VAR}` files, etc. Drive the rendering from a script in the skill itself, not from the host config tool.
 
 ### Validate
 
