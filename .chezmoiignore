@@ -8,6 +8,7 @@ TODO.md
 .markdownlint.yaml
 opencode.json
 biome.json
+sprite-bootstrap/
 # Source files for symlinked targets
 # These are the actual files that symlink_ entries point to.
 symsource_*/

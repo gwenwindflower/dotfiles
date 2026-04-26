@@ -1,0 +1,76 @@
+{
+  "permissions": {
+    "defaultMode": "auto",
+    "deny": [
+      "Bash(curl *)",
+      "Bash(wget *)",
+      "Bash(nc *)",
+      "Bash(netcat *)",
+      "Bash(ncat *)",
+      "Bash(socat *)",
+      "Bash(telnet *)",
+      "Bash(ssh *)",
+      "Bash(sftp *)",
+      "Bash(scp *)",
+      "Bash(rsync *)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "^mcp__claude_ai_Sprites__",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat > /dev/null; echo \"{\\\"hookSpecificOutput\\\":{\\\"hookEventName\\\":\\\"PreToolUse\\\",\\\"permissionDecision\\\":\\\"deny\\\",\\\"permissionDecisionReason\\\":\\\"MCP is not enabled from a Sprite environment, auth and use the sprite CLI or REST API instead\\\"}}\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "^(Bash|Write|Edit|NotebookEdit)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME\"/.claude/hooks/sprite-env-check.sh PostToolUse"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME\"/.claude/hooks/sprite-env-check.sh UserPromptSubmit"
+          }
+        ]
+      }
+    ],
+    "WorktreeCreate": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/inject-commit-reminder.sh"
+          }
+        ]
+      }
+    ],
+    "TaskCompleted": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/require-teammate-commit.sh"
+          }
+        ]
+      }
+    ]
+  },
+  "skipDangerousModePermissionPrompt": true,
+  "skipAutoPermissionPrompt": true
+}
