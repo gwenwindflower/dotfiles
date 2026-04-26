@@ -12,3 +12,6 @@ ssx = "ssh -A {{1}}.exe.xyz"
 
 [shell.fish]
 use_abbr = true
+
+[logging]
+project_unloading = "off"
