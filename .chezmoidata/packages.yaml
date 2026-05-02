@@ -46,6 +46,7 @@ packages:
         - fennel
         - ffmpeg
         - fish
+        - flyctl
         - forgit
         - freeze
         - fzf
