@@ -56,8 +56,8 @@
 		// "input_newline": "shift+return,ctrl+return,alt+return,ctrl+j",
 		"input_newline": "return,ctrl+j",
 		"input_submit": "ctrl+return,alt+return,super+return",
-		// "input_move_left": "left,ctrl+b",
-		// "input_move_right": "right,ctrl+f",
+		"input_move_left": "left,ctrl+b,ctrl+h",
+		"input_move_right": "right,ctrl+f,ctrl+l",
 		"input_move_up": "up,ctrl+p",
 		"input_move_down": "down,ctrl+n",
 		"input_select_left": "shift+left,ctrl+shift+b",
@@ -82,13 +82,13 @@
 		// "input_backspace": "backspace,shift+backspace",
 		// "input_delete": "ctrl+d,delete,shift+delete",
 		"input_undo": "ctrl+-,super+z,alt+z",
-		"input_redo": "ctrl+.,super+shift+z,alt+shift+z"
-		// "input_word_forward": "alt+f,alt+right,ctrl+right",
-		// "input_word_backward": "alt+b,alt+left,ctrl+left",
-		// "input_select_word_forward": "alt+shift+f,alt+shift+right",
-		// "input_select_word_backward": "alt+shift+b,alt+shift+left",
-		// "input_delete_word_forward": "alt+d,alt+delete,ctrl+delete",
-		// "input_delete_word_backward": "ctrl+w,ctrl+backspace,alt+backspace",
+		"input_redo": "ctrl+.,super+shift+z,alt+shift+z",
+		"input_word_forward": "alt+f,alt+l,alt+right,ctrl+right",
+		"input_word_backward": "alt+b,alt+h,alt+left,ctrl+left",
+		"input_select_word_forward": "alt+shift+l,ctrl+alt+shift+f,alt+shift+right",
+		"input_select_word_backward": "alt+shift+h,ctrl+alt+shift+b,alt+shift+left",
+		"input_delete_word_forward": "ctrl+alt+shift+l,alt+d,alt+delete,ctrl+delete",
+		"input_delete_word_backward": "ctrl+alt+shift+h,ctrl+w,ctrl+backspace,alt+backspace"
 		// TODO: think about mapping history to ctrl+p/n and remapping the command_list
 		// "history_previous": "up,",
 		// "history_next": "down"
