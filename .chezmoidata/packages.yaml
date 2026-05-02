@@ -93,11 +93,13 @@ packages:
         - procs
         - pulumi
         - pygments
+        - rclone
         - redpanda
         - resvg
         - rich-cli
         - ripgrep
         - rm-improved
+        - rsync
         - ruby
         - sc-im
         - sd
