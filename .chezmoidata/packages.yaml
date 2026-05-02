@@ -11,6 +11,7 @@ packages:
         - g15r/tap
         - huseyinbabal/tap
         - jesseduffield/lazydocker
+        - lightdash/lightdash
         - mutagen-io/mutagen
         - oven-sh/bun
         - pulumi/tap
@@ -68,6 +69,7 @@ packages:
         - k9s
         - lazydocker
         - lazygit
+        - lightdash
         - lsd
         - lua
         - luajit
