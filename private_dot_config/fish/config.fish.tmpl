@@ -46,26 +46,26 @@ fish_add_path -m $HOMEBREW_PREFIX/bin
 # =============================================================================
 if status is-interactive
 
-{{ template "fish/20-theme.fish" . }}
-{{ template "fish/22-abbreviations.fish" . }}
-{{ template "fish/23-bindings.fish" . }}
-{{- if eq .chezmoi.os "darwin" }}
-{{ template "fish/23-bindings__macos.fish" . }}
-{{- end }}
+  {{ template "fish/20-theme.fish" . }}
+  {{ template "fish/22-abbreviations.fish" . }}
+  {{ template "fish/23-bindings.fish" . }}
+  {{- if eq .chezmoi.os "darwin" }}
+  {{ template "fish/23-bindings__macos.fish" . }}
+  {{- end }}
 
 
-# ─── Dynamic Tool Initializations ──────────────────────────────────────────────────────────────────
+  # ─── Dynamic Tool Initializations ──────────────────────────────────────────────────────────────────
 
-set -gx LS_COLORS "{{ output (joinPath .brewPrefix "bin/vivid") "generate" "catppuccin-frappe" }}"
+  set -gx LS_COLORS "{{ output (joinPath .brewPrefix "bin/vivid") "generate" "catppuccin-frappe" }}"
 
-# zoxide
-{{ output (joinPath .brewPrefix "bin/zoxide") "init" "fish" }}
+  # zoxide
+  {{ output (joinPath .brewPrefix "bin/zoxide") "init" "fish" }}
 
-# starship
-{{ output (joinPath .brewPrefix "bin/starship") "init" "fish" "--print-full-init" }}
+  # starship
+  {{ output (joinPath .brewPrefix "bin/starship") "init" "fish" "--print-full-init" }}
 
-# amoxide
-{{ output (joinPath .brewPrefix "bin/am") "init" "fish" }}
+  # amoxide
+  {{ output (joinPath .brewPrefix "bin/am") "init" "fish" }}
 
   {{ template "fish/24-tools.fish" . }}
 
