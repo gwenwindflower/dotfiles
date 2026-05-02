@@ -17,8 +17,6 @@ bind --user alt-L kill-word-vi
 # launch yazi file explorer
 bind --user -M insert super-f "ff; commandline -f repaint"
 bind --user super-f "ff; commandline -f repaint"
-bind --user -M insert alt-f "ff; commandline -f repaint"
-bind --user alt-f "ff; commandline -f repaint"
 
 # TUI git tools
 bind --user -M insert super-g "commandline -r 'lazygit'; commandline -f execute"
@@ -56,11 +54,7 @@ bind --user ctrl-alt-r "fresh -g; commandline -f repaint"
 # print, list, pager
 bind --user -M insert super-p "commandline -r 'lsd -lAg .'; commandline -f execute"
 bind --user super-p "commandline -r 'lsd -lAg .'; commandline -f execute"
-bind --user -M insert alt-p "commandline -r 'lsd -lAg .'; commandline -f execute"
-bind --user alt-p "commandline -r 'lsd -lAg .'; commandline -f execute"
 # wrapping commands
-bind --user -M insert alt-P _wrap_echo
-bind --user alt-P _wrap_echo
 bind --user -M insert super-P _wrap_echo
 bind --user super-P _wrap_echo
 # 1Password env wrapper
