@@ -1,0 +1,14 @@
+onboarding = false
+
+[ui.toast]
+delivery = "terminal"
+
+[theme]
+name = "catppuccin"
+
+[keys]
+prefix = "ctrl+space"
+previous_tab = "ctrl+alt+h"
+next_tab = "ctrl+alt+l"
+previous_workspace = "ctrl+alt+k"
+next_workspace = "ctrl+alt+j"
