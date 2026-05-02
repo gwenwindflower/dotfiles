@@ -166,6 +166,7 @@ packages:
         - raycast
         - screen-studio
         - shortcat
+        - signal
         - slack
         - tailscale-app
         - wispr-flow
