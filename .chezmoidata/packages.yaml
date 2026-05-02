@@ -60,6 +60,7 @@ packages:
         - gnupg
         - go
         - go-task
+        - gpg-tui
         - gum
         - harvestcli
         - hcloud
