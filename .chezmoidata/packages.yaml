@@ -7,6 +7,7 @@ packages:
         - databricks/tap
         - dbcli/tap
         - dedene/tap
+        - denisotree/tuitab
         - g15r/tap
         - huseyinbabal/tap
         - jesseduffield/lazydocker
@@ -109,6 +110,7 @@ packages:
         - tmux
         - tpm
         - tree
+        - tuitab
         - unar
         - uv
         - vhs
