@@ -110,6 +110,7 @@ packages:
         - spotify_player
         - sqlite
         - starship
+        - stripe-cli
         - taws
         - termframe
         - tlrc
