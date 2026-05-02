@@ -316,3 +316,4 @@ abbr --add spotify spotify_player
 abbr --add spt spotify_player
 abbr --add ytdl yt-dlp
 abbr --add gdl gallery-dl
+abbr --add cap termframe
