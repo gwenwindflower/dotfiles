@@ -1,4 +1,5 @@
 [aliases]
+brsf = "brew search {{1}} | fzf --multi --prompt='Filter results: ' --preview='brew info {1}'"
 comcomp = "{{1}} completion fish > /Users/winnie/.local/share/chezmoi/private_dot_config/fish/completions/{{1}}.fish"
 comcomps = "{{1}} completions fish > /Users/winnie/.local/share/chezmoi/private_dot_config/fish/completions/{{1}}.fish"
 ddb = "duckdb --cmd '.read ~/dev/02_spellbook/pastel_duck_theme.sql'"
@@ -14,4 +15,3 @@ ssx = "ssh -A {{1}}.exe.xyz"
 use_abbr = true
 
 [logging]
-project_unloading = "off"
