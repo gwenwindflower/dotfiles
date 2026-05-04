@@ -3,6 +3,7 @@ function brewshot -d "Snapshot, diff, or lint Homebrew packages in chezmoi"
     argparse h/help d/dry-run v/verbose 'f/file=' -- $argv
     or return
 
+    # TODO: verbose and dry-run do not seem to work
     # Handle --help
     if set -q _flag_help
         echo "Manage Homebrew package state in chezmoi's packages.yaml."
@@ -335,13 +336,13 @@ function _brewshot_save -d "Write current brew state to packages.yaml darwin sec
         yq eval ".packages.darwin.homebrew.casks += [\"$cask\"]" -i $temp_file
     end
 
-    # Dry-run: show but don't write
+    if set -q _flag_verbose
+        echo ""
+        bat --plain "$packages_file" 2>/dev/null; or cat "$packages_file"
+        echo ""
+    end
+
     if set -q _flag_dry_run
-        if set -q _flag_verbose
-            echo ""
-            bat --plain $temp_file 2>/dev/null; or cat $temp_file
-            echo ""
-        end
         rip $temp_file 2>/dev/null; or rm $temp_file
         echo "$(set_color -b magenta)[DRY RUN]$(set_color normal) $(set_color brgreen)complete$(set_color cyan) — packages.yaml not updated$(set_color normal)"
         return 0
@@ -349,12 +350,6 @@ function _brewshot_save -d "Write current brew state to packages.yaml darwin sec
 
     # Write the file
     mv $temp_file "$packages_file"
-
-    if set -q _flag_verbose
-        echo ""
-        bat --plain "$packages_file" 2>/dev/null; or cat "$packages_file"
-        echo ""
-    end
 
     logirl success "Updated darwin section in $packages_file"
     logirl info "Saved "(count $taps)" taps, "(count $formulae)" formulae, "(count $casks)" casks"
