@@ -100,14 +100,10 @@ abbr --add brcup "brew update; brew upgrade; brew cleanup"
 abbr --add brs brew search
 abbr --add brc brew cleanup
 abbr --add brcl brew cleanup
-abbr --add brl brew list
-abbr --add brlf brew list --installed-on-request
-abbr --add brli brew list --installed-on-request
-abbr --add brlc brew list --cask
 abbr --add brls brew list
-abbr --add brlsf brew list --installed-on-request
 abbr --add brlsi brew list --installed-on-request
 abbr --add brlsc brew list --cask
+abbr --add brlsf "brew list --installed-on-request | fzf --multi --prompt='Filter brew packages: ' --preview='brew info {1}'"
 abbr --add br? brew info
 abbr --add brin brew info
 abbr --add brd brew deps
