@@ -4,9 +4,9 @@ SPOT — **Spec, Phases, Objectives, Tasks** — is how agents work on Winnie's 
 
 | File | Scope | Job |
 | --- | --- | --- |
-| `SPEC.md` | Project | What we're building and why |
-| `specs/<n>-<slug>.md` | Phase | What this phase delivers |
-| `TODO.md` | Project | Active work (Phases → Objectives → Tasks) |
+| `SPEC.md` | Project | What we're building and why; indexes the domain specs |
+| `specs/<dom>-<slug>.md` | Domain | Durable per-domain requirements with stable IDs |
+| `TODO.md` | Project | Active work; each Phase lists the requirement IDs it must satisfy |
 | `DONE.md` | Project | Shipped work, with rationale |
 | `docs/` | Project | How the system works *now* |
 
@@ -24,13 +24,15 @@ Roles, not threads. One agent can play several.
 
 | Level | Markdown | Role | Execution |
 | --- | --- | --- | --- |
-| **Phase** | `## Phase N: Description` | Sequential checkpoint | Serial — one at a time |
+| **Phase** | `## Phase N: Description` with `**Requirements**: id, id, ...` line below | Sequential checkpoint | Serial — one at a time |
 | **Objective** | `### Description` | Declarative goal | Parallel within a Phase |
 | **Task** | `- [ ] description` | Imperative step | Sequential within an Objective |
 
 Status markers: 🌀 active, ✅ completed, none = unstarted. Only one Phase active at a time.
 
-When TODO and the phase spec disagree, **the spec wins.** Flag the mismatch — don't silently follow TODO.
+The Phase's `**Requirements**:` line points at IDs in `SPEC.md` (`R<NNN>`) or domain specs (`<dom>-R<NNN>`, e.g. `sk-R007`). Manager treats that list as the focus checklist: every Task done **and** every listed requirement met before the Phase moves to DONE. IDs are soft-immutable — never reused once retired.
+
+When TODO and a spec disagree, **the spec wins.** Flag the mismatch — don't silently follow TODO.
 
 ## Phase pacing
 
