@@ -12,6 +12,10 @@ biome.json
 # These are the actual files that symlink_ entries point to.
 symsource_*/
 .utils
+# Local Claude Code plugin 'marketplace'
+# Referenced in Claude settings via absolute path into this repo
+# Located here for convenience for now
+.custom-claude-plugins/
 
 {{ if ne .chezmoi.os "darwin" }}
 # Darwin-only configs (excluded on Linux)

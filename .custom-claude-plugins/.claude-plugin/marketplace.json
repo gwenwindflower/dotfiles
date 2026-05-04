@@ -1,0 +1,56 @@
+{
+	"$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+	"name": "winnie-local",
+	"description": "Customized personal Claude Code plugins for adding conditional LSPs.",
+	"owner": {
+		"name": "Gwyneth Windflower"
+	},
+	"plugins": [
+		{
+			"name": "deno-or-ts",
+			"description": "Conditional LSP that auto-routes from workspace files: `deno lsp` if deno.json/deno.jsonc is found at or above the workspace root, with typescript-language-server as fallback. Replaces the official typescript-lsp plugin.",
+			"version": "0.0.1",
+			"author": {
+				"name": "Gwyneth Windflower"
+			},
+			"source": "./plugins/deno-or-ts",
+			"category": "LSP",
+			"strict": false,
+			"lspServers": {
+				"typescript": {
+					"command": "/Users/winnie/.local/share/chezmoi/.custom-claude-plugins/plugins/deno-or-ts/router.sh",
+					"extensionToLanguage": {
+						".ts": "typescript",
+						".tsx": "typescriptreact",
+						".js": "javascript",
+						".jsx": "javascriptreact",
+						".mts": "typescript",
+						".cts": "typescript",
+						".mjs": "javascript",
+						".cjs": "javascript"
+					}
+				}
+			}
+		},
+		{
+			"name": "pyright-or-ruff",
+			"description": "Conditional LSP that auto-routes from workspace files: `pyright-langserver` if pyrightconfig.json is found at or above the workspace root, with `ruff server` as fallback. Replaces the official pyright-lsp plugin.",
+			"version": "0.0.1",
+			"author": {
+				"name": "Gwyneth Windflower"
+			},
+			"source": "./plugins/pyright-or-ruff",
+			"category": "LSP",
+			"strict": false,
+			"lspServers": {
+				"python": {
+					"command": "/Users/winnie/.local/share/chezmoi/.custom-claude-plugins/plugins/pyright-or-ruff/router.sh",
+					"extensionToLanguage": {
+						".py": "python",
+						".pyi": "python"
+					}
+				}
+			}
+		}
+	]
+}
