@@ -102,6 +102,7 @@ packages:
         - ripgrep
         - rm-improved
         - rsync
+        - rtk
         - ruby
         - sc-im
         - sd
@@ -125,6 +126,7 @@ packages:
         - wget
         - winline
         - woff2
+        - wordle
         - worktrunk
         - yazi
         - youplot
