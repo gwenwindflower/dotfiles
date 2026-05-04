@@ -1,29 +1,31 @@
 ---
 name: opencode-agents
-description: Create and configure OpenCode agents in markdown or JSON. Use when adding files under .opencode/agents/, fixing agent definitions, or setting agent permissions, mode, model, or tools.
+description: Create and configure OpenCode agents in markdown or JSON. Use when adding files under .opencode/agents/ or ~/.config/opencode/agents/, editing the `agent` block in opencode.json/opencode.jsonc, or setting an agent's mode, model, permissions, or tools.
 ---
 
-# OpenCode Agent Development
+# OpenCode Agents
 
-Create and maintain specialized agents for OpenCode. Agents are AI assistants with custom prompts, models, tool access, and permissions.
+Specialized assistants with custom system prompt, model, and per-tool permissions. Two surfaces: markdown files (one agent per file) or the `agent` block in `opencode.json`.
 
-## Agent Types
+## Modes
 
-| Type | Mode | Behavior |
-| --- | --- | --- |
-| Primary | `primary` | Main conversation agents, cycle with Tab |
-| Subagent | `subagent` | Invoked by primary agents or via `@mention` |
-| All | `all` (default) | Available as both primary and subagent |
+| Mode | Behavior |
+| --- | --- |
+| `primary` | Tab-cycled main agents (Build, Plan) |
+| `subagent` | Invoked by primaries or `@mention` (General, Explore) |
+| `all` | Both. **Default** when `mode` is omitted |
 
-Built-in: **Build** (primary, full tools), **Plan** (primary, read-only), **General** (subagent, full tools), **Explore** (subagent, read-only).
+Built-ins: **Build** (primary, full tools), **Plan** (primary, edits/bash gated to `ask`), **General** (subagent, full tools except todo), **Explore** (subagent, read-only).
 
-## Markdown Agent Format
+If a primary should never be Tab-selected by the user, mark it `subagent`. If a subagent should be invocable only by other agents (not in `@` autocomplete), add `hidden: true` — Task tool can still reach it.
 
-Place in `~/.config/opencode/agents/` (global) or `.opencode/agents/` (project). Filename becomes the agent name (`librarian.md` -> `librarian` agent).
+## Markdown format
+
+`~/.config/opencode/agents/<name>.md` (global) or `.opencode/agents/<name>.md` (project). Filename is the agent name.
 
 ```yaml
 ---
-description: One concise sentence on what this agent does
+description: One sentence — model uses this to decide when to invoke a subagent
 mode: subagent
 model: anthropic/claude-sonnet-4-20250514
 temperature: 0.1
@@ -35,107 +37,153 @@ permission:
   webfetch: deny
 ---
 
-System prompt content goes here as markdown.
-Focus on role, constraints, and workflow.
+System prompt body. Role, workflow, constraints.
 ```
 
-### Frontmatter Fields
+## Frontmatter / config fields
 
-Required:
+Required: **description** (one sentence; this routes invocation — no examples, no multi-paragraph).
 
-- **description** — Brief sentence. This is what the model sees to decide when to invoke subagents. Keep it short and precise — one sentence, no examples, no multi-paragraph explanations.
+Common optional:
 
-Optional:
+- **mode** — `primary` | `subagent` | `all` (default `all`)
+- **model** — `provider/model-id`. Primaries default to global model; subagents inherit the invoking primary's model.
+- **temperature** — 0.0–1.0 (low = focused, high = creative)
+- **top_p** — alternative to temperature
+- **steps** — max agentic iterations before forced text response. (`maxSteps` is **deprecated** — use `steps`.)
+- **disable** — `true` disables without deleting
+- **prompt** — `{file:./path/to/prompt.txt}` for an external system prompt; path is relative to the config file
+- **hidden** — `true` to hide a subagent from `@` autocomplete (Task tool still works)
+- **color** — hex (`#FF5733`) or theme name (`primary`, `accent`, `success`, `warning`, `error`, `info`)
 
-- **mode** — `primary`, `subagent`, or `all` (default: `all`)
-- **model** — Override model (`provider/model-id` format)
-- **temperature** — 0.0–1.0 (lower = deterministic, higher = creative)
-- **steps** — Max agentic iterations before forced text response
-- **disable** — `true` to disable without deleting
-- **prompt** — `{file:./path/to/prompt.txt}` for external prompt file
-- **hidden** — `true` to hide subagent from `@` autocomplete (still invocable via Task tool)
-- **color** — Hex (`#FF5733`) or theme name (`primary`, `accent`, `error`, etc.)
-- **top_p** — 0.0–1.0, alternative to temperature
+Anything else is **passed through to the model provider** (e.g. `reasoningEffort`, `textVerbosity` for OpenAI reasoning models).
 
-### Permissions
+## Permissions
 
-Control tool access per-agent. Values: `allow`, `ask`, `deny`.
+Per-tool gating. Values: `allow` | `ask` | `deny`. The deprecated `tools` field still works (`true`/`false` ≡ `"allow"`/`"deny"`); migrate new agents to `permission`.
+
+### Keys
+
+| Key | Gates | Pattern support |
+| --- | --- | --- |
+| `read` | `read` | glob |
+| `edit` | `write`, `edit`, `apply_patch` | glob |
+| `glob` | `glob` | glob |
+| `grep` | `grep` | glob |
+| `list` | `list` | glob |
+| `bash` | `bash` | command-pattern |
+| `task` | which subagents this agent can invoke | glob |
+| `external_directory` | any tool reading/writing outside the project worktree | glob |
+| `lsp` | `lsp` | glob |
+| `skill` | `skill` | glob |
+| `webfetch` / `websearch` | self | shorthand only |
+| `todowrite` | `todowrite`, `todoread` | shorthand only |
+| `question` / `doom_loop` | self | shorthand only |
+
+Pattern keys also accept the bare shorthand (`edit: deny`).
+
+Keys are matched as wildcards against tool names — applies to built-ins, custom tools, and MCP tools (e.g. `mymcp_*: deny` disables an MCP server, `mymcp_search: ask` targets one tool).
+
+### Last matching rule wins
+
+Put `*` first, specific overrides after:
 
 ```yaml
 permission:
-  edit: deny
   bash:
     "*": ask
     "git status *": allow
     "git diff *": allow
-  webfetch: deny
-  task:
-    "*": deny
-    "explore": allow
-```
-
-Rules are evaluated in order — **last matching rule wins**. Put `*` wildcards first, specific overrides after.
-
-The deprecated `tools` field (`write: false`, `edit: false`, etc.) still works but prefer `permission` for new agents.
-
-### Task Permissions
-
-Control which subagents an agent can invoke:
-
-```yaml
-permission:
   task:
     "*": deny
     "explore": allow
     "code-reviewer": ask
 ```
 
-When set to `deny`, the subagent is removed from the Task tool description entirely.
+Setting a `task` entry to `deny` removes that subagent from the Task tool description entirely. Users can still invoke any subagent via `@` autocomplete regardless of `task` permissions.
 
-## System Prompt Best Practices
+## JSON form
 
-The markdown body below the frontmatter is the system prompt. Write it as instructions to the agent:
-
-1. **Open with role and expertise** — one paragraph establishing who the agent is
-2. **Define the workflow** — numbered phases or steps the agent follows
-3. **Set constraints** — what the agent should and should not do
-4. **Keep it focused** — an agent that tries to do everything does nothing well
-
-Avoid putting examples, invocation patterns, or "when to use" guidance in the system prompt. That belongs in the description (for model routing) or in project context files (for user reference).
-
-## JSON Configuration
-
-Agents can also be configured in `opencode.json`:
+Same fields under `agent.<name>` in `opencode.json`. Agent config overrides top-level config:
 
 ```json
 {
+  "$schema": "https://opencode.ai/config.json",
+  "permission": { "edit": "deny" },
   "agent": {
-    "review": {
-      "description": "Reviews code for best practices",
+    "build": {
+      "permission": { "edit": "ask" }
+    },
+    "code-reviewer": {
+      "description": "Reviews code for best practices and risks",
       "mode": "subagent",
       "model": "anthropic/claude-sonnet-4-20250514",
-      "permission": {
-        "edit": "deny",
-        "bash": {
-          "*": "ask"
-        }
-      }
+      "permission": { "edit": "deny" }
     }
   }
 }
 ```
 
-Agent-specific config overrides global config. Additional provider-specific options (like `reasoningEffort`) pass through directly to the model.
+## Writing the description
 
-## Common Mistakes
+The `description` is the only field the routing model sees when deciding whether to invoke a subagent. Treat it like a skill description.
 
-- **Bloated descriptions**: The description field is for model routing, not documentation. One sentence.
-- **Examples in frontmatter**: Description should not contain example user/assistant exchanges. Those belong in the system prompt or project docs if needed at all.
-- **Wrong mode**: If an agent should only be invoked by other agents or `@mention`, use `subagent`. If users should Tab to it, use `primary`.
-- **Overpermissive tools**: Start restrictive, grant access as needed. A review agent shouldn't have write access.
-- **No permission field**: Using the deprecated `tools` field instead of `permission`. Migrate to `permission` for new agents.
+- One sentence, third person. Never "I can…" / "You can…".
+- Lead with a verb phrase (what it does), then concrete triggers (file types, CLI names, domain terms users actually say).
+- Slightly directive — agents under-trigger by default.
+- Add `Skip when …` only if an adjacent agent would otherwise mistrigger.
+- Skip: numbered "(1)…(2)…" lists, "always load", time-stamped guidance, restating the agent name.
 
-## Additional Resources
+**Vague →** `Reviews code.`
+**Triggered →** `Reviews TypeScript/React PRs for type safety, accessibility, and dead code. Use when asked to review a diff, audit a PR, or check changed files.`
 
-- [OpenCode Agents docs](https://opencode.ai/docs/agents/) — full reference
-- [OpenCode Permissions docs](https://opencode.ai/docs/permissions/) — permission system details
+## Writing the system prompt body
+
+The markdown body (or `prompt:` file) becomes the agent's system prompt — every line loads on every invocation, so be ruthless about terseness.
+
+**Structure:**
+
+1. Role + expertise — one paragraph
+2. Workflow — numbered phases or steps
+3. Constraints — explicit do / don't
+4. Narrow scope beats grab-bag
+
+**Density tools** — prefer the format that conveys the most per token:
+
+- **Tables** for parallel comparisons (modes, options, decision matrices)
+- **Code blocks** for exact syntax, commands, config snippets
+- **Tight bullets** with bolded leads for scannable rules
+- **Short examples** showing *unique* behavior — one good before/after beats four redundant ones
+
+**Cut:**
+
+- Filler: "just", "really", "make sure to", "it's important to note"
+- Pleasantries and hedging
+- Restating the role across sections
+- Multiple examples that demonstrate the same pattern
+- "When to use" guidance and invocation patterns — those belong in `description`, not the body
+
+If a sentence wouldn't change the agent's behavior, delete it.
+
+## Quick scaffold
+
+```bash
+opencode agent create
+```
+
+Interactive: pick scope (global/project), describe purpose, select allowed permissions; everything unselected is denied.
+
+## Common mistakes
+
+- **Bloated description.** It's routing metadata, not docs. One sentence.
+- **Examples in `description`.** Belongs in the body or project docs.
+- **Wrong mode.** Tab-cycled = `primary`, invoked-only = `subagent`. Don't leave at `all` if the agent shouldn't be both.
+- **Overpermissive defaults.** Start restrictive, open as needed. A reviewer doesn't need `edit`.
+- **Wildcard ordering.** `*` rule must come before specific overrides — last match wins.
+- **Legacy fields.** `tools` and `maxSteps` are deprecated; use `permission` and `steps`.
+
+## References
+
+- [Agents](https://opencode.ai/docs/agents/) — full reference
+- [Permissions](https://opencode.ai/docs/permissions/) — permission system details
+- [Config schema](https://opencode.ai/config.json)
