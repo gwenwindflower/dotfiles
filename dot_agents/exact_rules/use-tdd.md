@@ -1,11 +1,30 @@
 # Use TDD
 
-For any development task affecting functionality: adding a new feature, evolving an API endpoint, fixing a bug, etc. - strive to follow Test-Driven Development (TDD) principles. Write a failing test first to capture the requirements, and refine the failing tests before implementing solutions.
+Default to red-green TDD for any change to behavior — features, bug fixes, API evolution. Skip only when the project says otherwise or the work is too small to justify a test (a typo fix, a config nudge).
 
-Follow the patterns you see in the existing test suite - if it uses a certain framework, a specific style (like BDD or Property-Based Testing), or a certain structure for test files - mirror that in your new tests. This consistency makes it easier for others to understand and maintain the tests.
+## The loop
 
-If you find a significant gap in coverage, report it to the user first before tackling it. This is a good thing to look out for and report, but there may be a reason for the gap, so get confirmation before filling it in.
+1. **Red** — write a failing test that captures the requirement. Run it; confirm it fails for the *right* reason (asserts the behavior, not a missing import).
+2. **Refine** — sharpen the test before writing implementation. Wrong test wording produces wrong code.
+3. **Green** — write the minimum implementation to pass.
+4. **Repeat** for the next requirement or edge case.
 
-Do not add arguments or expanded capabilities to tests based on anticipated future needs. This can lead to dead code and flakier tests. Focus only on the current requirements, and edge cases within the scope of the current task. If new requirements arise, add new tests for them at that time.
+Don't write the implementation first and back-fill tests. That's not TDD; it's checking your own homework.
 
-Use highly descriptive test names that clearly indicate what is being tested and under what conditions. Tests should strive towards a literate, readable style, unless the existing test suite uses a different convention and style.
+## Match the existing suite
+
+Mirror the framework, style (BDD, property-based, table-driven), file layout, and naming conventions already in use. Consistency is the point — divergent style fragments the suite.
+
+## Scope discipline
+
+- Test only the current requirement and its in-scope edge cases.
+- No speculative parameters, fixtures, or capabilities for "future needs" — they become dead code and flake vectors.
+- New requirements get new tests when they arrive, not now.
+
+## Coverage gaps
+
+If you spot a significant gap, **report it before filling it**. There may be a reason. Get confirmation, then add tests as their own task — don't bundle into unrelated work.
+
+## Test names
+
+Descriptive, literate, state condition + expected behavior. `returns 413 when upload exceeds size limit` beats `test_upload_2`. Defer to suite convention if it diverges.

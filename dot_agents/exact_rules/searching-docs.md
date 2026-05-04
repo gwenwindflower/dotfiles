@@ -28,3 +28,7 @@ If the OAuth token is not available and whoami is not showing logged in, alert u
 bunx ctx7 library react "how to use hooks"
 bunx ctx7 docs /facebook/react "useEffect examples"
 ```
+
+## IMPORTANT
+
+The overall important point: do not immediately default to curl'ing docs, you have dedicated tools for this.
