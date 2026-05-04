@@ -1,154 +1,8 @@
 {
 	"$schema": "https://json.schemastore.org/claude-code-settings.json",
-	"editorMode": "vim",
-	"effortLevel": "medium",
-	"enabledPlugins": {
-		"gopls-lsp@claude-plugins-official": true,
-		"lua-lsp@claude-plugins-official": true,
-		"pyright-lsp@claude-plugins-official": true,
-		"ruby-lsp@claude-plugins-official": true,
-		"rust-analyzer-lsp@claude-plugins-official": true,
-		"typescript-lsp@claude-plugins-official": true,
-		"worktrunk@worktrunk": true
-	},
 	"env": {
 		"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
 		"DISABLE_AUTO_UPDATER": "1"
-	},
-	"hooks": {
-		"PermissionRequest": [
-			{
-				"hooks": [
-					{
-						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' blocked",
-						"timeout": 10,
-						"type": "command"
-					}
-				],
-				"matcher": "*"
-			}
-		],
-		"PostToolUse": [
-			{
-				"hooks": [
-					{
-						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
-						"timeout": 10,
-						"type": "command"
-					}
-				],
-				"matcher": "*"
-			}
-		],
-		"PostToolUseFailure": [
-			{
-				"hooks": [
-					{
-						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
-						"timeout": 10,
-						"type": "command"
-					}
-				],
-				"matcher": "*"
-			}
-		],
-		"PreToolUse": [
-			{
-				"hooks": [
-					{
-						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
-						"timeout": 10,
-						"type": "command"
-					}
-				],
-				"matcher": "*"
-			}
-		],
-		"SessionEnd": [
-			{
-				"hooks": [
-					{
-						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' release",
-						"timeout": 10,
-						"type": "command"
-					}
-				],
-				"matcher": "*"
-			}
-		],
-		"SessionStart": [
-			{
-				"hooks": [
-					{
-						"command": "$HOME/.claude/hooks/set-sandbox-tmpdir.sh",
-						"type": "command"
-					},
-					{
-						"command": "$HOME/.claude/hooks/set-git-nosign.sh",
-						"type": "command"
-					}
-				],
-				"matcher": ""
-			}
-		],
-		"Stop": [
-			{
-				"hooks": [
-					{
-						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' idle",
-						"timeout": 10,
-						"type": "command"
-					}
-				],
-				"matcher": "*"
-			}
-		],
-		"SubagentStop": [
-			{
-				"hooks": [
-					{
-						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
-						"timeout": 10,
-						"type": "command"
-					}
-				],
-				"matcher": "*"
-			}
-		],
-		"TaskCompleted": [
-			{
-				"hooks": [
-					{
-						"command": "$HOME/.claude/hooks/require-teammate-commit.sh",
-						"type": "command"
-					}
-				],
-				"matcher": ""
-			}
-		],
-		"UserPromptSubmit": [
-			{
-				"hooks": [
-					{
-						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
-						"timeout": 10,
-						"type": "command"
-					}
-				],
-				"matcher": "*"
-			}
-		],
-		"WorktreeCreate": [
-			{
-				"hooks": [
-					{
-						"command": "$HOME/.claude/hooks/inject-commit-reminder.sh",
-						"type": "command"
-					}
-				],
-				"matcher": ""
-			}
-		]
 	},
 	"permissions": {
 		"allow": [
@@ -284,6 +138,7 @@
 			"WebFetch(domain:clireleases.blacksmith.sh)",
 			"WebFetch(domain:codecompanion.olimorris.dev)",
 			"WebFetch(domain:context7.com)",
+			"WebFetch(domain:deno.land)",
 			"WebFetch(domain:docs.astral.sh)",
 			"WebFetch(domain:docs.blacksmith.sh)",
 			"WebFetch(domain:docs.brew.sh)",
@@ -354,12 +209,179 @@
 			"Bash(op *)"
 		]
 	},
+	"hooks": {
+		"PermissionRequest": [
+			{
+				"matcher": "*",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' blocked",
+						"timeout": 10
+					}
+				]
+			}
+		],
+		"PostToolUse": [
+			{
+				"matcher": "*",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
+						"timeout": 10
+					}
+				]
+			}
+		],
+		"PostToolUseFailure": [
+			{
+				"matcher": "*",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
+						"timeout": 10
+					}
+				]
+			}
+		],
+		"PreToolUse": [
+			{
+				"matcher": "*",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
+						"timeout": 10
+					}
+				]
+			}
+		],
+		"SessionEnd": [
+			{
+				"matcher": "*",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' release",
+						"timeout": 10
+					}
+				]
+			}
+		],
+		"SessionStart": [
+			{
+				"matcher": "",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "$HOME/.claude/hooks/set-sandbox-tmpdir.sh"
+					},
+					{
+						"type": "command",
+						"command": "$HOME/.claude/hooks/set-git-nosign.sh"
+					}
+				]
+			}
+		],
+		"Stop": [
+			{
+				"matcher": "*",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' idle",
+						"timeout": 10
+					}
+				]
+			}
+		],
+		"SubagentStop": [
+			{
+				"matcher": "*",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
+						"timeout": 10
+					}
+				]
+			}
+		],
+		"TaskCompleted": [
+			{
+				"matcher": "",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "$HOME/.claude/hooks/require-teammate-commit.sh"
+					}
+				]
+			}
+		],
+		"UserPromptSubmit": [
+			{
+				"matcher": "*",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
+						"timeout": 10
+					}
+				]
+			}
+		],
+		"WorktreeCreate": [
+			{
+				"matcher": "",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "$HOME/.claude/hooks/inject-commit-reminder.sh"
+					}
+				]
+			}
+		]
+	},
+	"statusLine": {
+		"type": "command",
+		"command": "winline",
+		"padding": 0
+	},
+	"enabledPlugins": {
+		"gopls-lsp@claude-plugins-official": true,
+		"lua-lsp@claude-plugins-official": true,
+		"pyright-lsp@claude-plugins-official": true,
+		"ruby-lsp@claude-plugins-official": true,
+		"rust-analyzer-lsp@claude-plugins-official": true,
+		"typescript-lsp@claude-plugins-official": true,
+		"worktrunk@worktrunk": true
+	},
 	"sandbox": {
-		"allowUnsandboxedCommands": false,
-		"autoAllowBashIfSandboxed": false,
 		"enabled": true,
+		"autoAllowBashIfSandboxed": false,
+		"allowUnsandboxedCommands": false,
+		"network": {
+			"allowedDomains": [
+				"api.github.com",
+				"backend.blacksmith.sh",
+				"clireleases.blacksmith.sh",
+				"context7.com",
+				"dl.deno.land",
+				"jsr.io",
+				"pkg.go.dev",
+				"proxy.golang.org",
+				"pypi.org",
+				"pythonhosted.org",
+				"registry.npmjs.org",
+				"storage.googleapis.com",
+				"sum.golang.org",
+				"telemetry.astro.build"
+			],
+			"allowLocalBinding": true
+		},
 		"filesystem": {
-			"allowRead": ["~/.claude/**"],
 			"allowWrite": [
 				"~/.agentbrowser",
 				"~/.local/share/graveyard/**",
@@ -372,28 +394,10 @@
 				"~/Library/Caches/go-build/**",
 				"~/.local/share/pnpm/**",
 				"~/.cache/pnpm/**"
-			]
-		},
-		"network": {
-			"allowLocalBinding": true,
-			"allowedDomains": [
-				"api.github.com",
-				"backend.blacksmith.sh",
-				"clireleases.blacksmith.sh",
-				"context7.com",
-				"jsr.io",
-				"pkg.go.dev",
-				"proxy.golang.org",
-				"pypi.org",
-				"pythonhosted.org",
-				"registry.npmjs.org",
-				"storage.googleapis.com",
-				"sum.golang.org",
-				"telemetry.astro.build"
-			]
+			],
+			"allowRead": ["~/.claude/**"]
 		}
 	},
-	"skipDangerousModePermissionPrompt": true,
 	"spinnerTipsEnabled": false,
 	"spinnerVerbs": {
 		"mode": "replace",
@@ -439,12 +443,10 @@
 			"Shopping with the girlypops"
 		]
 	},
-	"statusLine": {
-		"command": "winline",
-		"padding": 0,
-		"type": "command"
-	},
 	"syntaxHighlightingDisabled": false,
-	"voiceEnabled": true
+	"effortLevel": "medium",
+	"skipDangerousModePermissionPrompt": true,
+	"voiceEnabled": true,
+	"editorMode": "vim",
+	"model": "opus[1m]"
 }
-
