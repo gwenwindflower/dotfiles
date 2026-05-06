@@ -271,6 +271,8 @@ abbr --add ghrc gh repo create
 abbr --add ghrcd gh repo create --push --private --source .
 abbr --add ghd gh dash
 abbr --add ghdo opo gh dash
+## critique
+abbr --add crit bunx critique
 ### blacksmith
 abbr --add bs blacksmith
 abbr --add bsau blacksmith auth status
