@@ -1,6 +1,6 @@
 {
   "LazyVim": { "branch": "main", "commit": "83d90f339defdb109a6ede333865a66ffc7ef6aa" },
-  "SchemaStore.nvim": { "branch": "main", "commit": "6db1246640e9e1bdf8a1d1f6d27a940fc0a572d5" },
+  "SchemaStore.nvim": { "branch": "main", "commit": "c8982fcea21d0d8e928a367e0c1536e6ac7cf98e" },
   "aerial.nvim": { "branch": "master", "commit": "645d108a5242ec7b378cbe643eb6d04d4223f034" },
   "blink.cmp": { "branch": "main", "commit": "78336bc89ee5365633bcf754d93df01678b5c08f" },
   "bufferline.nvim": { "branch": "main", "commit": "655133c3b4c3e5e05ec549b9f8cc2894ac6f51b3" },
@@ -72,5 +72,5 @@
   "vim-tmux-navigator": { "branch": "master", "commit": "e41c431a0c7b7388ae7ba341f01a0d217eb3a432" },
   "which-key.nvim": { "branch": "main", "commit": "3aab2147e74890957785941f0c1ad87d0a44c15a" },
   "yanky.nvim": { "branch": "main", "commit": "784188e0a7363e762e53140f39124d786aec0832" },
-  "yazi.nvim": { "branch": "main", "commit": "fe67c14bcff50915faf16fb86b7314d6d5e668e5" }
+  "yazi.nvim": { "branch": "main", "commit": "aada50881aca7d13422e02a6681b8f0a0ec9a75c" }
 }
