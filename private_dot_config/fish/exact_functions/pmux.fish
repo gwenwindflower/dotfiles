@@ -5,8 +5,8 @@ function pmux -d "Generate my preferred dev setup in tmux for a given project di
     if set -q _flag_help
         echo "Launch a new tmux session with a predefined set of windows for development tools."
         logirl help_usage "pmux [OPTIONS]"
-        logirl help_header Usage
-        printf "  pmux                           Launch a new tmux session with predefined windows\n"
+        logirl help_header Commands
+        logirl help_cmd pmux "Launch a new tmux session with predefined windows"
         logirl help_header Options
         logirl help_flag h/help "Show this help message"
         return 0
