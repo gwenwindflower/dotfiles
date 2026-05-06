@@ -227,6 +227,8 @@ abbr --add pnd pnpm dev
 abbr --add pnb pnpm build
 abbr --add pnl pnpm lint
 abbr --add pnf pnpm fix
+abbr --add pnls pnpm ls
+abbr --add pnlsg pnpm ls -g
 ### bun
 abbr --add bui bun install
 abbr --add bua bun add
@@ -236,6 +238,7 @@ abbr --add bus bun start
 abbr --add but bun test
 abbr --add buru bun run
 abbr --add buc bun create
+abbr --add bulsg bun pm ls -g
 ### deno
 abbr --add dn deno
 abbr --add dncli deno install -grAf --root $DENO_HOME
