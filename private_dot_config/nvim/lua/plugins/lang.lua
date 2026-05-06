@@ -81,6 +81,15 @@ return {
       return opts
     end,
   },
+  -- TOML (I prefer tombi to LazyVim's default TOML Extra which uses taplo)
+  {
+    "neovim/nvim-lspconfig",
+    opts = function(_, opts)
+      opts.servers = opts.servers or {}
+      opts.servers.tombi = {}
+      return opts
+    end,
+  },
 }
 
 -- Handled by LazyVim defaults: most Lua stuff, *some* basic shell stuff
@@ -108,4 +117,4 @@ return {
 
 ---- Text: Markdown
 
----- Config: JSON, YAML, TOML
+---- Config: JSON, YAML
