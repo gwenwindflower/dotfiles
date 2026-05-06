@@ -139,7 +139,6 @@ packages:
         - cap
         - claude
         - claude-code
-        - copilot-cli
         - copilot-money
         - dbc
         - font-maple-mono
