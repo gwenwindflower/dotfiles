@@ -9,6 +9,7 @@ local bookmarks = {
 	{ key = { "c", "s" }, path = "~/.agents", desc = " Agent Config" },
 	{ key = { "c", "c" }, path = "~/.claude", desc = "󱜙 Claude Code Config" },
 	{ key = { "c", "o" }, path = "~/.local/share/chezmoi/private_dot_config/opencode", desc = "󱜙 OpenCode Config" },
+	{ key = { "c", "1" }, path = "~/.config/op/environments", desc = " 1Password Environments" },
 	{ key = { "l", "n" }, path = "~/.local/share/nvim", desc = " Neovim Plugins" },
 	{ key = { "l", "v" }, path = "~/.local/share/nvim/lazy/LazyVim", desc = "󰒲 LazyVim Repo" },
 	{ key = { "l", "d" }, path = "~/.local/state", desc = " Local state" },
