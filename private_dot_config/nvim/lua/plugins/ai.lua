@@ -5,23 +5,26 @@ return {
     opts = {
       interactions = {
         chat = {
-          adapter = {
-            name = "copilot",
-            model = "claude-opus-4.6",
-          },
+          adapter = "opencode",
         },
         inline = {
-          adapter = "copilot",
-          model = "gpt-5.3-codex",
+          adapter = {
+            name = "opencode_zen",
+            model = "opencode/gpt-5.5",
+          },
         },
         cmd = {
-          adapter = "copilot",
-          model = "gpt-5.3-codex",
+          adapter = {
+            name = "opencode_zen",
+            model = "opencode/gpt-5.3-codex",
+          },
         },
-        -- Cheap background tasks (0.33x multiplier)
+        -- Cheap background tasks
         background = {
-          adapter = "copilot",
-          model = "gpt-5.4-mini",
+          adapter = {
+            name = "opencode_zen",
+            model = "opencode/gpt-5.4-mini",
+          },
         },
         cli = {
           agent = "opencode",
@@ -42,10 +45,8 @@ return {
         },
       },
       adapters = {
-        -- Copilot HTTP adapter (not the agent TUI) is default enabled and configured
-        -- that's why we can reference it but it's not configured as an adapter here
         acp = {
-          -- Claude Code — primary chat backend via Claude Pro sub
+          -- secondary ACP chat via Claude Max sub
           claude_code = function()
             return require("codecompanion.adapters").extend("claude_code", {
               env = {
@@ -56,10 +57,24 @@ return {
               },
             })
           end,
-          -- OpenCode — alt ACP backend, uses Copilot provider
-          -- switch to this in chat when you want OpenCode's tools/harness
+          -- primary ACP chat backend
           opencode = function()
             return require("codecompanion.adapters").extend("opencode", {})
+          end,
+        },
+        http = {
+          -- OpenCode Zen OpenAI-compatible gateway, used for non-chat
+          opencode_zen = function()
+            return require("codecompanion.adapters").extend("openai_compatible", {
+              name = "opencode_zen",
+              formatted_name = "OpenCode Zen",
+              env = {
+                api_key = "OPENCODE_ZEN_API_KEY",
+                url = "https://opencode.ai/zen",
+                chat_url = "/v1/chat/completions",
+                models_endpoint = "/v1/models",
+              },
+            })
           end,
         },
       },
@@ -75,9 +90,9 @@ return {
         },
         opts = {
           chat = {
-            -- Only load rules for HTTP adapters (Copilot direct) —
-            -- ACP adapters (Claude Code, OpenCode) already load these
-            -- through their own agent config
+            -- Only load rules for HTTP adapters — ACP adapters
+            -- (Claude Code, OpenCode) already load these through
+            -- their own agent config
             ---@param chat CodeCompanion.Chat
             ---@return boolean
             condition = function(chat)
