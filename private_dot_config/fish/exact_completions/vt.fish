@@ -1,50 +1,131 @@
-# Fish completion for vt (Val Town CLI)
+#!/usr/bin/env fish
+# fish completion support for vt v0.1.54
 
-# Disable file completions by default
-complete -c vt -f
+function __fish_vt_using_command
+  set -l cmds __vt __vt_profile __vt_upgrade __vt_clone __vt_push __vt_pull __vt_status __vt_branch __vt_checkout __vt_watch __vt_browse __vt_create __vt_remix __vt_config __vt_config_set __vt_config_get __vt_config_ignore __vt_config_where __vt_config_options __vt_delete __vt_list __vt_tail __vt_login __vt_logout __vt_completions __vt_completions_bash __vt_completions_fish __vt_completions_zsh
+  set -l words (commandline -opc)
+  set -l cmd "_"
+  for word in $words
+    switch $word
+      case '-*'
+        continue
+      case '*'
+        set word (string replace -r -a '\W' '_' $word)
+        set -l cmd_tmp $cmd"_$word"
+        if contains $cmd_tmp $cmds
+          set cmd $cmd_tmp
+        end
+    end
+  end
+  if test "$cmd" = "$argv[1]"
+    return 0
+  end
+  return 1
+end
 
-# Global options
-complete -c vt -s h -l help -d "Show this help"
-complete -c vt -s V -l version -d "Show the version number for this program"
-
-# Commands
-complete -c vt -n __fish_use_subcommand -a profile -d "Get information about the currently authenticated user"
-complete -c vt -n __fish_use_subcommand -a me -d "Get information about the currently authenticated user"
-complete -c vt -n __fish_use_subcommand -a upgrade -d "Upgrade vt executable to latest or given version"
-complete -c vt -n __fish_use_subcommand -a clone -d "Clone a Val"
-complete -c vt -n __fish_use_subcommand -a push -d "Push local changes to a Val"
-complete -c vt -n __fish_use_subcommand -a pull -d "Pull the latest changes for the current Val"
-complete -c vt -n __fish_use_subcommand -a status -d "Show the working tree status"
-complete -c vt -n __fish_use_subcommand -a branch -d "List or delete branches"
-complete -c vt -n __fish_use_subcommand -a checkout -d "Check out a different branch"
-complete -c vt -n __fish_use_subcommand -a watch -d "Watch for changes and automatically sync with Val Town"
-complete -c vt -n __fish_use_subcommand -a browse -d "Open a Val's main page in a web browser"
-complete -c vt -n __fish_use_subcommand -a create -d "Create a new Val"
-complete -c vt -n __fish_use_subcommand -a remix -d "Remix a Val"
-complete -c vt -n __fish_use_subcommand -a config -d "Manage vt configuration"
-complete -c vt -n __fish_use_subcommand -a delete -d "Delete the current Val"
-complete -c vt -n __fish_use_subcommand -a list -d "List all your Vals"
-complete -c vt -n __fish_use_subcommand -a tail -d "Stream logs of a Val"
-
-# Subcommand-specific completions
-
-# clone [valUri] [targetDir] [branchName] - allow directory completion for targetDir
-complete -c vt -n "__fish_seen_subcommand_from clone" -F -d "Target directory"
-
-# checkout <existingBranchName> - no file completion needed
-complete -c vt -n "__fish_seen_subcommand_from checkout" -f
-
-# create <valName> [targetDir] - allow directory completion
-complete -c vt -n "__fish_seen_subcommand_from create" -F -d "Target directory"
-
-# remix <fromValUri> [newValName] [targetDir] - allow directory completion
-complete -c vt -n "__fish_seen_subcommand_from remix" -F -d "Target directory"
-
-# list [offset] - no file completion
-complete -c vt -n "__fish_seen_subcommand_from list" -f
-
-# tail [valUri] [branchName] - no file completion
-complete -c vt -n "__fish_seen_subcommand_from tail" -f
-
-# Commands with no arguments
-complete -c vt -n "__fish_seen_subcommand_from profile me upgrade push pull status branch watch browse config delete" -f
+complete -c vt -n '__fish_vt_using_command __vt' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt' -s V -l version -x -k -f -d 'Show the version number for this program.'
+complete -c vt -n '__fish_vt_using_command __vt' -k -f -a profile -d 'Get information about the currently authenticated user (you!)'
+complete -c vt -n '__fish_vt_using_command __vt_profile' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt' -k -f -a upgrade -d 'Upgrade vt executable to latest or given version.'
+complete -c vt -n '__fish_vt_using_command __vt_upgrade' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt_upgrade' -s l -l list-versions -k -f -d 'Show available versions.'
+complete -c vt -n '__fish_vt_using_command __vt_upgrade' -l version -k -f -r -a '(vt completions complete version upgrade 2>/dev/null)' -d 'The version to upgrade to.'
+complete -c vt -n '__fish_vt_using_command __vt_upgrade' -s f -l force -k -f -d 'Replace current installation even if not out-of-date.'
+complete -c vt -n '__fish_vt_using_command __vt_upgrade' -s v -l verbose -k -f -d 'Log verbose output.'
+complete -c vt -n '__fish_vt_using_command __vt_upgrade' -l no-spinner -k -f -d 'Disable spinner.'
+complete -c vt -n '__fish_vt_using_command __vt' -k -f -a clone -d 'Clone a Val'
+complete -c vt -n '__fish_vt_using_command __vt_clone' -k -f -a '(vt completions complete string clone 2>/dev/null)'
+complete -c vt -n '__fish_vt_using_command __vt_clone' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt_clone' -l no-editor-files -k -f -d 'Clone without editor configuration files'
+complete -c vt -n '__fish_vt_using_command __vt' -k -f -a push -d 'Push local changes to a Val'
+complete -c vt -n '__fish_vt_using_command __vt_push' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt_push' -s d -l dry-run -k -f -d 'Show what would be pushed without making any changes'
+complete -c vt -n '__fish_vt_using_command __vt' -k -f -a pull -d 'Pull the latest changes for the current Val'
+complete -c vt -n '__fish_vt_using_command __vt_pull' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt_pull' -s f -l force -k -f -d 'Force the pull even if there are unpushed changes'
+complete -c vt -n '__fish_vt_using_command __vt_pull' -s d -l dry-run -k -f -d 'Show what would be pulled without making any changes'
+complete -c vt -n '__fish_vt_using_command __vt' -k -f -a status -d 'Show the working tree status'
+complete -c vt -n '__fish_vt_using_command __vt_status' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt' -k -f -a branch -d 'List or delete branches'
+complete -c vt -n '__fish_vt_using_command __vt_branch' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt_branch' -s D -l delete -k -f -r -a '(vt completions complete string branch 2>/dev/null)' -d 'Delete a branch'
+complete -c vt -n '__fish_vt_using_command __vt' -k -f -a checkout -d 'Check out a different branch'
+complete -c vt -n '__fish_vt_using_command __vt_checkout' -k -f -a '(vt completions complete string checkout 2>/dev/null)'
+complete -c vt -n '__fish_vt_using_command __vt_checkout' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt_checkout' -s b -l branch -k -f -d 'Create a new branch with the specified name'
+complete -c vt -n '__fish_vt_using_command __vt_checkout' -s d -l dry-run -k -f -d 'Show what would be changed during checkout without making any changes'
+complete -c vt -n '__fish_vt_using_command __vt_checkout' -s f -l force -k -f -d 'Force checkout by ignoring local changes'
+complete -c vt -n '__fish_vt_using_command __vt' -k -f -a watch -d 'Watch for changes and automatically sync with Val Town'
+complete -c vt -n '__fish_vt_using_command __vt_watch' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt_watch' -l no-companion -k -f -d 'Disable the companion browser extension WebSocket server'
+complete -c vt -n '__fish_vt_using_command __vt_watch' -s d -l debounce-delay -k -f -r -a '(vt completions complete number watch 2>/dev/null)' -d 'Debounce delay in milliseconds'
+complete -c vt -n '__fish_vt_using_command __vt' -k -f -a browse -d 'Open a Val\'s main page in a web browser'
+complete -c vt -n '__fish_vt_using_command __vt_browse' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt_browse' -l no-browser -k -f -d 'Print destination url instead of opening browser'
+complete -c vt -n '__fish_vt_using_command __vt' -k -f -a create -d 'Create a new Val'
+complete -c vt -n '__fish_vt_using_command __vt_create' -k -f -a '(vt completions complete string create 2>/dev/null)'
+complete -c vt -n '__fish_vt_using_command __vt_create' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt_create' -l org-name -k -f -r -a '(vt completions complete string create 2>/dev/null)' -d 'Create the Val under an organization you are a member of, or "me" for your personal account'
+complete -c vt -n '__fish_vt_using_command __vt_create' -l public -k -f -d 'Create as public Val (default)'
+complete -c vt -n '__fish_vt_using_command __vt_create' -l private -k -f -d 'Create as private Val'
+complete -c vt -n '__fish_vt_using_command __vt_create' -l unlisted -k -f -d 'Create as unlisted Val'
+complete -c vt -n '__fish_vt_using_command __vt_create' -l no-editor-files -k -f -d 'Skip creating editor configuration files'
+complete -c vt -n '__fish_vt_using_command __vt_create' -l upload-if-exists -k -f -d 'Upload existing files to the new Val if the directory is not empty'
+complete -c vt -n '__fish_vt_using_command __vt_create' -s d -l description -k -f -r -a '(vt completions complete string create 2>/dev/null)' -d 'Val description'
+complete -c vt -n '__fish_vt_using_command __vt' -k -f -a remix -d 'Remix a Val'
+complete -c vt -n '__fish_vt_using_command __vt_remix' -k -f -a '(vt completions complete string remix 2>/dev/null)'
+complete -c vt -n '__fish_vt_using_command __vt_remix' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt_remix' -l public -k -f -d 'Remix as public Val (default)'
+complete -c vt -n '__fish_vt_using_command __vt_remix' -l private -k -f -d 'Remix as private Val'
+complete -c vt -n '__fish_vt_using_command __vt_remix' -l unlisted -k -f -d 'Remix as unlisted Val'
+complete -c vt -n '__fish_vt_using_command __vt_remix' -l no-editor-files -k -f -d 'Skip creating editor configuration files'
+complete -c vt -n '__fish_vt_using_command __vt_remix' -s d -l description -k -f -r -a '(vt completions complete string remix 2>/dev/null)' -d 'Val description'
+complete -c vt -n '__fish_vt_using_command __vt' -k -f -a config -d 'Manage vt configuration'
+complete -c vt -n '__fish_vt_using_command __vt_config' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt_config' -k -f -a set -d 'Set a configuration value'
+complete -c vt -n '__fish_vt_using_command __vt_config_set' -k -f -a '(vt completions complete string config set 2>/dev/null)'
+complete -c vt -n '__fish_vt_using_command __vt_config_set' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt_config_set' -l local -k -f -d 'Set in the local configuration (val-specific). Leave value blank "" to unset.'
+complete -c vt -n '__fish_vt_using_command __vt_config' -k -f -a get -d 'Get a configuration value'
+complete -c vt -n '__fish_vt_using_command __vt_config_get' -k -f -a '(vt completions complete string config get 2>/dev/null)'
+complete -c vt -n '__fish_vt_using_command __vt_config_get' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt_config' -k -f -a ignore -d 'Edit or display the global vtignore file'
+complete -c vt -n '__fish_vt_using_command __vt_config_ignore' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt_config_ignore' -l no-editor -k -f -d 'Do not open the editor, just display the file path'
+complete -c vt -n '__fish_vt_using_command __vt_config' -k -f -a where -d 'Show the config file locations'
+complete -c vt -n '__fish_vt_using_command __vt_config_where' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt_config' -k -f -a options -d 'List all available configuration options'
+complete -c vt -n '__fish_vt_using_command __vt_config_options' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt' -k -f -a delete -d 'Delete the current Val'
+complete -c vt -n '__fish_vt_using_command __vt_delete' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt_delete' -s f -l force -k -f -d 'Skip confirmation prompt'
+complete -c vt -n '__fish_vt_using_command __vt' -k -f -a list -d 'List all your Vals'
+complete -c vt -n '__fish_vt_using_command __vt_list' -k -f -a '(vt completions complete number list 2>/dev/null)'
+complete -c vt -n '__fish_vt_using_command __vt_list' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt_list' -s a -l all -k -f -d 'List all vals'
+complete -c vt -n '__fish_vt_using_command __vt' -k -f -a tail -d 'Stream logs of a Val'
+complete -c vt -n '__fish_vt_using_command __vt_tail' -k -f -a '(vt completions complete string tail 2>/dev/null)'
+complete -c vt -n '__fish_vt_using_command __vt_tail' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt_tail' -l print-headers -k -f -d 'Print HTTP request/response headers'
+complete -c vt -n '__fish_vt_using_command __vt_tail' -l poll-frequency -k -f -r -a '(vt completions complete number tail 2>/dev/null)' -d 'Polling frequency in milliseconds'
+complete -c vt -n '__fish_vt_using_command __vt_tail' -l reverse-logs -k -f -d 'Show logs from latest to earliest (default: earliest to latest)'
+complete -c vt -n '__fish_vt_using_command __vt_tail' -l 24-hour-time -k -f -d 'Display timestamps in 24-hour format (default: 12-hour AM/PM)'
+complete -c vt -n '__fish_vt_using_command __vt' -k -f -a login -d 'Login to Val Town using your browser'
+complete -c vt -n '__fish_vt_using_command __vt_login' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt_login' -l local -k -f -d 'Save credentials to local configuration instead of global'
+complete -c vt -n '__fish_vt_using_command __vt' -k -f -a logout -d 'Logout from Val Town by clearing stored credentials'
+complete -c vt -n '__fish_vt_using_command __vt_logout' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt_logout' -l local -k -f -d 'Clear credentials from local configuration only'
+complete -c vt -n '__fish_vt_using_command __vt_logout' -l global -k -f -d 'Clear credentials from global configuration only'
+complete -c vt -n '__fish_vt_using_command __vt' -k -f -a completions -d 'Generate shell completions.'
+complete -c vt -n '__fish_vt_using_command __vt_completions' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt_completions' -k -f -a bash -d 'Generate shell completions for bash.'
+complete -c vt -n '__fish_vt_using_command __vt_completions_bash' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt_completions_bash' -s n -l name -k -f -r -a '(vt completions complete string completions bash 2>/dev/null)' -d 'The name of the main command.'
+complete -c vt -n '__fish_vt_using_command __vt_completions' -k -f -a fish -d 'Generate shell completions for fish.'
+complete -c vt -n '__fish_vt_using_command __vt_completions_fish' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt_completions_fish' -s n -l name -k -f -r -a '(vt completions complete string completions fish 2>/dev/null)' -d 'The name of the main command.'
+complete -c vt -n '__fish_vt_using_command __vt_completions' -k -f -a zsh -d 'Generate shell completions for zsh.'
+complete -c vt -n '__fish_vt_using_command __vt_completions_zsh' -s h -l help -x -k -f -d 'Show this help.'
+complete -c vt -n '__fish_vt_using_command __vt_completions_zsh' -s n -l name -k -f -r -a '(vt completions complete string completions zsh 2>/dev/null)' -d 'The name of the main command.'
