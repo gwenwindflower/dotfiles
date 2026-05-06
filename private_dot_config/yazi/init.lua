@@ -11,7 +11,7 @@ local bookmarks = {
 	{ key = { "c", "o" }, path = "~/.local/share/chezmoi/private_dot_config/opencode", desc = "󱜙 OpenCode Config" },
 	{ key = { "l", "n" }, path = "~/.local/share/nvim", desc = " Neovim Plugins" },
 	{ key = { "l", "v" }, path = "~/.local/share/nvim/lazy/LazyVim", desc = "󰒲 LazyVim Repo" },
-	{ key = { "l", "s" }, path = "~/.local/state", desc = " Local state" },
+	{ key = { "l", "d" }, path = "~/.local/state", desc = " Local state" },
 	{ key = "$", path = "~/.cache", desc = " User Cache" },
 	{ key = { "b" }, path = "/usr/local/", desc = " Brew" },
 	{ key = { "r" }, path = "~/.cargo", desc = "  Cargo" },
