@@ -172,8 +172,9 @@ packages:
         - zoom
     pnpm:
       globals:
-        - "@agentclientprotocol/claude-agent-acp"
-        - "@readwise/cli"
+        - '@agentclientprotocol/claude-agent-acp'
+        - '@aredotna/cli'
+        - '@readwise/cli'
     uv:
       tools:
         - ipython
