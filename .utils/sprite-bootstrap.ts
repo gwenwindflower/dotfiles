@@ -17,11 +17,11 @@
 //       --allow-read \
 //       --allow-write=$HOME,$TMPDIR,/tmp \
 //       --allow-env=HOME,TMPDIR \
-//       --allow-run=git,tar,sudo,chsh,which,id \
+//       --allow-run=git,tar,sudo,chsh,which,id,sh \
 //       https://raw.githubusercontent.com/gwenwindflower/dotfiles/main/.utils/sprite-bootstrap.ts'
 
 import { dirname } from "@std/path/dirname";
-import { dirs, files } from "./assets/sprite-bootstrap/manifest.ts";
+import { dirs, files, symlinks } from "./assets/sprite-bootstrap/manifest.ts";
 
 const REPO = "gwenwindflower/dotfiles";
 const BRANCH = "main";
@@ -35,6 +35,57 @@ if (!HOME) {
 
 function expand(p: string): string {
 	return p.startsWith("~/") ? `${HOME}/${p.slice(2)}` : p;
+}
+
+// Strip chezmoi attribute prefixes from a single path segment and surface
+// whether `executable_` was present. Applied per segment so nested paths
+// like `dot_lightdash-skill-manifest.json` or
+// `scripts/executable_install-workflow.sh` resolve correctly.
+function translateSegment(name: string): {
+	name: string;
+	executable: boolean;
+} {
+	let executable = false;
+	let n = name;
+	for (;;) {
+		if (n.startsWith("executable_")) {
+			executable = true;
+			n = n.slice("executable_".length);
+			continue;
+		}
+		if (n.startsWith("exact_")) {
+			n = n.slice("exact_".length);
+			continue;
+		}
+		if (n.startsWith("private_")) {
+			n = n.slice("private_".length);
+			continue;
+		}
+		if (n.startsWith("dot_")) {
+			n = `.${n.slice("dot_".length)}`;
+			continue;
+		}
+		break;
+	}
+	return { name: n, executable };
+}
+
+async function copyTree(srcDir: string, destDir: string): Promise<number> {
+	let count = 0;
+	for await (const entry of Deno.readDir(srcDir)) {
+		const childSrc = `${srcDir}/${entry.name}`;
+		const { name: cleanName, executable } = translateSegment(entry.name);
+		const childDest = `${destDir}/${cleanName}`;
+		if (entry.isDirectory) {
+			await Deno.mkdir(childDest, { recursive: true });
+			count += await copyTree(childSrc, childDest);
+		} else if (entry.isFile) {
+			await Deno.copyFile(childSrc, childDest);
+			if (executable) await Deno.chmod(childDest, 0o755);
+			count++;
+		}
+	}
+	return count;
 }
 
 async function run(
@@ -98,13 +149,29 @@ for (const d of dirs) {
 	const absSrc = `${tmp}/${d.srcDir}`;
 	const absDest = expand(d.destDir);
 	await Deno.mkdir(absDest, { recursive: true });
-	let count = 0;
-	for await (const entry of Deno.readDir(absSrc)) {
-		if (!entry.isFile) continue;
-		await Deno.copyFile(`${absSrc}/${entry.name}`, `${absDest}/${entry.name}`);
-		count++;
-	}
+	const count = await copyTree(absSrc, absDest);
 	console.log(`  ${d.destDir}/ (${count} files)`);
+}
+
+console.log("→ creating symlinks");
+for (const s of symlinks) {
+	const target = expand(s.target);
+	const link = expand(s.link);
+	await Deno.mkdir(dirname(link), { recursive: true });
+	try {
+		await Deno.remove(link);
+	} catch (e) {
+		if (!(e instanceof Deno.errors.NotFound)) throw e;
+	}
+	await Deno.symlink(target, link);
+	console.log(`  ${s.link} -> ${s.target}`);
+}
+
+console.log("→ installing herdr");
+try {
+	await run("sh", ["-c", "curl -fsSL https://herdr.dev/install.sh | sh"]);
+} catch (e) {
+	console.warn(`  (herdr install failed, continuing: ${(e as Error).message})`);
 }
 
 console.log("→ switching login shell to fish");
