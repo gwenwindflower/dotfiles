@@ -13,15 +13,21 @@
 // Usage:
 //   sprite exec -s <name> \
 //     'deno run \
-//       --allow-net=codeload.github.com,jsr.io \
+//       --allow-net=codeload.github.com \
 //       --allow-read \
 //       --allow-write=$HOME,$TMPDIR,/tmp \
 //       --allow-env=HOME,TMPDIR \
 //       --allow-run=git,tar,sudo,chsh,which,id,sh \
 //       https://raw.githubusercontent.com/gwenwindflower/dotfiles/main/.utils/sprite-bootstrap.ts'
 
-import { dirname } from "@std/path/dirname";
 import { dirs, files, symlinks } from "./assets/sprite-bootstrap/manifest.ts";
+
+function dirname(p: string): string {
+	const i = p.lastIndexOf("/");
+	if (i === -1) return ".";
+	if (i === 0) return "/";
+	return p.slice(0, i);
+}
 
 const REPO = "gwenwindflower/dotfiles";
 const BRANCH = "main";
