@@ -12,7 +12,7 @@ When asked, build SPOT files from scratch by interviewing the user or converting
 ## Two spec layers
 
 - **`SPEC.md`** — project contract. Vibe, goals, non-goals, vocabulary, design principles, an `@`-import index of domain specs, plus project-scope requirements that don't belong to any one domain.
-- **`specs/<dom>-<slug>.md`** — durable per-domain spec. Two-letter prefix (`sk-skills.md`, `dc-docs.md`, `cf-config.md`); domains map to user-visible scopes — CLI command groups, subsystems, product surfaces. Long-lived; evolves with the system.
+- **`specs/<dom>-<slug>.md`** — durable per-domain spec. Two-letter prefix for user-visible domains (`sk-skills.md`, `dc-docs.md`, `cf-config.md`) — CLI command groups, subsystems, product surfaces. One reserved 3-letter prefix, `dev-`, for development-meta domains (`dev-testing.md`, `dev-release.md`) covering tooling, harness, build/release, CI — internal-only requirements that ship as normal Phases. Long-lived; evolves with the system.
 
 Index domain specs from `SPEC.md`:
 
@@ -39,5 +39,5 @@ Stable, soft-immutable IDs let Phases reference requirements without restating t
 
 ## Jobs to be done
 
-- [Writing specs](writing-specs.md) — Planner work: spec shape, requirement IDs, phrasing patterns, edge cases, anti-patterns, scoping a Phase, Backlog and Meta.
+- [Writing specs](writing-specs.md) — Planner work: spec shape, requirement IDs, phrasing patterns, edge cases, anti-patterns, scoping a Phase, Backlog, the `dev-` domain.
 - [Running phases](running-phases.md) — Manager work: per-Phase workflow, TDD carve-outs, subagent drift, Manager-side commit hygiene, handoff to Planner.

@@ -58,14 +58,11 @@ belong to one domain. ID format: R001, R002, ...
 
 ## Backlog
 Future requirements, open questions, big ideas. Promote or delete.
-
-## Meta
-Unscoped tooling/config tasks.
 ```
 
 ## Domain spec shape — `specs/<dom>-<slug>.md`
 
-Two-letter domain prefix (`sk-skills.md`, `dc-docs.md`, `cf-config.md`); domains map to user-visible scopes — CLI command groups, subsystems, product surfaces.
+Two-letter prefix for product domains (`sk-skills.md`, `dc-docs.md`, `cf-config.md`) — these map to user-visible scopes (CLI command groups, subsystems, product surfaces). Cross-cutting infra/tooling/testing/CI concerns get a `dev-*` prefix instead (`dev-testing.md`, `dev-tooling.md`, `dev-ci.md`); they're domain specs like any other — same shape, same ID rules — just grouped by the prefix so it's obvious at a glance which slices are product surface vs. development scaffolding.
 
 ```markdown
 ## Goals
@@ -75,7 +72,7 @@ Two-letter domain prefix (`sk-skills.md`, `dc-docs.md`, `cf-config.md`); domains
 Bulleted list. ID format: <dom>-R001, <dom>-R002, ...
 ```
 
-Skip empty sections. Domain specs don't carry Backlog or Meta — those stay in `SPEC.md`.
+Skip empty sections. Domain specs don't carry a Backlog — that stays in `SPEC.md`.
 
 ## Requirement IDs
 
@@ -110,6 +107,7 @@ Edge cases are regular requirements phrased `If <bad>, then...` or `When <unusua
 
 ```markdown
 ## Phase 4: Google OAuth 🌀
+**Dependencies**: 2
 **Requirements**: au-R007, au-R008, au-R009, R002
 
 ### Provider integration
@@ -127,10 +125,11 @@ Workflow:
 2. **Scan durable specs for matching requirements.** List the IDs whose satisfaction would mean the Phase is done.
 3. **Fill gaps in durable specs first.** New requirements get appended IDs in the right domain spec. Walk edge cases. Don't write requirements directly into TODO.
 4. **Confirm test-ability.** Each ID must be checkable. Mark squishy ones explicitly so Manager doesn't get stuck looking for a test.
-5. **List IDs in the Phase** under `**Requirements**:`. Bare IDs only.
-6. **Sanity-check coverage.** Every Task contributes to ≥1 ID; every ID has ≥1 Task driving it.
+5. **Decide dependencies.** Phases run in parallel by default. Add a `**Dependencies**: <N>, <N>, ...` line under the header *only* when this Phase truly must wait for another — a real blocker, or shared churn (same config, same core schema) that makes parallel branches more painful than serializing. Omit otherwise. Bare Phase numbers; deps can only be other Phases; cycles are bugs (merge or split). A Phase is unblocked once every listed dep is in DONE.
+6. **List IDs in the Phase** under `**Requirements**:`. Bare IDs only.
+7. **Sanity-check coverage.** Every Task contributes to ≥1 ID; every ID has ≥1 Task driving it.
 
-Status markers: `🌀` active, `✅` complete, none = upcoming. **`#user`** marks tasks the agent must not execute. **Backlog** at end of `SPEC.md`, no number.
+Status markers: `🌀` active (multiple Phases can be active in parallel when independent), `✅` complete, none = upcoming. Phase numbers are stable IDs assigned in creation order — not a sequencing instruction; the `**Dependencies**:` line conveys order. **`#user`** marks tasks the agent must not execute. **Backlog** at end of `SPEC.md`, no number.
 
 Heuristics:
 
@@ -195,16 +194,15 @@ When implementation reveals a wrong, impossible, or incomplete requirement, upda
 
 If a spec or TODO change is needed mid-Phase, **stop work, make the change, resume.** Never edit while subagents are running.
 
-## Backlog and Meta
+## Backlog
 
-Both live in `SPEC.md` only.
+Lives in `SPEC.md` only — domain specs don't carry one. Future requirements, open questions, big ideas. Don't start without promotion to Requirements + a Phase. **Promote or delete** — lingering items are noise.
 
-- **Backlog** — future requirements, open questions, big ideas. Don't start without promotion to Requirements + a Phase. **Promote or delete** — lingering items are noise.
-- **Meta** — unscoped tooling/config tasks. Flat list, no Objectives or Phases. Both Planner and Manager add. Lives at end of `DONE.md`, appended in completion order. Clears by request.
+Infra/tooling/testing concerns are not Backlog — they go into `dev-*` domain specs as proper requirements with stable IDs, satisfied by Phases like any other domain. Surface a harness gap or tooling need? Add it to the right `dev-*` spec (or create one) and scope a Phase against it.
 
 ## Boundaries
 
-- **No code, no shell, no commits.** Permissions enforce this — only `.md` files writable. Manager handles every commit, including spec changes (attribute to Planner in the message).
+- **No code, no shell, no commits.** Permissions enforce this — only `.md` files writable. Manager handles every commit, including spec changes (attribute to Planner in the message). Pure spec/TODO/DONE bookkeeping commits — plan mapping, Phase scoping ahead of code, ID retirement — use `chore(specs)`.
 - **Hand off via Task tool.** Brief Manager: which Phase, which requirement IDs, anything subtle.
 - **Real requirement gaps don't get absorbed into TODO.** If Manager kicks back a gap, fix it in the durable spec first.
 - **Adapt mode:** match the project's existing structure; impose SPOT only on greenfield or by request.

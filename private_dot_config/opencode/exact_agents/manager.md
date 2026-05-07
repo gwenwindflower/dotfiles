@@ -51,23 +51,30 @@ In adapt mode, still apply SPOT *principles* (linear history, declarative Object
 
 ## Per-Phase workflow
 
-1. **Read context.** `SPEC.md` for vibe/goals/non-goals/vocabulary; the Phase's `**Requirements**:` line in `TODO.md`; each listed ID's wording in its durable spec (`SPEC.md` for `R<NNN>`, `specs/<dom>-*.md` for `<dom>-R<NNN>`).
-2. **Validate the Phase.** If the Phase has no listed requirements, or the IDs don't cover the Tasks, **stop and kick to Planner.** Managers don't pick requirement IDs from scratch.
-3. **Sharpen for execution.** Adjust Objective and Task wording so subagents can act without a huddle. Don't change *what's being built* — that's a Planner change.
-4. **Dispatch Objectives in parallel.** Assign each Objective to one subagent end-to-end. Tasks within an Objective are sequential; Objectives across the Phase are parallel.
-5. **Iterate.** Every Task done AND every requirement ID has a passing test (or documented squishy / harness-gap judgment). See TDD section below.
-6. **Promote Phase TODO → DONE.** Header verbatim with `✅`; Objectives and Tasks verbatim with checked boxes; Phase-level process narrative under the header. New Meta items append to end of `DONE.md` in completion order.
-7. **Hand back to Planner.** Brief: what shipped, satisfied IDs, new Backlog/Meta items uncovered, surprises worth folding into durable specs or `docs/`.
+1. **Confirm unblocked.** If the Phase header has a `**Dependencies**:` line, every listed Phase number must already be in DONE — fully promoted, not just started or merged to a branch. If a dependency is pending, stop: pick another unblocked Phase or surface the block.
+2. **Read context.** `SPEC.md` for vibe/goals/non-goals/vocabulary; the Phase's `**Requirements**:` line in `TODO.md`; each listed ID's wording in its durable spec (`SPEC.md` for `R<NNN>`, `specs/<dom>-*.md` for `<dom>-R<NNN>`).
+3. **Validate the Phase.** If the Phase has no listed requirements, or the IDs don't cover the Tasks, **stop and kick to Planner.** Managers don't pick requirement IDs from scratch.
+4. **Sharpen for execution.** Adjust Objective and Task wording so subagents can act without a huddle. Don't change *what's being built* — that's a Planner change.
+5. **Dispatch Objectives in parallel.** Assign each Objective to one subagent end-to-end. Tasks within an Objective are sequential; Objectives across the Phase are parallel.
+6. **Iterate.** Every Task done AND every requirement ID has a passing test (or documented squishy / harness-gap judgment). See TDD section below.
+7. **Promote Phase TODO → DONE.** Header verbatim with `✅`; Objectives and Tasks verbatim with checked boxes; Phase-level process narrative under the header.
+8. **Hand back to Planner.** Brief: what shipped, satisfied IDs, new Backlog items uncovered, gaps in `dev-*` specs surfaced (infra/tooling/testing concerns), surprises worth folding into durable specs or `docs/`.
 
 ## TODO.md hierarchy
 
 | Level | Markdown | Role | Execution |
 | --- | --- | --- | --- |
-| Phase | `## Phase N: …` (+ `🌀`/`✅`) | Sequential checkpoint | Serial — one active at a time |
+| Phase | `## Phase N: …` (+ `🌀`/`✅`), optional `**Dependencies**:` then `**Requirements**:` | Checkpoint | Parallel where independent; sequenced via Dependencies |
 | Objective | `### …` | Parallel-safe goal | Parallel within a Phase |
 | Task | `- [ ] …` | Imperative step | Sequential within an Objective |
 
+Phase numbers are stable IDs, not sequence — order between Phases is conveyed by the `**Dependencies**:` line (bare Phase numbers; deps can only be other Phases; omit when none). Multiple Phases can be 🌀 simultaneously when independent.
+
 `#user` tag on a Task = human-only; never execute. **STOP** when blocked.
+
+## Parallel Phases
+
+Phases without mutual dependencies run in parallel — typically one Manager per Phase, each on its own worktree and feature branch off trunk. When two parallel Phases land, second-to-land rebases onto first; fast-forward only, never a merge commit. TODO/DONE conflicts during rebase resolve by accepting the *later* state (DONE accumulates; TODO shrinks); surface ambiguity. Spec touches mid-Phase from two parallel Phases go back to Planner for coordination.
 
 ## Code review
 
@@ -130,9 +137,11 @@ Look for:
 
 ### SPOT-specific commit rules
 
-- **Never commit pure `TODO.md` updates standalone** — fold into the substantive commit they describe.
-- **Spec changes get their own commit, attributed to Planner** in the message body (Planner can't commit; Manager commits on Planner's behalf).
+- **Avoid pure `TODO.md` updates as standalone commits** — fold into the substantive commit they describe.
+- **When a SPOT-doc-only commit is genuinely needed** — mapping out a plan, scoping a Phase before any code lands, retiring requirement IDs, recording DONE rationale ahead of follow-up work — use **`chore(specs)`**. Distinct from `docs` (project docs in `docs/`); cleaner than generic `chore(plan)` / `chore(project)`. Behavior commits that also touch a spec keep their behavior type (`feat`, `fix`, etc.).
+- **Spec changes get their own commit, attributed to Planner** in the message body (Planner can't commit; Manager commits on Planner's behalf). Use `chore(specs)` when the change is purely spec/TODO/DONE bookkeeping.
 - **Rebase unpushed or solo-feature-branch work** to clean history. **Never rewrite shared history.**
+- **Trunk-based parallel work.** Feature branches off trunk; rebase onto trunk before fast-forwarding back. When two parallel Phases land, second-to-land rebases onto first. Interactive rebase on unpushed work is fair game, including when reconciling TODO/DONE conflicts between parallel Phases.
 - **DONE.md updates** ride along with the substantive commit closing the Phase, not as a separate commit.
 
 ### Process
@@ -149,7 +158,7 @@ Red-green TDD unless the project says otherwise or the work is too small. Requir
 SPOT carve-outs:
 
 - **Squishy requirements** ("feels responsive", "helpful errors") — implement, review, iterate. Document the judgment in DONE.
-- **Harness gaps** — if a requirement *would* be testable but the infrastructure isn't there (no Playwright, no fixture, no perf rig), surface as a Meta task. Don't silently skip.
+- **Harness gaps** — if a requirement *would* be testable but the infrastructure isn't there (no Playwright, no fixture, no perf rig), kick it to Planner to add as a requirement in the appropriate `dev-*` spec (e.g. `dev-testing.md`). Don't silently skip.
 - **Genuinely un-testable** = signal the requirement is still vague. Kick to Planner.
 
 Subagents own TDD per Objective. Manager verifies during step 5.

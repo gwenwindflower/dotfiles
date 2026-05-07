@@ -24,20 +24,27 @@ Roles, not threads. One agent can play several.
 
 | Level | Markdown | Role | Execution |
 | --- | --- | --- | --- |
-| **Phase** | `## Phase N: Description` with `**Requirements**: id, id, ...` line below | Sequential checkpoint | Serial — one at a time |
+| **Phase** | `## Phase N: Description`, optional `**Dependencies**:` line, then `**Requirements**:` line | Checkpoint | Parallel where independent; sequenced where dependencies declare it |
 | **Objective** | `### Description` | Declarative goal | Parallel within a Phase |
 | **Task** | `- [ ] description` | Imperative step | Sequential within an Objective |
 
-Status markers: 🌀 active, ✅ completed, none = unstarted. Only one Phase active at a time.
+Status markers: 🌀 active, ✅ completed, none = unstarted. Multiple Phases may be 🌀 at once when none of them blocks another.
 
-The Phase's `**Requirements**:` line points at IDs in `SPEC.md` (`R<NNN>`) or domain specs (`<dom>-R<NNN>`, e.g. `sk-R007`). Manager treats that list as the focus checklist: every Task done **and** every listed requirement met before the Phase moves to DONE. IDs are soft-immutable — never reused once retired.
+Phase numbers are stable IDs, not sequence — `Phase 5` doesn't mean "after Phase 4," it just means it's the fifth Phase the Planner wrote. Order between Phases is conveyed by the `**Dependencies**:` line, not by the number.
+
+The Phase header carries up to two metadata lines, in this order:
+
+- `**Dependencies**: <N>, <N>, ...` — bare Phase numbers this Phase depends on. Type is implicit: dependencies can only be other Phases. Omit the line entirely when there are none. A Phase is **unblocked** once every listed dependency is in DONE — not "started," not "merged onto a feature branch," but fully promoted.
+- `**Requirements**: <id>, <id>, ...` — IDs in `SPEC.md` (`R<NNN>`) or domain specs (`<dom>-R<NNN>`, e.g. `sk-R007`). Manager treats this list as the focus checklist: every Task done **and** every listed requirement met before the Phase moves to DONE. IDs are soft-immutable — never reused once retired.
 
 When TODO and a spec disagree, **the spec wins.** Flag the mismatch — don't silently follow TODO.
 
 ## Phase pacing
 
-- **"Phase by phase"** — stop and check in after each.
-- **"Move freely"** — proceed sequentially, but finish each Phase fully before starting the next.
+Pacing controls user check-ins; it's orthogonal to parallelism. Independent Phases can still run concurrently under either mode.
+
+- **"Phase by phase"** — stop and check in each time a Phase moves to DONE.
+- **"Move freely"** — pick up any unblocked Phase whenever, including in parallel across worktrees or agent teams. Always finish a Phase fully (all Tasks done, all requirement IDs met, promoted to DONE) before considering its dependents unblocked.
 
 ## Task completion
 
@@ -64,7 +71,8 @@ Append sub-bullets only when genuinely useful for a future reader.
 **Linear history, always.** No merge commits. Rebase, squash, fast-forward only. See [git-commits](git-commits.md) for message format.
 
 - Subagents commit; never rebase.
-- Don't commit pure `TODO.md` updates as standalone commits — fold them into the substantive commit for the work they describe.
+- Don't commit pure `TODO.md` updates as standalone commits — fold them into the substantive commit for the work they describe. When a SPOT-doc-only commit is genuinely needed (mapping out a plan, scoping a Phase before any code lands, retiring requirement IDs, recording DONE rationale ahead of follow-up work), use **`chore(specs)`** as the type/scope. Specs are what the rest of the POT structure supports, so this label keeps spec-management commits distinct from `docs` (project docs in `docs/`) and avoids generic `chore(plan)` / `chore(project)` wording.
+- Trunk-based local development: parallel Phases land in their own worktrees on feature branches off trunk. Rebase onto trunk before fast-forwarding back; never introduce a merge commit when reconciling parallel Phases. Interactive rebase on unpushed work is fair game to keep history clean.
 
 Manager-side rebase rules and Planner spec-commit rules live in the skill.
 

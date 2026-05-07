@@ -126,7 +126,34 @@ If a situation is novel to you, **say so**. Don't guess at edge-case recovery st
 
 When the project is SPOT-shaped (`SPEC.md` + `TODO.md` present), a few things shift:
 
-- **Linear history is contractual, not just cosmetic.** Manager rebases unpushed work to keep history clean; recovery output must match. No accidental merge commits introduced during recovery.
-- **TODO.md / DONE.md conflicts during rebase** — common when reordering Phase commits. Resolve by taking the *later* state in conflict (DONE accumulates; TODO shrinks) unless context says otherwise. Surface ambiguity to the user.
+- **Linear history is contractual, not just cosmetic.** Manager rebases unpushed work to keep history clean; recovery output must match. No accidental merge commits introduced during recovery, including when reconciling parallel Phases that landed off trunk.
+- **TODO.md / DONE.md conflicts during rebase** — common when reordering Phase commits or merging back parallel-Phase worktrees. Resolve by taking the *later* state in conflict (DONE accumulates; TODO shrinks) unless context says otherwise. Surface ambiguity to the user.
 - **Spec commits are attributed to Planner.** When rewriting history (interactive rebase, cherry-pick), preserve the original author and message body — don't collapse a Planner spec commit into a Manager work commit.
 - **Don't repair specs or DONE entries directly.** If recovery reveals a missing or mangled DONE block, restore the git state and hand back to Manager to re-promote properly. Same for spec damage → Planner.
+
+### Conventional commit shape (release-notes contract)
+
+SPOT projects feed `git-cliff` to generate Release Notes / Changelog. Commit messages aren't just style — they're the source for user-facing release content. Recovery work (rebase, cherry-pick, reword, squash) **must preserve this shape**: don't collapse types, don't strip scopes, don't rewrite a `feat` as `chore` to "clean it up." If a message is genuinely malformed, surface it for the user / Manager to fix; don't silently rewrite.
+
+| Prefix pattern | Release-notes group | Notes |
+| --- | --- | --- |
+| `feat` | ✨ Features | Default scope `General` if unscoped |
+| `fix` | 🐛 Bug Fixes | |
+| *(body contains `security`)* | 🛡️ Security | Matched by body, not subject — preserve body intact |
+| `perf` | 🏎️ Performance | |
+| `refactor` | ♻️ Refactor | |
+| `test` | 🧪 Testing | |
+| `docs` | 📚 Documentation | Default scope `User Docs` if unscoped |
+| `build` | 🛠️ Build System | |
+| `ci` | 🚧 CI/CD | Default scope `GitHub Actions` if unscoped |
+| `style` | 🎨 Style & Formatting | |
+| `chore(release): update changelog` | *(skipped)* | Bot/release commit — never edit content |
+| `chore(specs)` | *(skipped)* | SPOT-doc bookkeeping — plan mapping, Phase scoping, ID retirement, DONE rationale |
+| `chore` *(other)* | 🧰 Tooling & Tasks | |
+
+Recovery implications:
+
+- **Preserve scopes verbatim** — `feat(auth):`, `docs(api):`, `ci(release):`. Scopes show up in release notes.
+- **Don't merge a `chore(specs)` into a `feat` commit during squash** — that promotes invisible bookkeeping into a user-facing changelog entry. If a behavior commit also touches a spec, that's a `feat`/`fix` (behavior wins); a *pure* spec-only commit stays `chore(specs)`.
+- **`chore(release): update changelog` is bot territory.** If you're rewriting history that includes one, ask the user before touching it — usually safer to drop it from the recovery range and let the next release regenerate.
+- **Security commits are body-matched.** When rewording, keep the body line that mentions `security` intact, or the commit silently falls out of the Security group.
