@@ -67,6 +67,7 @@ packages:
         - jless
         - jq
         - k9s
+        - lazycut
         - lazydocker
         - lazygit
         - lightdash
