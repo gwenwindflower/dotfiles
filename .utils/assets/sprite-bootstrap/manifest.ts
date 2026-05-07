@@ -16,6 +16,9 @@ export type FileEntry = {
 export type DirEntry = {
 	srcDir: string;
 	destDir: string;
+	// Source-state paths within srcDir (relative, with chezmoi prefixes
+	// intact) to skip during the recursive copy.
+	exclude?: string[];
 };
 
 // Post-install on-disk copy. Source is a path that the file/dir steps
@@ -48,20 +51,23 @@ export const files: FileEntry[] = [
 		src: ".utils/assets/sprite-bootstrap/fish/abbreviations.fish",
 		dest: "~/.config/fish/conf.d/abbreviations.fish",
 	},
-	{
-		src: "private_dot_config/herdr/config.toml",
-		dest: "~/.config/herdr/config.toml",
-	},
 ];
 
 export const dirs: DirEntry[] = [
-	{ srcDir: "dot_claude/exact_hooks", destDir: "~/.claude/hooks" },
+	{
+		srcDir: "dot_claude/exact_hooks",
+		destDir: "~/.claude/hooks",
+		// herdr daemon doesn't run on Sprite OS.
+		exclude: ["executable_herdr-agent-state.sh"],
+	},
 	{ srcDir: "dot_agents/exact_rules", destDir: "~/.agents/rules" },
 	{ srcDir: "dot_agents/exact_skills", destDir: "~/.agents/skills" },
 	{
 		srcDir: "private_dot_config/opencode",
 		destDir: "~/.config/opencode",
+		exclude: ["plugins/herdr-agent-state.js"],
 	},
+	{ srcDir: "private_dot_config/tmux", destDir: "~/.config/tmux" },
 ];
 
 // Mirror shared agent config into ~/.claude/{rules,skills}. Copy rather

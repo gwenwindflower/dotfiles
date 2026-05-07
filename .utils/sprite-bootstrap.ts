@@ -17,7 +17,7 @@
 //       --allow-read \
 //       --allow-write=$HOME,$TMPDIR,/tmp \
 //       --allow-env=HOME,TMPDIR \
-//       --allow-run=git,tar,sudo,chsh,which,id,sh \
+//       --allow-run=git,tar,sudo,chsh,which,id \
 //       https://raw.githubusercontent.com/gwenwindflower/dotfiles/main/.utils/sprite-bootstrap.ts'
 
 import { copies, dirs, files } from "./assets/sprite-bootstrap/manifest.ts";
@@ -76,15 +76,22 @@ function translateSegment(name: string): {
 	return { name: n, executable };
 }
 
-async function copyTree(srcDir: string, destDir: string): Promise<number> {
+async function copyTree(
+	srcDir: string,
+	destDir: string,
+	excludes: Set<string> = new Set(),
+	rel = "",
+): Promise<number> {
 	let count = 0;
 	for await (const entry of Deno.readDir(srcDir)) {
+		const childRel = rel ? `${rel}/${entry.name}` : entry.name;
+		if (excludes.has(childRel)) continue;
 		const childSrc = `${srcDir}/${entry.name}`;
 		const { name: cleanName, executable } = translateSegment(entry.name);
 		const childDest = `${destDir}/${cleanName}`;
 		if (entry.isDirectory) {
 			await Deno.mkdir(childDest, { recursive: true });
-			count += await copyTree(childSrc, childDest);
+			count += await copyTree(childSrc, childDest, excludes, childRel);
 		} else if (entry.isFile) {
 			await Deno.copyFile(childSrc, childDest);
 			if (executable) await Deno.chmod(childDest, 0o755);
@@ -155,7 +162,7 @@ for (const d of dirs) {
 	const absSrc = `${tmp}/${d.srcDir}`;
 	const absDest = expand(d.destDir);
 	await Deno.mkdir(absDest, { recursive: true });
-	const count = await copyTree(absSrc, absDest);
+	const count = await copyTree(absSrc, absDest, new Set(d.exclude));
 	console.log(`  ${d.destDir}/ (${count} files)`);
 }
 
@@ -166,13 +173,6 @@ for (const c of copies) {
 	await Deno.mkdir(absDest, { recursive: true });
 	const count = await copyTree(absSrc, absDest);
 	console.log(`  ${c.dest}/ (${count} files)`);
-}
-
-console.log("→ installing herdr");
-try {
-	await run("sh", ["-c", "curl -fsSL https://herdr.dev/install.sh | sh"]);
-} catch (e) {
-	console.warn(`  (herdr install failed, continuing: ${(e as Error).message})`);
 }
 
 console.log("→ switching login shell to fish");
