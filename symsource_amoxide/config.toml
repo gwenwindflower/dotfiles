@@ -1,5 +1,6 @@
 [aliases]
 brsf = "brew search {{1}} | fzf --multi --prompt='Filter results: ' --preview='brew info {1}'"
+ccp = "cat {{1}} | fish_clipboard_copy"
 comcomp = "{{1}} completion fish > /Users/winnie/.local/share/chezmoi/private_dot_config/fish/completions/{{1}}.fish"
 comcomps = "{{1}} completions fish > /Users/winnie/.local/share/chezmoi/private_dot_config/fish/completions/{{1}}.fish"
 ddb = "duckdb --cmd '.read ~/dev/02_spellbook/pastel_duck_theme.sql'"
