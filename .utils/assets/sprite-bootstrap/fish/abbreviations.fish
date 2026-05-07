@@ -14,6 +14,7 @@ abbr --add rmd rmdir
 abbr --add mkt mktemp
 abbr --add chmx chmod +x
 abbr --add chme chmod 700
+abbr --add ll ls -la
 
 # tmux
 abbr --add tm tmux
