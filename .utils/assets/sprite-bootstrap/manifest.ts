@@ -1,5 +1,5 @@
-// Affirmative allowlist of files, dirs, and symlinks materialized from the
-// dotfiles tarball into a fresh Sprite. The bootstrap walks `dirs`
+// Affirmative allowlist of files, dirs, and post-install copies materialized
+// from the dotfiles tarball into a fresh Sprite. The bootstrap walks `dirs`
 // recursively and strips chezmoi attribute prefixes (`exact_`,
 // `executable_`, `dot_`, `private_`) from each path segment, so source
 // paths here use the on-disk source-state names exactly as they appear in
@@ -18,13 +18,28 @@ export type DirEntry = {
 	destDir: string;
 };
 
-export type SymlinkEntry = {
-	target: string;
-	link: string;
+// Post-install on-disk copy. Source is a path that the file/dir steps
+// already populated. Used to mirror shared agent config into Claude's
+// dirs without clobbering Sprite-managed defaults (which a symlink would).
+export type CopyEntry = {
+	src: string;
+	dest: string;
 };
 
 export const files: FileEntry[] = [
 	{ src: "dot_claude/CLAUDE.md", dest: "~/.claude/CLAUDE.md" },
+	{ src: "dot_claude/keybindings.json", dest: "~/.claude/keybindings.json" },
+	{
+		src: "dot_claude/dot_markdownlint.yaml",
+		dest: "~/.claude/.markdownlint.yaml",
+	},
+	// Doc fragments referenced by CLAUDE.md.
+	{ src: "dot_claude/private_gitsigning.md", dest: "~/.claude/gitsigning.md" },
+	{
+		src: "dot_claude/private_supermodellabs.md",
+		dest: "~/.claude/supermodellabs.md",
+	},
+	{ src: "dot_claude/private_tmpdirs.md", dest: "~/.claude/tmpdirs.md" },
 	{
 		src: ".utils/assets/sprite-bootstrap/settings.json",
 		dest: "~/.claude/settings.json",
@@ -44,18 +59,15 @@ export const dirs: DirEntry[] = [
 	{ srcDir: "dot_agents/exact_rules", destDir: "~/.agents/rules" },
 	{ srcDir: "dot_agents/exact_skills", destDir: "~/.agents/skills" },
 	{
-		srcDir: "private_dot_config/opencode/exact_agents",
-		destDir: "~/.config/opencode/agents",
-	},
-	{
-		srcDir: "private_dot_config/opencode/plugins",
-		destDir: "~/.config/opencode/plugins",
+		srcDir: "private_dot_config/opencode",
+		destDir: "~/.config/opencode",
 	},
 ];
 
-// Mirror chezmoi's `~/.claude/{rules,skills}` -> `~/.agents/{rules,skills}`
-// symlinks so Claude Code picks up the shared agent collections.
-export const symlinks: SymlinkEntry[] = [
-	{ target: "~/.agents/rules", link: "~/.claude/rules" },
-	{ target: "~/.agents/skills", link: "~/.claude/skills" },
+// Mirror shared agent config into ~/.claude/{rules,skills}. Copy rather
+// than symlink so we additively merge with Sprite-preinstalled skills
+// instead of clobbering them.
+export const copies: CopyEntry[] = [
+	{ src: "~/.agents/rules", dest: "~/.claude/rules" },
+	{ src: "~/.agents/skills", dest: "~/.claude/skills" },
 ];

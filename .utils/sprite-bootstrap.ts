@@ -20,7 +20,7 @@
 //       --allow-run=git,tar,sudo,chsh,which,id,sh \
 //       https://raw.githubusercontent.com/gwenwindflower/dotfiles/main/.utils/sprite-bootstrap.ts'
 
-import { dirs, files, symlinks } from "./assets/sprite-bootstrap/manifest.ts";
+import { copies, dirs, files } from "./assets/sprite-bootstrap/manifest.ts";
 
 function dirname(p: string): string {
 	const i = p.lastIndexOf("/");
@@ -159,18 +159,13 @@ for (const d of dirs) {
 	console.log(`  ${d.destDir}/ (${count} files)`);
 }
 
-console.log("→ creating symlinks");
-for (const s of symlinks) {
-	const target = expand(s.target);
-	const link = expand(s.link);
-	await Deno.mkdir(dirname(link), { recursive: true });
-	try {
-		await Deno.remove(link);
-	} catch (e) {
-		if (!(e instanceof Deno.errors.NotFound)) throw e;
-	}
-	await Deno.symlink(target, link);
-	console.log(`  ${s.link} -> ${s.target}`);
+console.log("→ mirroring shared agent config into ~/.claude");
+for (const c of copies) {
+	const absSrc = expand(c.src);
+	const absDest = expand(c.dest);
+	await Deno.mkdir(absDest, { recursive: true });
+	const count = await copyTree(absSrc, absDest);
+	console.log(`  ${c.dest}/ (${count} files)`);
 }
 
 console.log("→ installing herdr");
