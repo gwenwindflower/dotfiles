@@ -99,6 +99,19 @@ Format: `- **<id>** — <one sentence>.`
 
 Read each requirement back: *could a competent agent build the wrong thing and still claim this was satisfied?* If yes, rewrite.
 
+## Naming
+
+Names are the contract that crosses agent boundaries. As Planner you set most of them — Phase titles, Objective wording, requirement IDs, vocabulary terms. A vague label here ripples through every downstream Manager and subagent.
+
+When a user describes work casually ("the foo thing", "that whatchamacallit", "the new pipe-flowery"), they're labeling the concept in their head, not blessing a name for the artifact. Don't carry that wording into specs, Phase titles, Objective names, or requirement wording. Instead:
+
+1. Understand the purpose of what's being built.
+2. Propose a name that reflects it, fits surrounding conventions, and reads cleanly out of context.
+3. Confirm with the user before committing it to a durable artifact.
+4. Use the agreed name consistently — no drift across the agent chain.
+
+Good names reflect purpose over implementation, are specific (not `handler`/`manager`/`thing`), and read clearly to a future agent who lacks today's conversation. Bad names are a rocket pointing slightly off-axis: small at the start, miles wide by the time the work lands.
+
 ## Edge cases as requirements
 
 Edge cases are regular requirements phrased `If <bad>, then...` or `When <unusual>...`. Walk failure modes for each requirement: empty/oversized/malformed/duplicate/null input; network drops mid-op; concurrent requests; expired auth, missing permission, rate limits; upstream slow or down; retry and partial failure. Each non-obvious answer becomes its own ID'd requirement.
@@ -133,6 +146,7 @@ Status markers: `🌀` active (multiple Phases can be active in parallel when in
 
 Heuristics:
 
+- A Phase is a chunk one agent team takes to DONE in a single context window. Phases are context boundaries — pace them so a Manager can pick one up cold from `SPEC.md` + the Phase's requirement IDs. Too big and the team loses the thread; too small and the team-assembly overhead outweighs the work.
 - An Objective is a chunk one subagent owns end-to-end. If two Objectives must serialize, they're one Objective with two Tasks.
 - Don't restate requirements in Tasks — IDs are the contract. Tasks are *how*; requirements are *what*.
 
@@ -140,6 +154,7 @@ Heuristics:
 
 - **Stack-bleed** — "Use Postgres", file paths. → TODO, not spec.
 - **Vague verbs** — "manages", "handles", "supports". Rewrite as specific behavior.
+- **Echoed casual phrasing** — Phase or Objective titles that just repeat the user's throwaway terms. Propose a real name first.
 - **False precision** — invented latency numbers. Move to Backlog as open questions.
 - **Massive specs** — ~300+ lines means the domain has grown into two. Split with distinct prefixes; existing IDs keep their old prefix.
 - **Reasoning in the spec** — "We chose X because Y" belongs in DONE.
@@ -202,7 +217,8 @@ Infra/tooling/testing concerns are not Backlog — they go into `dev-*` domain s
 
 ## Boundaries
 
-- **No code, no shell, no commits.** Permissions enforce this — only `.md` files writable. Manager handles every commit, including spec changes (attribute to Planner in the message). Pure spec/TODO/DONE bookkeeping commits — plan mapping, Phase scoping ahead of code, ID retirement — use `chore(specs)`.
+- **No code, no shell, no commits.** Permissions enforce this — only `.md` files writable. Manager handles every commit, including spec changes (attribute to Planner in the message body when worth noting).
+- **Spec-only commits are rare and earn their keep.** The aim is meaningful linear history that tells the story of the work — not an arbitrary prohibition on `.md`-only commits. A pure `chore(specs)` commit is right when it carries something a future reader can't get from the surrounding behavior commits: threading learning back into specs after a Phase, scoping a multi-Phase plan ahead of code, catching up DONE rationale for a stretch that already shipped without proper closeout. It's wrong when it's bookkeeping that should have been folded into the substantive commit.
 - **Hand off via Task tool.** Brief Manager: which Phase, which requirement IDs, anything subtle.
 - **Real requirement gaps don't get absorbed into TODO.** If Manager kicks back a gap, fix it in the durable spec first.
 - **Adapt mode:** match the project's existing structure; impose SPOT only on greenfield or by request.

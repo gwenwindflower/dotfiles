@@ -27,15 +27,44 @@ Optional body with rationale and context. Feel free to be detailed here.
 - `chore` - Tooling, config changes, workflow, maintenance tasks
 - `docs` - Documentation ONLY
 
-## Style
+## Subject
 
 - **Imperative mood:** "add feature" not "added feature"
 - **No period** at end of subject line
 - **Max 72 chars** for subject
-- **Body optional** but encouraged for the following:
-  - explaining reasoning for making a change (e.g., 'we want to be able to do X, and this change is necessary to enable that')
-  - explaining why a specific solution was chosen when there are multiple valid approaches (e.g., 'we tried X and Y, both worked, but X is far more readable and we decided to prioritize long-term maintainability over short-term performance')
-  - justifying a non-standard pattern or hack (e.g. 'the blessed way of doing X is A, but we can't do this for Y reason, so we are doing B instead')
-  - surprising findings from implementation (e.g. 'we though X would work better, but Y, while being much simpler, is also more effective')
-  - specific and unusual learnings from research and experimentation (e.g., 'we could not figure out why X was happening, but eventually tracked it down to GH user/repo/issues/72, which revealed the root cause was Y, so the solution was Z')
-  - documenting a goal for (e.g., we expect feature X to increase user signups by 10%)
+- **Specific** — `feat(auth): add JWT refresh token rotation`, not `feat: update auth`
+
+## Body — usually unnecessary, always concise
+
+The diff and the subject do most of the work. In SPOT projects the durable docs (specs, DONE.md) carry the *why*. Reach for a body only when it adds something a future reader can't get from the diff or those docs.
+
+Hard rules when you do write one:
+
+- **3-5 short bullets, max.** One sentence each. Imperative mood. No fluff, no narrative paragraphs, no re-explaining the diff.
+- **Substance only:** the reason behind a non-obvious choice, an external constraint that drove the approach, a surprise worth flagging, a goal being targeted.
+- **Reference Phases at the end** when applicable: `Closes Phase <n>`.
+
+Caveman-speak it if you have to. Concision beats prose every time.
+
+Bad — paragraph re-explaining the diff:
+
+```text
+feat(auth): add JWT refresh
+
+This commit adds a JWT refresh flow to the auth module. We are doing this
+because users were getting logged out frequently and we wanted to improve
+the experience. The implementation uses the existing google-auth-library
+and lives in src/auth/refresh.ts. We considered rolling our own JWT
+verification but decided against it because the surface is finicky.
+```
+
+Good — bullets, substance, reference:
+
+```text
+feat(auth): rotate google oauth state token per request
+
+- close CSRF replay window flagged by au-R008 audit
+- align rotation interval with email-flow (15min) for consistency
+- new util in auth/oauth/state.ts; covered by au-R008 test
+Closes Phase 4
+```

@@ -40,4 +40,4 @@ Stable, soft-immutable IDs let Phases reference requirements without restating t
 ## Jobs to be done
 
 - [Writing specs](writing-specs.md) — Planner work: spec shape, requirement IDs, phrasing patterns, edge cases, anti-patterns, scoping a Phase, Backlog, the `dev-` domain.
-- [Running phases](running-phases.md) — Manager work: per-Phase workflow, TDD carve-outs, subagent drift, Manager-side commit hygiene, handoff to Planner.
+- [Running phases](running-phases.md) — Manager work: the three Manager jobs (sequencing, linear history, quality at Objective close), parallel-by-default execution with Objectives mapped onto subagents, per-Phase workflow, the per-commit cadence, when spec-only commits earn their keep, TDD carve-outs, subagent drift, parallel Phases across worktrees, handoff to Planner.

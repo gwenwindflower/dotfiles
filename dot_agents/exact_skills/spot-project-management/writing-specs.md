@@ -116,6 +116,8 @@ Format rules:
 - **Objectives** are `### <description>` — declarative, not imperative. "Provider integration", not "Integrate the provider".
 - **Tasks** are `- [ ] <imperative step>` under their Objective. Sequential within an Objective; Objectives parallel within a Phase.
 
+Phase titles and Objective wording are the labels the Manager and every subagent work from. Don't carry casual user phrasing — "the OAuth thing", "auth stuff" — into either. Propose a real name that reads cleanly out of context, confirm with the user, then build on it. See [naming](../../rules/naming.md).
+
 ## Phase dependencies
 
 Phases run in parallel by default. The `**Dependencies**:` line is how the Planner declares that one Phase must wait for another.
@@ -130,6 +132,7 @@ Update the line in place when reality changes (a dependency dissolves, a new one
 
 Heuristics:
 
+- A Phase is a chunk one agent team can take to DONE in a single context window. Phases are context boundaries — pace them so a Manager can pick one up cold from `SPEC.md` + the Phase's requirement IDs. Too big and the team loses the thread; too small and the team-assembly overhead outweighs the work.
 - An Objective is a chunk a single subagent can own end-to-end. If two Objectives must serialize, they're really one Objective with two Tasks.
 - Tasks should be specific enough that a subagent doesn't need a separate huddle to start. "Wire up the OAuth client library" is fine; "Do the OAuth stuff" isn't.
 - Don't restate requirements in Tasks — the requirement IDs are the contract. Tasks are *how*, requirements are *what*.
