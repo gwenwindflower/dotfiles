@@ -86,6 +86,12 @@ Source files live in `symsource_*/` dirs at repo root, excluded by `.chezmoiigno
 
 **When in doubt, copy.** Symlinks add complexity — they bypass template processing, require ignore entries, and create a second thing to reason about. Only reach for them when you'd otherwise lose data (tool writes to the file and chezmoi would overwrite it on next apply).
 
+#### `--one-shot` and ephemeral installs
+
+`chezmoi init --one-shot` purges the source dir after applying, which would dangle every `symsource_*` symlink. Bootstrappers for ephemeral targets (Fly Sprites, exe.dev VMs, Docker images) **must** export `CHEZMOI_ONESHOT=1` before invoking init. The `run_after_99-materialize-symsource-symlinks.sh.tmpl` script picks up the flag and replaces each symlink with a copy of its target before purge fires. Drift back to source is moot in ephemeral envs, so copies are the right shape.
+
+The env var is the only knob — no config-file flag, no template detection. Set it on the parent process; it propagates to chezmoi and to the apply-phase scripts.
+
 #### Agent Config Symlinks
 
 There's a different set of symlinks related to coding agent configs, for a different use case. Some agent configs - specifically skills and rules - are largely compatible across agents. Because of this, many agents have standardized on using a unified `~/.agents/` directory for configs. Claude Code remains idiosyncratic with its own `~/.claude/` dir and `CLAUDE.md` files though. As such, we use `dot_agents/` as the source of truth for shared agent configs (deployed via `dot_agents/exact_skills/`, `dot_agents/exact_rules/`, etc.). Then, `dot_claude/` contains symlinks pointing at the applied `~/.agents/skills` and `~/.agents/rules` targets, which surface as `~/.claude/skills` and `~/.claude/rules` respectively. This way, shared configs are edited in one place (`dot_agents/exact_skills/` and friends), applied out to `~/.agents/*` with full reconciliation, and Claude Code picks up those changes via symlink without duplication or drift.
@@ -135,7 +141,9 @@ Fragment ordering: `00–14` are environment setup (PATH, XDG, editor, git, AI, 
   run_once_05-add-taps.sh.tmpl             # Add Homebrew taps (with retry + verification)
   run_once_10-install-packages.sh.tmpl     # brew bundle (formulae + casks, taps already done)
   run_once_20-configure-shell.sh.tmpl      # Fish → /etc/shells, chsh
-  run_onchange_40-yazi-plugins.fish.tmpl   # ya pkg install (on package.toml change)
+  run_once_30-yazi-plugins.sh.tmpl         # ya pkg install (yazi plugin sync)
+  run_once_31-bat-cache.sh.tmpl            # Build bat theme cache (after themes deployed)
+  run_after_99-materialize-symsource-symlinks.sh.tmpl  # One-shot ephemeral support (gated on CHEZMOI_ONESHOT=1)
 ```
 
 Scripts are a surface to minimize. Each is an imperative action that can fail. If something can be a file, make it a file. `run_once_` runs once per content hash — on a fresh machine all fire on first apply. `run_onchange_` re-runs when rendered content changes (also fires on first apply since no previous hash → new hash = change).
