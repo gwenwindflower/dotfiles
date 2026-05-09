@@ -25,6 +25,7 @@ vim.filetype.add({
   extension = {
     ["http"] = "http",
     ["env"] = "dotenv",
+    ["gitconfig"] = "gitconfig",
   },
 })
 
