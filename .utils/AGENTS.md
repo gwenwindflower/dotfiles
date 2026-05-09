@@ -46,3 +46,4 @@ The runner source lives at `scripts/test.ts`, copied from the `deno-tools` skill
 | `generate-logo.ts` | `deno task logo` | `deno task test:logo` | Render text to SVG (one `<path>` per glyph) using a local font |
 | `lscolors_to_toml.ts` | `deno task lscolors` | `deno task test:lscolors` | Convert `$LS_COLORS` into yazi-compatible TOML rules |
 | `sprite-bootstrap.ts` | invoked remotely via `spritecan` fish function | — | Bootstrap a fresh Fly.io Sprite from the dotfiles repo. Assets and manifest live under `assets/sprite-bootstrap/` |
+| `provision-repo.ts` | `GITHUB_TOKEN=… ./provision-repo.ts <repo>` | — | Reconcile GitHub Issue labels + Discussion categories for a Supermodel Labs repo against a manifest. Hardcoded to `supermodellabs` org |
