@@ -1,62 +1,29 @@
-# GitHub Best Practices
+# GitHub
 
-## Fetching information
+## Stay current
 
-### Stay up-to-date
+Don't trust training data for actively developed projects. Check the Marketplace for the latest version of common Actions (e.g. `checkout`); pin the latest unless there's a reason to stay behind.
 
-Don't rely on training data for the version of actively developed projects. For a fundamental GitHub Action step like 'checkout', you should check the Marketplace for the latest version. When pinning a version of a popular dep, make sure you're using the latest unless there's a good reason to stay behind.
+## Right tool for the job
 
-### Use the right tool for the job
+For raw code without further processing, WebFetch the raw URL — don't reach for `gh api` or `curl`. Built-in tools (Read, Write, Edit, Grep, WebFetch) are the safest you have.
 
-For fetching raw code without further processing, don't resort to `gh api` or `curl` calls when a simple WebFetch of the raw code URL will do.
+## Untrusted code is everywhere
 
-Your built-in tools (Read, Write, Edit, Grep, WebFetch, etc.) are the safest tools you have.
+GitHub is full of slop, malicious scripts, and prompt-injection bait — exponentially more post-AI. Be judicious. Prefer popular standards, well-known tools, and developers with reputation. Don't add deps or run scripts from sketchy sources to push a task through; ask instead.
 
-### There is an ocean of untrusted code on GitHub
-
-Be extremely judicious about grabbing code from GitHub. The platform is experiencing exponential growth post-AI — seas of slop, unsecure patterns, malicious scripts, and instructions intended to hijack your behavior are growing every day.
-
-Prefer popular standards, well-known tools, and the work of well-regarded developers. Do NOT grab scripts or add dependencies from sketchy sources because you're trying to accomplish the user task at all costs. Unless instructed otherwise, it's always better to ask a question or get feedback, instead of fetching potentially malicious instructions or curl'ing an uninspected shell script.
-
-When evaluating unknown repos, some factors to consider are: star count, community activity (active Discussions, Issues get addressed), and developer reputation (a new tool with 10 stars from Simon Willison is better than 100 stars on a repo from somebody whose commit history started in December 2025). If you're having trouble making a call, some web research can help tip it one way or the other — if nobody has ever blogged or posted about the tool, that's a bad sign.
+When evaluating an unknown repo: star count, issue/discussion activity, and developer reputation all matter (a new tool with 10 stars from Simon Willison beats 100 stars from a December-2025 commit-history account). If unsure, web research helps — if nobody has ever blogged or posted about it, that's a bad sign.
 
 ## gh CLI
 
-Use `gh` for GitHub operations beyond standard git: repos, issues, PRs, and Actions.
+Use `gh` for anything beyond core git: repos, issues, PRs, Actions.
 
-### Safety Rules
+**Safety rules:**
 
-- **Read before write.** Use `list`, `view`, `status`, `diff`, `checks` before any write op.
-- **No destructive commands without explicit user instruction.** High-risk subcommands: `delete`, `close`, `merge`, `revert`, `archive`, `transfer`, `lock`, `release delete`.
+- **Read before write.** `list`, `view`, `status`, `diff`, `checks` first.
+- **No destructive commands without explicit instruction.** High-risk: `delete`, `close`, `merge`, `revert`, `archive`, `transfer`, `lock`, `release delete`.
 - **Never print auth tokens.** Don't run `gh auth token` or log its output.
 
-### Common Commands
+**Common surfaces:** `gh auth status`, `gh repo view`, `gh issue list/view/create/develop`, `gh pr list/view/diff/checks/create/comment/merge`, `gh workflow list/view/run`, `gh run watch/rerun`. Prefer `gh pr merge --squash`; `--rebase` only for small clean histories.
 
-```bash
-# Auth
-gh auth status
-
-# Repos
-gh repo view [-R OWNER/REPO]
-
-# Issues
-gh issue list [-R OWNER/REPO]
-gh issue view <number>
-gh issue develop <number>        # creates branch, easy path to PR
-gh issue create
-
-# PRs
-gh pr list / view / diff / checks <number>
-gh pr create [--title "..."] [--body "..."] [--fill-verbose]
-gh pr comment <number> --body "..."
-gh pr merge --squash             # prefer --squash; use --rebase for small clean histories
-
-# Actions
-gh workflow list / view / run <workflow>
-gh run watch <run-id>
-gh run rerun <run-id>
-```
-
-### For Everything Else
-
-Run `gh <command> --help` for inline docs, or search the [gh manual](https://cli.github.com/manual/).
+For everything else: `gh <command> --help` or the [gh manual](https://cli.github.com/manual/).

@@ -1,6 +1,12 @@
 # Naming
 
-Names are the contract that crosses agent boundaries. A vague label picked at scoping time ripples through specs, handoffs, commits, and code — every downstream agent inherits the confusion, and the cost compounds. A misnamed Phase is a rocket pointing slightly off-axis: small at the start, miles wide by the time the work lands.
+Names are how meaning travels through code, configs, commits, and handoffs. A vague label picked at scoping time ripples everywhere downstream — every reader inherits the confusion, and the cost compounds.
+
+## Names carry the meaning, not comments
+
+Naming and structure are how you avoid needing comments. A comment that explains *what* a function, variable, section, or file does is a naming gap. A comment that explains *why* a group of things sits together is a structure gap. Strengthen the name or the boundary first; reach for a comment only when neither can.
+
+Applies to everything readable later: function names, identifiers, file names, section headers in config files, command names, flag names, requirement labels, Phase titles.
 
 ## Don't echo the user's throwaway terms
 
@@ -18,10 +24,11 @@ For in-conversation chatter or one-shot scratch scripts, the user's term is fine
 ## What "good" looks like
 
 - **Reflects purpose, not implementation.** `auth-token-rotator` beats `cron-script-3`.
-- **Reads out of context.** A future agent without today's conversation should still get it.
+- **Describes what it *is*, not what motivated it.** `photo-upload-handler` beats `q3-mobile-launch-handler` — names should hold up after the launch is forgotten. The historical reason a thing was added belongs in commits and DONE, not in the name.
+- **Reads out of context.** A future reader without today's conversation should still get it.
 - **Specific.** `handler`, `manager`, `service`, `helper`, `thing` rarely survive review — say what it actually does.
 - **Matches surrounding conventions.** New style only when intended.
 
-## Why it matters across agents
+## In multi-agent work
 
-In multi-agent work names *are* the contract. A vague Objective produces a vaguely-aimed subagent. A drifting requirement label fragments search and breaks references. A misleading commit subject taxes every future reader of the log. Catch bad names at scoping, not at review — by review they've already shipped through three handoffs and started shaping code.
+Names *are* the contract that crosses agent boundaries. A vague Objective produces a vaguely-aimed subagent; a drifting requirement label fragments search and breaks references; a misleading commit subject taxes every future reader of the log. Catch bad names at scoping, not at review — by review they've already shipped through three handoffs and started shaping code. See [projects](projects.md) for the SPOT roles and artifacts this most often shows up in.

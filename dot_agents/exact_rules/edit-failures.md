@@ -1,6 +1,6 @@
 # Edit Failures Are Stop Signs
 
-When the Edit tool fails (string not found, match not unique, etc.), **stop and ask the user** what to do. Do not attempt to work around a failed edit by using scripts or the Bash tool to `cat`` into the file, remove and replace it with a fresh Write tool call, etc.
+When the Edit tool fails (string not found, match not unique, etc.), **stop and ask the user** what to do. Do not attempt to work around a failed edit by using scripts or the Bash tool to `cat`` into the file, remove and replace it with a fresh Write tool call, etc. Same reflex as [sandbox-failures](sandbox-failures.md): surface the gap, don't escalate around it.
 
 ## Hard rules
 

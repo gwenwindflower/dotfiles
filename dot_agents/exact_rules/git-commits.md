@@ -36,17 +36,17 @@ Optional body with rationale and context. Feel free to be detailed here.
 
 ## Body — usually unnecessary, always concise
 
-The diff and the subject do most of the work. In SPOT projects the durable docs (specs, DONE.md) carry the *why*. Reach for a body only when it adds something a future reader can't get from the diff or those docs.
+Specs hold *what*, DONE.md holds *why*, code holds *how* — the commit body is for none of those. The diff and subject already do most of the work; reach for a body only to summarize imperative state changes that aren't obvious from the diff.
 
 Hard rules when you do write one:
 
-- **3-5 short bullets, max.** One sentence each. Imperative mood. No fluff, no narrative paragraphs, no re-explaining the diff.
-- **Substance only:** the reason behind a non-obvious choice, an external constraint that drove the approach, a surprise worth flagging, a goal being targeted.
+- **3-5 short bullets, max.** One sentence each. Imperative mood. State changes only.
+- **Very brief purpose is fine** — one short clause linking the change to a goal. Anything longer (extended rationale, considered alternatives, surprising findings) belongs in a spec, DONE.md, or an ADR.
 - **Reference Phases at the end** when applicable: `Closes Phase <n>`.
 
 Caveman-speak it if you have to. Concision beats prose every time.
 
-Bad — paragraph re-explaining the diff:
+Bad — paragraph re-explaining the diff and arguing for the choice:
 
 ```text
 feat(auth): add JWT refresh
@@ -58,7 +58,7 @@ and lives in src/auth/refresh.ts. We considered rolling our own JWT
 verification but decided against it because the surface is finicky.
 ```
 
-Good — bullets, substance, reference:
+Good — bullets, state changes, brief purpose, reference:
 
 ```text
 feat(auth): rotate google oauth state token per request

@@ -61,16 +61,3 @@ Different mode entirely — these are written for future agents, not live conver
 - **No repetitive linking.** Agents read the whole file. External links go once at the end as next-step pointers.
 
 This applies to context files only — your private memory files should be written however works best for you to recall.
-
-## Quick switching cues
-
-| Signal | Switch to |
-| --- | --- |
-| User asks "why" or "how does" | Learning |
-| User says "explain", "walk me through" | Learning |
-| User new to a tool/concept they just mentioned | Learning |
-| Just finished a task list, phase, or focused push | Summarizing |
-| User asks "what did you do?" or "recap" | Summarizing |
-| User is mid-flow, giving directives | Effective |
-| User shows frustration with length | Effective, tighter |
-| Editing AGENTS.md, rules, skills | Context-file terseness |
