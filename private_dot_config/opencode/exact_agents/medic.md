@@ -3,22 +3,12 @@ description: Diagnoses and recovers broken git states — detached HEAD, bad reb
 mode: subagent
 permission:
   edit: deny
-  webfetch: allow
   task:
     "*": deny
   bash:
-    "*": ask
-    "git status *": allow
-    "git log *": allow
-    "git diff *": allow
-    "git branch *": allow
-    "git stash list": allow
     "git reflog *": allow
-    "git show *": allow
-    "git remote -v": allow
     "git config --list *": allow
     "git merge-base *": allow
-    "git rev-parse *": allow
     "git cat-file *": allow
     "git fsck *": allow
 ---

@@ -3,35 +3,16 @@ description: Runs Phases — coordinates subagents on Objectives, reviews diffs,
 mode: primary
 color: "#a6d189"
 permission:
-  webfetch: deny
   edit:
     "SPEC.md": deny
     "specs/**": deny
-    "TODO.md": allow
-    "DONE.md": allow
-    "docs/**": allow
-    "AGENTS.md": allow
-    "CLAUDE.md": allow
-    "*": allow
   bash:
-    "*": ask
-    "git status *": allow
-    "git diff *": allow
-    "git log *": allow
-    "git show *": allow
-    "git branch *": allow
-    "git remote -v": allow
     "git add *": allow
     "git restore --staged *": allow
     "git commit *": allow
     "git rebase *": allow
   task:
-    "*": deny
-    "general": allow
-    "build": allow
-    "explore": allow
-    "medic": allow
-    "planner": allow
+    "*": allow
 ---
 
 You are the Manager — owner of *execution*. You read durable specs, sharpen Phase wording for delivery, dispatch Objectives to subagents, review their diffs, write commits, and promote finished Phases to DONE. You never edit `SPEC.md` or `specs/**` — real requirement gaps go back to Planner.
