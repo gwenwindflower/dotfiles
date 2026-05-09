@@ -29,6 +29,7 @@ private_dot_config/               # → ~/.config/
   yazi/                           #   File manager (package.toml symlinked, rest copied)
   mise/, uv/                      #   Language version managers (mise config.toml symlinked)
   delta/, gh/, gh-dash/, meteor/  #   Git ecosystem
+  git/                            #   Gitconfig fragments included by ~/.gitconfig (os.gitconfig.tmpl, aliases.gitconfig, pretty.gitconfig)
   opencode/                       #   OpenCode config (opencode.jsonc + tui.jsonc + exact_agents/)
   bottom/, cmus/, freeze/, glow/  #   System monitor, music player, code snapshots, markdown viewer
   k9s/, lazydocker/, lazygit/     #   Container/cluster/git TUI tools
@@ -45,7 +46,7 @@ dot_claude/                       # → ~/.claude/
 dot_agents/                       # → ~/.agents/ (shared agent hub)
   exact_rules/, exact_skills/     # Pruned-on-apply collections (source of truth for shared agent config)
 
-dot_gitconfig.tmpl                # → ~/.gitconfig (main git config, templated for OS)
+symlink_dot_gitconfig.tmpl        # → symsource_git/gitconfig (externally writable; native git [include]s pull fragments from ~/.config/git/)
 dot_gitignore_global              # → ~/.gitignore_global
 dot_bashrc, dot_zshrc             # Minimal configs (worktrunk init, starship, zoxide)
 dot_profile.tmpl, dot_zprofile.tmpl  # Login shells (SHELL export, darwin SSH agent)
@@ -58,6 +59,7 @@ symsource_yazi/                   # package.toml
 symsource_mise/                   # config.toml
 symsource_amoxide/                # config.toml, profiles.toml
 symsource_worktrunk/              # config.toml
+symsource_git/                    # gitconfig (root config; [include]s ~/.config/git/*.gitconfig fragments)
 ```
 
 ## Key Patterns
@@ -68,6 +70,9 @@ Two mechanisms, use whichever fits:
 
 - **In `.tmpl` files:** `{{ if eq .chezmoi.os "darwin" }}...{{ end }}`
 - **In `.chezmoiignore`:** Exclude entire dirs on non-darwin (kitty, karabiner)
+
+> [!TIP]
+> When a `.tmpl` file's entire body is OS-gated, the wrong-OS render evaluates to empty — and chezmoi removes empty files by default (only `empty_`-prefixed sources stay). `private_dot_config/git/os.gitconfig.tmpl` uses this: darwin gets a real `~/.config/git/os.gitconfig`, linux gets nothing on disk. Combined with git's tolerance for missing `[include]` paths, that's a clean OS split with no `if`-wrapped consumer.
 
 ### Symlinks: only for externally-modified files
 
@@ -85,6 +90,7 @@ chezmoi copies by default, which is the right call for almost everything — it 
 | `~/.config/amoxide/config.toml` | `amoxide` CLI edits aliases | `symsource_amoxide/` |
 | `~/.config/amoxide/profiles.toml` | `amoxide` CLI edits profiles | `symsource_amoxide/` |
 | `~/.config/worktrunk/config.toml` | `wt` CLI edits its own config | `symsource_worktrunk/` |
+| `~/.gitconfig` | `git config --global` writes through to source | `symsource_git/` |
 
 Source files live in `symsource_*/` dirs at repo root, excluded by `.chezmoiignore` so chezmoi won't deploy them as top-level home dirs. Each symlink is a `symlink_*.tmpl` file containing `{{ .chezmoi.sourceDir }}/symsource_*/path/to/source`.
 
