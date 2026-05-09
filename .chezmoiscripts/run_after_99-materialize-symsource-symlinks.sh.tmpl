@@ -1,0 +1,55 @@
+{{ if eq .chezmoi.os "darwin" "linux" -}}
+#!/bin/bash
+# Materialize symsource_* symlinks for ephemeral one-shot installs.
+#
+# `chezmoi init --one-shot` runs apply then purges the source dir. Any
+# symlink that pointed into ~/.local/share/chezmoi/symsource_*/ would
+# dangle the moment purge fires. When CHEZMOI_ONESHOT=1 is set by the
+# bootstrapper (Fly Sprites, exe.dev VMs, Docker images, etc.), this
+# script replaces those symlinks with copies of their target content
+# before purge runs.
+#
+# No-op when CHEZMOI_ONESHOT is unset, so persistent workstations keep
+# their round-trip behavior (external tools editing the symlinked file
+# write through to the chezmoi-tracked source).
+
+set -euo pipefail
+
+{{ template "script-log.sh" }}
+
+if [ "${CHEZMOI_ONESHOT:-}" != "1" ]; then
+  exit 0
+fi
+
+log_step "Materializing symsource symlinks (CHEZMOI_ONESHOT=1)"
+
+source_prefix={{ printf "%s/symsource_" .chezmoi.sourceDir | quote }}
+
+# Bound the scan to dirs that actually receive symsource symlinks.
+roots=("$HOME/.claude" "$HOME/.config")
+
+materialized=0
+for root in "${roots[@]}"; do
+  [ -d "$root" ] || continue
+  while IFS= read -r link; do
+    target=$(readlink -- "$link")
+    case "$target" in
+      "$source_prefix"*) ;;
+      *) continue ;;
+    esac
+    if [ ! -e "$target" ]; then
+      log_warn "skip $link (target missing: $target)"
+      continue
+    fi
+    tmp="$link.materialize.$$"
+    cp -- "$target" "$tmp"
+    mv -f -- "$tmp" "$link"
+    log_info "$link"
+    materialized=$((materialized + 1))
+  done < <(find "$root" -type l 2>/dev/null)
+done
+
+log_success "materialized $materialized symlink(s)"
+{{ else -}}
+{{ fail (printf "unsupported OS: %s" .chezmoi.os) }}
+{{ end -}}
