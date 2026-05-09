@@ -1,0 +1,35 @@
+[alias]
+  main = switch main
+  remain = rebase --interactive --autosquash main
+  graph = log --graph --pretty=catppuccin-frappe --date=human --all
+  r5 = log --graph --pretty=catppuccin-frappe --date=human -5
+  r10 = log --graph --pretty=catppuccin-frappe --date=human -10
+  r25 = log --graph --pretty=catppuccin-frappe --date=human -25
+  diary = log --pretty=catppuccin-frappe --date=human
+  my-diary = log --pretty=catppuccin-frappe --date=human --author "winnie"
+  autograph = log --pretty=catppuccin-frappe --date=human --show-signature --author "winnie"
+  datecomp = log --pretty=datecomp --date=short
+  s = status -sb
+  unstage = restore --staged
+  unstage-all = restore --staged .
+  logd = -c diff.external=difft log -p --ext-diff
+  showd = -c diff.external=difft show --ext-diff
+  diffd = -c diff.external=difft diff
+  fga = forgit add
+  fglo = forgit log
+  fgd = forgit diff
+  fgi = forgit ignore
+  fgbl = forgit blame
+  fgrb = forgit rebase
+  fgbd = forgit branch_delete
+  fgcb = forgit checkout_branch
+  fgct = forgit checkout_tag
+  fgcf = forgit checkout_file
+  fgcc = forgit checkout_commit
+  fgrc = forgit revert_commit
+  fgcl = forgit clean
+  fgrh = forgit reset_head
+  fgss = forgit stash_show
+  fgsp = forgit stash_push
+  fgcp = forgit cherry_pick
+  fgcpb = forgit cherry_pick_branch

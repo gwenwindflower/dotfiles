@@ -1,0 +1,34 @@
+[color "branch"]
+  current = reverse bold cyan
+  local = bold "#ca9ee6"
+  remote = ul "#ef9f76"
+  upstream = bold green
+  plain = blue
+
+[color "decorate"]
+  branch = bold "#ca9ee6"
+  remoteBranch = ul "#ef9f76"
+  tag = reverse green
+  stash = bold yellow
+  HEAD = reverse bold cyan
+
+[color "log"]
+  commit = green
+  hash = green
+
+[color "status"]
+  added = bold green
+  updated = bold green
+  changed = bold "#ca9ee6"
+  deleted = bold red
+  untracked = bold "#85c1dc"
+  branch = reverse bold cyan
+  nobranch = reverse bold red
+  unmerged = reverse bold yellow
+
+[log]
+  graphColors = green, "#ca9ee6", "#ef9f76", blue, yellow, "#babbf1", magenta, cyan, "#ea999c"
+
+[pretty]
+  catppuccin-frappe = format:%C(magenta)%ad%C(reset) %s %C(green)%h%C(reset) %C(blue)(%an)%C(reset) %C(auto)%d
+  datecomp = format:%h %G? %ad %cd %s

@@ -1,0 +1,58 @@
+[user]
+  name = winnie
+  email = 91998347+gwenwindflower@users.noreply.github.com
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBvyZ1AjUa2VLcGaEBiVotTmsCSHV+k7fd/NqO90RcyL
+
+[gpg]
+  format = ssh
+
+[gpg "ssh"]
+  allowedSignersFile = ~/.ssh/allowed_signers
+
+[include]
+  path = ~/.config/git/os.gitconfig
+
+[commit]
+  gpgsign = true
+
+[pull]
+  ff = only
+
+[rebase]
+  autoSquash = true
+  autoStash = true
+
+[merge]
+  ff = only
+  conflictstyle = zdiff3
+
+[fetch]
+  prune = true
+
+[rerere]
+  enabled = true
+
+[init]
+  defaultBranch = main
+
+[include]
+  path = ~/.config/delta/catppuccin.gitconfig
+
+[core]
+  pager = delta
+  excludesfile = ~/.gitignore_global
+
+[delta]
+  line-numbers = true
+  navigate = true
+  hyperlinks = true
+  features = catppuccin-frappe
+
+[color]
+  ui = auto
+
+[include]
+  path = ~/.config/git/pretty.gitconfig
+
+[include]
+  path = ~/.config/git/aliases.gitconfig
