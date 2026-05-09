@@ -120,7 +120,9 @@ abbr --add oc opencode
 abbr --add occf ee $HOME/.config/opencode
 abbr --add co copilot
 abbr --add cl claude
+abbr --add clc claude -c
 abbr --add cl! claude --allow-dangerously-skip-permissions
+abbr --add clc! claude -c --allow-dangerously-skip-permissions
 abbr --add clcf ee $HOME/.claude
 abbr --add ccu bunx ccusage@latest
 ## skills
