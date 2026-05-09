@@ -68,6 +68,7 @@ abbr --add cmxv chezmoi apply ~/.config/nvim/
 abbr --add cmxa chezmoi apply ~/.agents/
 abbr --add cmc chezmoi cat
 abbr --add cmd chezmoi diff
+abbr --add cmd. chezmoi diff ./**
 # runners
 abbr --add tk task
 abbr --add mk make
