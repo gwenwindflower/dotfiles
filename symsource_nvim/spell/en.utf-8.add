@@ -619,3 +619,10 @@ parseable
 unescaped
 allowlist
 vendored
+handoffs
+denylist
+allowlists
+allowlisting
+bolded
+mistrigger
+wildcards
