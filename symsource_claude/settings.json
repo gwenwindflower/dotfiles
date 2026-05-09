@@ -137,6 +137,7 @@
 			"WebFetch(domain:agentskills.io)",
 			"WebFetch(domain:backend.blacksmith.sh)",
 			"WebFetch(domain:chezmoi.io)",
+			"WebFetch(domain:www.chezmoi.io)",
 			"WebFetch(domain:claude.com)",
 			"WebFetch(domain:cli.github.com)",
 			"WebFetch(domain:cliffy.io)",
@@ -167,6 +168,7 @@
 			"WebFetch(domain:schemastore.org)",
 			"WebFetch(domain:sum.golang.org)",
 			"WebFetch(domain:sw.kovidgoyal.net)",
+			"WebFetch(domain:tailscale.com)",
 			"WebFetch(domain:worktrunk.dev)"
 		],
 		"deny": [
