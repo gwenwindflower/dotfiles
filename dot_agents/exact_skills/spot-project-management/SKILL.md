@@ -41,3 +41,4 @@ Stable, soft-immutable IDs let Phases reference requirements without restating t
 
 - [Writing specs](writing-specs.md) — Planner work: spec shape, requirement IDs, phrasing patterns, edge cases, anti-patterns, scoping a Phase, Backlog, the `dev-` domain.
 - [Running phases](running-phases.md) — Manager work: the three Manager jobs (sequencing, linear history, quality at Objective close), parallel-by-default execution with Objectives mapped onto subagents, per-Phase workflow, the per-commit cadence, when spec-only commits earn their keep, TDD carve-outs, subagent drift, parallel Phases across worktrees, handoff to Planner.
+- [Using worktrunk](using-worktrunk.md) — Manager-facing `wt` patterns when worktrunk is installed: surveying with `wt list`, creating Phase worktrees with `wt switch --create`, merging with `wt merge --no-squash` to preserve per-Objective commits, removing leftovers, and what the Claude Code plugin auto-routes for subagent teams.

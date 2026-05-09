@@ -108,6 +108,8 @@ When two parallel Phases land:
 - **`TODO.md` / `DONE.md` conflicts** are common — both Phases edited the same file. Resolve by accepting the later state (DONE accumulates; TODO shrinks). Surface anything ambiguous.
 - **Spec touches go to Planner.** If both Phases needed to amend the same durable spec mid-flight, that's a Planner coordination point, not a Manager rebase decision.
 
+When the project uses worktrunk (`wt --version` works), drive worktree creation, surveying, and merge-time cleanup through `wt` rather than raw `git worktree` — see [using-worktrunk](using-worktrunk.md) for the patterns that matter to a Manager. Subagent teams spawned with `Agent { isolation: "worktree" }` get routed through `wt` automatically by the Claude Code plugin; Manager only invokes `wt` directly for Phase-scoped worktrees and the `wt merge` close.
+
 ## Manager-side commit hygiene
 
 Beyond the subagent-commits-then-Manager-fixups flow above:
