@@ -615,3 +615,7 @@ sessionization
 dirname
 subdirs
 desc
+parseable
+unescaped
+allowlist
+vendored
