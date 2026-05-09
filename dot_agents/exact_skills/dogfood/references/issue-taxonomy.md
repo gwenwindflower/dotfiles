@@ -11,7 +11,7 @@ Reference for categorizing issues found during dogfooding. Read this at the star
 ## Severity Levels
 
 | Severity | Definition |
-|----------|------------|
+| ---------- | ------------ |
 | **critical** | Blocks a core workflow, causes data loss, or crashes the app |
 | **high** | Major feature broken or unusable, no workaround |
 | **medium** | Feature works but with noticeable problems, workaround exists |

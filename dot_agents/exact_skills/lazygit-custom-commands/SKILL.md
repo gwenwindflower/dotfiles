@@ -16,7 +16,7 @@ description: Build and debug lazygit customCommands in config.yml: prompts, cont
 | `command` | Required. Go template string |
 | `description` | Shown in UI and `?` menu |
 | `loadingText` | Progress label while running |
-| `output` | `none` \| `terminal` \| `log` \| `logWithPty` \| `popup` |
+| `output` | `none` \ | `terminal` \ | `log` \ | `logWithPty` \ | `popup` |
 | `outputTitle` | Title for `popup` output |
 | `after` | `checkForConflicts` |
 | `prompts` | List of prompt configs (see below) |

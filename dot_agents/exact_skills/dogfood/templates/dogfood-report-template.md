@@ -1,7 +1,7 @@
 # Dogfood Report: {APP_NAME}
 
 | Field | Value |
-|-------|-------|
+| ------- | ------- |
 | **Date** | {DATE} |
 | **App URL** | {URL} |
 | **Session** | {SESSION_NAME} |
@@ -10,7 +10,7 @@
 ## Summary
 
 | Severity | Count |
-|----------|-------|
+| ---------- | ------- |
 | Critical | 0 |
 | High | 0 |
 | Medium | 0 |
@@ -24,7 +24,7 @@
 ### ISSUE-001: {Short title}
 
 | Field | Value |
-|-------|-------|
+| ------- | ------- |
 | **Severity** | critical / high / medium / low |
 | **Category** | visual / functional / ux / content / performance / console / accessibility |
 | **URL** | {page URL where issue was found} |

@@ -112,7 +112,7 @@ filters:
 | `>=` | greater than or equal |
 | `<=` | less than or equal |
 | `&&` | logical and |
-| `\|\|` | logical or |
+| `\ | \ | ` | logical or |
 | <code>!</code> | logical not |
 
 ## Properties

@@ -33,7 +33,7 @@ version: 1
 ## Configuration Properties
 
 | Property | Type | Description |
-|----------|------|-------------|
+| ---------- | ------ | ------------- |
 | `selectedField` | string | Field ID to display (must be in `metricQuery.metrics`) |
 | `label` | string | Custom label (defaults to field name) |
 | `showBigNumberLabel` | boolean | Show label above the number |
@@ -79,7 +79,7 @@ chartConfig:
 Each rule in the `rules` array:
 
 | Property | Type | Description |
-|----------|------|-------------|
+| ---------- | ------ | ------------- |
 | `id` | string | Unique identifier for the rule |
 | `operator` | string | Comparison operator (see below) |
 | `values` | array | Values to compare against |
@@ -141,7 +141,7 @@ version: 1
 ### Number Styles
 
 | Style | Example | Use Case |
-|-------|---------|----------|
+| ------- | --------- | ---------- |
 | `"K"` | 1,500 → 1.5K | Thousands |
 | `"M"` | 1,500,000 → 1.5M | Millions |
 | `"B"` | 1,500,000,000 → 1.5B | Billions |
@@ -149,6 +149,6 @@ version: 1
 ### flipColors
 
 | Value | Increase | Decrease | Use For |
-|-------|----------|----------|---------|
+| ------- | ---------- | ---------- | --------- |
 | `false` (default) | Green | Red | Revenue, users, signups |
 | `true` | Red | Green | Costs, errors, churn |

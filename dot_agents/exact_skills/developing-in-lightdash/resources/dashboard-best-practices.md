@@ -9,7 +9,7 @@ A guide to building effective, user-friendly dashboards in Lightdash based on da
 Match your visualization to the type of insight you're communicating:
 
 | Insight Type | Recommended Charts | Avoid |
-|-------------|-------------------|-------|
+| ------------- | ------------------- | ------- |
 | **Trends over time** | Line chart, area chart | Pie chart |
 | **Comparisons** | Bar chart (horizontal for many categories) | Overloaded charts |
 | **Parts of a whole** | Pie/donut (max 5 segments), stacked bar | Too many segments |
@@ -314,7 +314,7 @@ Structure the dashboard to answer questions in order:
 #### Design for Your Audience
 
 | Audience | Focus On | Avoid |
-|----------|----------|-------|
+| ---------- | ---------- | ------- |
 | **Executives** | KPIs, trends, summaries | Technical details, too many charts |
 | **Analysts** | Breakdowns, filters, drill-downs | Oversimplification |
 | **Operations** | Current status, exceptions, actions | Historical trends |

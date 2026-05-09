@@ -33,7 +33,7 @@
 ## Supported Callout Types
 
 | Type | Aliases | Color / Icon |
-|------|---------|-------------|
+| ------ | --------- | ------------- |
 | `note` | - | Blue, pencil |
 | `abstract` | `summary`, `tldr` | Teal, clipboard |
 | `info` | - | Blue, info |

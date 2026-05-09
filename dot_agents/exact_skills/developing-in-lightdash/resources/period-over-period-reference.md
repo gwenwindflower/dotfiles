@@ -9,7 +9,7 @@ PoP is implemented through **additional metrics** in the `metricQuery`. You defi
 ## Supported Granularities
 
 | Granularity | Example Comparison |
-|-------------|-------------------|
+| ------------- | ------------------- |
 | `DAY` | Yesterday vs today |
 | `WEEK` | Last week vs this week |
 | `MONTH` | Last month vs this month |
@@ -54,7 +54,7 @@ The field ID format is: `<table>_<metric_name>` where `<metric_name>` is the det
 ## Key Properties
 
 | Property | Required | Description |
-|----------|----------|-------------|
+| ---------- | ---------- | ------------- |
 | `baseMetricId` | Yes | Field ID of the original metric (e.g., `orders_total_revenue`) |
 | `generationType` | Yes | Must be `periodOverPeriod` |
 | `granularity` | Yes | Time granularity: `DAY`, `WEEK`, `MONTH`, `QUARTER`, `YEAR` |

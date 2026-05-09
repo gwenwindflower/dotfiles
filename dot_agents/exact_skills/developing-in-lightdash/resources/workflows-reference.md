@@ -380,7 +380,7 @@ jobs:
 ## Environment Variables Reference
 
 | Variable | Description |
-|----------|-------------|
+| ---------- | ------------- |
 | `LIGHTDASH_API_KEY` | API key for authentication |
 | `LIGHTDASH_URL` | Lightdash instance URL |
 | `LIGHTDASH_PROJECT` | Project UUID to deploy to |

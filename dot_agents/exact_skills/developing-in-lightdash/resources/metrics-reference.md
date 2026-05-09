@@ -42,7 +42,7 @@ models:
 ### Aggregation Metrics
 
 | Type | Description | Requires SQL |
-|------|-------------|--------------|
+| ------ | ------------- | -------------- |
 | `count` | Count all rows | No |
 | `count_distinct` | Count unique values | No |
 | `sum` | Sum of values | No |
@@ -55,7 +55,7 @@ models:
 ### Custom SQL Metrics
 
 | Type | Description | Requires SQL |
-|------|-------------|--------------|
+| ------ | ------------- | -------------- |
 | `number` | Custom numeric calculation | Yes |
 | `string` | Custom string result | Yes |
 | `date` | Custom date result | Yes |
@@ -65,7 +65,7 @@ models:
 ### Derived Metrics
 
 | Type | Description |
-|------|-------------|
+| ------ | ------------- |
 | `percent_of_previous` | Percentage change from previous row |
 | `percent_of_total` | Percentage of column total |
 | `running_total` | Cumulative sum |

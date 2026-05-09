@@ -19,7 +19,7 @@ columns:
 ## Dimension Types
 
 | Type | Description | SQL Examples |
-|------|-------------|--------------|
+| ------ | ------------- | -------------- |
 | `string` | Text values | VARCHAR, TEXT, CHAR |
 | `number` | Numeric values | INT, FLOAT, DECIMAL |
 | `boolean` | True/false values | BOOLEAN |
@@ -85,7 +85,7 @@ dimension:
 **All available intervals:**
 
 | Interval | Description | Example Output |
-|----------|-------------|----------------|
+| ---------- | ------------- | ---------------- |
 | `RAW` | Original timestamp | 2024-01-15 14:30:00 |
 | `YEAR` | Truncated to year | 2024-01-01 |
 | `QUARTER` | Truncated to quarter | 2024-01-01 |

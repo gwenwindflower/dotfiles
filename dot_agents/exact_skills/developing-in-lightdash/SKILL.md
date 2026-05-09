@@ -19,7 +19,7 @@ Build and deploy Lightdash analytics projects. This skill covers the **semantic 
 ## What You Can Do
 
 | Task | Commands | References |
-|------|----------|------------|
+| ------ | ---------- | ------------ |
 | Explore data warehouse | `lightdash sql` to execute raw sql, read .csv results | [CLI Reference](./resources/cli-reference.md) |
 | Define metrics & dimensions | Edit dbt YAML or Lightdash YAML | [Metrics](./resources/metrics-reference.md), [Dimensions](./resources/dimensions-reference.md) |
 | Create charts | `lightdash download`, edit YAML, `lightdash upload` | [Chart Types](#chart-types) |
@@ -33,7 +33,7 @@ Build and deploy Lightdash analytics projects. This skill covers the **semantic 
 ## Common Mistakes
 
 | Mistake | Consequence | Prevention |
-|---------|-------------|------------|
+| --------- | ------------- | ------------ |
 | **Guessing filter values** | Case mismatches (`'Payment'` vs `'payment'`) cause charts to silently return no data | Always run `lightdash sql "SELECT DISTINCT column FROM table LIMIT 50" -o values.csv` and use exact values |
 | **Not updating dashboard tiles after renaming a chart** | Dashboard tile still shows old title — `title` and `chartName` are independent overrides that do NOT auto-update | Download the dashboard, find tiles with matching `chartSlug`, update `title` and `chartName` to match |
 | **Including unused dimensions in metricQuery** | "Results may be incorrect" warning — extra dimensions change SQL grouping and produce wrong numbers | Every dimension in `metricQuery.dimensions` must appear in the chart config. For cartesian: `layout.xField`, `layout.yField`, or `pivotConfig.columns` |
@@ -58,7 +58,7 @@ lightdash config set-project --name "My Project"  # Switch project
 **The YAML syntax differs significantly between project types.**
 
 | Type | Detection | Key Difference |
-|------|-----------|----------------|
+| ------ | ----------- | ---------------- |
 | **dbt Project** | Has `dbt_project.yml` | Metadata nested under `meta:` |
 | **dbt Fusion / dbt 1.10+** | Has `dbt_project.yml`, uses dbt Fusion or dbt >= 1.10 | Metadata nested under `config: meta:` |
 | **Pure Lightdash** | Has `lightdash.config.yml`, no dbt | Top-level properties |
@@ -209,7 +209,7 @@ lightdash stop-preview --name "my-feature"
 ## CLI Quick Reference
 
 | Command | Purpose |
-|---------|---------|
+| --------- | --------- |
 | `lightdash deploy` | Sync semantic layer (metrics, dimensions) |
 | `lightdash upload` | Upload charts/dashboards |
 | `lightdash download` | Download charts/dashboards as YAML |
@@ -264,7 +264,7 @@ version: 1
 ### Choosing the Right Chart Type
 
 | Data Pattern | Recommended Chart | Why |
-|--------------|-------------------|-----|
+| -------------- | ------------------- | ----- |
 | Trends over time | Line or area (`cartesian`) | Shows continuous change with time on X-axis |
 | Category comparisons | Bar (`cartesian`) | Easy visual comparison between discrete categories |
 | Part-of-whole relationships | `pie` or `treemap` | Shows proportions summing to 100% |
@@ -276,7 +276,7 @@ version: 1
 | Advanced custom needs | `custom` | Full Vega-Lite spec for custom visualizations |
 
 | Type | Use Case | Reference |
-|------|----------|-----------|
+| ------ | ---------- | ----------- |
 | `cartesian` | Bar, line, area, scatter | [Cartesian](./resources/cartesian-chart-reference.md) |
 | `pie` | Parts of whole | [Pie](./resources/pie-chart-reference.md) |
 | `table` | Data tables | [Table](./resources/table-chart-reference.md) |
@@ -309,7 +309,7 @@ lightdash sql "SELECT SUM(amount) FROM orders" -o test.csv
 ## Workflow Patterns
 
 | Pattern | When to Use |
-|---------|-------------|
+| --------- | ------------- |
 | **Direct** (`deploy` + `upload`) | Solo dev, rapid iteration |
 | **Preview-First** | Team, complex changes |
 | **CI/CD** | Automated on merge |

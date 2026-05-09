@@ -155,14 +155,14 @@ document.addEventListener("astro:after-swap", () => {
 
 Characters define the visual language. Useful palettes:
 
-| Purpose              | Characters                    |
-| -------------------- | ----------------------------- |
-| Botanical / organic  | `·.,:;*+~'"`                 |
-| Box drawing          | `│┤┐└┘├─┬┴┼╔╗╚╝═║`            |
-| Dense / noisy        | `░▒▓█▄▀■□▪▫`                  |
+| Purpose | Characters |
+| -------------------- | ------------------- |
+| Botanical / organic | `·.,:;*+~'"` |
+| Box drawing | `│┤┐└┘├─┬┴┼╔╗╚╝═║` |
+| Dense / noisy | `░▒▓█▄▀■□▪▫` |
 | Dot density gradient | `.:-=+*#%@` (space to dense) |
-| Sparkle / ethereal   | `·✦✧⋆˚°.`                     |
-| Matrix / digital     | `ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘ0123456789`    |
+| Sparkle / ethereal | `·✦✧⋆˚°.` |
+| Matrix / digital | `ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘ0123456789` |
 
 When cycling random characters before settling, pick from a charset visually similar to the final target. Cycling through box-drawing characters before settling on box-drawing looks intentional; cycling dense blocks before settling on a delicate dot looks like a glitch.
 

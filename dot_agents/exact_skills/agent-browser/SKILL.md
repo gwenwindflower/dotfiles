@@ -509,7 +509,7 @@ Priority (lowest to highest): `~/.agent-browser/config.json` < `./agent-browser.
 ## Deep-Dive Documentation
 
 | Reference | When to Use |
-|-----------|-------------|
+| ----------- | ------------- |
 | [references/commands.md](references/commands.md) | Full command reference with all options |
 | [references/snapshot-refs.md](references/snapshot-refs.md) | Ref lifecycle, invalidation rules, troubleshooting |
 | [references/session-management.md](references/session-management.md) | Parallel sessions, state persistence, concurrent scraping |
@@ -559,7 +559,7 @@ Lightpanda does not support `--extension`, `--profile`, `--state`, or `--allow-f
 ## Ready-to-Use Templates
 
 | Template | Description |
-|----------|-------------|
+| ---------- | ------------- |
 | [templates/form-automation.sh](templates/form-automation.sh) | Form filling with validation |
 | [templates/authenticated-session.sh](templates/authenticated-session.sh) | Login once, reuse state |
 | [templates/capture-workflow.sh](templates/capture-workflow.sh) | Content extraction with screenshots |

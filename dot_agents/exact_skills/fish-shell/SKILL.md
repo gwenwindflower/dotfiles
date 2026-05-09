@@ -38,7 +38,7 @@ You're in bash. Run fish via subshell: `fish -c "<commands>"`. New `.fish` files
 | `"${arr[@]}"` | `$arr` |
 | `${#var}` | `string length $var` |
 | `cmd1 && cmd2` | `cmd1; and cmd2` |
-| `cmd1 \|\| cmd2` | `cmd1; or cmd2` |
+| `cmd1 \ | \ | cmd2` | `cmd1; or cmd2` |
 | `source file` | `source file` or `. file` |
 
 ## External docs

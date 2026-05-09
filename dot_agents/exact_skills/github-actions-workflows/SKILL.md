@@ -107,5 +107,5 @@ The `release.yml` template is toolchain-agnostic and ships ready to use.
 | Request | Action |
 | --- | --- |
 | "audit my GitHub Actions workflows" | Read existing files; check against rules/pitfalls and reference docs. |
-| "add a ci/build/release workflow" | Run script with `--workflow ci\|release\|release-build`; fill toolchain markers. |
+| "add a ci/build/release workflow" | Run script with `--workflow ci\ | release\ | release-build`; fill toolchain markers. |
 | "add release + build for the supermodel homebrew tap" | Run script with `--workflow all --binary <name> --repo <repo>`; fill toolchain markers; ensure source repo has `HOMEBREW_TAP_GITHUB_TOKEN` secret (see [`release-build.md`](release-build.md)). |

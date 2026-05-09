@@ -25,7 +25,7 @@ Pie charts display part-to-whole relationships by dividing a circle into slices 
 ### Pie vs Donut
 
 | Feature | Pie Chart | Donut Chart |
-|---------|-----------|-------------|
+| --------- | ----------- | ------------- |
 | Visual | Solid circle | Ring with hole |
 | Use case | Single metric focus | Better for comparisons |
 | Center space | None | Can display total/summary |
@@ -68,7 +68,7 @@ version: 1
 ### Core Settings
 
 | Property | Type | Description |
-|----------|------|-------------|
+| ---------- | ------ | ------------- |
 | `groupFieldIds` | `string[]` | Array of field IDs for slicing (required) |
 | `metricId` | `string` | The metric to display (required) |
 | `isDonut` | `boolean` | `true` = donut chart with hollow center |
@@ -76,23 +76,23 @@ version: 1
 ### Value Labels
 
 | Property | Type | Description |
-|----------|------|-------------|
-| `valueLabel` | `"hidden" \| "inside" \| "outside"` | Position of labels on slices |
+| ---------- | ------ | ------------- |
+| `valueLabel` | `"hidden" \ | "inside" \ | "outside"` | Position of labels on slices |
 | `showValue` | `boolean` | Show actual numeric values |
 | `showPercentage` | `boolean` | Show percentage of total |
 
 ### Legend
 
 | Property | Type | Description |
-|----------|------|-------------|
+| ---------- | ------ | ------------- |
 | `showLegend` | `boolean` | Show/hide legend |
-| `legendPosition` | `"horizontal" \| "vertical"` | Legend orientation |
+| `legendPosition` | `"horizontal" \ | "vertical"` | Legend orientation |
 | `legendMaxItemLength` | `number` | Max characters before truncation |
 
 ### Customization
 
 | Property | Type | Description |
-|----------|------|-------------|
+| ---------- | ------ | ------------- |
 | `groupLabelOverrides` | `Record<string, string>` | Custom display labels for slices |
 | `groupColorOverrides` | `Record<string, string>` | Custom hex colors for slices |
 | `groupSortOverrides` | `string[]` | Custom sort order (clockwise from top) |
@@ -178,7 +178,7 @@ version: 1
 ### Label Placement
 
 | Position | Best for |
-|----------|----------|
+| ---------- | ---------- |
 | `inside` | Few slices (3-5), large slices |
 | `outside` | Many slices (6-7), long labels |
 | `hidden` | 7+ slices, comprehensive legend |

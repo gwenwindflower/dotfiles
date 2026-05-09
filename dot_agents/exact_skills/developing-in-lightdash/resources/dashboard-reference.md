@@ -127,7 +127,7 @@ tiles:
 ### Width Quick Reference
 
 | Layout | Width (w) | Tiles per row |
-|--------|-----------|---------------|
+| -------- | ----------- | --------------- |
 | Full width | 36 | 1 |
 | Half width | 18 | 2 |
 | Third width | 12 | 3 |
@@ -233,7 +233,7 @@ filters:
 ### Filter Operators
 
 | Operator | Description | Example Values |
-|----------|-------------|----------------|
+| ---------- | ------------- | ---------------- |
 | `equals` | Exact match | `["completed"]` |
 | `notEquals` | Not equal | `["cancelled"]` |
 | `isNull` | Is null | `[]` |
@@ -390,7 +390,7 @@ config:
 ### Config Properties
 
 | Property | Type | Description |
-|----------|------|-------------|
+| ---------- | ------ | ------------- |
 | `isDateZoomDisabled` | boolean | Disable the date zoom feature entirely |
 | `isAddFilterDisabled` | boolean | Disable the add filter button entirely |
 | `dateZoomGranularities` | string[] | Available granularity options (e.g., `Day`, `Week`, `Month`, `Quarter`, `Year`, or custom like `fiscal_quarter`) |

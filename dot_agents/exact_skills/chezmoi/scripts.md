@@ -7,7 +7,7 @@ Scripts in `.chezmoiscripts/` automate setup tasks during `chezmoi apply`.
 Format: `run_[once_|onchange_][before_|after_]<order>-<description>.<interpreter>[.tmpl]`
 
 | Component | Options | Purpose |
-|-----------|---------|---------|
+| ----------- | --------- | --------- |
 | Frequency | `run_`, `run_once_`, `run_onchange_` | How often to run |
 | Timing | `before_`, `after_` (optional) | When to run relative to file updates |
 | Order | `00-99` | Alphabetical ordering (lower = earlier) |

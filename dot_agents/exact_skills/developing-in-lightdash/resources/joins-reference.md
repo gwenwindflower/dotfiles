@@ -18,14 +18,14 @@ models:
 ### Required Properties
 
 | Property | Description |
-|----------|-------------|
+| ---------- | ------------- |
 | `join` | Name of the model to join |
 | `sql_on` | SQL join condition |
 
 ### Optional Properties
 
 | Property | Description | Default |
-|----------|-------------|---------|
+| ---------- | ------------- | --------- |
 | `type` | Join type | `left` |
 | `alias` | Alias for the joined model | Model name |
 | `label` | Display label | Model label |
@@ -59,7 +59,7 @@ joins:
 **When to use each type:**
 
 | Type | Use When |
-|------|----------|
+| ------ | ---------- |
 | `left` | Base table should always show, joined data is optional |
 | `inner` | Only show rows where both tables have data |
 | `right` | Joined table should always show (rare) |
@@ -124,7 +124,7 @@ joins:
 **Relationship meanings:**
 
 | Relationship | Description | Example |
-|--------------|-------------|---------|
+| -------------- | ------------- | --------- |
 | `one-to-one` | Each row matches exactly one row | User → Profile |
 | `one-to-many` | Base row can match multiple joined rows | Order → Line Items |
 | `many-to-one` | Multiple base rows match one joined row | Orders → Customer |

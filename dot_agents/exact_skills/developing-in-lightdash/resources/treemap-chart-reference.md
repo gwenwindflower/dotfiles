@@ -41,7 +41,7 @@ chartConfig:
 ## Key Properties
 
 | Property | Type | Description | Required |
-|----------|------|-------------|----------|
+| ---------- | ------ | ------------- | ---------- |
 | `groupFieldIds` | array | Field IDs for hierarchical grouping (1-3 levels) | Yes |
 | `sizeMetricId` | string | Field ID that determines rectangle size | Yes |
 | `colorMetricId` | string | Field ID that determines rectangle color value | No |
@@ -182,7 +182,7 @@ version: 1
 ## Comparison: Treemap vs Other Charts
 
 | Need | Use Treemap | Alternative |
-|------|-------------|-------------|
+| ------ | ------------- | ------------- |
 | Simple part-to-whole | Maybe | Pie/Donut (clearer for 3-7 categories) |
 | Hierarchical data | Yes | Sunburst (circular alternative) |
 | Precise comparisons | No | Bar chart (easier to compare lengths) |

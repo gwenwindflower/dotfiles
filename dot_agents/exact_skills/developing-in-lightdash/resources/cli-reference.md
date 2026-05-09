@@ -245,18 +245,18 @@ lightdash set-warehouse --project-dir ./dbt --profiles-dir ./profiles --assume-y
 
 ## Command Summary
 
-| Command               | Purpose                          |
+| Command | Purpose |
 | --------------------- | -------------------------------- |
-| `lightdash login`     | Authenticate with Lightdash      |
-| `lightdash config`    | Manage project selection         |
-| `lightdash deploy`    | Sync semantic layer to Lightdash |
-| `lightdash upload`    | Upload charts/dashboards         |
-| `lightdash download`  | Download charts/dashboards       |
-| `lightdash delete`    | Remove charts/dashboards         |
-| `lightdash preview`   | Create temporary test project    |
-| `lightdash validate`  | Validate against server          |
-| `lightdash lint`      | Validate YAML locally            |
-| `lightdash generate`  | Generate YAML from dbt models    |
-| `lightdash sql`       | Run SQL queries                  |
-| `lightdash run-chart` | Execute chart YAML query         |
+| `lightdash login` | Authenticate with Lightdash |
+| `lightdash config` | Manage project selection |
+| `lightdash deploy` | Sync semantic layer to Lightdash |
+| `lightdash upload` | Upload charts/dashboards |
+| `lightdash download` | Download charts/dashboards |
+| `lightdash delete` | Remove charts/dashboards |
+| `lightdash preview` | Create temporary test project |
+| `lightdash validate` | Validate against server |
+| `lightdash lint` | Validate YAML locally |
+| `lightdash generate` | Generate YAML from dbt models |
+| `lightdash sql` | Run SQL queries |
+| `lightdash run-chart` | Execute chart YAML query |
 | `lightdash set-warehouse` | Update project warehouse connection |

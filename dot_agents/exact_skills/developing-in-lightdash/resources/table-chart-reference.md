@@ -39,7 +39,7 @@ version: 1
 ### Display Options
 
 | Property | Type | Description |
-|----------|------|-------------|
+| ---------- | ------ | ------------- |
 | `showColumnCalculation` | boolean | Show column totals at the bottom |
 | `showRowCalculation` | boolean | Show row totals in an additional column |
 | `showTableNames` | boolean | Show table names in column headers (e.g., "users.name" vs "name") |
@@ -53,11 +53,11 @@ version: 1
 The `columns` object allows per-column customization using the field ID as the key:
 
 | Property | Type | Description |
-|----------|------|-------------|
+| ---------- | ------ | ------------- |
 | `visible` | boolean | Whether the column is visible |
 | `name` | string | Custom display name for the column |
 | `frozen` | boolean | Freeze column to left side when scrolling |
-| `displayStyle` | `"text"` \| `"bar"` | How to display cell values |
+| `displayStyle` | `"text"` \ | `"bar"` | How to display cell values |
 | `color` | string (hex) | Color for bar display style |
 
 ### Conditional Formatting
@@ -65,12 +65,12 @@ The `columns` object allows per-column customization using the field ID as the k
 Conditional formatting highlights cells based on their values. Each rule consists of:
 
 | Property | Type | Description |
-|----------|------|-------------|
+| ---------- | ------ | ------------- |
 | `target.fieldId` | string | Field to apply formatting to |
 | `color` | string or `{start, end}` | Single color or gradient |
 | `rules` | array | Conditions for single-color formatting |
 | `rule` | `{min, max}` | Range for gradient formatting (values or `"auto"`) |
-| `applyTo` | `"cell"` \| `"text"` | Apply to background or text |
+| `applyTo` | `"cell"` \ | `"text"` | Apply to background or text |
 
 ### Conditional Formatting Operators
 
@@ -151,7 +151,7 @@ Pivoting transforms dimension values into column headers. For example, instead o
 ### Pivot Configuration
 
 | Property | Type | Description |
-|----------|------|-------------|
+| ---------- | ------ | ------------- |
 | `pivotConfig.columns` | string[] | Dimension field IDs to pivot into column headers |
 
 ### Example: Pivoted Table
