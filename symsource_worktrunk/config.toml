@@ -1,0 +1,5 @@
+[commit.generation]
+command = "CLAUDE_CODE_DISABLE_THINKING=1 claude -p --model=sonnet --tools='' --disable-slash-commands --setting-sources='' --system-prompt=''"
+
+[list]
+summary = true
