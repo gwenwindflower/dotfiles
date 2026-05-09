@@ -15,7 +15,7 @@ fi
 
 uid="$(id -u)"
 # Match Claude Code's internal convention: /private/tmp/claude-<uid>/<kebab-project-path>
-kebab_path="$(echo "$CLAUDE_PROJECT_DIR" | tr '/.' '--')"
+kebab_path="$(echo "$CLAUDE_PROJECT_DIR" | tr '/. ~' '----' | tr -s '-')"
 proj_tmpdir="/private/tmp/claude-${uid}/${kebab_path}"
 
 mkdir -p "$proj_tmpdir"
