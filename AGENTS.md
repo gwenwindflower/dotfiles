@@ -14,13 +14,13 @@ OSes supported:
 
 ```text
 .chezmoidata/packages.yaml        # Homebrew packages (darwin + linux sections)
-.chezmoiscripts/                  # Lifecycle scripts (bootstrap, taps, packages, shell, yazi plugins)
+.chezmoiscripts/                  # Lifecycle scripts (bootstrap, taps, packages, global tools, shell, yazi plugins, bat cache, ephemeral symlink materialization)
 .chezmoiignore                    # Excludes dev files + OS-conditional dirs
 .chezmoitemplates/fish/           # Fish config fragment templates (assembled into config.fish)
 
 private_dot_config/               # → ~/.config/
   fish/                           #   config.fish.tmpl + exact_functions/ + exact_completions/ + exact_conf.d/
-  nvim/                           #   LazyVim: lua/, snippets/, spell/, lockfile symlinks
+  nvim/                           #   LazyVim: lua/, snippets/; lockfile + spellfile symlinks back to symsource_nvim/
   kitty/                          #   Darwin-only (excluded on linux via .chezmoiignore)
   karabiner/                      #   Darwin-only
   tmux/                           #   tmux.conf + statusline + pane-icon script
@@ -40,7 +40,7 @@ dot_claude/                       # → ~/.claude/
   keybindings.json, statusline.toml  # Copied normally
   exact_hooks/, exact_agents/     # Pruned-on-apply collections
   symlink_settings.json.tmpl      #   → symsource_claude/settings.json
-  symlink_{rules,skills,agents,prompts}.tmpl  # → dot_agents/exact_{rules,skills}/...
+  symlink_{rules,skills}.tmpl     #   → ~/.agents/{rules,skills} (post-apply targets)
 
 dot_agents/                       # → ~/.agents/ (shared agent hub)
   exact_rules/, exact_skills/     # Pruned-on-apply collections (source of truth for shared agent config)
@@ -52,10 +52,12 @@ dot_profile.tmpl, dot_zprofile.tmpl  # Login shells (SHELL export, darwin SSH ag
 private_dot_ssh/                  # → ~/.ssh/ (allowed_signers)
 
 # Symlink source dirs (in .chezmoiignore as `symsource_*/`, not deployed as ~/*)
-symsource_nvim/                   # lazy-lock.json, lazyvim.json
+symsource_nvim/                   # lazy-lock.json, lazyvim.json, spell/en.utf-8.add{,.spl}
 symsource_claude/                 # settings.json
 symsource_yazi/                   # package.toml
 symsource_mise/                   # config.toml
+symsource_amoxide/                # config.toml, profiles.toml
+symsource_worktrunk/              # config.toml
 ```
 
 ## Key Patterns
@@ -75,9 +77,14 @@ chezmoi copies by default, which is the right call for almost everything — it 
 | --- | --- | --- |
 | `~/.config/nvim/lazy-lock.json` | `:Lazy sync` updates it | `symsource_nvim/` |
 | `~/.config/nvim/lazyvim.json` | LazyVim framework updates it | `symsource_nvim/` |
+| `~/.config/nvim/spell/en.utf-8.add` | nvim writes new words via `zg` | `symsource_nvim/` |
+| `~/.config/nvim/spell/en.utf-8.add.spl` | nvim regenerates the compiled spellfile | `symsource_nvim/` |
 | `~/.claude/settings.json` | Claude Code edits its own settings | `symsource_claude/` |
 | `~/.config/yazi/package.toml` | `ya pkg add` edits it | `symsource_yazi/` |
 | `~/.config/mise/config.toml` | `mise use` edits it | `symsource_mise/` |
+| `~/.config/amoxide/config.toml` | `amoxide` CLI edits aliases | `symsource_amoxide/` |
+| `~/.config/amoxide/profiles.toml` | `amoxide` CLI edits profiles | `symsource_amoxide/` |
+| `~/.config/worktrunk/config.toml` | `wt` CLI edits its own config | `symsource_worktrunk/` |
 
 Source files live in `symsource_*/` dirs at repo root, excluded by `.chezmoiignore` so chezmoi won't deploy them as top-level home dirs. Each symlink is a `symlink_*.tmpl` file containing `{{ .chezmoi.sourceDir }}/symsource_*/path/to/source`.
 
@@ -140,6 +147,7 @@ Fragment ordering: `00–14` are environment setup (PATH, XDG, editor, git, AI, 
   run_once_before_00-bootstrap.sh.tmpl     # Install Homebrew
   run_once_05-add-taps.sh.tmpl             # Add Homebrew taps (with retry + verification)
   run_once_10-install-packages.sh.tmpl     # brew bundle (formulae + casks, taps already done)
+  run_once_15-install-global-tools.sh.tmpl # Global CLIs via pnpm + uv (after Homebrew)
   run_once_20-configure-shell.sh.tmpl      # Fish → /etc/shells, chsh
   run_once_30-yazi-plugins.sh.tmpl         # ya pkg install (yazi plugin sync)
   run_once_31-bat-cache.sh.tmpl            # Build bat theme cache (after themes deployed)
