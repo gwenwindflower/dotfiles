@@ -9,6 +9,10 @@ Loads on top of the always-on `projects` rule. Assume that rule's vocabulary, fi
 
 When asked, build SPOT files from scratch by interviewing the user or converting existing planning notes. Monorepo conventions (per-subdir specs, shared specs) are project-specific and live in project guidance.
 
+## SPOT is a living system
+
+SPOT is actively developed. Adhere to it strictly while you're working — the rules and shapes are load-bearing for clean handoffs across agents — *and* propose improvements when the system fights the work. This is a collaborative human/agent tool that will keep evolving. If a rule rubs the wrong way, surface it: an explicit "I'd suggest adjusting X because Y" beats silently working around it. Feedback flows back into the skill.
+
 ## Two spec layers
 
 - **`SPEC.md`** — project contract. Vibe, goals, non-goals, vocabulary, design principles, an `@`-import index of domain specs, plus project-scope requirements that don't belong to any one domain.
@@ -40,5 +44,11 @@ Stable, soft-immutable IDs let Phases reference requirements without restating t
 ## Jobs to be done
 
 - [Writing specs](writing-specs.md) — Planner work: spec shape, requirement IDs, phrasing patterns, edge cases, anti-patterns, scoping a Phase, Backlog, the `dev-` domain.
-- [Running phases](running-phases.md) — Manager work: the three Manager jobs (sequencing, linear history, quality at Objective close), parallel-by-default execution with Objectives mapped onto subagents, per-Phase workflow, the per-commit cadence, when spec-only commits earn their keep, TDD carve-outs, subagent drift, parallel Phases across worktrees, handoff to Planner.
-- [Using worktrunk](using-worktrunk.md) — Manager-facing `wt` patterns when worktrunk is installed: surveying with `wt list`, creating Phase worktrees with `wt switch --create`, merging with `wt merge --no-squash` to preserve per-Objective commits, removing leftovers, and what the Claude Code plugin auto-routes for subagent teams.
+- [Running phases](running-phases.md) — Manager work: the three Manager jobs (sequencing, linear history, quality at Objective close), Subagent teams as the SPOT default, per-Phase workflow, the per-commit cadence under the Phase trunk model, when spec-only commits earn their keep, TDD carve-outs, Subagent drift, parallel Phases across Manager sessions, handoff to Planner.
+- [Using worktrunk](using-worktrunk.md) — `wt` is the Manager's primary git interface: the **Phase trunk branch + Objective feature branch** model (two `wt merge` levels, with squash defaults that differ by level), Agent Teams as the SPOT default + Agent Handoff as out-of-band-only, surveying with `wt list`, creating Phase trunks, closing Objectives and Phases, recommended `.config/wt.toml` for SPOT (pre-commit / pre-merge with `{{ target }}` conditional, `copy-ignored`), and the short list of operations that stay raw git.
+- [EXECUTIVE.md](EXECUTIVE.md) — speculative: a higher-level role that picks unblocked Phases and spawns Manager sessions across tmux panes via the Agent Handoff pattern. Out of scope for normal Manager/Planner work; load only when the user invokes Executive.
+
+Platform-specific Subagent spawn syntax and integration details live in `platforms/`:
+
+- [platforms/claude-code.md](platforms/claude-code.md) — full integration via the worktrunk plugin.
+- [platforms/opencode.md](platforms/opencode.md) — partial integration in progress.

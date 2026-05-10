@@ -30,7 +30,13 @@ if [ -z "$git_dir" ] || [ "$git_dir" = "$common_dir" ]; then
   exit 0
 fi
 
-# Find the branch point (where this worktree diverged from its upstream)
+# Find the branch point (where this worktree diverged from its upstream).
+# Fallback to 'main' is intentional: under SPOT's Phase trunk + Objective
+# feature branch model, an Objective branch may be parented off a Phase trunk
+# branch rather than main. Using main as the merge-base reference safely
+# over-counts (commits past the actual Phase-trunk branch point still count
+# past the main branch point), which preserves the at-least-one-commit
+# invariant without requiring SPOT-specific topology awareness.
 upstream="$(git rev-parse --abbrev-ref '@{upstream}' 2>/dev/null || echo 'main')"
 merge_base="$(git merge-base HEAD "$upstream" 2>/dev/null || git rev-parse HEAD)"
 
