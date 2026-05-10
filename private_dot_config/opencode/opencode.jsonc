@@ -28,7 +28,7 @@
 			"cargo clippy *": "allow",
 			"cargo test *": "allow",
 			"cat *": "allow",
-			"chezmoi diff *": "allow",
+			"chezmoi diff --no-pager *": "allow",
 			"chezmoi apply -n *": "allow",
 			"chezmoi cat *": "allow",
 			"chezmoi data *": "allow",

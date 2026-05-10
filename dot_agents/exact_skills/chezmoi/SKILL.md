@@ -13,7 +13,7 @@ chezmoi manages dotfiles using a **three-state model**: source (declared in `~/.
 chezmoi init                    # Initialize source directory
 chezmoi add ~/.bashrc           # Add file to management
 chezmoi edit ~/.bashrc          # Edit source file
-chezmoi diff                    # Preview changes
+chezmoi diff --no-pager         # Preview changes, large changesets will hang in pager so use flag
 chezmoi apply                   # Apply changes to home directory
 chezmoi apply -n -v             # Dry run with verbose output
 chezmoi cd                      # Enter source directory

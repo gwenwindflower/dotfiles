@@ -28,7 +28,7 @@
 			"Bash(cargo clippy *)",
 			"Bash(cargo test *)",
 			"Bash(cat *)",
-			"Bash(chezmoi diff *)",
+			"Bash(chezmoi diff --no-pager *)",
 			"Bash(chezmoi apply -n *)",
 			"Bash(chezmoi cat *)",
 			"Bash(chezmoi data *)",
