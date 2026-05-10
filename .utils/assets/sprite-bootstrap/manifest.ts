@@ -68,6 +68,7 @@ export const dirs: DirEntry[] = [
 		exclude: ["plugins/herdr-agent-state.js"],
 	},
 	{ srcDir: "private_dot_config/tmux", destDir: "~/.config/tmux" },
+	{ srcDir: "dot_local/bin", destDir: "~/.local/bin" },
 ];
 
 // Mirror shared agent config into ~/.claude/{rules,skills}. Copy rather
