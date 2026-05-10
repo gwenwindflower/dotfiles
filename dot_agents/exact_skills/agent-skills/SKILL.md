@@ -7,6 +7,9 @@ allowed-tools:
   - WebFetch(domain:code.claude.com)
 ---
 
+> [!IMPORTANT]
+> **Always edit skills in chezmoi source, never in the deployed target.** Skills load from `~/.agents/skills/` (and `~/.claude/skills/` via symlink), but the source of truth is `~/.local/share/chezmoi/dot_agents/exact_skills/<skill>/`. Edits to the target dirs get overwritten on the next `chezmoi apply` and require manual sync back. Same applies to any skill file referenced from a target path — translate it to its `dot_agents/exact_skills/` source before editing.
+
 Skills are modular packages that extend agents with specialized workflows, domain knowledge, and bundled resources.
 
 **Be ruthless about terseness.** Every line in SKILL.md is loaded on every trigger. If a sentence doesn't change agent behavior, cut it. Push depth into colocated reference docs.
