@@ -4,7 +4,17 @@
 # Workstation-only abbrs (brew, obsidian, lazygit, forgit, meteor, mise,
 # kitten, lsd, procs, bat, etc.) are deliberately omitted.
 
-# shell snippets
+# shell basics
+abbr --add p echo
+abbr --add pp bat
+abbr --add pcp fish_clipboard_copy
+abbr --add ppp fish_clipboard_paste
+abbr --add cp. "pwd | fish_clipboard_copy"
+abbr --add r clear
+abbr --add rr "exec $SHELL"
+abbr --add --position anywhere -- --help '--help | bat -plhelp'
+abbr --add --position anywhere -- -h '--help | bat -plhelp'
+abbr --add --position anywhere -- -hr '--help | bat -plhelp | rg'
 abbr --add --position anywhere -- qq '>/dev/null'
 abbr --add --position anywhere -- qqq '>/dev/null 2>&1'
 
@@ -14,7 +24,11 @@ abbr --add rmd rmdir
 abbr --add mkt mktemp
 abbr --add chmx chmod +x
 abbr --add chme chmod 700
-abbr --add ll ls -la
+abbr --add l ls -la
+
+# editor
+abbr --add v nvim
+abbr --add vi nvim
 
 # tmux
 abbr --add tm tmux
@@ -105,12 +119,49 @@ abbr --add ghpr gh pr create
 abbr --add ghprv gh pr view -w
 abbr --add ghprl gh pr list
 
-# claude
+# ai
+abbr --add oc opencode
+abbr --add occf nvim ~/.config/opencode
 abbr --add cl claude
+abbr --add clc claude -c
 abbr --add cl! claude --allow-dangerously-skip-permissions
+abbr --add clc! claude -c --allow-dangerously-skip-permissions
+abbr --add clcf nvim ~/.claude
+abbr --add ccu bunx ccusage@latest
 
-# deno
+# typescript
+## node
+abbr --add np npm
+abbr --add npi npm install
+abbr --add npu npm update
+abbr --add npd npm run dev
+abbr --add npb npm run build
+## pnpm
+abbr --add pn pnpm
+abbr --add pnx pnpm dlx
+abbr --add pni pnpm install
+abbr --add pnrm pnpm remove
+abbr --add pna pnpm add
+abbr --add pnu pnpm update
+abbr --add pnd pnpm dev
+abbr --add pnb pnpm build
+abbr --add pnl pnpm lint
+abbr --add pnf pnpm fix
+abbr --add pnls pnpm ls
+abbr --add pnlsg pnpm ls -g
+## bun
+abbr --add bui bun install
+abbr --add bua bun add
+abbr --add bur bun remove
+abbr --add buup bun upgrade
+abbr --add bus bun start
+abbr --add but bun test
+abbr --add buru bun run
+abbr --add buc bun create
+abbr --add bulsg bun pm ls -g
+## deno
 abbr --add dn deno
+abbr --add dncli deno install -grAf --root $DENO_HOME
 abbr --add dnt deno task
 abbr --add dntt deno task test
 abbr --add dnti deno task install
@@ -123,23 +174,25 @@ abbr --add dnq deno info
 abbr --add dnsh deno repl
 abbr --add dnru deno run
 
-# bun
-abbr --add bui bun install
-abbr --add bua bun add
-abbr --add bur bun remove
-abbr --add buup bun upgrade
-abbr --add bus bun start
-abbr --add but bun test
-abbr --add buru bun run
-abbr --add buc bun create
-
-# uv / python
+## python
 abbr --add py python
+abbr --add pym python main.py
+abbr --add ip ipython
 abbr --add pyt pytest
+abbr --add uvpy uv python
+abbr --add uvpyh "cd (uv python dir)"
+abbr --add uvpyi uv python install
+abbr --add uvpyls uv python list
+abbr --add uvpyup uv python upgrade
+abbr --add uvt uv tool
+abbr --add uvti uv tool install
+abbr --add uvtid uv tool install . --reinstall
+abbr --add uvtu uv tool upgrade
 abbr --add uvr uv run
 abbr --add uvrt uv run pytest
 abbr --add uvp uv pip
 abbr --add uvpi uv pip install
+abbr --add uvpir "uv pip install -r requirements.txt"
 abbr --add uva uv add
 abbr --add uvs uv sync
 abbr --add uvi uv init
@@ -147,12 +200,12 @@ abbr --add uvb uv build
 abbr --add va source .venv/bin/activate.fish
 abbr --add da deactivate
 
-# go
+## go
 abbr --add gor go run main.go
 abbr --add gord go run .
 abbr --add got go test
 abbr --add gotv go test -v
 abbr --add gob go build
 
-# rust
+## rust
 abbr --add ruu rustup up
