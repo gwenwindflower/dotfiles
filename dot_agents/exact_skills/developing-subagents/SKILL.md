@@ -82,4 +82,3 @@ What to leave out:
 - Patterns already on the global allow/denylist.
 - Defaults already in force at the platform level.
 - Defensive restrictions that don't remove real risk.
-
