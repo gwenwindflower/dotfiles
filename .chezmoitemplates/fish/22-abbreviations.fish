@@ -120,7 +120,6 @@ abbr --add dkcu docker compose up
 # ai
 abbr --add oc opencode
 abbr --add occf ee $HOME/.config/opencode
-abbr --add co copilot
 abbr --add cl claude
 abbr --add clc claude -c
 abbr --add cl! claude --allow-dangerously-skip-permissions
