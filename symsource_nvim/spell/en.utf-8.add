@@ -633,3 +633,6 @@ subcolumns
 unmerged
 prunable
 evals
+typecheck
+perf
+worktree's
