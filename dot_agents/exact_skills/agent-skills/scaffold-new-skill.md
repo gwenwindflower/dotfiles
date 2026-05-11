@@ -3,12 +3,12 @@
 ## Workflow
 
 1. Clarify with the user — jobs-to-be-done, examples, what existing context is missing
-2. Scaffold: `rei skills new <skill-name>` (or `--path` for a project location)
+2. Scaffold: `rei skills new -p ~/.local/share/chezmoi/dot_agents/exact_skills <skill-name>` for user-level skills (lands directly in chezmoi source — no post-hoc move), or `--path path/to/proj` for a project location
 3. Write SKILL.md tight; offload depth into modular `<topic>.md` files alongside it
 4. Drop `scripts/` and `assets/` if unused — flatter is better
 5. [Write the description](effective-descriptions.md) before declaring done
 6. Validate: `rei skills validate <skill-path>`
-7. Sync: `rei sync`
+7. Deploy: `chezmoi apply -n` to dry-run; hand off to the user for the real `chezmoi apply`. **Never** run `rei sync`.
 
 ## Structure
 

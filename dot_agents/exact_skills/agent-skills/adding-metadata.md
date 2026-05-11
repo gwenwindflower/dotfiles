@@ -31,7 +31,7 @@ When extending support to a new agent:
 1. Identify which fields the agent reads (check its skill spec)
 2. Add a section above with the field list and any quirks
 3. Keep the universal fields stable — agent-specific extensions go below
-4. Update `rei` config so `rei sync` distributes correctly to the new target
+4. Ensure chezmoi deploys to the new target (add a `symlink_*` or copy entry under `dot_agents/`/`dot_claude/` as needed). **Do not** rely on `rei sync` — reishi is experimental and not used for deployment today.
 
 ## Example
 

@@ -1,33 +1,22 @@
 # Managing Skills with `rei`
 
-Reishi (`rei`) is the user's CLI for managing skills, rules, and other agent constructs across multiple agent targets. Source of truth lives at `~/.config/reishi/skills/` (override via `rei config show`); `rei sync` propagates to every configured target via copy or symlink.
+> [!CAUTION]
+> Reishi (`rei`) is **experimental and in active development**. Skills and rules are currently managed by **chezmoi** (source of truth at `~/.local/share/chezmoi/dot_agents/exact_skills/` and `…/exact_rules/`). Only three `rei` subcommands are permitted right now:
+>
+> - `rei skills new`
+> - `rei skills add`
+> - `rei skills validate`
+>
+> **Never run `rei sync`.** Do not use `rei rules` or `rei docs`. The full CLI surface (sync, pull, list, activate/deactivate, rules, docs) is preserved in [reishi-future-reference](reishi-future-reference.md) for when reishi graduates — it is intentionally unlinked from SKILL.md and must not be acted on today.
 
 ## Create
 
 ```bash
-rei skills new <name>                       # scaffold in skills.source
-rei skills new <name> --path path/to/proj   # scaffold in a project
+rei skills new -p ~/.local/share/chezmoi/dot_agents/exact_skills <name>   # scaffold directly into chezmoi source
+rei skills new <name> --path path/to/proj                                 # scaffold in a project
 ```
 
-Generates SKILL.md, `scripts/`, and `assets/`. Trim what you don't need.
-
-## Validate
-
-```bash
-rei skills validate <skill-path>
-```
-
-Run before sync. Users can opt out for quick iteration.
-
-## Sync
-
-```bash
-rei sync                              # all constructs (skills, rules, docs) → all targets
-rei skills sync [name] [--dry-run]    # skills only
-rei skills sync --check               # inspect without writing
-```
-
-Auto-runs after `new`, `add`, `activate`, `deactivate`, and `pull`. Local-only, always safe.
+Always pass `-p ~/.local/share/chezmoi/dot_agents/exact_skills` for user-level skills so the skill lands in chezmoi source from the start — no post-hoc move required. Generates SKILL.md, `scripts/`, and `assets/`. Trim what you don't need.
 
 ## Add external skills
 
@@ -42,19 +31,16 @@ rei skills add -tp <github-tree-url>         # track for future pulls, prefix by
 rei skills add -t https://github.com/readwiseio/readwise-skills/tree/master/skills -p readwise
 ```
 
-## Pull updates
+If adding a user-level skill, pass `-p ~/.local/share/chezmoi/dot_agents/exact_skills` so the import lands in chezmoi source directly — no post-hoc move. **Do not** run `rei sync` afterwards.
+
+## Validate
 
 ```bash
-rei skills pull [name] [--check]
+rei skills validate <skill-path>
 ```
 
-Hits GitHub for tracked skills. Locally modified files are preserved; remote versions land alongside as `<filename>_1.md` so you can diff and merge intentionally.
+Run before committing. Users can opt out for quick iteration.
 
-## List & toggle
+## Deploying changes
 
-```bash
-rei skills list                       # active
-rei skills list --all                 # include deactivated
-rei skills deactivate <name>          # hide without deleting
-rei skills activate <name>            # restore
-```
+Agents can only dry-run: `chezmoi apply -n` to preview. The user runs the real `chezmoi apply` to propagate skill edits from the source tree to `~/.agents/skills/` and `~/.claude/skills/`. **Never** `rei sync`.
