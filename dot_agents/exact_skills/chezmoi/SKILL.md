@@ -10,13 +10,10 @@ chezmoi manages dotfiles using a **three-state model**: source (declared in `~/.
 ## Quick Reference
 
 ```bash
-chezmoi init                    # Initialize source directory
 chezmoi add ~/.bashrc           # Add file to management
 chezmoi edit ~/.bashrc          # Edit source file
 chezmoi diff --no-pager         # Preview changes, large changesets will hang in pager so use flag
-chezmoi apply                   # Apply changes to home directory
-chezmoi apply -n -v             # Dry run with verbose output
-chezmoi cd                      # Enter source directory
+chezmoi apply -n                # Apply changes to home directory [agents can only dry-run]
 chezmoi data                    # Show template variables
 chezmoi doctor                  # Diagnose issues
 chezmoi managed                 # List managed files
