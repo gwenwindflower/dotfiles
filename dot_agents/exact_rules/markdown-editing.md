@@ -32,3 +32,21 @@ Inner pipes need spaces on both sides; outer pipes have no outside space. Same r
 ```
 
 Claude often emits tables without spacing (`|Name|Description|`). Fix on sight — it fails the linter and renders inconsistently across viewers.
+
+### Pipe Literals
+
+Sometimes a table contains a pipe as part of in-cell content, such as an OR operator `|` or `||` or a SQL concatenation `||`, in those cases, escaping pipes is handled with `\|`. These will satisfy linter errors and be stripped from rendered output. If you see them in markdown files, they are correct and should be left in place, but if using the syntax described in the table in outside code contexts then you should strip the escape characters.
+
+An example:
+
+```markdown
+| Operator | Logic |
+| --- | --- |
+| `<=` | less than or equal |
+| `&&` | logical and |
+| `\|\|` | logical or |
+| `!` | logical not |
+
+```
+
+When rendered the OR will be `||` and this will not trigger the linter.
