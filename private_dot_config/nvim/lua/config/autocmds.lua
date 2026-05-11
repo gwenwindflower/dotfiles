@@ -21,6 +21,7 @@ vim.filetype.add({
     ["zprofile"] = "zsh",
     ["zshrc"] = "zsh",
     ["statusline.conf"] = "tmux",
+    ["exe-hosts"] = "sshconfig",
   },
   extension = {
     ["http"] = "http",
