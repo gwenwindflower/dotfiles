@@ -1,7 +1,6 @@
-{{ if eq .chezmoi.os "darwin" "linux" -}}
+{{ if eq .chezmoi.os "darwin" -}}
 #!/bin/sh
-# Bootstrap: ensure Homebrew is installed and available
-# Runs once on first chezmoi apply (both macOS and Linux)
+# Bootstrap: ensure Homebrew is installed and available (darwin only)
 
 set -eu
 
@@ -26,6 +25,4 @@ fi
 # Verify brew is on PATH after install
 {{ template "brew-preamble.sh" . }}
 log_success "Homebrew verified on PATH: $(brew --prefix)"
-{{ else -}}
-{{ fail (printf "unsupported OS: %s" .chezmoi.os) }}
 {{ end -}}

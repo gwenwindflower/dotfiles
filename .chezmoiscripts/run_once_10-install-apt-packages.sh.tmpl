@@ -1,0 +1,40 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/bash
+# Install apt packages (linux only)
+# Sprites / exe.dev VMs arrive with many runtimes pre-installed — check
+# presence first and only fetch what's actually missing.
+
+set -euo pipefail
+
+{{ template "script-log.sh" }}
+
+log_step "Installing apt packages"
+
+packages=(
+{{ range .packages.linux.apt.packages -}}
+  {{ . | quote }}
+{{ end -}}
+)
+
+missing=()
+for pkg in "${packages[@]}"; do
+  if ! dpkg -s "$pkg" >/dev/null 2>&1; then
+    missing+=("$pkg")
+  fi
+done
+
+if [ "${#missing[@]}" -gt 0 ]; then
+  log_info "Missing: ${missing[*]}"
+  log_info "Running apt-get update..."
+  sudo apt-get update
+  log_info "Installing ${#missing[@]} package(s)..."
+  DEBIAN_FRONTEND=noninteractive sudo apt-get install -y "${missing[@]}"
+else
+  log_success "All {{ len .packages.linux.apt.packages }} apt packages already present"
+fi
+
+log_info "Upgrading existing packages..."
+DEBIAN_FRONTEND=noninteractive sudo apt-get upgrade -y
+
+log_success "apt install complete"
+{{ end -}}

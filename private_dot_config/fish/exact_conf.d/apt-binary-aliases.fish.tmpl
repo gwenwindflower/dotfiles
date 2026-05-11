@@ -1,0 +1,9 @@
+{{ if eq .chezmoi.os "linux" -}}
+# Debian/Ubuntu rename these to avoid package-name collisions; alias back.
+if type -q fdfind; and not type -q fd
+    alias fd=fdfind
+end
+if type -q batcat; and not type -q bat
+    alias bat=batcat
+end
+{{ end -}}

@@ -17,7 +17,7 @@ function packy -d "Snapshot, diff, lint, or update package managers tracked in p
         logirl help_flag f/file PATH "packages.yaml path (default: chezmoi source)"
         logirl help_flag m/manager NAME "Limit to one manager: homebrew, pnpm, uv"
         logirl help_header Managers
-        printf "  homebrew    taps, formulae, casks (casks darwin-only)\n"
+        printf "  homebrew    taps, formulae, casks (darwin-only; linux uses apt)\n"
         printf "  pnpm        global packages\n"
         printf "  uv          tools (darwin-only)\n"
         logirl help_header Examples
@@ -200,9 +200,9 @@ function _packy_applicable -d "Whether a manager applies to the given OS"
     set -l mgr $argv[1]
     set -l os $argv[2]
     switch $mgr
-        case homebrew pnpm
+        case pnpm
             return 0
-        case uv
+        case homebrew uv
             test "$os" = darwin
             return $status
     end
@@ -416,8 +416,15 @@ function _packy_homebrew_update
     return 0
 end
 
-function _packy_homebrew_lint -d "Validate linux homebrew lists are a subset of darwin"
+function _packy_homebrew_lint -d "Validate homebrew config (darwin-only; linux uses apt)"
     set -l file $argv[1]
+    # Homebrew is darwin-only — linux uses apt. If the file has no
+    # linux.homebrew key, nothing to lint.
+    set -l linux_section (yq eval '.packages.linux.homebrew' "$file" 2>/dev/null)
+    if test "$linux_section" = null
+        logirl success "homebrew lint skipped — darwin-only (linux uses apt)"
+        return 0
+    end
     set -l darwin_taps (yq eval '.packages.darwin.homebrew.taps[]' "$file" 2>/dev/null)
     set -l darwin_formulae (yq eval '.packages.darwin.homebrew.formulae[]' "$file" 2>/dev/null)
     set -l linux_taps (yq eval '.packages.linux.homebrew.taps[]' "$file" 2>/dev/null)

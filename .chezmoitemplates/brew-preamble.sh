@@ -1,7 +1,7 @@
 # Ensure Homebrew is on PATH (checks all known install locations)
 # Requires: script-log.sh included before this template
 if ! command -v brew >/dev/null 2>&1; then
-	for brew_prefix in /opt/homebrew /usr/local /home/linuxbrew/.linuxbrew; do
+	for brew_prefix in /opt/homebrew /usr/local; do
 		if [ -x "$brew_prefix/bin/brew" ]; then
 			eval "$("$brew_prefix/bin/brew" shellenv)"
 			break

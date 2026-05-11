@@ -13,7 +13,7 @@ OSes supported:
 ## Repo Structure
 
 ```text
-.chezmoidata/packages.yaml        # Homebrew packages (darwin + linux sections)
+.chezmoidata/packages.yaml        # Packages: darwin (homebrew + pnpm + uv), linux (apt + pnpm)
 .chezmoiscripts/                  # Lifecycle scripts (bootstrap, taps, packages, global tools, shell, yazi plugins, bat cache, ephemeral symlink materialization)
 .chezmoiignore                    # Excludes dev files + OS-conditional dirs
 .chezmoitemplates/fish/           # Fish config fragment templates (assembled into config.fish)
@@ -150,17 +150,20 @@ Fragment ordering: `00–14` are environment setup (PATH, XDG, editor, git, AI, 
 
 ```text
 .chezmoiscripts/
-  run_once_before_00-bootstrap.sh.tmpl     # Install Homebrew
-  run_once_05-add-taps.sh.tmpl             # Add Homebrew taps (with retry + verification)
-  run_once_10-install-packages.sh.tmpl     # brew bundle (formulae + casks, taps already done)
-  run_once_15-install-global-tools.sh.tmpl # Global CLIs via pnpm + uv (after Homebrew)
-  run_once_20-configure-shell.sh.tmpl      # Fish → /etc/shells, chsh
-  run_once_30-yazi-plugins.sh.tmpl         # ya pkg install (yazi plugin sync)
-  run_once_31-bat-cache.sh.tmpl            # Build bat theme cache (after themes deployed)
+  run_once_before_00-bootstrap.sh.tmpl           # darwin: install Homebrew
+  run_once_05-add-taps.sh.tmpl                   # darwin: add Homebrew taps (retry + verify)
+  run_once_10-install-homebrew-packages.sh.tmpl  # darwin: brew bundle (formulae + casks)
+  run_once_10-install-apt-packages.sh.tmpl       # linux: apt install (dpkg-s presence check + upgrade)
+  run_once_15-install-global-tools.sh.tmpl       # Global CLIs via pnpm + uv (uv darwin-only)
+  run_once_20-configure-shell.sh.tmpl            # Fish → /etc/shells, chsh
+  run_once_30-yazi-plugins.sh.tmpl               # ya pkg install (yazi plugin sync)
+  run_once_31-bat-cache.sh.tmpl                  # Build bat theme cache (after themes deployed)
   run_after_99-materialize-symsource-symlinks.sh.tmpl  # One-shot ephemeral support (gated on CHEZMOI_ONESHOT=1)
 ```
 
 Scripts are a surface to minimize. Each is an imperative action that can fail. If something can be a file, make it a file. `run_once_` runs once per content hash — on a fresh machine all fire on first apply. `run_onchange_` re-runs when rendered content changes (also fires on first apply since no previous hash → new hash = change).
+
+**Linux package philosophy:** apt only, manually curated in `packages.yaml` under `linux.apt.packages`. Linuxbrew is intentionally not used — too heavy for the small-VM Linux use case. Tools not in standard apt repos (yazi, mise, rm-improved, vivid, lsd, zoxide, starship, sd, forgit, lazygit, neovim) are installed via mise or direct binary download. The apt install script checks `dpkg -s` for each package and only fetches what's missing — fast on Sprites/exe machines that arrive pre-loaded. `packy` does **not** snapshot apt (the curated list is the source of truth, not the live system).
 
 ## chezmoi Naming Reference
 
