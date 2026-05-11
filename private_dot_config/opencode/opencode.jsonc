@@ -172,6 +172,47 @@
 			"id_ed25519": "deny"
 		}
 	},
+	// Built-ins (rustfmt, gofmt, ruff, uv, biome, shfmt) self-gate on the right
+	// signals already — biome walks up for biome.json(c), ruff checks
+	// pyproject/ruff.toml, uv falls back when ruff is off. We only override
+	// where built-in detection doesn't match how we work:
+	//   - prettier: built-in keys off `prettier` in package.json; we want to
+	//     fire only when a real prettier config is present, so coexistence
+	//     with biome (Astro etc.) stays intentional.
+	//   - deno: no built-in; uses `find-up` (git-root-bounded ancestor walk)
+	//     to detect deno.json(c).
+	// Detection rides inside `sh -c` because the config schema only exposes
+	// command/extensions — no triggerFiles field.
+	"formatter": {
+		"prettier": {
+			"command": [
+				"sh",
+				"-c",
+				"if prettier --find-config-path \"$FILE\" >/dev/null 2>&1; then prettier --write \"$FILE\"; fi"
+			]
+		},
+		"deno": {
+			"command": [
+				"sh",
+				"-c",
+				"find-up deno.json deno.jsonc >/dev/null && exec deno fmt \"$0\"",
+				"$FILE"
+			],
+			"extensions": [
+				".js",
+				".jsx",
+				".mjs",
+				".cjs",
+				".ts",
+				".tsx",
+				".mts",
+				".cts",
+				".json",
+				".jsonc",
+				".md"
+			]
+		}
+	},
 	"instructions": [
 		// primary source of truth
 		// for multi-agent rules

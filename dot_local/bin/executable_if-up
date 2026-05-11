@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+# if-up — dispatch a command based on which marker file is present.
+#
+# Walks $PWD upward (bounded by git-repo root via find-up) for each
+# <markers> <cmd> pair in order. The first pair whose markers match
+# `exec`s its <cmd>. If no pair matches, an optional --else <cmd> is
+# exec'd; without --else, exits 0 silently.
+#
+# Usage:
+#   if-up <markers> <cmd> [<markers> <cmd>]... [--else <cmd>]
+#
+# - <markers> is a comma-separated list of filenames; any single match
+#   wins for that pair.
+# - <cmd> is a full command line as a single argument; whitespace-split,
+#   no shell quoting (commands here should not need it). The first word
+#   must be on $PATH (or be an absolute path).
+#
+# Example:
+#   if-up "deno.json,deno.jsonc" "deno lsp" \
+#         --else "typescript-language-server --stdio"
+
+set -euo pipefail
+
+die() {
+  printf '[if-up] %s\n' "$@" >&2
+  exit "${EXIT_CODE:-1}"
+}
+
+run() {
+  local cmdline="$1"
+  # shellcheck disable=SC2206
+  local argv=( $cmdline )
+  if ! command -v "${argv[0]}" >/dev/null 2>&1; then
+    EXIT_CODE=127 die \
+      "command not found on PATH: ${argv[0]}" \
+      "             attempted: $cmdline" \
+      "             cwd:       $PWD"
+  fi
+  exec "${argv[@]}"
+}
+
+# Split args into pairs[] and an optional fallback.
+pairs=()
+fallback=""
+have_fallback=0
+while [ "$#" -gt 0 ]; do
+  if [ "$1" = "--else" ]; then
+    shift
+    if [ "$#" -ne 1 ]; then
+      EXIT_CODE=64 die "--else takes exactly one argument (the fallback command)"
+    fi
+    fallback="$1"
+    have_fallback=1
+    shift
+  else
+    pairs+=( "$1" )
+    shift
+  fi
+done
+
+if [ $(( ${#pairs[@]} % 2 )) -ne 0 ]; then
+  EXIT_CODE=64 die \
+    "expected pairs of <markers> <cmd>; got ${#pairs[@]} positional arg(s)"
+fi
+
+i=0
+while [ "$i" -lt "${#pairs[@]}" ]; do
+  markers="${pairs[$i]}"
+  cmdline="${pairs[$((i + 1))]}"
+  IFS=',' read -ra marker_array <<< "$markers"
+  if find-up "${marker_array[@]}" >/dev/null 2>&1; then
+    run "$cmdline"
+  fi
+  i=$((i + 2))
+done
+
+if [ "$have_fallback" -eq 1 ]; then
+  run "$fallback"
+fi
+exit 0

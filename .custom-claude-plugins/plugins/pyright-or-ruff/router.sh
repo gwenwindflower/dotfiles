@@ -7,6 +7,6 @@
 # pyproject.toml is too common to be a useful marker on its own. If a project
 # uses Pyright via [tool.pyright] in pyproject.toml without a sidecar
 # pyrightconfig.json, add an empty pyrightconfig.json to opt in.
-exec "$(dirname "$0")/../../.utils/lsp-router.sh" \
+exec if-up \
   "pyrightconfig.json" "pyright-langserver --stdio" \
-  "ruff server"
+  --else "ruff server"

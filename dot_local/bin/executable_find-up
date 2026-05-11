@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# find-up — walk $PWD upward looking for any of the given marker files,
+# bounded by git-repo root (or just $PWD if not in a git repo).
+#
+# Usage:
+#   find-up <marker> [<marker>...]
+#
+# Each marker is a literal filename (no glob). All markers are checked
+# at each directory level before ascending; first hit wins. Prints the
+# absolute path of the matched marker on stdout. Exits 0 on hit, 1 on miss.
+#
+# Walk scope:
+#   - Inside a git repo: walks from $PWD up through ancestors, stopping at
+#     and including the repo root.
+#   - Outside a git repo: only checks $PWD.
+#
+# The bounded walk avoids accidentally matching unrelated ancestors (e.g.,
+# a stray package.json in $HOME triggering tooling for unrelated projects).
+
+set -euo pipefail
+
+if [ "$#" -lt 1 ]; then
+  printf '[find-up] usage: find-up <marker> [<marker>...]\n' >&2
+  exit 64
+fi
+
+# Inside a git repo, repo root is the inclusive walk boundary.
+# Outside, the boundary collapses to $PWD (only the cwd is checked).
+boundary="$(git rev-parse --show-toplevel 2>/dev/null || echo "$PWD")"
+
+dir="$PWD"
+while :; do
+  for m in "$@"; do
+    if [ -e "$dir/$m" ]; then
+      printf '%s\n' "$dir/$m"
+      exit 0
+    fi
+  done
+  # Stop after checking the boundary directory.
+  if [ "$dir" = "$boundary" ] || [ "$dir" = "/" ]; then
+    exit 1
+  fi
+  parent="$(dirname "$dir")"
+  if [ "$parent" = "$dir" ]; then
+    exit 1
+  fi
+  dir="$parent"
+done
