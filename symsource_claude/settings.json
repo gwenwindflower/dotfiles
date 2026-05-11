@@ -151,6 +151,7 @@
 			"WebFetch(domain:docs.brew.sh)",
 			"WebFetch(domain:docs.deno.com)",
 			"WebFetch(domain:docs.github.com)",
+			"WebFetch(domain:exe.dev)",
 			"WebFetch(domain:fishshell.com)",
 			"WebFetch(domain:git-cliff.org)",
 			"WebFetch(domain:jdx.dev)",
