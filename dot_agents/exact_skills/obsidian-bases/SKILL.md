@@ -112,8 +112,8 @@ filters:
 | `>=` | greater than or equal |
 | `<=` | less than or equal |
 | `&&` | logical and |
-| `\ | \ | ` | logical or |
-| <code>!</code> | logical not |
+| `\|\|` | logical or |
+| `!` | logical not |
 
 ## Properties
 
