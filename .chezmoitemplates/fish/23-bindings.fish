@@ -3,16 +3,17 @@
 # =============================================================================
 fish_vi_key_bindings
 
-# bracket nav <-[ ]->
-bind --user -M insert alt-h prevd-or-backward-word
-bind --user -M insert alt-l nextd-or-forward-word
-bind --user alt-h prevd-or-backward-word
-bind --user alt-l nextd-or-forward-word
-
-bind --user -M insert alt-H backward-kill-word
-bind --user -M insert alt-L kill-word-vi
-bind --user alt-H backward-kill-word
-bind --user alt-L kill-word-vi
+# bracket nav <-{ }->
+# { = backward-kill-word, or prevd on empty cmdline
+# } = forward-word (accepts autosuggestion at line end), or nextd on empty cmdline
+bind --user -M insert 'alt-{' supernav-prev
+bind --user -M insert 'alt-}' supernav-next
+bind --user 'alt-{' supernav-prev
+bind --user 'alt-}' supernav-next
+bind --user -M insert 'super-{' supernav-prev
+bind --user -M insert 'super-}' supernav-next
+bind --user 'super-{' supernav-prev
+bind --user 'super-}' supernav-next
 
 # launch yazi file explorer
 bind --user -M insert super-f "ff; commandline -f repaint"
