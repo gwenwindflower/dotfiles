@@ -96,7 +96,7 @@ SPOT-specific:
 
 - **Squishy requirements** ("feels responsive", "helpful errors") — implement, review, iterate. Document the judgment in DONE.
 - **Harness gaps** — if a requirement *would* be testable but the rig isn't there (no Playwright, no fixture, no perf bench), kick to Planner to scope a `dev-` Phase for the missing harness. Don't silently skip.
-- **Genuinely un-testable** signals the requirement is still vague — kick to Planner.
+- **Genuinely untestable** signals the requirement is still vague — kick to Planner.
 
 Subagents own TDD per Objective. Manager verifies during job-3 quality checks at Objective close.
 
