@@ -45,9 +45,9 @@ abbr --add tmls tmux list-sessions
 abbr --add tmn tmux new-session
 abbr --add tma tmux attach-session
 abbr --add tmd tmux detach-client
+abbr --add tmrm tmux kill-server
 abbr --add tmw twin (basename "$PWD") --cmd
 abbr --add tmh tmux_hint
-abbr --add tmhspark 'tmux_hint -d ""'
 # shell snippets
 abbr --add --position anywhere -- --help '--help | bat -plhelp'
 abbr --add --position anywhere -- -h '--help | bat -plhelp'
