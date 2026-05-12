@@ -14,8 +14,7 @@ return {
     "neovim/nvim-lspconfig",
     opts = function(_, opts)
       opts.servers = opts.servers or {}
-      -- in case LazyVim adds fish_lsp configs at some point, we'll defer to those
-      opts.servers.fish_lsp = opts.servers.fish_lsp or {}
+      opts.servers.fish_lsp = {}
       return opts
     end,
   },
@@ -87,6 +86,16 @@ return {
     opts = function(_, opts)
       opts.servers = opts.servers or {}
       opts.servers.tombi = {}
+      return opts
+    end,
+  },
+  -- GitHub Actions
+  {
+    "neovim/nvim-lspconfig",
+    opts = function(_, opts)
+      opts.servers = opts.servers or {}
+      opts.servers.zizmor = {}
+      opts.servers.gh_actions_ls = {}
       return opts
     end,
   },
