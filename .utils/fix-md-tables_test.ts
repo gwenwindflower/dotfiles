@@ -39,6 +39,22 @@ Deno.test("fixTableLine returns non-table lines unchanged", () => {
   assertEquals(fixTableLine("| missing trailing pipe"), "| missing trailing pipe");
 });
 
+Deno.test("fixTableLine treats escaped pipes as cell content", () => {
+  assertEquals(
+    fixTableLine("|`\\|\\|`|logical or|"),
+    "| `\\|\\|` | logical or |",
+  );
+  assertEquals(
+    fixTableLine("|a\\|b|c|"),
+    "| a\\|b | c |",
+  );
+});
+
+Deno.test("fixTableLine is idempotent on rows containing escaped pipes", () => {
+  const spaced = "| `\\|\\|` | logical or |";
+  assertEquals(fixTableLine(spaced), spaced);
+});
+
 // ── processContent ─────────────────────────────────────────────────
 
 Deno.test("processContent fixes tables and reports line numbers", () => {

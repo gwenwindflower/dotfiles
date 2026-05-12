@@ -44,9 +44,10 @@ export function fixTableLine(line: string): string {
   const trimmed = line.trim();
   if (!trimmed.startsWith("|") || !trimmed.endsWith("|")) return line;
 
-  // Split into cells (drop the empty strings from leading/trailing |)
+  // Split into cells on unescaped pipes only — `\|` is in-cell content
+  // (e.g. SQL `||` operators rendered as `\|\|`).
   const inner = trimmed.slice(1, -1);
-  const cells = inner.split("|");
+  const cells = inner.split(/(?<!\\)\|/);
 
   const formatted = cells.map((cell) => ` ${cell.trim()} `).join("|");
   return `|${formatted}|`;
