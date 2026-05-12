@@ -16,8 +16,10 @@ allowed-tools:
 >
 > **Never run `rei sync`.** Do not use the `rei rules` or `rei docs` subcommands — they will conflict with chezmoi-managed state. Anything beyond the three allowed commands is off-limits until further notice.
 
+Consider `rei` as a convenient helper for a narrow range of skills tasks for the time being.
+
 > [!IMPORTANT]
-> **Always edit skills in chezmoi source, never in the deployed target.** Skills load from `~/.agents/skills/` (and `~/.claude/skills/` via symlink), but the source of truth is `~/.local/share/chezmoi/dot_agents/exact_skills/<skill>/`. Edits to the target dirs get overwritten on the next `chezmoi apply` and require manual sync back. Same applies to any skill file referenced from a target path — translate it to its `dot_agents/exact_skills/` source before editing. Agents can only dry-run deployment (`chezmoi apply -n`); the user runs the real `chezmoi apply`. **Never** `rei sync`.
+> **Always edit skills in chezmoi source, never in the deployed target.** Skills load from `~/.agents/skills/` (and `~/.claude/skills/` via symlink), but the source of truth is `~/.local/share/chezmoi/dot_agents/exact_skills/<skill>/`. Edits to the target dirs get overwritten on the next `chezmoi apply` and require manual sync back. Same applies to any skill file referenced from a target path — translate it to its `dot_agents/exact_skills/` source before editing. Agents can only dry-run deployment (`chezmoi apply -n`); the user runs the real `chezmoi apply`.
 
 Skills are modular packages that extend agents with specialized workflows, domain knowledge, and bundled resources.
 
