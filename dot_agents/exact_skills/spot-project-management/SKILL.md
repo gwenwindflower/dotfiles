@@ -43,7 +43,7 @@ Stable, soft-immutable IDs let Phases reference requirements without restating t
 
 ## Jobs to be done
 
-- [Writing specs](writing-specs.md) — Planner work: spec shape, requirement IDs, phrasing patterns, edge cases, anti-patterns, scoping a Phase, Backlog, the `dev-` domain.
+- [Writing specs](writing-specs.md) — Planner work: spec shape, requirement IDs, phrasing patterns, the four hardening checks (unambiguous / consistent / complete / verifiable), edge cases, anti-patterns, scoping a Phase, Backlog, the `dev-` domain.
 - [Running phases](running-phases.md) — Manager work: the three Manager jobs (sequencing, linear history, quality at Objective close), Subagent teams as the SPOT default, per-Phase workflow, the per-commit cadence under the Phase trunk model, when spec-only commits earn their keep, TDD carve-outs, Subagent drift, parallel Phases across Manager sessions, handoff to Planner.
 - [Using worktrunk](using-worktrunk.md) — `wt` is the Manager's primary git interface: the **Phase trunk branch + Objective feature branch** model (two `wt merge` levels, with squash defaults that differ by level), Agent Teams as the SPOT default + Agent Handoff as out-of-band-only, surveying with `wt list`, creating Phase trunks, closing Objectives and Phases, recommended `.config/wt.toml` for SPOT (pre-commit / pre-merge with `{{ target }}` conditional, `copy-ignored`), and the short list of operations that stay raw git.
 - [EXECUTIVE.md](EXECUTIVE.md) — speculative: a higher-level role that picks unblocked Phases and spawns Manager sessions across tmux panes via the Agent Handoff pattern. Out of scope for normal Manager/Planner work; load only when the user invokes Executive.

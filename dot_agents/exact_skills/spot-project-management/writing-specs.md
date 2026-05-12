@@ -54,7 +54,7 @@ Write each requirement as `- **<id>** — <one sentence>.` so IDs are easy to sc
 
 ## Writing requirements
 
-Read each requirement back: *could a competent agent build the wrong thing and still claim this was satisfied?* If yes, rewrite.
+Read each requirement back: *could a competent agent build the wrong thing and still claim this was satisfied?* If yes, rewrite. The four hardening checks below give that question structure — run them on every requirement before it lands in a spec.
 
 Phrasing patterns — pick what fits, mix freely:
 
@@ -75,9 +75,29 @@ Rules of thumb:
 - Lists, tables, or small diagrams are fine when prose can't capture it.
 - If you can't write a check or test for it, it's still vague.
 
+## Harden the requirement
+
+Four checks. Run each one on every requirement before it lands. **The moment one flags, push back on the user — don't draft around it.** A vague phrase or a quiet conflict caught here costs a wording edit; the same problem caught at Objective close costs a rollback; caught after ship, a follow-up Phase. The whole burden of clarity sits in the spec, so this is where the work gets done.
+
+| Check | Ask | Weak | Strong |
+| --- | --- | --- | --- |
+| **Unambiguous** | Would two competent agents formalize this the same way? | *The system removes the record.* (hard delete? soft delete?) | *The system marks the record deleted such that it no longer appears in any user-facing view.* |
+| **Consistent** | Does anything else in the spec demand incompatible behavior in the same situation? | *Always log uploads* + *Never persist data for guest users* — both fire when a guest uploads. | Narrow one to "for authenticated users", or define the precedence explicitly with a third requirement. |
+| **Complete** | Is there a reachable input or state where nothing says what to do? | Upload spec covers `>10MB` and valid sizes — nothing covers 0-byte. | Add *If upload size is zero, then the system rejects with HTTP 400.* See [Edge cases as requirements](#edge-cases-as-requirements) for the systematic walk. |
+| **Verifiable** | Can you name the inputs, the outputs, and the observable condition that would prove it satisfied? | *Logins feel fast.* | *When a user submits valid credentials, the system returns a session token within 300ms at p95.* |
+
+In practice:
+
+- **Push back on the user, not around them.** "I read this two ways — A or B?" beats picking one quietly. Surface the question with the alternatives named; commit to the answer in the same exchange so the spec lands sharpened rather than re-litigated next Phase.
+- **One ambiguity, sometimes two requirements.** If "remove the record" turns out to mean *both* hard delete (admin) and soft delete (user), split into two IDs with the actor baked into each.
+- **Conflicts hide between specs, not within one.** When scoping a Phase, scan the *other* requirements its IDs interact with — same actor, same resource, overlapping state. Cross-domain collisions are the easiest to miss solo.
+- **The checks bleed into each other.** A vague verb usually trips Unambiguous *and* Verifiable at once; a missing edge case is almost always a Completeness gap. Treat the four as one lens with four facets, not a checklist to march through.
+- **Untestable ≠ squishy.** A genuine UX judgment call gets marked *squishy* (the DONE note captures the call). Untestable usually means the requirement is still vague — sharpen until inputs, outputs, and observable conditions name themselves.
+- **Don't formalize past the point of usefulness.** These checks exist to surface real ambiguity, not to enforce courtroom prose. If a requirement is already obvious to two readers, leave it alone. The trap is process for its own sake; the goal is fewer bugs at ship time.
+
 ## Edge cases as requirements
 
-Most spec failures are gaps in edge cases. They aren't a separate section — they're regular requirements phrased `If <bad condition>, then...` or `When <unusual event>...`.
+The systematic walk behind the **Complete** check above. Edge cases aren't a separate section in the spec — they're regular requirements phrased `If <bad condition>, then...` or `When <unusual event>...`.
 
 Walk failure modes deliberately before scoping a Phase against a requirement. For each requirement, ask about: empty/oversized/malformed/duplicate/null input; network drops mid-operation; concurrent requests; expired auth, missing permission, rate limits; upstream slow or down; retry and partial failure. Each non-obvious answer becomes its own ID'd requirement in the appropriate spec. Edge cases discovered mid-Phase go back into the durable spec first (new ID, append-only), then get added to the Phase's TODO requirement list if they belong to the active Phase.
 
@@ -143,7 +163,7 @@ When a Planner sets up a new Phase in `TODO.md`, the job is to give the Manager 
 
 1. **Identify the work.** From a user request, a Backlog item, a follow-up from a prior Phase, or a learning that surfaced in DONE — figure out *what* the Phase is doing.
 2. **Scan the durable specs for matching requirements.** Open the relevant domain spec(s) and `SPEC.md`. List the requirement IDs whose satisfaction would mean this Phase is done.
-3. **Fill any gaps in the durable spec first.** If the Phase needs to deliver something no existing requirement covers, write the new requirement(s) into the right domain spec with new appended IDs. Walk edge cases (one ID per testable check). Don't write requirements directly into TODO — they live in the durable spec; TODO only references them.
+3. **Fill any gaps in the durable spec first.** If the Phase needs to deliver something no existing requirement covers, write the new requirement(s) into the right domain spec with new appended IDs. Walk edge cases (one ID per testable check). Run new *and* existing IDs touched by this Phase through the four hardening checks — surface any ambiguity, conflict, gap, or unverifiability to the user *now*, not at Objective close. Don't write requirements directly into TODO — they live in the durable spec; TODO only references them.
 4. **Confirm test-ability.** Each listed ID must be checkable or testable. If something is genuinely squishy, mark it in the spec ("squishy: judgment call in DONE") so the Manager doesn't get stuck looking for a test.
 5. **Decide dependencies.** Look at active and unstarted Phases — does this one truly need to wait for another, or share enough churn with one that serializing avoids worse pain? If yes, list the blocker Phase numbers on a `**Dependencies**:` line directly under the header. Otherwise — the more common case — omit the line. See "Phase dependencies" above.
 6. **List the IDs in the Phase.** Add a `**Requirements**:` line directly below the header (or under Dependencies if present). Only IDs — the wording lives in the spec.
