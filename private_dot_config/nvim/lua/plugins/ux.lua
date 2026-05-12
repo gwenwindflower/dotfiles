@@ -81,6 +81,13 @@ return {
   -- blink.cmp completion plugin
   {
     "saghen/blink.cmp",
+    -- blink.cmp v2 (main branch) split blink.lib into its own repo;
+    -- LazyVim's blink_main extra doesn't add it yet
+    dependencies = { "saghen/blink.lib" },
+    -- v2 replaces the cargo build with a build/download orchestrator
+    build = function()
+      require("blink.cmp").build():wait(60000)
+    end,
     opts = function(_, opts)
       return vim.tbl_deep_extend("force", opts or {}, {
         completion = {
