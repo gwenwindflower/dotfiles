@@ -192,4 +192,53 @@ return {
   --     return opts
   --   end,
   -- },
+  -- minuet.nvim FIM completions
+  {
+    "milanglacier/minuet-ai.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    event = { "InsertEnter", "CmdlineEnter" },
+    opts = {
+      provider = "openai_fim_compatible",
+      n_completions = 1,
+      context_window = 1024,
+      request_timeout = 3,
+      throttle = 600,
+      debounce = 200,
+      after_cursor_filter_length = 15,
+      provider_options = {
+        openai_fim_compatible = {
+          end_point = "https://api.deepseek.com/beta/completions",
+          api_key = "DEEPSEEK_API_KEY",
+          name = "DeepSeek",
+          model = "deepseek-v4-flash",
+          stream = true,
+          optional = {
+            max_tokens = 256,
+            top_p = 0.9,
+            extra_body = {
+              thinking = { type = "disabled" },
+            },
+          },
+        },
+      },
+      -- virtualtext = {
+      --   auto_trigger_ft = { "*" },
+      --   auto_trigger_ignore_ft = {
+      --     "markdown",
+      --     "gitcommit",
+      --     "TelescopePrompt",
+      --     "snacks_picker_input",
+      --     "CodeCompanion",
+      --   },
+      --   keymap = {
+      --     accept = "<A-A>",
+      --     accept_line = "<A-a>",
+      --     accept_n_lines = "<A-z>",
+      --     prev = "<A-[>",
+      --     next = "<A-]>",
+      --     dismiss = "<A-e>",
+      --   },
+      -- },
+    },
+  },
 }

@@ -78,7 +78,6 @@ return {
       },
     },
   },
-  -- blink.cmp completion plugin
   {
     "saghen/blink.cmp",
     -- blink.cmp v2 (main branch) split blink.lib into its own repo;
@@ -88,43 +87,59 @@ return {
     build = function()
       require("blink.cmp").build():wait(60000)
     end,
-    opts = function(_, opts)
-      return vim.tbl_deep_extend("force", opts or {}, {
-        completion = {
-          menu = {
-            border = "rounded",
-            -- Disable auto-show in Markdown; completions still available via manual trigger
-            auto_show = function()
-              return vim.bo.filetype ~= "markdown"
+    opts = {
+      completion = {
+        menu = {
+          border = "rounded",
+          auto_show = function()
+            return vim.bo.filetype ~= "markdown"
+          end,
+        },
+        documentation = {
+          window = { border = "rounded" },
+        },
+        -- stop blink from firing constant completions requests through minuet
+        trigger = { prefetch_on_insert = false },
+        list = {
+          selection = {
+            preselect = function()
+              -- if you're inside a snippet, tab/shift-tab jumps through arguments
+              -- don't treat this as an 'accept' action for the completion menu
+              -- example: snippet with 3 args, you fill out all 3, realize arg 1 was wrong
+              -- shift-tab back to 1, then realize arg 2 needs to be updated as well
+              -- you don't want that second tab through from 1 to 2 within the already active snippet
+              -- to trigger the completion menu selection
+              return not require("blink.cmp").snippet_active({ direction = 1 })
             end,
-          },
-          documentation = {
-            window = { border = "rounded" },
-          },
-          list = {
-            selection = {
-              preselect = function()
-                -- if you're inside a snippet, tab/shift-tab jumps through arguments
-                -- don't treat this as an 'accept' action for the completion menu
-                -- example: snippet with 3 args, you fill out all 3, realize arg 1 was wrong
-                -- shift-tab back to 1, then realize arg 2 needs to be updated as well
-                -- you don't want that second tab through from 1 to 2 within the already active snippet
-                -- to trigger the completion menu selection
-                return not require("blink.cmp").snippet_active({ direction = 1 })
-              end,
-              auto_insert = false,
-            },
+            auto_insert = false,
           },
         },
-        signature = { window = { border = "rounded" } },
-        keymap = {
-          preset = "super-tab",
-          -- I use C-space as tmux prefix
-          -- so add this as an alternate option for when I'm in tmux
-          ["<M-space>"] = { "show", "show_documentation", "hide_documentation" },
+      },
+      sources = {
+        default = { "minuet" },
+        providers = {
+          minuet = {
+            name = "minuet",
+            module = "minuet.blink",
+            score_offset = 100,
+            async = true,
+            timeout_ms = 3000,
+          },
         },
-      })
-    end,
+      },
+      signature = { window = { border = "rounded" } },
+      keymap = {
+        preset = "super-tab",
+        -- I use C-space as tmux prefix
+        -- so add this as an alternate option for when I'm in tmux
+        ["<M-space>"] = { "show", "show_documentation", "hide_documentation" },
+        ["<M-m>"] = {
+          function(cmp)
+            cmp.show({ providers = { "minuet" } })
+          end,
+        },
+      },
+    },
   },
   {
     "folke/flash.nvim",
