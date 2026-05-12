@@ -1,480 +1,480 @@
 {
-  "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "env": {
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
-    "DISABLE_AUTO_UPDATER": "1"
-  },
-  "permissions": {
-    "allow": [
-      "Bash(* --help)",
-      "Bash(* --version)",
-      "Bash(bat *)",
-      "Bash(blacksmith *)",
-      "Bash(bun build *)",
-      "Bash(bun dev *)",
-      "Bash(bun run build *)",
-      "Bash(bun run dev *)",
-      "Bash(bun run lint *)",
-      "Bash(bun run test *)",
-      "Bash(bun test *)",
-      "Bash(bun x tsc *)",
-      "Bash(bunx ctx7 docs *)",
-      "Bash(bunx ctx7 library *)",
-      "Bash(bunx skills list -g *)",
-      "Bash(bunx skills upgrade -g *)",
-      "Bash(bunx skills list *)",
-      "Bash(bunx skills upgrade *)",
-      "Bash(cargo check *)",
-      "Bash(cargo clippy *)",
-      "Bash(cargo test *)",
-      "Bash(cat *)",
-      "Bash(chezmoi diff --no-pager *)",
-      "Bash(chezmoi apply -n *)",
-      "Bash(chezmoi cat *)",
-      "Bash(chezmoi data *)",
-      "Bash(chezmoi managed *)",
-      "Bash(chezmoi doctor *)",
-      "Bash(deno check *)",
-      "Bash(deno fmt *)",
-      "Bash(deno info *)",
-      "Bash(deno lint *)",
-      "Bash(deno task *)",
-      "Bash(deno test *)",
-      "Bash(diff *)",
-      "Bash(echo *)",
-      "Bash(fd *)",
-      "Bash(file *)",
-      "Bash(find *)",
-      "Bash(git blame *)",
-      "Bash(git branch *)",
-      "Bash(git diff *)",
-      "Bash(git log *)",
-      "Bash(git remote -v)",
-      "Bash(git rev-parse *)",
-      "Bash(git show *)",
-      "Bash(git stash list)",
-      "Bash(git status *)",
-      "Bash(git tag --list *)",
-      "Bash(go build *)",
-      "Bash(go run main.go)",
-      "Bash(go test *)",
-      "Bash(go tool pprof *)",
-      "Bash(go vet *)",
-      "Bash(gofmt *)",
-      "Bash(gopls *)",
-      "Bash(grep *)",
-      "Bash(jq *)",
-      "Bash(ls *)",
-      "Bash(lsd *)",
-      "Bash(make *)",
-      "Bash(mise current *)",
-      "Bash(mise ls *)",
-      "Bash(notesmd-cli search *)",
-      "Bash(notesmd-cli search-content *)",
-      "Bash(npm build *)",
-      "Bash(npm dev *)",
-      "Bash(npm fix *)",
-      "Bash(npm format *)",
-      "Bash(npm fix-format *)",
-      "Bash(npm lint *)",
-      "Bash(npm ls *)",
-      "Bash(npm run build *)",
-      "Bash(npm run dev *)",
-      "Bash(npm run lint *)",
-      "Bash(npm run test *)",
-      "Bash(npm typecheck *)",
-      "Bash(npx tsc *)",
-      "Bash(pnpm build *)",
-      "Bash(pnpm dev *)",
-      "Bash(pnpm fix *)",
-      "Bash(pnpm fix-format *)",
-      "Bash(pnpm format *)",
-      "Bash(pnpm lint *)",
-      "Bash(pnpm ls *)",
-      "Bash(pnpm run build *)",
-      "Bash(pnpm run dev *)",
-      "Bash(pnpm run lint *)",
-      "Bash(pnpm run test *)",
-      "Bash(pnpm typecheck *)",
-      "Bash(pnpx tsc *)",
-      "Bash(prek *)",
-      "Bash(printf *)",
-      "Bash(procs *)",
-      "Bash(pwd)",
-      "Bash(rg *)",
-      "Bash(rei *)",
-      "Bash(ruff *)",
-      "Bash(sd -p *)",
-      "Bash(task *)",
-      "Bash(tree *)",
-      "Bash(uname *)",
-      "Bash(uv python upgrade *)",
-      "Bash(uv run pytest *)",
-      "Bash(uv run ruff *)",
-      "Bash(uv run ty *)",
-      "Bash(uv sync *)",
-      "Bash(uv tool list *)",
-      "Bash(uv tool upgrade *)",
-      "Bash(uv venv *)",
-      "Bash(wc *)",
-      "Bash(which *)",
-      "Bash(wt list *)",
-      "Bash(wt status *)",
-      "Bash(wt switch *)",
-      "Bash(yq *)",
-      "Bash(yuzudraw-cli *)",
-      "Read(~/.claude/**)",
-      "Read(~/.cache/uv/**)",
-      "Read(~/.local/share/graveyard/**)",
-      "Read(~/.bun/install/cache**)",
-      "Read(~/.cache/pnpm/**)",
-      "Read(~/.local/share/pnpm/**)",
-      "Read(~/.blacksmith/**)",
-      "Read(~/.go/pkg/mod/cache/**)",
-      "Read(~/.config/.wrangler/**)",
-      "Read(~/Library/Caches/go-build/**)",
-      "Skill",
-      "WebFetch(domain:agentskills.io)",
-      "WebFetch(domain:backend.blacksmith.sh)",
-      "WebFetch(domain:chezmoi.io)",
-      "WebFetch(domain:www.chezmoi.io)",
-      "WebFetch(domain:claude.com)",
-      "WebFetch(domain:cli.github.com)",
-      "WebFetch(domain:cliffy.io)",
-      "WebFetch(domain:clireleases.blacksmith.sh)",
-      "WebFetch(domain:codecompanion.olimorris.dev)",
-      "WebFetch(domain:context7.com)",
-      "WebFetch(domain:deno.land)",
-      "WebFetch(domain:developer.1password.com)",
-      "WebFetch(domain:docs.astral.sh)",
-      "WebFetch(domain:docs.blacksmith.sh)",
-      "WebFetch(domain:docs.brew.sh)",
-      "WebFetch(domain:docs.deno.com)",
-      "WebFetch(domain:docs.github.com)",
-      "WebFetch(domain:exe.dev)",
-      "WebFetch(domain:fishshell.com)",
-      "WebFetch(domain:git-cliff.org)",
-      "WebFetch(domain:jdx.dev)",
-      "WebFetch(domain:jsr.io)",
-      "WebFetch(domain:lazy.folke.io)",
-      "WebFetch(domain:lazyvim.org)",
-      "WebFetch(domain:lunarmodules.github.io)",
-      "WebFetch(domain:neovim.io)",
-      "WebFetch(domain:opencode.ai)",
-      "WebFetch(domain:pkg.go.dev)",
-      "WebFetch(domain:prek.j178.dev)",
-      "WebFetch(domain:pypi.org)",
-      "WebFetch(domain:pythonhosted.org)",
-      "WebFetch(domain:registry.npmjs.org)",
-      "WebFetch(domain:schemastore.org)",
-      "WebFetch(domain:sum.golang.org)",
-      "WebFetch(domain:sw.kovidgoyal.net)",
-      "WebFetch(domain:tailscale.com)",
-      "WebFetch(domain:worktrunk.dev)",
-      "Read(~/.charmschool/**)",
-      "Read(~/.agents/**)",
-      "Read(~/.local/share/nvim/**)",
-      "Read(~/dev/00_supermodel/**)"
-    ],
-    "deny": [
-      "Read(.env)",
-      "Read(.env.*)",
-      "Read(*.env)",
-      "Read(**/.env)",
-      "Read(**/.env.*)",
-      "Read(**/*.env)",
-      "Read(~/.ssh/**)",
-      "Read(~/.aws/**)",
-      "Read(~/.gnupg/**)",
-      "Read(~/.config/gcloud/**)",
-      "Read(**/secrets/**)",
-      "Read(**/credentials/**)",
-      "Read(*.pem)",
-      "Read(*.key)",
-      "Read(*.p12)",
-      "Read(*.pfx)",
-      "Read(id_rsa)",
-      "Read(id_ed25519)",
-      "Edit(.env)",
-      "Edit(.env.*)",
-      "Edit(*.env)",
-      "Edit(~/.ssh/**)",
-      "Edit(~/.aws/**)",
-      "Edit(~/.gnupg/**)",
-      "Edit(~/.config/gcloud/**)",
-      "Edit(**/secrets/**)",
-      "Edit(**/credentials/**)",
-      "Edit(*.pem)",
-      "Edit(*.key)",
-      "Edit(*.p12)",
-      "Edit(*.pfx)",
-      "Edit(id_rsa)",
-      "Edit(id_ed25519)",
-      "Bash(rm -rf *)",
-      "Bash(rm -rf /*)",
-      "Bash(sudo rm *)",
-      "Bash(chmod -R 777 *)",
-      "Bash(dd *)",
-      "Bash(mkfs *)",
-      "Bash(git push --force *)",
-      "Bash(git push -f *)",
-      "Bash(kubectl delete *)",
-      "Bash(kubectl apply * --namespace=prod*)",
-      "Bash(terraform destroy *)",
-      "Bash(op *)"
-    ],
-    "defaultMode": "acceptEdits"
-  },
-  "hooks": {
-    "PermissionRequest": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' blocked",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "PostToolUseFailure": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' release",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.claude/hooks/set-sandbox-tmpdir.sh"
-          },
-          {
-            "type": "command",
-            "command": "$HOME/.claude/hooks/set-git-nosign.sh"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' idle",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "SubagentStop": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "TaskCompleted": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.claude/hooks/require-teammate-commit.sh"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "WorktreeCreate": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.claude/hooks/inject-commit-reminder.sh"
-          }
-        ]
-      }
-    ]
-  },
-  "statusLine": {
-    "type": "command",
-    "command": "winline",
-    "padding": 0
-  },
-  "enabledPlugins": {
-    "deno-or-ts@winnie-local": true,
-    "gopls-lsp@claude-plugins-official": true,
-    "lua-lsp@claude-plugins-official": true,
-    "pyright-lsp@claude-plugins-official": false,
-    "pyright-or-ruff@winnie-local": true,
-    "ruby-lsp@claude-plugins-official": true,
-    "rust-analyzer-lsp@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": false,
-    "worktrunk@worktrunk": true
-  },
-  "sandbox": {
-    "enabled": true,
-    "autoAllowBashIfSandboxed": false,
-    "allowUnsandboxedCommands": false,
-    "network": {
-      "allowedDomains": [
-        "api.github.com",
-        "backend.blacksmith.sh",
-        "clireleases.blacksmith.sh",
-        "context7.com",
-        "dl.deno.land",
-        "jsr.io",
-        "pkg.go.dev",
-        "proxy.golang.org",
-        "pypi.org",
-        "pythonhosted.org",
-        "registry.npmjs.org",
-        "schemastore.org",
-        "storage.googleapis.com",
-        "sum.golang.org",
-        "telemetry.astro.build",
-        "workers.cloudflare.com"
-      ],
-      "allowLocalBinding": true
-    },
-    "filesystem": {
-      "allowWrite": [
-        "~/.agentbrowser/**",
-        "~/.cache/prek/**",
-        "~/.local/share/graveyard/**",
-        "~/.blacksmith/**",
-        "~/.bun/install/**",
-        "~/.cache/uv/**",
-        "~/.local/share/uv/**",
-        "~/.config/.wrangler/**",
-        "~/.go/pkg/mod/**",
-        "~/Library/Caches/go-build/**",
-        "~/.local/share/pnpm/**",
-        "~/.cache/pnpm/**"
-      ],
-      "allowRead": [
-        "~/.claude/**"
-      ]
-    }
-  },
-  "spinnerTipsEnabled": false,
-  "spinnerVerbs": {
-    "mode": "replace",
-    "verbs": [
-      "Being a pretty pony",
-      "Crocheting a cat sweater",
-      "Kekeking",
-      "Romanticizing everything",
-      "Crying to Chappell Roan",
-      "Painting my nails",
-      "Doing pilates",
-      "Ordering an iced oat milk latte",
-      "Lipglossing",
-      "Cuddling my cat",
-      "Shopping for cute jeans",
-      "Journaling with niche Japanese stationery",
-      "Passenger princessing",
-      "Being chaotic",
-      "Fangirling",
-      "Dancing with the dolls",
-      "Buying colorful candles",
-      "Fixing my hair tie",
-      "Stretching my hips",
-      "Doing witchcraft with the coven",
-      "Hydrating",
-      "Catastrophizing",
-      "Good girling",
-      "Collecting little trinkets",
-      "Thirsting over fictional men",
-      "Having a mental breakdown aesthetically",
-      "Girlmaxxing",
-      "Dating your boyfriend",
-      "Dancing on my own",
-      "Getting a little treat",
-      "Curating Spotify playlists",
-      "K-Pop demon hunting",
-      "Braiding friendship bracelets",
-      "Rephrasing in therapy language",
-      "Junk journaling",
-      "Manifesting",
-      "Horse girling",
-      "Being hot",
-      "Shopping with the girlypops"
-    ]
-  },
-  "syntaxHighlightingDisabled": false,
-  "effortLevel": "high",
-  "awaySummaryEnabled": false,
-  "skipDangerousModePermissionPrompt": true,
-  "editorMode": "vim",
-  "preferredNotifChannel": "kitty",
-  "teammateMode": "in-process",
-  "agentPushNotifEnabled": true,
-  "skipAutoPermissionPrompt": true,
-  "useAutoModeDuringPlan": true,
-  "voiceEnabled": true
+	"$schema": "https://json.schemastore.org/claude-code-settings.json",
+	"env": {
+		"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+		"DISABLE_AUTO_UPDATER": "1"
+	},
+	"permissions": {
+		"allow": [
+			"Bash(* --help)",
+			"Bash(* --version)",
+			"Bash(bat *)",
+			"Bash(blacksmith *)",
+			"Bash(bun build *)",
+			"Bash(bun dev *)",
+			"Bash(bun run build *)",
+			"Bash(bun run dev *)",
+			"Bash(bun run lint *)",
+			"Bash(bun run test *)",
+			"Bash(bun test *)",
+			"Bash(bun x tsc *)",
+			"Bash(bunx ctx7 docs *)",
+			"Bash(bunx ctx7 library *)",
+			"Bash(bunx skills list -g *)",
+			"Bash(bunx skills upgrade -g *)",
+			"Bash(bunx skills list *)",
+			"Bash(bunx skills upgrade *)",
+			"Bash(cargo check *)",
+			"Bash(cargo clippy *)",
+			"Bash(cargo test *)",
+			"Bash(cat *)",
+			"Bash(chezmoi diff --no-pager *)",
+			"Bash(chezmoi apply -n *)",
+			"Bash(chezmoi cat *)",
+			"Bash(chezmoi data *)",
+			"Bash(chezmoi managed *)",
+			"Bash(chezmoi doctor *)",
+			"Bash(deno check *)",
+			"Bash(deno fmt *)",
+			"Bash(deno info *)",
+			"Bash(deno lint *)",
+			"Bash(deno task *)",
+			"Bash(deno test *)",
+			"Bash(diff *)",
+			"Bash(echo *)",
+			"Bash(fallow *)",
+			"Bash(fd *)",
+			"Bash(file *)",
+			"Bash(find *)",
+			"Bash(git blame *)",
+			"Bash(git branch *)",
+			"Bash(git diff *)",
+			"Bash(git log *)",
+			"Bash(git remote -v)",
+			"Bash(git rev-parse *)",
+			"Bash(git show *)",
+			"Bash(git stash list)",
+			"Bash(git status *)",
+			"Bash(git tag --list *)",
+			"Bash(go build *)",
+			"Bash(go run main.go)",
+			"Bash(go test *)",
+			"Bash(go tool pprof *)",
+			"Bash(go vet *)",
+			"Bash(gofmt *)",
+			"Bash(gopls *)",
+			"Bash(grep *)",
+			"Bash(jq *)",
+			"Bash(ls *)",
+			"Bash(lsd *)",
+			"Bash(make *)",
+			"Bash(mise current *)",
+			"Bash(mise ls *)",
+			"Bash(notesmd-cli search *)",
+			"Bash(notesmd-cli search-content *)",
+			"Bash(npm build *)",
+			"Bash(npm dev *)",
+			"Bash(npm fix *)",
+			"Bash(npm format *)",
+			"Bash(npm fix-format *)",
+			"Bash(npm lint *)",
+			"Bash(npm ls *)",
+			"Bash(npm run build *)",
+			"Bash(npm run dev *)",
+			"Bash(npm run lint *)",
+			"Bash(npm run test *)",
+			"Bash(npm typecheck *)",
+			"Bash(npx tsc *)",
+			"Bash(pnpm build *)",
+			"Bash(pnpm dev *)",
+			"Bash(pnpm fix *)",
+			"Bash(pnpm fix-format *)",
+			"Bash(pnpm format *)",
+			"Bash(pnpm lint *)",
+			"Bash(pnpm ls *)",
+			"Bash(pnpm run build *)",
+			"Bash(pnpm run dev *)",
+			"Bash(pnpm run lint *)",
+			"Bash(pnpm run test *)",
+			"Bash(pnpm typecheck *)",
+			"Bash(pnpx tsc *)",
+			"Bash(pnpx fallow *)",
+			"Bash(prek *)",
+			"Bash(printf *)",
+			"Bash(procs *)",
+			"Bash(pwd)",
+			"Bash(rg *)",
+			"Bash(rei *)",
+			"Bash(ruff *)",
+			"Bash(sd -p *)",
+			"Bash(task *)",
+			"Bash(tree *)",
+			"Bash(uname *)",
+			"Bash(uv python upgrade *)",
+			"Bash(uv run pytest *)",
+			"Bash(uv run ruff *)",
+			"Bash(uv run ty *)",
+			"Bash(uv sync *)",
+			"Bash(uv tool list *)",
+			"Bash(uv tool upgrade *)",
+			"Bash(uv venv *)",
+			"Bash(wc *)",
+			"Bash(which *)",
+			"Bash(wt list *)",
+			"Bash(wt status *)",
+			"Bash(wt switch *)",
+			"Bash(yq *)",
+			"Bash(yuzudraw-cli *)",
+			"Read(~/.claude/**)",
+			"Read(~/.cache/uv/**)",
+			"Read(~/.local/share/graveyard/**)",
+			"Read(~/.bun/install/cache**)",
+			"Read(~/.cache/pnpm/**)",
+			"Read(~/.local/share/pnpm/**)",
+			"Read(~/.blacksmith/**)",
+			"Read(~/.go/pkg/mod/cache/**)",
+			"Read(~/.config/.wrangler/**)",
+			"Read(~/Library/Caches/go-build/**)",
+			"Skill",
+			"WebFetch(domain:agentskills.io)",
+			"WebFetch(domain:backend.blacksmith.sh)",
+			"WebFetch(domain:chezmoi.io)",
+			"WebFetch(domain:www.chezmoi.io)",
+			"WebFetch(domain:claude.com)",
+			"WebFetch(domain:cli.github.com)",
+			"WebFetch(domain:cliffy.io)",
+			"WebFetch(domain:clireleases.blacksmith.sh)",
+			"WebFetch(domain:codecompanion.olimorris.dev)",
+			"WebFetch(domain:context7.com)",
+			"WebFetch(domain:deno.land)",
+			"WebFetch(domain:developer.1password.com)",
+			"WebFetch(domain:docs.astral.sh)",
+			"WebFetch(domain:docs.blacksmith.sh)",
+			"WebFetch(domain:docs.brew.sh)",
+			"WebFetch(domain:docs.deno.com)",
+			"WebFetch(domain:docs.github.com)",
+			"WebFetch(domain:exe.dev)",
+			"WebFetch(domain:fishshell.com)",
+			"WebFetch(domain:git-cliff.org)",
+			"WebFetch(domain:jdx.dev)",
+			"WebFetch(domain:jsr.io)",
+			"WebFetch(domain:lazy.folke.io)",
+			"WebFetch(domain:lazyvim.org)",
+			"WebFetch(domain:lunarmodules.github.io)",
+			"WebFetch(domain:neovim.io)",
+			"WebFetch(domain:opencode.ai)",
+			"WebFetch(domain:pkg.go.dev)",
+			"WebFetch(domain:prek.j178.dev)",
+			"WebFetch(domain:pypi.org)",
+			"WebFetch(domain:pythonhosted.org)",
+			"WebFetch(domain:registry.npmjs.org)",
+			"WebFetch(domain:schemastore.org)",
+			"WebFetch(domain:sum.golang.org)",
+			"WebFetch(domain:sw.kovidgoyal.net)",
+			"WebFetch(domain:tailscale.com)",
+			"WebFetch(domain:worktrunk.dev)",
+			"Read(~/.charmschool/**)",
+			"Read(~/.agents/**)",
+			"Read(~/.local/share/nvim/**)",
+			"Read(~/dev/00_supermodel/**)"
+		],
+		"deny": [
+			"Read(.env)",
+			"Read(.env.*)",
+			"Read(*.env)",
+			"Read(**/.env)",
+			"Read(**/.env.*)",
+			"Read(**/*.env)",
+			"Read(~/.ssh/**)",
+			"Read(~/.aws/**)",
+			"Read(~/.gnupg/**)",
+			"Read(~/.config/gcloud/**)",
+			"Read(**/secrets/**)",
+			"Read(**/credentials/**)",
+			"Read(*.pem)",
+			"Read(*.key)",
+			"Read(*.p12)",
+			"Read(*.pfx)",
+			"Read(id_rsa)",
+			"Read(id_ed25519)",
+			"Edit(.env)",
+			"Edit(.env.*)",
+			"Edit(*.env)",
+			"Edit(~/.ssh/**)",
+			"Edit(~/.aws/**)",
+			"Edit(~/.gnupg/**)",
+			"Edit(~/.config/gcloud/**)",
+			"Edit(**/secrets/**)",
+			"Edit(**/credentials/**)",
+			"Edit(*.pem)",
+			"Edit(*.key)",
+			"Edit(*.p12)",
+			"Edit(*.pfx)",
+			"Edit(id_rsa)",
+			"Edit(id_ed25519)",
+			"Bash(rm -rf *)",
+			"Bash(rm -rf /*)",
+			"Bash(sudo rm *)",
+			"Bash(chmod -R 777 *)",
+			"Bash(dd *)",
+			"Bash(mkfs *)",
+			"Bash(git push --force *)",
+			"Bash(git push -f *)",
+			"Bash(kubectl delete *)",
+			"Bash(kubectl apply * --namespace=prod*)",
+			"Bash(terraform destroy *)",
+			"Bash(op *)"
+		],
+		"defaultMode": "acceptEdits"
+	},
+	"hooks": {
+		"PermissionRequest": [
+			{
+				"matcher": "*",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' blocked",
+						"timeout": 10
+					}
+				]
+			}
+		],
+		"PostToolUse": [
+			{
+				"matcher": "*",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
+						"timeout": 10
+					}
+				]
+			}
+		],
+		"PostToolUseFailure": [
+			{
+				"matcher": "*",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
+						"timeout": 10
+					}
+				]
+			}
+		],
+		"PreToolUse": [
+			{
+				"matcher": "*",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
+						"timeout": 10
+					}
+				]
+			}
+		],
+		"SessionEnd": [
+			{
+				"matcher": "*",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' release",
+						"timeout": 10
+					}
+				]
+			}
+		],
+		"SessionStart": [
+			{
+				"matcher": "",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "$HOME/.claude/hooks/set-sandbox-tmpdir.sh"
+					},
+					{
+						"type": "command",
+						"command": "$HOME/.claude/hooks/set-git-nosign.sh"
+					}
+				]
+			}
+		],
+		"Stop": [
+			{
+				"matcher": "*",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' idle",
+						"timeout": 10
+					}
+				]
+			}
+		],
+		"SubagentStop": [
+			{
+				"matcher": "*",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
+						"timeout": 10
+					}
+				]
+			}
+		],
+		"TaskCompleted": [
+			{
+				"matcher": "",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "$HOME/.claude/hooks/require-teammate-commit.sh"
+					}
+				]
+			}
+		],
+		"UserPromptSubmit": [
+			{
+				"matcher": "*",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
+						"timeout": 10
+					}
+				]
+			}
+		],
+		"WorktreeCreate": [
+			{
+				"matcher": "",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "$HOME/.claude/hooks/inject-commit-reminder.sh"
+					}
+				]
+			}
+		]
+	},
+	"statusLine": {
+		"type": "command",
+		"command": "winline",
+		"padding": 0
+	},
+	"enabledPlugins": {
+		"deno-or-ts@winnie-local": true,
+		"gopls-lsp@claude-plugins-official": true,
+		"lua-lsp@claude-plugins-official": true,
+		"pyright-lsp@claude-plugins-official": false,
+		"pyright-or-ruff@winnie-local": true,
+		"ruby-lsp@claude-plugins-official": true,
+		"rust-analyzer-lsp@claude-plugins-official": true,
+		"typescript-lsp@claude-plugins-official": false,
+		"worktrunk@worktrunk": true
+	},
+	"sandbox": {
+		"enabled": true,
+		"autoAllowBashIfSandboxed": false,
+		"allowUnsandboxedCommands": false,
+		"network": {
+			"allowedDomains": [
+				"api.github.com",
+				"backend.blacksmith.sh",
+				"clireleases.blacksmith.sh",
+				"context7.com",
+				"dl.deno.land",
+				"jsr.io",
+				"pkg.go.dev",
+				"proxy.golang.org",
+				"pypi.org",
+				"pythonhosted.org",
+				"registry.npmjs.org",
+				"schemastore.org",
+				"storage.googleapis.com",
+				"sum.golang.org",
+				"telemetry.astro.build",
+				"workers.cloudflare.com"
+			],
+			"allowLocalBinding": true
+		},
+		"filesystem": {
+			"allowWrite": [
+				"~/.agentbrowser/**",
+				"~/.cache/prek/**",
+				"~/.local/share/graveyard/**",
+				"~/.blacksmith/**",
+				"~/.bun/install/**",
+				"~/.cache/uv/**",
+				"~/.local/share/uv/**",
+				"~/.config/.wrangler/**",
+				"~/.go/pkg/mod/**",
+				"~/Library/Caches/go-build/**",
+				"~/.local/share/pnpm/**",
+				"~/.cache/pnpm/**"
+			],
+			"allowRead": ["~/.claude/**"]
+		}
+	},
+	"spinnerTipsEnabled": false,
+	"spinnerVerbs": {
+		"mode": "replace",
+		"verbs": [
+			"Being a pretty pony",
+			"Crocheting a cat sweater",
+			"Kekeking",
+			"Romanticizing everything",
+			"Crying to Chappell Roan",
+			"Painting my nails",
+			"Doing pilates",
+			"Ordering an iced oat milk latte",
+			"Lipglossing",
+			"Cuddling my cat",
+			"Shopping for cute jeans",
+			"Journaling with niche Japanese stationery",
+			"Passenger princessing",
+			"Being chaotic",
+			"Fangirling",
+			"Dancing with the dolls",
+			"Buying colorful candles",
+			"Fixing my hair tie",
+			"Stretching my hips",
+			"Doing witchcraft with the coven",
+			"Hydrating",
+			"Catastrophizing",
+			"Good girling",
+			"Collecting little trinkets",
+			"Thirsting over fictional men",
+			"Having a mental breakdown aesthetically",
+			"Girlmaxxing",
+			"Dating your boyfriend",
+			"Dancing on my own",
+			"Getting a little treat",
+			"Curating Spotify playlists",
+			"K-Pop demon hunting",
+			"Braiding friendship bracelets",
+			"Rephrasing in therapy language",
+			"Junk journaling",
+			"Manifesting",
+			"Horse girling",
+			"Being hot",
+			"Shopping with the girlypops"
+		]
+	},
+	"syntaxHighlightingDisabled": false,
+	"effortLevel": "high",
+	"awaySummaryEnabled": false,
+	"skipDangerousModePermissionPrompt": true,
+	"editorMode": "vim",
+	"preferredNotifChannel": "kitty",
+	"teammateMode": "in-process",
+	"agentPushNotifEnabled": true,
+	"skipAutoPermissionPrompt": true,
+	"useAutoModeDuringPlan": true,
+	"voiceEnabled": true
 }
