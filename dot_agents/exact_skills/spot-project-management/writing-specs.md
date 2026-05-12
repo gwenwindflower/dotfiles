@@ -191,6 +191,8 @@ When implementation reveals a wrong, impossible, or incomplete requirement, upda
 
 If a spec or TODO change is needed mid-Phase, stop work, make the change, resume. Never edit while subagents are running.
 
+For substantive reversals on requirements **already shipped to main** — wording changes that alter behavior, retirements, behavior pivots — write an [ADR](adrs.md) alongside the spec edit so the change of direction is publicized and the rationale preserved. Edits to in-flight or never-shipped requirements don't need one.
+
 ## Backlog
 
 The last section of `SPEC.md`. Future requirements, open questions, big ideas. Not active work — consider when informing active decisions, but don't start without Planner approval to promote into Requirements and a Phase. **Promote or delete** — lingering items are noise.

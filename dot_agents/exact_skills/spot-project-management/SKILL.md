@@ -5,7 +5,7 @@ description: Manage SPOT-system projects (Spec, Phases, Objectives, Tasks) — w
 
 # SPOT Project Management
 
-Loads on top of the always-on `projects` rule. Assume that rule's vocabulary, file table, role names, TODO hierarchy, and execution mechanics. This skill covers the Planner and Manager surfaces: spec authoring, requirement IDs, Phase scoping, commit hygiene, handoff.
+Loads on top of the always-on `projects` rule. Assume that rule's vocabulary, file table, role names, TODO hierarchy, and execution mechanics. This skill covers the Planner and Manager surfaces: spec authoring, requirement IDs, Phase scoping, commit hygiene, decision records, handoff.
 
 When asked, build SPOT files from scratch by interviewing the user or converting existing planning notes. Monorepo conventions (per-subdir specs, shared specs) are project-specific and live in project guidance.
 
@@ -45,6 +45,7 @@ Stable, soft-immutable IDs let Phases reference requirements without restating t
 
 - [Writing specs](writing-specs.md) — Planner work: spec shape, requirement IDs, phrasing patterns, the four hardening checks (unambiguous / consistent / complete / verifiable), edge cases, anti-patterns, scoping a Phase, Backlog, the `dev-` domain.
 - [Running phases](running-phases.md) — Manager work: the three Manager jobs (sequencing, linear history, quality at Objective close), Subagent teams as the SPOT default, per-Phase workflow, the per-commit cadence under the Phase trunk model, when spec-only commits earn their keep, TDD carve-outs, Subagent drift, parallel Phases across Manager sessions, handoff to Planner.
+- [Decision records](adrs.md) — optional, Planner-driven: lightweight ADRs as a release valve for amending requirements already shipped to main. File shape, frontmatter, status lifecycle, when to write one (and when not to). Skip for new requirements and in-flight branches; `DONE.md` still owns rationale for newly shipped work.
 - [Using worktrunk](using-worktrunk.md) — `wt` is the Manager's primary git interface: the **Phase trunk branch + Objective feature branch** model (two `wt merge` levels, with squash defaults that differ by level), Agent Teams as the SPOT default + Agent Handoff as out-of-band-only, surveying with `wt list`, creating Phase trunks, closing Objectives and Phases, recommended `.config/wt.toml` for SPOT (pre-commit / pre-merge with `{{ target }}` conditional, `copy-ignored`), and the short list of operations that stay raw git.
 - [EXECUTIVE.md](EXECUTIVE.md) — speculative: a higher-level role that picks unblocked Phases and spawns Manager sessions across tmux panes via the Agent Handoff pattern. Out of scope for normal Manager/Planner work; load only when the user invokes Executive.
 

@@ -77,6 +77,7 @@ Legitimate cases:
 - **Threading learning back into specs/requirements** after a Phase — new edge-case ID, sharpened wording, a retired ID. Often rides along in the Phase-close commit naturally; only a separate commit if it's substantial enough to warrant its own.
 - **Scoping a multi-Phase plan in `TODO.md`** ahead of any code landing — Planner work between Phases.
 - **Catching up DONE rationale** for a stretch of work that already shipped without proper closeout (e.g. things went off the rails and several Phases need to be moved to DONE with proper notes).
+- **Landing a retrospective ADR** ([adrs](adrs.md)) — recording the rationale for a direction change that already shipped without one. Commit as `chore(adr): <slug>`.
 
 Illegitimate cases:
 
