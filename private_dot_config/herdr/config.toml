@@ -8,7 +8,11 @@ name = "catppuccin"
 
 [keys]
 prefix = "ctrl+space"
+reload_config = "shift+r"
 previous_tab = "ctrl+alt+h"
 next_tab = "ctrl+alt+l"
+rename_tab = "shift+c"
+focus_tab_left = "shift+alt+h"
+focus_tab_right = "shift+alt+l"
 previous_workspace = "ctrl+alt+k"
 next_workspace = "ctrl+alt+j"
