@@ -1,6 +1,8 @@
 #!/bin/sh
 # installed by herdr
 # safe to edit. this hook only activates inside herdr-managed panes.
+# HERDR_INTEGRATION_ID=claude
+# HERDR_INTEGRATION_VERSION=1
 
 set -eu
 
@@ -50,6 +52,7 @@ if is_subagent and action in ("idle", "release"):
     action = "working"
 
 request_id = f"{source}:{int(time.time() * 1000)}:{random.randrange(1_000_000):06d}"
+report_seq = time.time_ns()
 if action == "release":
     request = {
         "id": request_id,
@@ -58,6 +61,7 @@ if action == "release":
             "pane_id": pane_id,
             "source": source,
             "agent": "claude",
+            "seq": report_seq,
         },
     }
 else:
@@ -69,6 +73,7 @@ else:
             "source": source,
             "agent": "claude",
             "state": action,
+            "seq": report_seq,
         },
     }
 
