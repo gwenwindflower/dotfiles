@@ -1,6 +1,17 @@
+// installed by herdr
+// safe to edit. this plugin only activates inside herdr-managed panes.
+// HERDR_INTEGRATION_ID=opencode
+// HERDR_INTEGRATION_VERSION=1
+
 import net from "node:net";
 
 const SOURCE = "herdr:opencode";
+let reportSeq = Date.now() * 1000;
+
+function nextReportSeq() {
+  reportSeq += 1;
+  return reportSeq;
+}
 
 function reportState(action) {
   const paneId = process.env.HERDR_PANE_ID;
@@ -22,12 +33,14 @@ function reportState(action) {
             pane_id: paneId,
             source: SOURCE,
             agent: "opencode",
+            seq: nextReportSeq(),
           }
         : {
             pane_id: paneId,
             source: SOURCE,
             agent: "opencode",
             state: action,
+            seq: nextReportSeq(),
           },
   };
 
