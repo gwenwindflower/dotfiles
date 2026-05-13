@@ -32,7 +32,7 @@ set -gx MOOR "\
 --no-linenumbers \
 --style=catppuccin-frappe \
 "
-set -gx PAGER $HOMEBREW_PREFIX/bin/bat
+set -gx PAGER $HOMEBREW_PREFIX/bin/moor
 set -gx MANPAGER "sh -c 'col -bx | bat -l man -p'"
 # tldr client config
 set -gx TLRC_CONFIG $XDG_CONFIG_HOME/tlrc/tlrc.toml
