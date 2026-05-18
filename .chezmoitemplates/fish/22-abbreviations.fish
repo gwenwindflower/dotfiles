@@ -26,6 +26,8 @@ abbr --add cp. "pwd | fish_clipboard_copy"
 abbr --add mkd mkdir -p
 abbr --add rmd rmdir
 abbr --add mkt mktemp
+abbr --add rm! rm -rf
+abbr --add rmm rip
 abbr --add mac macchina
 abbr --add chmx chmod +x
 abbr --add chme chmod 700
