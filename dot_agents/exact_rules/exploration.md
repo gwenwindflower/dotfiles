@@ -14,10 +14,9 @@ Training data goes stale quickly for actively developed libraries. For syntax, v
 
 Order of operations:
 
-1. **Context7 CLI (`ctx7`)** — fastest path for popular tools and frameworks. Continually re-indexed.
-    - `bunx ctx7 library <name> "<query>"` — resolve a library to a Context7 id
-    - `bunx ctx7 docs <id> "<query>"` — semantic search within that library's docs
-    - If `ctx7 whoami` shows logged-out, alert the user.
+1. **Context7 CLI (`ctx7`)** — fastest path for popular tools and frameworks. Continually re-indexed, uses hybrid search for targeted, meaningful results. You do not need to be authed to run basic docs searches.
+    - `ctx7 library <name> "<query>"` — resolve a library to a Context7 id
+    - `ctx7 docs <id> "<query>"` — semantic search within that library's docs
 2. **WebFetch** the actual docs URL when you have one. Returns AI-friendly markdown when the site supports it.
 3. **WebSearch** to locate docs, tutorials, or Q&A threads when you don't have a URL.
 4. **`curl`** is a last resort. You have dedicated tools for this.
