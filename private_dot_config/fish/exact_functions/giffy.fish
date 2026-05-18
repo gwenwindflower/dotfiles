@@ -1,4 +1,4 @@
-function giffer -d "Convert a screen recording to a crisp, doc-friendly GIF via ffmpeg"
+function giffy -d "Convert a screen recording to a crisp, doc-friendly GIF via ffmpeg"
     argparse -n giffer \
         h/help \
         'w/width=' \
@@ -151,7 +151,10 @@ function giffer -d "Convert a screen recording to a crisp, doc-friendly GIF via 
     else
         set scale_expr "scale=$width:-2:flags=lanczos+accurate_rnd+full_chroma_int"
     end
-    set -l common_chain "setpts=PTS/$speed,fps=$fps,$scale_expr"
+    # setparams retags frames as sRGB; format=rgb24 then converts pixels.
+    # Without setparams, palettegen warns once per frame on screen recordings
+    # tagged with non-sRGB color spaces (Display P3, BT.709, etc.)
+    set -l common_chain "setpts=PTS/$speed,fps=$fps,$scale_expr,setparams=color_primaries=bt709:color_trc=iec61966-2-1:colorspace=bt709,format=rgb24"
 
     # printf-build to avoid fish parsing [v] as a variable index after $common_chain
     set -l gen_filters (printf '%s,palettegen=stats_mode=%s:max_colors=%s' $common_chain $stats_mode $max_colors)
@@ -165,6 +168,7 @@ function giffer -d "Convert a screen recording to a crisp, doc-friendly GIF via 
     ffmpeg -hide_banner -loglevel $loglevel -y \
         -i "$in" \
         -vf "$gen_filters" \
+        -update 1 -frames:v 1 \
         "$palette"
     if test $status -ne 0
         logirl error "Palette generation failed"
