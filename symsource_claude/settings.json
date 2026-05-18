@@ -1,168 +1,13 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "agentPushNotifEnabled": true,
-  "autoMode": {
-    "soft_deny": [
-      "User-level configs: editing dotfiles in chezmoi is allowed, but applying them out into userspace or editing user-level configs directly is blocked"
-    ]
-  },
-  "awaySummaryEnabled": false,
-  "editorMode": "vim",
-  "effortLevel": "medium",
-  "enabledPlugins": {
-    "deno-or-ts@winnie-local": true,
-    "gopls-lsp@claude-plugins-official": true,
-    "lua-lsp@claude-plugins-official": true,
-    "pyright-lsp@claude-plugins-official": false,
-    "pyright-or-ruff@winnie-local": true,
-    "ruby-lsp@claude-plugins-official": true,
-    "rust-analyzer-lsp@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": false,
-    "worktrunk@worktrunk": true
-  },
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "DISABLE_AUTO_UPDATER": "1"
   },
-  "hooks": {
-    "PermissionRequest": [
-      {
-        "hooks": [
-          {
-            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' blocked",
-            "timeout": 10,
-            "type": "command"
-          }
-        ],
-        "matcher": "*"
-      }
-    ],
-    "PostToolUse": [
-      {
-        "hooks": [
-          {
-            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
-            "timeout": 10,
-            "type": "command"
-          }
-        ],
-        "matcher": "*"
-      }
-    ],
-    "PostToolUseFailure": [
-      {
-        "hooks": [
-          {
-            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
-            "timeout": 10,
-            "type": "command"
-          }
-        ],
-        "matcher": "*"
-      }
-    ],
-    "PreToolUse": [
-      {
-        "hooks": [
-          {
-            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
-            "timeout": 10,
-            "type": "command"
-          }
-        ],
-        "matcher": "*"
-      }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' release",
-            "timeout": 10,
-            "type": "command"
-          }
-        ],
-        "matcher": "*"
-      }
-    ],
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "command": "$HOME/.claude/hooks/set-sandbox-tmpdir.sh",
-            "type": "command"
-          },
-          {
-            "command": "$HOME/.claude/hooks/set-git-nosign.sh",
-            "type": "command"
-          }
-        ],
-        "matcher": ""
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' idle",
-            "timeout": 10,
-            "type": "command"
-          }
-        ],
-        "matcher": "*"
-      }
-    ],
-    "SubagentStop": [
-      {
-        "hooks": [
-          {
-            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
-            "timeout": 10,
-            "type": "command"
-          }
-        ],
-        "matcher": "*"
-      }
-    ],
-    "TaskCompleted": [
-      {
-        "hooks": [
-          {
-            "command": "$HOME/.claude/hooks/require-teammate-commit.sh",
-            "type": "command"
-          }
-        ],
-        "matcher": ""
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
-            "timeout": 10,
-            "type": "command"
-          }
-        ],
-        "matcher": "*"
-      }
-    ],
-    "WorktreeCreate": [
-      {
-        "hooks": [
-          {
-            "command": "$HOME/.claude/hooks/inject-commit-reminder.sh",
-            "type": "command"
-          }
-        ],
-        "matcher": ""
-      }
-    ]
-  },
   "permissions": {
     "allow": [
-      "Bash(* --help)",
-      "Bash(* --version)",
+      "Bash(* --help *)",
+      "Bash(* --version *)",
       "Bash(bat *)",
       "Bash(blacksmith *)",
       "Bash(bun build *)",
@@ -172,13 +17,6 @@
       "Bash(bun run lint *)",
       "Bash(bun run test *)",
       "Bash(bun test *)",
-      "Bash(bun x tsc *)",
-      "Bash(bunx ctx7 docs *)",
-      "Bash(bunx ctx7 library *)",
-      "Bash(bunx skills list -g *)",
-      "Bash(bunx skills upgrade -g *)",
-      "Bash(bunx skills list *)",
-      "Bash(bunx skills upgrade *)",
       "Bash(cargo check *)",
       "Bash(cargo clippy *)",
       "Bash(cargo test *)",
@@ -189,6 +27,7 @@
       "Bash(chezmoi data *)",
       "Bash(chezmoi managed *)",
       "Bash(chezmoi doctor *)",
+      "Bash(ctx7 *)",
       "Bash(deno check *)",
       "Bash(deno fmt *)",
       "Bash(deno info *)",
@@ -219,6 +58,7 @@
       "Bash(gofmt *)",
       "Bash(gopls *)",
       "Bash(grep *)",
+      "Bash(herdr *)",
       "Bash(jq *)",
       "Bash(ls *)",
       "Bash(lsd *)",
@@ -334,7 +174,6 @@
       "Read(~/.local/share/nvim/**)",
       "Read(~/dev/00_supermodel/**)"
     ],
-    "defaultMode": "acceptEdits",
     "deny": [
       "Read(.env)",
       "Read(.env.*)",
@@ -381,36 +220,168 @@
       "Bash(kubectl apply * --namespace=prod*)",
       "Bash(terraform destroy *)",
       "Bash(op *)"
+    ],
+    "defaultMode": "acceptEdits"
+  },
+  "hooks": {
+    "PermissionRequest": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' blocked",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' release",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/set-sandbox-tmpdir.sh"
+          },
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/set-git-nosign.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' idle",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "TaskCompleted": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/require-teammate-commit.sh"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "WorktreeCreate": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/inject-commit-reminder.sh"
+          }
+        ]
+      }
     ]
   },
-  "preferredNotifChannel": "kitty",
+  "statusLine": {
+    "type": "command",
+    "command": "winline",
+    "padding": 0
+  },
+  "enabledPlugins": {
+    "deno-or-ts@winnie-local": true,
+    "gopls-lsp@claude-plugins-official": true,
+    "lua-lsp@claude-plugins-official": true,
+    "pyright-lsp@claude-plugins-official": false,
+    "pyright-or-ruff@winnie-local": true,
+    "ruby-lsp@claude-plugins-official": true,
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": false,
+    "worktrunk@worktrunk": true
+  },
   "sandbox": {
-    "allowUnsandboxedCommands": false,
-    "autoAllowBashIfSandboxed": false,
     "enabled": true,
-    "filesystem": {
-      "allowRead": [
-        "~/.claude/**"
-      ],
-      "allowWrite": [
-        "~/.agentbrowser/**",
-        "~/.cache/prek/**",
-        "~/.local/share/graveyard/**",
-        "~/.blacksmith/**",
-        "~/.bun/install/**",
-        "~/.cache/uv/**",
-        "~/.local/share/uv/**",
-        "~/.config/.wrangler/**",
-        "~/.go/pkg/mod/**",
-        "~/Library/Caches/go-build/**",
-        "~/.local/share/pnpm/**",
-        "~/.cache/pnpm/**"
-      ]
-    },
+    "autoAllowBashIfSandboxed": false,
+    "allowUnsandboxedCommands": false,
     "network": {
-      "allowLocalBinding": true,
       "allowedDomains": [
         "api.github.com",
+        "github.com",
         "backend.blacksmith.sh",
         "clireleases.blacksmith.sh",
         "context7.com",
@@ -426,11 +397,33 @@
         "sum.golang.org",
         "telemetry.astro.build",
         "workers.cloudflare.com"
+      ],
+      "allowUnixSockets": [
+        "~/.agent-browser/default.sock"
+      ],
+      "allowLocalBinding": true
+    },
+    "filesystem": {
+      "allowWrite": [
+        "~/.agent-browser/**",
+        "~/.cache/prek/**",
+        "~/.local/share/graveyard/**",
+        "~/.blacksmith/**",
+        "~/.bun/install/**",
+        "~/.cache/uv/**",
+        "~/.local/share/uv/**",
+        "~/.config/.wrangler/**",
+        "~/.go/pkg/mod/**",
+        "~/Library/Caches/go-build/**",
+        "~/.local/share/pnpm/**",
+        "~/.cache/pnpm/**"
+      ],
+      "allowRead": [
+        "~/.claude/**",
+        "~/.agent-browser/**"
       ]
     }
   },
-  "skipAutoPermissionPrompt": true,
-  "skipDangerousModePermissionPrompt": true,
   "spinnerTipsEnabled": false,
   "spinnerVerbs": {
     "mode": "replace",
@@ -476,13 +469,21 @@
       "Shopping with the girlypops"
     ]
   },
-  "statusLine": {
-    "command": "winline",
-    "padding": 0,
-    "type": "command"
-  },
   "syntaxHighlightingDisabled": false,
+  "effortLevel": "high",
+  "awaySummaryEnabled": false,
+  "skipDangerousModePermissionPrompt": true,
+  "editorMode": "vim",
+  "preferredNotifChannel": "kitty",
   "teammateMode": "in-process",
+  "agentPushNotifEnabled": true,
+  "skipAutoPermissionPrompt": true,
   "useAutoModeDuringPlan": true,
-  "voiceEnabled": true
+  "autoMode": {
+    "soft_deny": [
+      "User-level configs: editing dotfiles in chezmoi is allowed, but applying them out into userspace or editing user-level configs directly is blocked"
+    ]
+  },
+  "voiceEnabled": true,
+  "maxSkillDescriptionCharacters": "1000"
 }
