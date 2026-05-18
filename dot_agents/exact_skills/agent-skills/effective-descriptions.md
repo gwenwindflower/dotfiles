@@ -10,7 +10,7 @@ The description is the only metadata Claude sees at startup. It must answer two 
 
 Constraints:
 
-- ≤1024 chars hard limit; aim well under
+- <1000 chars — hard limit for this collection (platform allows 1024, but we stay under 1000); aim well under
 - Third person only — never "I can…" or "You can…"
 - Concrete keywords users actually say: file extensions, CLI names, domain terms
 - Slightly directive — Claude under-triggers by default
