@@ -2,6 +2,7 @@
 name: prose-editor
 description: Isolated prose quality editor that scores writing (1-5 pts) on 8 dimensions (40 points max). Requires improvements until score is above 32. Use for writing content like docs, blog posts, or fiction - not agent docs, skills, or code (unless requested).
 tools: Read, Grep, Glob
+color: orange
 model: opus
 skills:
   - writing-prose
