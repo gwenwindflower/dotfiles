@@ -312,6 +312,23 @@ Only declare `dependencies` when a plugin must be installed AND loaded before yo
 }
 ```
 
+### Local development with `dev`
+
+To work on a plugin locally and have lazy.nvim load it from disk instead of cloning from GitHub, configure the `dev` table in your lazy.nvim setup (typically in `lua/config/lazy.lua`):
+
+```lua
+require("lazy").setup({
+  spec = { ... },
+  dev = {
+    path = "~/dev/nvim/",         -- directory containing local plugin checkouts
+    patterns = { "your-handle" }, -- match plugin specs whose owner matches
+    fallback = false,             -- if true, fall back to remote when local missing
+  },
+})
+```
+
+lazy.nvim looks for the plugin's repo name as a subdirectory of `path`. So with `path = "~/dev/nvim/"` and a spec `"your-handle/my-plugin.nvim"`, lazy.nvim loads from `~/dev/nvim/my-plugin.nvim/` instead of cloning. `patterns` filters which specs are eligible — typically your GitHub username so only your own forks/plugins resolve locally. Per-plugin override: add `dev = true` to a single spec to force local resolution regardless of patterns.
+
 ### Build steps
 
 The `build` property runs after install/update:
