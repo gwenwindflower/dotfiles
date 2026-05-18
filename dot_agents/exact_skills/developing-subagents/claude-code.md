@@ -146,9 +146,27 @@ For main-session reactions to subagent lifecycle, use `SubagentStart` / `Subagen
 - **Automatic delegation** — Claude routes based on `description`. "Use proactively" earns delegation.
 - **Natural language** — "use the code-reviewer subagent…"
 - **`@`-mention** — `@"code-reviewer (agent)" review auth changes`. Plugin subagents appear as `<plugin>:<agent>`.
-- **Whole session** — `claude --agent code-reviewer` or `"agent": "code-reviewer"` in `.claude/settings.json`.
+- **Whole session** — `claude --agent code-reviewer` or `"agent": "code-reviewer"` in `.claude/settings.json`. `initialPrompt` in the agent's frontmatter is auto-submitted as the first user turn.
 
 `/agents` opens the management UI: Running tab shows live agents; Library tab creates / edits / deletes / shows overrides. `claude agents` (CLI, no session) lists everything grouped by source.
+
+## Built-in subagents
+
+Claude Code ships these — don't duplicate them, route to them when fitting:
+
+| Name | Model | Tools | Use |
+| --- | --- | --- | --- |
+| `Explore` | Haiku | Read-only | File discovery, code search, codebase reads without changes |
+| `Plan` | Inherits | Read-only | Research during plan mode |
+| `general-purpose` | Inherits | All | Complex multi-step work needing both exploration and action |
+| `statusline-setup` | Sonnet | Read, Edit | Invoked by `/statusline` |
+| `claude-code-guide` | Haiku | Read, WebFetch, WebSearch, Bash | Invoked when users ask about Claude Code features |
+
+When fork mode is enabled (`CLAUDE_CODE_FORK_SUBAGENT=1`), every spawn that would have gone to `general-purpose` runs as a fork instead — inheriting the parent's full conversation. Named subagents (`Explore` etc.) still spawn fresh.
+
+## Resume vs respawn
+
+Each `Agent(...)` call creates a fresh subagent with empty context. To continue an existing subagent's work, use `SendMessage({ to: <agent-id-or-name> })` instead. Requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`. The subagent picks up its full prior conversation, tool calls, and reasoning.
 
 ## Disable a subagent
 
