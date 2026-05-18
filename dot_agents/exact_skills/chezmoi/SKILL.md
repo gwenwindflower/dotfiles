@@ -19,6 +19,9 @@ chezmoi doctor                  # Diagnose issues
 chezmoi managed                 # List managed files
 ```
 
+> [!IMPORTANT]
+> You must always use `-n` with `apply` and `--no-pager` with `diff`. Non-dry-run `apply` is blocked, and running `diff` without `--no-pager` will hang if the changes overflow into a pager (which requires interactive exiting), which they often do.
+
 ## Core Concepts
 
 - **Attributes**: Prefixes/suffixes on source filenames control behavior (`dot_`, `private_`, `executable_`, `.tmpl`, etc.). See [attributes reference](attributes.md).
