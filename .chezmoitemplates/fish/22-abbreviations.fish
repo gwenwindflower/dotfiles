@@ -317,7 +317,10 @@ abbr --add glod git logd
 abbr --add wtsw wt switch
 abbr --add wtswc wt switch -c
 abbr --add wtm wt merge
-# media
+abbr --add wtrm wt remove
+abbr --add wtrm! wt remove --force
+abbr --add wtrm!! wt remove --force -D
+#  media
 abbr --add spotify spotify_player
 abbr --add spt spotify_player
 abbr --add ytdl yt-dlp
