@@ -8,6 +8,8 @@ Prefer modern alternatives to classic Unix tools when available — they're fast
 
 `rg`, `fd`, `rip` are top priority — always use over the classic. The rest are quality-of-life; classic tools are fine for quick checks.
 
+For `pnpm`, *always* use `pnpm` (and `pnpx` / `pnpm dlx`), even if a skill references `npm` (or `npx`) commands. The system is not set up for vanilla `npm`, and at this point in time there's almost nothing that won't work the same or better with `pnpm`.
+
 `rip` deletes to `/tmp/graveyard-$USER`; `rip -u` undoes the last removal. Safer than `rm -rf`.
 
 ## Built-ins first
