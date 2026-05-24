@@ -173,6 +173,8 @@ packages:
         - monologue
         - notion
         - notion-calendar
+        - notion-cli
+        - notion-mail
         - obsidian
         - orbstack
         - orion
