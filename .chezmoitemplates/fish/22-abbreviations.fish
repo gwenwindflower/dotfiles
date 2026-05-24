@@ -65,10 +65,11 @@ abbr --add cma chezmoi add
 abbr --add cmaa chezmoi re-add
 abbr --add cmaf chezmoi add --follow
 abbr --add cmx chezmoi apply
-abbr --add cmxc chezmoi apply ~/.config/
+abbr --add cmxx chezmoi apply ~/.config/
 abbr --add cmxf chezmoi apply ~/.config/fish/
 abbr --add cmxv chezmoi apply ~/.config/nvim/
 abbr --add cmxa chezmoi apply ~/.agents/
+abbr --add cmxc chezmoi apply ~/.claude/
 abbr --add cmc chezmoi cat
 abbr --add cmd chezmoi diff
 abbr --add cmd. 'chezmoi diff .'
