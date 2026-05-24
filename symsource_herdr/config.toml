@@ -1,0 +1,31 @@
+onboarding = false
+
+[ui]
+agent_panel_scope = "all"
+
+[ui.toast]
+delivery = "terminal"
+
+[theme]
+name = "terminal"
+
+[keys]
+prefix = "ctrl+space"
+reload_config = "prefix+shift+r"
+new_tab = "prefix+c"
+rename_tab = "prefix+shift+c"
+previous_tab = "ctrl+alt+h"
+next_tab = "ctrl+alt+l"
+focus_tab_left = "shift+alt+h"
+focus_tab_right = "shift+alt+l"
+new_workspace = "prefix+n"
+rename_workspace = "prefix+shift+n"
+previous_workspace = "ctrl+alt+k"
+next_workspace = "ctrl+alt+j"
+previous_agent = "ctrl+super+k"
+next_agent = "ctrl+super+j"
+
+[[keys.command]]
+key = "prefix+ctrl+g"
+type = "pane"
+command = "lazygit"
