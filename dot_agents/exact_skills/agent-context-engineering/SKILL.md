@@ -34,22 +34,22 @@ Exclude generic language idioms, README content, and vague directives ("write cl
 
 The recommended progressive-disclosure approach:
 
-1. Put modular docs in `.docs/` with descriptive filenames (`adding-shadcn-components.md`)
+1. Put modular docs in `docs/` with descriptive filenames (`adding-shadcn-components.md`)
 2. List them as a tight index in AGENTS.md — plain paths, **not** `@`-imports
 
 ```text
 # Shopping App Agent Guidance
 
-.docs/adding-shadcn-components.md
-.docs/using-drizzle-with-supabase.md
-.docs/adding-v2-api-endpoints.md
+docs/adding-shadcn-components.md
+docs/using-drizzle-with-supabase.md
+docs/adding-v2-api-endpoints.md
 ```
 
 The agent picks what to load. For projects with clear splits (frontend/backend), scope subdirectory indexes:
 
 ```text
-src/frontend/AGENTS.md → src/frontend/.docs/...
-src/backend/AGENTS.md  → src/backend/.docs/...
+src/frontend/AGENTS.md → src/frontend/docs/...
+src/backend/AGENTS.md  → src/backend/docs/...
 ```
 
 ### Rules vs. docs
@@ -57,7 +57,7 @@ src/backend/AGENTS.md  → src/backend/.docs/...
 | Type | Purpose | Scope |
 | --- | --- | --- |
 | **Rule** | How something should be done, always (workflow, conventions) | User-level if global, project-level if specific |
-| **Doc** | State of something / how it works (API, architecture) | Skill if cross-project, `.docs/` if project-specific |
+| **Doc** | State of something / how it works (API, architecture) | Skill if cross-project, `docs/` if project-specific |
 
 ## Patterns to Avoid
 
@@ -67,7 +67,7 @@ src/backend/AGENTS.md  → src/backend/.docs/...
 
 ## Living Document Workflow
 
-After significant work, update AGENTS.md with new structure, patterns, or decisions. Universally relevant → root; area-specific → `.docs/` with index entry.
+After significant work, update AGENTS.md with new structure, patterns, or decisions. Universally relevant → root; area-specific → `docs/` with index entry.
 
 ## Refactoring Overgrown Files
 
@@ -75,7 +75,7 @@ For AGENTS.md past ~60 lines or with poor structure:
 
 1. Eliminate conflicting or redundant instructions
 2. Group remaining content by function or path
-3. Move detail into `.docs/` files; add index entries
+3. Move detail into `docs/` files; add index entries
 4. Justify each remaining line: does every agent in this directory need it every session?
 
 ## File Locations
