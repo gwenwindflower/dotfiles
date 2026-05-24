@@ -2,19 +2,22 @@
 # 11 — TypeScript (Bun, pnpm, Deno)
 # =============================================================================
 
-# These are intentionally not special env vars
-# and do not configure the tools
-# these are set to the default locations for each
-# to ensure the smoothest operation across upgrades
-# at the sacrifice of unified global store paths
-# bun and deno use the ~/.<tool> pattern like npm
-# whereas pnpm more correctly uses $XDG_DATA_HOME
-# I used to force them all into $XDG_DATA_HOME
-# but it's not worth the trouble
-set -gx BUN_HOME $HOME/.bun
-set -gx DENO_HOME $HOME/.deno
-set -gx PNPM_HOME $XDG_DATA_HOME/pnpm
+# Something weird about the Homebrew install of bun
+# causes bun to set its root orientation to ~/.cache/
+# everything it normally does under ~/.bun gets stacked there,
+# in addition to its actual ~/.cache/bun dir
+# I've tried clearing and reinstalling
+# I've swept for env vars that might be installing it
+# no idea, so I've just fallen back to setting it explicitly to fix it
+set -gx BUN_INSTALL $HOME/.bun
+fish_add_path $BUN_INSTALL/install/bin
 
-fish_add_path $BUN_HOME/bin
-fish_add_path $DENO_HOME/bin
-fish_add_path $PNPM_HOME/bin
+# DENO_DIR sets cache dir
+# DENO_INSTALL_ROOT changes where installs go
+# the default unset location is the path added below
+fish_add_path ~/.deno/bin
+
+# pnpm is nice and polite and actually puts their store
+# in the right location instead of dropping it in a dot dir
+# in your HOME dir
+fish_add_path $XDG_DATA_HOME/pnpm/bin
