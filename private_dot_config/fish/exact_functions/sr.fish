@@ -1,5 +1,5 @@
 function sr -d "Search with rg, then replace all matches with sd"
-    argparse h/help n/dry-run i/ignore-case 'd/max-depth=' 'p/path=' -- $argv
+    argparse h/help n/dry-run i/ignore-case 'd/max-depth=' 'p/path=' 't/type=+' -- $argv
     or return
 
     if set -q _flag_help
@@ -11,12 +11,15 @@ function sr -d "Search with rg, then replace all matches with sd"
         logirl help_flag i/ignore-case "Case-insensitive search and replace"
         logirl help_flag d/max-depth N "Limit recursion depth (1 = current dir only)"
         logirl help_flag p/path "<path>" "Search within <path> instead of current directory"
+        logirl help_flag t/type TYPE "Filter to ripgrep file type(s), e.g. md, py, ts (repeat for multiple)"
         logirl help_header Examples
         printf "  sr 'oldName' 'newName'\n"
         printf "  sr -n 'foo' 'bar'           # preview only\n"
         printf "  sr -i 'TODO' 'DONE'         # case-insensitive\n"
         printf "  sr -d 1 'foo' 'bar'         # current dir only, no recursion\n"
         printf "  sr -p ./src 'foo' 'bar'     # restrict to ./src\n"
+        printf "  sr -t md 'foo' 'bar'        # only markdown files\n"
+        printf "  sr -t md -t ts 'foo' 'bar'  # markdown and typescript\n"
         return 0
     end
 
@@ -53,6 +56,11 @@ function sr -d "Search with rg, then replace all matches with sd"
             return 2
         end
         set rg_base $rg_base --max-depth $_flag_max_depth
+    end
+    if set -q _flag_type
+        for t in $_flag_type
+            set rg_base $rg_base -t $t
+        end
     end
 
     set -l search_path .
