@@ -214,12 +214,12 @@ return {
   },
   -- super cool plugin for reactive highlighting, i haven't dug very deep yet,
   -- just using these presets, but they are already very cool
-  {
-    "rasulomaroff/reactive.nvim",
-    opts = {
-      load = { "catppuccin-frappe-cursor", "catppuccin-frappe-cursorline" },
-    },
-  },
+  -- {
+  --   "rasulomaroff/reactive.nvim",
+  --   opts = {
+  --     load = { "catppuccin-frappe-cursor", "catppuccin-frappe-cursorline" },
+  --   },
+  -- },
   -- Rounding borders on key plugin windows to match the flat UI aesthetic
   -- Note: lazy.nvim border config is in lua/config/lazy.lua (can't be configured via plugin spec)
   {
