@@ -1,6 +1,7 @@
 ---
 description: Diagnoses and recovers broken git states — detached HEAD, bad rebase, lost commits, corrupted index, merge hell, diverged remotes. Use when git is in a confusing or wedged state, a rebase or merge went sideways, commits appear lost, or the index is corrupt. Runs read-only diagnostics freely; gates every state-changing command behind explicit user approval.
 mode: subagent
+color: #e78284
 permission:
   edit: deny
   task:
