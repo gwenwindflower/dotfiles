@@ -2,6 +2,7 @@ packages:
   darwin:
     homebrew:
       taps:
+        - bjarneo/cliamp
         - charmbracelet/tap
         - columnar-tech/tap
         - databricks/tap
@@ -30,6 +31,7 @@ packages:
         - bun
         - chafa
         - chezmoi
+        - cliamp
         - cloudflare-wrangler
         - cmake
         - cmus
