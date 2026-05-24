@@ -9,7 +9,7 @@ Understanding the execution order is critical for writing correct chezmoi config
 2. Read destination state (current home directory)
 3. Compute target state (what destination should become)
 4. Run `run_before_` scripts (alphabetically)
-5. Apply updates (directories, files, symlinks, externals - alphabetically)
+5. Apply updates (directories, files, symlinks, externals — alphabetically)
 6. Run `run_after_` scripts (alphabetically)
 ```
 
@@ -90,7 +90,7 @@ Scripts without `before_` or `after_` prefixes run in alphabetical order during 
 run_once_50-middle.fish  → runs at position 50 during apply
 ```
 
-This is rarely needed - prefer explicit `before_` or `after_` timing.
+This is rarely needed — prefer explicit `before_` or `after_` timing.
 
 ## Practical Implications
 

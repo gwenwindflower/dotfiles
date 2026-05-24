@@ -234,7 +234,7 @@ Store reusable templates in `.chezmoitemplates/`:
 
 ```text
 # .chezmoitemplates/header
-# Managed by chezmoi - do not edit
+# Managed by chezmoi — do not edit
 # Host: {{ .chezmoi.hostname }}
 ```
 

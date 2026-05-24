@@ -27,7 +27,7 @@ Create file only if it doesn't exist in destination. Never overwrites.
 create_dot_bashrc → ~/.bashrc (only if missing)
 ```
 
-Use for files users may customize - chezmoi won't clobber their changes.
+Use for files users may customize — chezmoi won't clobber their changes.
 
 ### Modify Scripts (`modify_`)
 
@@ -148,7 +148,7 @@ Symlinks with empty or whitespace-only targets are **removed** from destination.
 
 ## Scripts
 
-Scripts are executed during `chezmoi apply`. They don't create files - they run commands.
+Scripts are executed during `chezmoi apply`. They don't create files — they run commands.
 
 ### Basic Script (`run_`)
 
@@ -176,7 +176,7 @@ Runs when script content changes. Tracked by content + filename hash.
 run_onchange_50-fisher.fish.tmpl → runs when content changes
 ```
 
-Common pattern - embed hash of watched file:
+Common pattern — embed hash of watched file:
 
 ```fish
 #!/usr/bin/env fish

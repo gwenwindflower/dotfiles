@@ -236,4 +236,4 @@ Common patterns:
 6. `.chezmoiignore` - Determine ignored files
 7. `.chezmoiremove` - Determine files to remove
 8. `.chezmoitemplates/` - Load template partials
-9. Source files/directories/symlinks/scripts - Process entries
+9. Source files/directories/symlinks/scripts — Process entries

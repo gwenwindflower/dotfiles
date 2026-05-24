@@ -154,7 +154,7 @@ chezmoi state dump
 ## Debugging Scripts
 
 ```bash
-# Dry run - shows what would run
+# Dry run — shows what would run
 chezmoi apply -n -v
 
 # Run with verbose output
