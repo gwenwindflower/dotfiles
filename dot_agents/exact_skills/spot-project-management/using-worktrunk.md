@@ -1,23 +1,26 @@
 # Using worktrunk
 
-Worktrunk (`wt`) is the worktree-and-merge layer. When it's installed in a project, **`wt` is the Manager's primary git interface** — creating worktrees, surveying state, gating quality with hooks, and closing both Objectives and Phases through merge pipelines that commit, rebase, fast-forward, and clean up. SPOT's parallel-Phase model lives or dies on coherent worktree state; `wt list` is how a Manager sees it, and `wt merge` is how every level closes cleanly.
+Worktrunk (`wt`) is the cross-session worktree-and-merge layer. Two distinct uses in SPOT:
 
-Raw `git` stays in the toolbox for what `wt` doesn't cover — `git status`, `git log`, `git diff`, the occasional `git rebase -i` to clean unpushed history, one-off rescues. See [What stays raw git](#what-stays-raw-git) below for the short list.
+- **User/Executive surface** — creating Phase trunk worktrees, closing them to main. This is the *primary* worktrunk surface and the one the Manager hands off to.
+- **Manager-internal surface, on platforms without native worktree primitives** — OpenCode and others. The Manager uses `wt switch --create` for Objective worktrees, `wt merge` for Objective→Phase merges, etc.
+
+**Claude Code has native worktree primitives** (`Agent { isolation: "worktree" }`, `WorktreeCreate` / `WorktreeRemove` hooks, `worktree.baseRef` setting) and the Manager **does not invoke `wt` at all** — see [platforms/claude-code.md](platforms/claude-code.md) for the canonical Claude Manager runbook. The sections below describe the wt-direct flow used by Users, Executives, and Managers on non-native platforms.
+
+Across all uses, raw `git` stays in the toolbox for what `wt` doesn't cover — `git status`, `git log`, `git diff`, the occasional `git rebase -i` to clean unpushed history, one-off rescues. See [What stays raw git](#what-stays-raw-git) below.
 
 Detect availability with `wt --version`. If absent, fall back to plain `git worktree` and skip this doc.
 
 ## Two merge levels: Phase trunk branches and Objective feature branches
 
-SPOT under worktrunk uses two levels of branch+worktree, mapped onto familiar git concepts:
+SPOT uses two levels of branch+worktree, mapped onto familiar git concepts:
 
-| Level | Branch role | Naming | Off | When complete | Squash? |
-| --- | --- | --- | --- | --- | --- |
-| **Phase trunk branch** | Acts as the temporary trunk for one Phase's Objectives | `phase-<n>-<slug>` | main | `wt merge --no-squash` to main at Phase close | **No** — preserve per-Objective story on main |
-| **Objective feature branch** | One Subagent's lane within a Phase | `obj-<slug>` (or platform default like `agent-<id>`) | Phase trunk (or main, see platform docs) | `wt merge phase-<n>-<slug>` from the Objective worktree on Subagent close | **Yes** (default) — collapse Subagent's commits into one Objective commit on Phase trunk |
+| Level | Branch role | Naming | Off | When complete | Squash? | Who runs the wt command |
+| --- | --- | --- | --- | --- | --- | --- |
+| **Phase trunk branch** | Acts as the temporary trunk for one Phase's Objectives | `phase-<n>-<slug>` | main | `wt merge --no-squash` to main at Phase close | **No** — preserve per-Objective story on main | **User or Executive** — Manager hands off a clean Phase trunk |
+| **Objective feature branch** | One Subagent's lane within a Phase | `obj-<slug>` (or platform default like `agent-<id>`) | Phase trunk (or main, see platform docs) | `wt merge phase-<n>-<slug>` from the Objective worktree on Subagent close | **Yes** (default) — collapse Subagent's commits into one Objective commit on Phase trunk | **Manager** (on non-native platforms only) — on Claude Code the Manager uses raw `git`, not wt |
 
-The two levels mirror trunk-based development one layer down: the Phase trunk is to the Objective what main is to the Phase trunk. The same `wt merge` pipeline runs at both levels with different squash defaults.
-
-This is the keystone of the Manager's git workflow — almost every raw-git pattern (interactive rebase, manual fixup chains, hand-rolled merge commits) collapses into "run the right `wt merge` at the right level."
+The two levels mirror trunk-based development one layer down: the Phase trunk is to the Objective what main is to the Phase trunk. The same `wt merge` pipeline runs at both levels with different squash defaults — though on Claude Code the Manager replaces the Objective-level `wt merge` with raw `git merge --squash` + cleanup ([platforms/claude-code.md](platforms/claude-code.md)).
 
 ## Agent Teams: the SPOT default
 
@@ -25,10 +28,10 @@ Every Phase gets a team. Manager fans Objectives across Subagents in parallel vi
 
 Per-platform spawn syntax and integration details live in `platforms/`:
 
-- [Claude Code](platforms/claude-code.md) — full integration: `Agent { isolation: "worktree" }` routes through `wt switch --create` automatically; commit guard hook; activity tracking.
-- [OpenCode](platforms/opencode.md) — partial integration in progress; uses pre-create + dispatch pattern.
+- [Claude Code](platforms/claude-code.md) — native worktree primitives; the Manager uses `Agent { subagent_type: "dev" }` (Dev subagent with `isolation: worktree` in frontmatter) and `wt` is not invoked by the Manager at all.
+- [OpenCode](platforms/opencode.md) — partial integration in progress; the Manager uses `wt switch --create` directly to pre-create Objective worktrees, then dispatches sub-agents into them.
 
-When adding a new SPOT-capable platform, drop a `platforms/<name>.md` file alongside these and reference it from this section.
+When adding a new SPOT-capable platform, drop a `platforms/<name>.md` file alongside these and reference it from this section. If the platform has native worktree primitives, follow the Claude Code pattern (no wt in the Manager session); otherwise follow the OpenCode pattern (wt as the Manager's worktree layer).
 
 ## Agent Handoff: out-of-band only
 
@@ -71,13 +74,13 @@ If a platform plugin is installed (Claude Code today), `wt list` also shows 🤖
 
 ## Creating a Phase trunk branch
 
-When Manager picks up an unblocked Phase to run:
+**Run by the User or Executive** before a Manager session starts. The Manager arrives inside the Phase trunk worktree; it doesn't create one itself.
 
 ```bash
 wt switch --create phase-<n>-<slug>    # New branch off main, switch into it
 ```
 
-`wt switch --create` defaults `--base` to the default branch (main), runs pre-switch and pre-start hooks (deps install, tooling setup), and backgrounds post-start hooks. The Phase trunk worktree is the Manager's home for the Phase — this is where context-reading happens, where Subagents merge their Objectives back into, and where the Phase close runs from.
+`wt switch --create` defaults `--base` to the default branch (main), runs pre-switch and pre-start hooks (deps install, tooling setup), and backgrounds post-start hooks. The Phase trunk worktree is the Manager's home for the Phase — this is where context-reading happens, where Subagents merge their Objectives back into, and where the Phase close commit lands.
 
 Edge case: stacking a dependent Phase on top of one still in flight (waiting on PR review of the parent Phase) — explicit, deliberate, rare:
 
@@ -104,6 +107,8 @@ wt switch pr:42  # Pick up a PR branch (creates worktree if needed)
 
 ## Closing an Objective
 
+**Manager work on non-native platforms only** (OpenCode, etc.). On Claude Code the Manager replaces this step with raw `git merge --squash` + cleanup — see [platforms/claude-code.md#closing-an-objective](platforms/claude-code.md#closing-an-objective).
+
 When a Subagent finishes its Objective (committed, clean tree, commit guard satisfied), Manager merges the Objective feature branch into the Phase trunk:
 
 ```bash
@@ -124,11 +129,11 @@ Result on Phase trunk: one well-named commit per Objective. **No fixups, no `git
 
 ## Closing a Phase
 
-When all Objectives are squashed onto Phase trunk and the Manager is back in the Phase trunk worktree, promote and close:
+**Run by the User or Executive** after the Manager hands off the Phase trunk (clean tree, close commit at HEAD with TODO→DONE + spec/doc edits). The Manager's last action was the close commit, not the merge.
+
+From the Phase trunk worktree:
 
 ```bash
-# In the Phase trunk worktree, edit TODO.md → DONE.md (and any `docs/` updates),
-# then:
 wt merge --no-squash
 ```
 

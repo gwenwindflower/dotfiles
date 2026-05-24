@@ -33,8 +33,11 @@ Most requirements live in domain specs. `SPEC.md` stays high-signal.
 
 The rule defines Planner / Manager / Subagent. On top of that:
 
+- **Phase = Manager = Session.** One Phase is one Manager's worth of work, run in one agent session. Don't reuse a Manager session across Phases — the Phase boundary is a context boundary, so each Phase starts fresh ([running-phases](running-phases.md#phases-are-teams-objectives-are-agents)). One step up, Executive runs Managers in [herdr](https://github.com/ogulcancelik/herdr) tabs, one tab per Manager.
+- **Manager start shape is identical user-initiated vs Executive-initiated.** Most Manager sessions are launched directly by a user; some are launched by Executive in a herdr tab. The Manager brief is the same in either case ("Finish this Phase, with a team if the Objectives warrant one"). Manager does not branch behavior on its starting source.
 - **Manager refines wording, not requirements.** Sharpen Task and Objective phrasing for execution; real requirement gaps go back to Planner.
 - **Planner never operates on a Phase mid-flight.** Pause work, make the change, resume — see [writing-specs](writing-specs.md).
+- **Manager hands off the Phase trunk; it never merges to main itself.** Under Executive, a Reviewer gates the merge (propose changes → new Manager session; or accept and merge). Under a user-initiated session, the User runs `wt merge --no-squash` themselves once the Manager reports done — optionally invoking Reviewer first.
 - Some tools encode roles as named agent types with scoped permissions. Otherwise one agent plays several.
 
 ## Requirement IDs at a glance
@@ -44,12 +47,12 @@ Stable, soft-immutable IDs let Phases reference requirements without restating t
 ## Jobs to be done
 
 - [Writing specs](writing-specs.md) — Planner work: spec shape, requirement IDs, phrasing patterns, the four hardening checks (unambiguous / consistent / complete / verifiable), edge cases, anti-patterns, scoping a Phase, Backlog, the `dev-` domain.
-- [Running phases](running-phases.md) — Manager work: the three Manager jobs (sequencing, linear history, quality at Objective close), Subagent teams as the SPOT default, per-Phase workflow, the per-commit cadence under the Phase trunk model, when spec-only commits earn their keep, TDD carve-outs, Subagent drift, parallel Phases across Manager sessions, handoff to Planner.
+- [Running phases](running-phases.md) — Cross-platform Manager conceptual flow: the three Manager jobs (sequencing, linear history, quality at Objective close), Subagent teams as the SPOT default, per-Phase workflow, when spec-only commits earn their keep, TDD carve-outs, Subagent drift, parallel Phases across Manager sessions, handoff to Planner. Pair with the platform doc for spawn + merge mechanics.
 - [Decision records](adrs.md) — optional, Planner-driven: lightweight ADRs as a release valve for amending requirements already shipped to main. File shape, frontmatter, status lifecycle, when to write one (and when not to). Skip for new requirements and in-flight branches; `DONE.md` still owns rationale for newly shipped work.
-- [Using worktrunk](using-worktrunk.md) — `wt` is the Manager's primary git interface: the **Phase trunk branch + Objective feature branch** model (two `wt merge` levels, with squash defaults that differ by level), Agent Teams as the SPOT default + Agent Handoff as out-of-band-only, surveying with `wt list`, creating Phase trunks, closing Objectives and Phases, recommended `.config/wt.toml` for SPOT (pre-commit / pre-merge with `{{ target }}` conditional, `copy-ignored`), and the short list of operations that stay raw git.
-- [EXECUTIVE.md](EXECUTIVE.md) — speculative: a higher-level role that picks unblocked Phases and spawns Manager sessions across tmux panes via the Agent Handoff pattern. Out of scope for normal Manager/Planner work; load only when the user invokes Executive.
+- [Using worktrunk](using-worktrunk.md) — `wt` as the **cross-session** worktree-and-merge layer: User/Executive run `wt switch --create` for Phase trunk worktrees and `wt merge --no-squash` to land them on main. Also the Manager-internal layer on platforms without native worktree primitives (OpenCode, etc.). The **Phase trunk branch + Objective feature branch** model, surveying with `wt list`, recommended `.config/wt.toml` for SPOT (pre-commit / pre-merge with `{{ target }}` conditional, `copy-ignored`), and the short list of operations that stay raw git.
+- [EXECUTIVE.md](EXECUTIVE.md) — higher-level role that picks unblocked Phases, spawns one Manager session per Phase as a [herdr](https://github.com/ogulcancelik/herdr) tab via the Agent Handoff pattern, and gates Phase-trunk → main merges through a Reviewer. The autonomy gradient runs from pure-autonomous (sandbox VM, hours unattended) to interactive pairing (user tabs between live Managers). Out of scope for normal Manager/Planner work; load only when the user invokes Executive.
 
-Platform-specific Subagent spawn syntax and integration details live in `platforms/`:
+Platform-specific runbooks live in `platforms/`. Load the platform doc as your working doctrine alongside the cross-platform Manager flow — Subagent spawn syntax and Objective merge mechanics vary by platform:
 
-- [platforms/claude-code.md](platforms/claude-code.md) — full integration via the worktrunk plugin.
-- [platforms/opencode.md](platforms/opencode.md) — partial integration in progress.
+- [platforms/claude-code.md](platforms/claude-code.md) — Canonical Claude Code runbook. Native worktree primitives via `Agent { subagent_type: "dev" }`, `WorktreeCreate`/`WorktreeRemove` hooks, raw `git` for Objective merges. Manager **does not invoke `wt`** — User/Executive own Phase trunk creation and Phase→main merge.
+- [platforms/opencode.md](platforms/opencode.md) — Partial integration in progress; Manager uses `wt switch --create` directly for Objective worktrees and `wt merge` for Objective merges.
