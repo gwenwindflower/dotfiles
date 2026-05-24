@@ -121,6 +121,7 @@ packages:
         - tpm
         - tree
         - tuitab
+        - typst
         - unar
         - uv
         - vhs
