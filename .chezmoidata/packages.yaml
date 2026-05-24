@@ -146,11 +146,19 @@ packages:
         - claude-code
         - copilot-money
         - dbc
+        - font-charter
+        - font-ibm-plex-mono
+        - font-ibm-plex-sans
+        - font-ibm-plex-serif
+        - font-inter
         - font-maple-mono
         - font-maple-mono-nf
         - font-mona-sans
         - font-monaspace-nf
         - font-monaspace-var
+        - font-sniglet
+        - font-source-sans-3
+        - font-source-serif-4
         - font-symbols-only-nerd-font
         - google-chrome
         - ia-presenter
