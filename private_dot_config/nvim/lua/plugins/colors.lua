@@ -16,10 +16,6 @@ return {
           solid = true,
         },
         integrations = {
-          snacks = {
-            enabled = true,
-            indent_scope_color = "pink",
-          },
           blink_cmp = {
             enabled = true,
             style = "bordered",
