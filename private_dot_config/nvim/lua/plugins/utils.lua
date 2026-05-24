@@ -51,7 +51,6 @@ return {
       opts.snippetSelection = opts.snippetSelection or {}
       opts.snippetSelection.picker = "snacks"
       opts.snippetDir = vim.fn.stdpath("config") .. "/snippets"
-      opts.jsonFormatter = "yq"
       opts.backdrop = opts.backdrop or {}
       opts.backdrop.enabled = false
       opts.editSnippetPopup = opts.editSnippetPopup or {}
