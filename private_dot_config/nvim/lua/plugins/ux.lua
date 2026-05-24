@@ -201,7 +201,7 @@ return {
             },
           },
           ui_select = true,
-          prompt = " ",
+          prompt = " ",
         },
         lazygit = {
           theme = {
