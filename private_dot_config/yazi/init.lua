@@ -1,7 +1,9 @@
 local bookmarks = {
 	{ key = "@", path = "~", desc = " User Home" },
 	{ key = { "c", "f" }, path = "~/.config", desc = " User Config" },
-	{ key = "p", path = "~/dev", desc = " Projects" },
+	{ key = { "p", "p" }, path = "~/dev", desc = " Projects" },
+	{ key = { "p", "m" }, path = "~/dev/00_supermodel", desc = " Supermodel" },
+	{ key = { "p", "u" }, path = "~/dev/01_utils", desc = " Utils" },
 	{ key = "w", path = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents", desc = "󰓥 Obsidian" },
 	{ key = { "l", "b" }, path = "~/.local/bin", desc = " Local bin" },
 	{ key = { "l", "s" }, path = "~/.local/share", desc = " Local share" },
