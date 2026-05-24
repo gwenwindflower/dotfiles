@@ -51,12 +51,12 @@ on = ["g", "@"]
 run = "plugin bunny fuzzy"
 
 [[mgr.prepend_keymap]]
-on = "e"
+on = "E"
 run = "plugin editor -- edit"
 desc = "Open hovered item in $EDITOR"
 
 [[mgr.prepend_keymap]]
-on = "E"
+on = "e"
 run = "plugin editor -- git-root"
 desc = "Open $EDITOR at git repo root"
 
