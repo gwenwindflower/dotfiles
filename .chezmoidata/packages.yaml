@@ -113,6 +113,7 @@ packages:
         - spotify_player
         - starship
         - stripe-cli
+        - tailspin
         - taws
         - termframe
         - tlrc
