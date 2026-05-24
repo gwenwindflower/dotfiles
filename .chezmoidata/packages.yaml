@@ -167,6 +167,7 @@ packages:
         - krita
         - lookaway
         - meteor
+        - mimestream
         - mitmproxy
         - monodraw
         - monologue
