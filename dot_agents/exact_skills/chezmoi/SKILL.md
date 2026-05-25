@@ -24,6 +24,9 @@ chezmoi add ~/.bashrc           # Add file to management
 chezmoi edit ~/.bashrc          # Edit source file
 ```
 
+> [!IMPORTANT]
+> **Always** use dry-run and no-pager flags, even if you think they might not be necessary. They are harmless if not needed, and they will save destructive changes or hanging shells leftover for the user to fix. Commands that start with `chezmoi --dry-run --no-pager` are automatically approved, while others are gated.
+
 ## Core Concepts
 
 - **Attributes**: Prefixes/suffixes on source filenames control behavior (`dot_`, `private_`, `executable_`, `.tmpl`, etc.). See [attributes reference](attributes.md).
