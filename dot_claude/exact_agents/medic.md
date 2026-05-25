@@ -3,7 +3,6 @@ name: medic
 description: Diagnoses and recovers broken git states — detached HEAD, bad rebase, lost commits, corrupted index, merge hell, diverged remotes. Use when git is in a confusing or wedged state, a rebase or merge went sideways, commits appear lost, or the index is corrupt.
 color: red
 permissions:
-  defaultMode: ask
   allow:
     - Edit(~/.claude/**)
     - Write(~/.claude/**)
