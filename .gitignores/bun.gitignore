@@ -1,0 +1,47 @@
+# secrets
+.env*
+*.env
+
+# logs
+logs
+*.log
+npm-debug.log*
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# cache
+.cache
+
+# dbs
+*.sqlite
+.dynamodb/
+
+# packages
+node_modules
+*.tsbuildinfo
+.npm
+
+# builds
+dist/
+build/
+*.bun-build
+*.tgz
+
+# tooling
+lib-cov
+coverage
+*.lcov
+.eslintcache
+.node_repl_history
+
+# editors
+.vscode
+.idea
+
+# frameworks
+.next
+.nuxt
+
+# local
+*.local.toml
+*.local.yaml
+*.local.json
