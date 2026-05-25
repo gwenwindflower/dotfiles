@@ -372,17 +372,11 @@ function rewriteJsoncObjectBlock(
   const innerIndent = detectBlockIndent(text, block.openBrace, "\t\t");
   const outerIndent = detectOuterIndent(text, block.openBrace);
 
-  // Format: blank line between mode groups for readability.
-  const lines: string[] = [];
-  let prevMode: Mode | null = null;
-  for (const [pattern, mode] of sorted) {
-    if (prevMode !== null && mode !== prevMode) lines.push("");
-    lines.push(`${innerIndent}"${pattern}": "${mode}"`);
-    prevMode = mode;
-  }
-  // Add trailing commas (JSONC tolerates them, but we'll match strict JSON style).
+  const lines = sorted.map(([pattern, mode]) =>
+    `${innerIndent}"${pattern}": "${mode}"`
+  );
   const joined = lines
-    .map((l, i) => (l === "" ? l : i === lines.length - 1 ? l : l + ","))
+    .map((l, i) => (i === lines.length - 1 ? l : l + ","))
     .join("\n");
 
   const newBlock = `{\n${joined}\n${outerIndent}}`;
