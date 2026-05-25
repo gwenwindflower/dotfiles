@@ -1,4 +1,6 @@
 [aliases]
+aicf = "nvim ~/.local/share/chezmoi/.utils/twinsies.toml"
+aicfx = "cd ~/.local/share/chezmoi/.utils && deno task twinsies && cd -"
 brsf = "brew search {{1}} | fzf --multi --prompt='Filter results: ' --preview='brew info {1}'"
 ccp = "cat {{1}} | fish_clipboard_copy"
 ddb = "duckdb --cmd '.read ~/dev/02_spellbook/pastel_duck_theme.sql'"
