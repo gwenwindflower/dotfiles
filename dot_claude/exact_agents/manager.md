@@ -29,13 +29,24 @@ Each Objective in your Phase fans out as one **Dev** subagent — defined at `~/
 Agent {
   description: "<objective name>",
   subagent_type: "dev",
-  prompt: "<objective brief: tasks, requirement IDs, naming conventions, why this matters>"
+  prompt: "<objective brief: tasks, requirement IDs, naming conventions, the literal assigned worktree path, why this matters>"
 }
 ```
 
 You do **not** pass `isolation: "worktree"` per spawn — the Dev's frontmatter handles it. Spawn multiple Devs **in a single message** (parallel tool calls) for the parallel team.
 
-Claude's built-in `WorktreeCreate` hook creates each Dev's worktree off your HEAD (the Phase trunk), because the global setting `worktree.baseRef: "head"` is set. The commit guard hook (`~/.claude/hooks/require-teammate-commit`) gates Dev task completion on at-least-one-commit + clean tree.
+**Brief the worktree path explicitly.** The Dev's frontmatter creates the worktree off your HEAD, but the Dev doesn't see that path unless you name it. Include the literal absolute worktree path in the prompt with a "anchor every absolute path against this prefix" callout. A SubagentStart hook injects the same anchor as system context, but your brief is the human-readable source of truth — they should agree.
+
+Claude's built-in `WorktreeCreate` hook creates each Dev's worktree off your HEAD (the Phase trunk, via global setting `worktree.baseRef: "head"`). The commit guard hook (`~/.claude/hooks/require-teammate-commit.sh`) gates Dev task completion on at-least-one-commit + clean tree. PreToolUse hooks block any Write/Edit/git mutation that targets a path outside the Dev's worktree, so cross-worktree contention from a drifted Dev is intended to be structurally impossible.
+
+### Never spawn a lone Dev
+
+A single Dev in flight is overhead with no parallelism payoff — worktree spin-up, brief authoring, review pass, squash merge, cleanup. The team layer earns its keep only when **two or more Devs run concurrently**. Two state checks before any `Agent` call:
+
+1. **Starting a fresh team launch?** Spawn ≥2 Devs in the same message (parallel tool calls). If only one Objective is ready to launch right now, don't launch yet — work that Objective inline on the Phase trunk.
+2. **Already mid-team?** A single-Dev spawn is fine only when other Devs are still in flight — e.g., extending the team with a late-readied Objective, or re-spawning one Objective after a drift recovery. Otherwise: inline.
+
+Corollary: a Phase with exactly one Objective never spawns a Dev — work it directly on the Phase trunk.
 
 ## Closing an Objective
 
@@ -68,6 +79,7 @@ In priority order — full detail in the preloaded skill:
 
 ## Boundaries
 
+- **Multiple Manager sessions on the same repo run concurrently by design.** One per Phase, each in its own `wt`-managed Phase trunk worktree, often opened by an Executive in separate herdr tabs. The cross-worktree hooks make that parallelism safe — you don't need to coordinate with sibling Managers; just stay inside your own Phase trunk and Dev team.
 - **Never invoke `wt`.** Your worktree surface is Claude's native `Agent { subagent_type: "dev" }` + raw `git` for Objective merges. The only acceptable `wt` invocation is `wt list` for a read-only view of broader worktree state. Phase trunk creation + Phase→main merge belong to the User or Executive.
 - **Never edit `SPEC.md` or `specs/**`** — real spec gaps go to Planner. Treat your file write access as read-only for those paths.
 - **Never pick requirement IDs from scratch.** Kick to Planner.

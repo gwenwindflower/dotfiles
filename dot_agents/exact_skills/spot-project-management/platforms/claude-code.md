@@ -16,9 +16,13 @@ The split matters because Claude Code has first-class worktree primitives. `Agen
 
 **Manager does not invoke `wt` at all.** The escape hatch when something goes sideways is raw `git` (see [Escape hatch: raw git](#escape-hatch-raw-git)). If you find yourself reaching for `wt switch` or `wt merge` mid-Phase, stop — you're outside the contract.
 
+**Manager spawns Devs only when ≥2 Objectives can run concurrently.** A Phase with one Objective, or with sequential-only Objectives, runs inline on the Phase trunk. The Dev team is parallelism overhead — see [The Dev subagent](#the-dev-subagent).
+
 ## The Dev subagent
 
-One Objective fans out to one Dev subagent. The agent is defined at `~/.claude/agents/dev.md` (source: `dot_claude/exact_agents/dev.md`) with:
+A Dev team is parallelism overhead — worktree spin-up, brief authoring, review pass, squash merge, cleanup. It earns its keep only when ≥2 Objectives genuinely run concurrently. Single Objective, or sequential-only Objectives within a Phase, run inline on the Phase trunk. (Mid-team, a single-Dev spawn is fine if other Devs are still in flight — extending or re-spawning. Otherwise: inline.)
+
+When parallelism is warranted, one Objective fans out to one Dev subagent. The agent is defined at `~/.claude/agents/dev.md` (source: `dot_claude/exact_agents/dev.md`) with:
 
 - `isolation: worktree` in frontmatter — every spawn auto-creates an isolated worktree
 - `skills: [spot-project-management]` — preloaded so the Dev knows the Phase/Objective/Task hierarchy and commit hygiene rules
@@ -30,11 +34,11 @@ Spawn shape:
 Agent {
   description: "<objective name>",
   subagent_type: "dev",
-  prompt: "<objective brief: tasks, requirement IDs, naming conventions, why this matters>"
+  prompt: "<objective brief: tasks, requirement IDs, naming conventions, the literal assigned worktree path, why this matters>"
 }
 ```
 
-The Manager does **not** pass `isolation: "worktree"` per spawn — the agent's frontmatter handles it. Spawn multiple Devs **in a single message** (parallel tool calls) for the parallel team.
+The Manager does **not** pass `isolation: "worktree"` per spawn — the agent's frontmatter handles it. Spawn multiple Devs **in a single message** (parallel tool calls) for the parallel team. Always name the worktree path in the brief; a SubagentStart hook also injects it as system context, but the brief is the human-readable source of truth.
 
 ## Objective worktree lifecycle
 
@@ -42,7 +46,7 @@ Driven by Claude's built-in `WorktreeCreate` / `WorktreeRemove` hooks; the Manag
 
 1. **Spawn.** Manager calls `Agent { subagent_type: "dev", ... }`.
 2. **WorktreeCreate hook fires** (built into Claude Code). Creates a new worktree off the Manager's HEAD — i.e. the Phase trunk — because the global setting `worktree.baseRef: "head"` is set in `~/.claude/settings.json`. The Dev's branch is auto-named.
-3. **Dev runs in the worktree.** Edits, commits, runs tests. The `require-teammate-commit` hook gates the Dev's task completion on at-least-one-commit + clean tree.
+3. **Dev runs in the worktree.** Edits, commits, runs tests. The `require-teammate-commit.sh` hook gates the Dev's task completion on at-least-one-commit + clean tree.
 4. **Dev exits.** Returns path and branch name to the Manager via tool result.
 5. **Manager reviews the diff** against the Objective's requirement IDs.
 6. **Manager squash-merges** with raw `git` from the Phase trunk worktree (see [Closing an Objective](#closing-an-objective)).
@@ -88,7 +92,7 @@ The Manager's last action is the close commit, not the merge. Phase trunk → ma
 
 ## Hooks: commit guard
 
-`require-teammate-commit` (in `~/.claude/hooks/`) fires on `TaskCompleted` for subagents in a team context (`teammate_name` is set). It blocks task completion unless:
+`require-teammate-commit.sh` (in `~/.claude/hooks/`) fires on `TaskCompleted` for subagents in a team context (`teammate_name` is set). It blocks task completion unless:
 
 1. At least one new commit exists past the Dev's branch point
 2. The working tree is clean
@@ -104,6 +108,8 @@ The safety floor — the Dev cannot return "done" with uncommitted work or no co
 - Working-tree state, default-branch relation, etc. (see [using-worktrunk#surveying-worktrees](../using-worktrunk.md#surveying-worktrees))
 
 This is the one place `wt` shows up in a Manager session, and it's read-only — `wt list` only, never `wt switch` or `wt merge`. Treat it like `git status` for the broader worktree picture.
+
+The cross-worktree PreToolUse hooks (block writes/edits/git mutations outside a Dev's worktree) make structural contamination rare. Treat `wt list` as general dashboard awareness, not a drift detector — sibling uncommitted work usually reflects normal team activity (user-executive edits, another Manager mid-Phase, an in-flight Objective). If something looks genuinely inconsistent with what you spawned, call `medic` to diagnose.
 
 ## Statusline
 

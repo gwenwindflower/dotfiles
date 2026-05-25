@@ -62,7 +62,7 @@ Before dispatching any work:
 5. **Close each Objective.** When a Subagent finishes (commit guard satisfied), Manager reviews the diff against the requirement IDs and the job-2/job-3 quality checks. If clean, squash-merge the Objective into the Phase trunk with one well-named conventional commit. If anything's off, roll back and re-spawn ([Subagent drift](#subagent-drift)). Mechanics vary by platform — see the platform doc.
 6. **Promote to DONE.** When all Objectives are on the Phase trunk, edit `TODO.md` and `DONE.md`: move the Phase block, header verbatim with `✅`, Objectives and Tasks verbatim with checked boxes, Phase-level narrative under the header.
 7. **Capture context.** Update `docs/` for current-state changes; index new files from `CLAUDE.md`/`AGENTS.md`. Append surfaced harness/tooling needs to the right `dev-*` spec.
-8. **Commit the close.** One `chore(spot):` (or `chore(specs):` if spec edits ride along) commit on the Phase trunk covering the DONE move + spec/doc edits.
+8. **Commit the close.** One `chore(specs):` commit on the Phase trunk covering the DONE move + spec/doc edits.
 9. **Hand off.** Phase trunk is clean with the close commit at HEAD. **Manager does not merge to main.** Report back; User or Executive runs `wt merge --no-squash` from the Phase trunk worktree to land it. Under Executive, a Reviewer gates first — see [EXECUTIVE.md](EXECUTIVE.md#reviewer-flow).
 10. **Hand off to Planner.** What shipped, satisfied IDs, surprises worth folding into durable specs, new Backlog items.
 
