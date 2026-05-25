@@ -9,9 +9,12 @@
 ```text
 type(scope): brief description in imperative mood
 
-Optional body with rationale and context. Feel free to be detailed here.
+Optional body — short bullets, see below.
 
-[Co-author tag for Claude Code commits]
+Closes #123                                      (when applicable)
+Closes Phase <n>                                 (when applicable)
+
+Co-Authored-By: <Agent Name> <noreply@anthropic.com>
 ```
 
 ## Types
@@ -59,7 +62,7 @@ and lives in src/auth/refresh.ts. We considered rolling our own JWT
 verification but decided against it because the surface is finicky.
 ```
 
-Good — bullets, state changes, brief purpose, reference:
+Good — bullets, state changes, brief purpose, reference, trailers:
 
 ```text
 feat(auth): rotate google oauth state token per request
@@ -67,5 +70,19 @@ feat(auth): rotate google oauth state token per request
 * close CSRF replay window flagged by au-R008 audit
 * align rotation interval with email-flow (15min) for consistency
 * new util in auth/oauth/state.ts; covered by au-R008 test
+
+Closes #234
 Closes Phase 4
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
 ```
+
+## Trailers
+
+End the commit with standard trailers when applicable, blank line before the trailer block. Order: GitHub closing keywords, project markers, identity.
+
+- **GitHub closing keywords** — `Closes #123`, `Fixes #456`, `Resolves #789` when the commit resolves a referenced issue or PR. Lets GitHub auto-close on merge.
+- **`Closes Phase <n>`** — on its own line when the commit closes a SPOT Phase.
+- **`Co-Authored-By: <Agent Name> <noreply@anthropic.com>`** — always the final line for agent-authored or agent-assisted commits. Use the actual running model: `Claude Opus 4.7 (1M context)`, `Claude Sonnet 4.6`, `Claude Haiku 4.5`, etc. Non-Claude agents follow the same shape with their own name and project email.
+
+Trailers must be the last paragraph, separated from the body by a blank line — git's trailer parser depends on it.
