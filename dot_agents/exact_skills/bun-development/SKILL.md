@@ -1,6 +1,6 @@
 ---
 name: bun-development
-description: Use when editing files in a Bun project (bun.lock or bun.lockb at the root, "packageManager":"bun..." in package.json, or imports from bun:*) or running bun/bunx commands. Covers Bun-native APIs, bun:test, bun build --compile, the Bun-optimized tsconfig, and full-stack HTML imports with Bun.serve routes.
+description: Use when editing files in a Bun project (bun.lock or bun.lockb at the root, "packageManager":"bun..." in package.json, or imports from bun:*) or running bun/bunx commands. Covers Bun-native APIs, bun:test, bun build --compile, and the Bun-optimized tsconfig.
 ---
 
 # Bun Development
@@ -45,8 +45,6 @@ const server = Bun.serve({
 ```
 
 Returning `undefined` after `server.upgrade(req)` completes the WebSocket handshake.
-
-For HTML entrypoints and route-based handlers (`import page from "./index.html"` → `serve({ routes })`), see [full-stack HTML](fullstack-html.md). That's the recommended shape for any app that serves both HTML and APIs.
 
 ## bun:test
 
@@ -94,6 +92,31 @@ const result = await Bun.build({
 if (!result.success) console.error(result.logs);
 ```
 
+## Full-stack HTML bundles
+
+Bun ≥ 1.3.10 takes `.html` files as bundler entrypoints — it traces `<script type="module" src="./x.ts">`, `<link rel="stylesheet">`, CSS imported from JS/TS, and `url()` references inside CSS. Pair it with `--compile --target=browser` to emit one self-contained HTML with every asset inlined as a `data:` URI (woff2 fonts from `@fontsource/*` work out of the box). Replaces Vite + `vite-plugin-singlefile` for iframe widgets, MCP App resources, and other single-file SPAs.
+
+```bash
+bun build --compile --target=browser ./src/app.html --outfile ./dist/app.html
+```
+
+```html
+<!-- src/app.html — the entry; Bun walks the graph from here -->
+<!DOCTYPE html>
+<link rel="stylesheet" href="./app.css">
+<script type="module" src="./app.ts"></script>
+<div id="root"></div>
+```
+
+```typescript
+// src/app.ts — CSS imports fold into the same bundle
+import "@fontsource/inter/400.css";
+import "./component.css";
+```
+
+> [!CAUTION]
+> Plain `bun build --html` (without `--compile --target=browser`) emits sibling JS/CSS chunks, not one file. The single-file behavior comes from `--compile --target=browser` against an HTML entry, added in Bun 1.3.10 (April 2026). No third-party inliner needed — `vite-plugin-singlefile`, `inline-source`, `posthtml-inline-assets` are all obsolete for this case.
+
 ## tsconfig baseline
 
 ```json
@@ -124,5 +147,5 @@ Pair `"types": ["bun"]` with `@types/bun` as a devDependency. The legacy `bun-ty
 
 ## Resources
 
-- [Bun docs](https://bun.sh/docs) · [HTML & static bundling](https://bun.com/docs/bundler/html-static) · [Full-stack](https://bun.com/docs/bundler/fullstack)
+- [Bun docs](https://bun.sh/docs)
 - [Elysia](https://elysiajs.com/) · [Hono](https://hono.dev/) — Bun-friendly server frameworks
