@@ -1,37 +1,30 @@
 ###-begin-opencode-completions-###
 #
-# yargs command completion script (fish, with descriptions)
+# yargs command completion script
 #
-# Installation:
-#   Save as ~/.config/fish/completions/opencode.fish
-#   fish auto-loads completions from this path.
+# Installation: opencode completion >> ~/.bashrc
+#    or opencode completion >> ~/.bash_profile on OSX.
 #
+_opencode_yargs_completions()
+{
+    local cur_word args type_list
 
-function __fish_opencode_yargs_completions
-    set -l args (commandline -opc)
-    set -l raw (opencode --get-yargs-completions $args 2>/dev/null)
+    cur_word="${COMP_WORDS[COMP_CWORD]}"
+    args=("${COMP_WORDS[@]}")
 
-    for line in $raw
-        # If backend already returns fish-native "completion<TAB>description", pass through.
-        if string match -qr '\t' -- $line
-            echo $line
-            continue
-        end
+    # ask yargs to generate completions.
+    # see https://stackoverflow.com/a/40944195/7080036 for the spaces-handling awk
+    mapfile -t type_list < <(opencode --get-yargs-completions "${args[@]}")
+    mapfile -t COMPREPLY < <(compgen -W "$( printf '%q ' "${type_list[@]}" )" -- "${cur_word}" |
+        awk '/ / { print "\""$0"\"" } /^[^ ]+$/ { print $0 }')
 
-        # Also accept "completion - description" and convert to fish format.
-        if string match -qr '^[^[:space:]].+[[:space:]]-[[:space:]].+$' -- $line
-            set -l parts (string split -m 1 ' - ' -- $line)
-            if test (count $parts) -eq 2
-                echo "$parts[1]\t$parts[2]"
-                continue
-            end
-        end
+    # if no match was found, fall back to filename completion
+    if [ ${#COMPREPLY[@]} -eq 0 ]; then
+      COMPREPLY=()
+    fi
 
-        # Plain completion (no description)
-        echo $line
-    end
-end
-
-# Keep file completion fallback by not using -f
-complete -c opencode -a '(__fish_opencode_yargs_completions)'
+    return 0
+}
+complete -o bashdefault -o default -F _opencode_yargs_completions opencode
 ###-end-opencode-completions-###
+
