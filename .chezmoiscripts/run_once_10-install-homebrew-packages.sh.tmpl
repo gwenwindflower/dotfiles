@@ -12,9 +12,11 @@ log_step "Installing Homebrew packages"
 
 {{- $taps := .packages.darwin.homebrew.taps }}
 {{ if $taps -}}
-# Verify taps are available before installing packages that depend on them
+# Verify taps are available before installing packages that depend on them.
+# Single `brew tap` call replaces per-tap `brew tap-info` (which can hit network).
+INSTALLED_TAPS="$(brew tap)"
 {{ range $taps -}}
-if ! brew tap-info {{ . | quote }} >/dev/null 2>&1; then
+if ! grep -qxF {{ . | quote }} <<<"$INSTALLED_TAPS"; then
   log_error "Required tap {{ . | quote }} is missing — run_once_05 may have failed"
   exit 1
 fi

@@ -19,12 +19,26 @@ log_step "Adding Homebrew taps"
 MAX_RETRIES=3
 RETRY_DELAY=5
 
+# Single fast call lists every currently-installed tap; per-tap subcommands
+# below short-circuit on cache hit, avoiding brew's per-invocation auto-update.
+INSTALLED_TAPS="$(brew tap)"
+
+tap_installed() {
+  grep -qxF "$1" <<<"$INSTALLED_TAPS"
+}
+
 add_tap() {
   local tap="$1"
-  local attempt=1
+  if tap_installed "$tap"; then
+    log_success "$tap (already tapped)"
+    return 0
+  fi
 
+  local attempt=1
   while [ $attempt -le $MAX_RETRIES ]; do
+    log_info "Tapping $tap..."
     if brew tap "$tap" 2>/dev/null; then
+      log_success "$tap"
       return 0
     fi
     log_warn "Tap '$tap' failed (attempt $attempt/$MAX_RETRIES), retrying in ${RETRY_DELAY}s..."
@@ -36,21 +50,10 @@ add_tap() {
   exit 1
 }
 
-verify_tap() {
-  local tap="$1"
-  if ! brew tap-info "$tap" >/dev/null 2>&1; then
-    log_error "Tap '$tap' is not available after adding"
-    exit 1
-  fi
-}
-
 {{ range $taps -}}
-log_info "Tapping {{ . }}..."
 add_tap {{ . | quote }}
-verify_tap {{ . | quote }}
-log_success "{{ . }}"
 {{ end -}}
 
-log_success "All taps verified"
+log_success "All taps present"
 {{ end -}}
 {{ end -}}
