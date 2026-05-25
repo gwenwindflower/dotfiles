@@ -30,7 +30,7 @@ function compgen -d "Probe a CLI for fish completion output and install to ~/.co
         return 127
     end
 
-    set -l completions_dir "$HOME/.config/fish/completions"
+    set -l completions_dir "$HOME/.local/share/chezmoi/private_dot_config/fish/exact_completions"
     set -l target "$completions_dir/$cmd_name.fish"
 
     if not test -d $completions_dir
