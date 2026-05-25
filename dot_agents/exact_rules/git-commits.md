@@ -41,6 +41,7 @@ Specs hold *what*, DONE.md holds *why*, code holds *how* — the commit body is 
 Hard rules when you do write one:
 
 - **3-5 short bullets, max.** One sentence each. Imperative mood. State changes only.
+- **Use `*` as the bullet character**, not `-`. Reads cleaner in `git log` and avoids being mistaken for an option flag in terminal output.
 - **Very brief purpose is fine** — one short clause linking the change to a goal. Anything longer (extended rationale, considered alternatives, surprising findings) belongs in a spec, DONE.md, or an ADR.
 - **Reference Phases at the end** when applicable: `Closes Phase <n>`.
 
@@ -63,8 +64,8 @@ Good — bullets, state changes, brief purpose, reference:
 ```text
 feat(auth): rotate google oauth state token per request
 
-- close CSRF replay window flagged by au-R008 audit
-- align rotation interval with email-flow (15min) for consistency
-- new util in auth/oauth/state.ts; covered by au-R008 test
+* close CSRF replay window flagged by au-R008 audit
+* align rotation interval with email-flow (15min) for consistency
+* new util in auth/oauth/state.ts; covered by au-R008 test
 Closes Phase 4
 ```
