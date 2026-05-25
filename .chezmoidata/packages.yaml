@@ -3,6 +3,7 @@ packages:
     homebrew:
       taps:
         - bjarneo/cliamp
+        - bro3886/tap
         - charmbracelet/tap
         - columnar-tech/tap
         - databricks/tap
@@ -99,6 +100,7 @@ packages:
         - pygments
         - rclone
         - redpanda
+        - rem-cli
         - resvg
         - rich-cli
         - ripgrep
@@ -147,6 +149,7 @@ packages:
         - copilot-money
         - dbc
         - font-charter
+        - font-hanken-grotesk
         - font-ibm-plex-mono
         - font-ibm-plex-sans
         - font-ibm-plex-serif
