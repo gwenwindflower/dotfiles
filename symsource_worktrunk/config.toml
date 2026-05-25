@@ -1,5 +1,18 @@
 [commit.generation]
 command = "CLAUDE_CODE_DISABLE_THINKING=1 claude -p --model=sonnet --tools='' --disable-slash-commands --setting-sources='' --system-prompt=''"
+template-append = """
+- Conventional commits: `type(scope): subject` in imperative mood, no trailing period, subject ≤72 chars.
+- Types: feat, fix, test (tests only), refactor (no behavior change), perf, style (formatting only), build, ci, chore, docs (docs only).
+- Pick a specific scope from the diff: `feat(auth): add JWT refresh token rotation`, not `feat: update auth`.
+- Skip the body unless state changes aren't obvious from the diff or subject. When used:
+  - 3-5 short bullets max, one sentence each, imperative mood, state changes only.
+  - Use `*` as the bullet character, not `-`.
+  - A one-clause purpose tag is fine; extended rationale, alternatives, or findings belong in DONE/specs, not here.
+- Trailers, in this order, separated from body by a blank line:
+  - `Closes #N` / `Fixes #N` / `Resolves #N` when the diff, branch name, or recent commits reference a GitHub issue or PR this commit closes — so GitHub auto-closes on merge.
+  - `Closes Phase <n>` when the commit closes a SPOT Phase.
+  - `Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>` always as the final line.
+"""
 
 [list]
 summary = true
