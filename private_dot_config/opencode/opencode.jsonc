@@ -1,8 +1,5 @@
 {
 	"$schema": "https://opencode.ai/config.json",
-
-	"model": "github-copilot/claude-opus-4.6",
-	"small_model": "github-copilot/gpt-5.4-mini",
 	"permission": {
 		"bash": {
 			"*": "ask",
@@ -98,6 +95,7 @@
 			"pnpm run lint *": "allow",
 			"pnpm run test *": "allow",
 			"pnpm typecheck *": "allow",
+			"pnpm types *": "allow",
 			"pnpx ctx7 docs *": "allow",
 			"pnpx ctx7 library *": "allow",
 			"pnpx fallow *": "allow",
@@ -127,6 +125,7 @@
 			"uv venv *": "allow",
 			"wc *": "allow",
 			"which *": "allow",
+			"wt config *": "allow",
 			"wt list *": "allow",
 			"wt status *": "allow",
 			"wt switch *": "allow",
