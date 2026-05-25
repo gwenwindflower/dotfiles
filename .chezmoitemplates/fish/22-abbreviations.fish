@@ -50,6 +50,15 @@ abbr --add tmd tmux detach-client
 abbr --add tmrm tmux kill-server
 abbr --add tmw twin (basename "$PWD") --cmd
 abbr --add tmh tmux_hint
+# herdr
+abbr --add hrd herdr
+abbr --add hrdx herdr server
+abbr --add hrdxx herdr server stop
+abbr --add hrdii herdr integration install
+abbr --add hrds herdr session
+abbr --add hrdsa herdr session attach
+abbr --add hrdsrm herdr session delete
+abbr --add hrdsls herdr session ls
 # shell snippets
 abbr --add --position anywhere -- --help '--help | bat -plhelp'
 abbr --add --position anywhere -- -h '--help | bat -plhelp'
