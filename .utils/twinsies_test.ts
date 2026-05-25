@@ -83,9 +83,9 @@ Deno.test("sortEntries groups by mode order then alpha within group", () => {
     ["apple", "allow"],
   ];
   assertEquals(sortEntries(input), [
+    ["midway", "ask"],
     ["apple", "allow"],
     ["beta", "allow"],
-    ["midway", "ask"],
     ["alpha", "deny"],
     ["zebra", "deny"],
   ]);
