@@ -10,17 +10,19 @@ chezmoi manages dotfiles using a **three-state model**: source (declared in `~/.
 ## Quick Reference
 
 ```bash
-chezmoi add ~/.bashrc           # Add file to management
-chezmoi edit ~/.bashrc          # Edit source file
-chezmoi diff --no-pager         # Preview changes, large changesets will hang in pager so use flag
-chezmoi apply -n                # Apply changes to home directory [agents can only dry-run]
+# IMPORTANT: Always use --dry-run --no-pager with the following commands
+# They print to stdout so without --no-pager they'll hang indefinitely in a subshell that the user has to clean up
+# And they can drastically affect the system (especially `apply`) so agents can only dry-run
+# These flags are hard required in settings
+chezmoi diff                    # Preview changes, large changesets will hang in pager so use flag
+chezmoi apply                   # Apply changes to home directory [agents can only dry-run]
 chezmoi data                    # Show template variables
 chezmoi doctor                  # Diagnose issues
 chezmoi managed                 # List managed files
+# The following are generally user managed commands
+chezmoi add ~/.bashrc           # Add file to management
+chezmoi edit ~/.bashrc          # Edit source file
 ```
-
-> [!IMPORTANT]
-> You must always use `-n` with `apply` and `--no-pager` with `diff`. Non-dry-run `apply` is blocked, and running `diff` without `--no-pager` will hang if the changes overflow into a pager (which requires interactive exiting), which they often do.
 
 ## Core Concepts
 
