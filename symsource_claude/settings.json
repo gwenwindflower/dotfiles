@@ -399,10 +399,7 @@
 		"autoAllowBashIfSandboxed": false,
 		"enabled": true,
 		"filesystem": {
-			"allowRead": [
-				"~/.claude/**",
-				"~/.agent-browser/**"
-			],
+			"allowRead": ["~/.claude/**", "~/.agent-browser/**"],
 			"allowWrite": [
 				"~/.agent-browser/**",
 				"~/.cache/prek/**",
@@ -421,9 +418,7 @@
 		},
 		"network": {
 			"allowLocalBinding": true,
-			"allowUnixSockets": [
-				"~/.agent-browser/default.sock"
-			],
+			"allowUnixSockets": ["~/.agent-browser/default.sock"],
 			"allowedDomains": [
 				"api.github.com",
 				"github.com",
