@@ -247,11 +247,11 @@ abbr --add pnlsg pnpm ls -g
 ### bun
 abbr --add bui bun install
 abbr --add bua bun add
-abbr --add bur bun remove
+abbr --add burm bun remove
 abbr --add buup bun upgrade
 abbr --add bus bun start
 abbr --add but bun test
-abbr --add buru bun run
+abbr --add bur bun run
 abbr --add buc bun create
 abbr --add bulsg bun pm ls -g
 ### deno
