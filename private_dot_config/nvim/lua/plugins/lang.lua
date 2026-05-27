@@ -99,6 +99,55 @@ return {
       return opts
     end,
   },
+  -- Markdown
+  {
+    "mzlogin/vim-markdown-toc",
+    ft = { "markdown" },
+    cmd = { "GenTocGFM", "GenTocRedcarpet", "GenTocGitLab", "GenTocMarked", "UpdateToc", "RemoveToc" },
+    init = function()
+      vim.g.vmt_auto_update_on_save = 1
+      vim.g.vmt_cycle_list_item_markers = 1
+      vim.g.vmt_list_item_char = "-"
+      vim.g.vmt_fence_text = "TOC"
+      vim.g.vmt_fence_closing_text = "/TOC"
+    end,
+  },
+  -- {
+  --   "obsidian-nvim/obsidian.nvim",
+  --   version = "*",
+  --   ft = "markdown",
+  --   dependencies = { "nvim-lua/plenary.nvim", "saghen/blink.cmp" },
+  --   opts = {
+  --     legacy_commands = false,
+  --     frontmatter = {
+  --       enabled = false,
+  --     },
+  --     workspaces = {
+  --       {
+  --         name = "girlOS",
+  --         path = os.getenv("OBSIDIAN_DEFAULT_VAULT"),
+  --       },
+  --       -- {
+  --       --   name = "cwd",
+  --       --   path = function()
+  --       --     return assert(vim.fn.getcwd())
+  --       --   end,
+  --       --   overrides = {
+  --       --     notes_subdir = vim.NIL,
+  --       --     new_notes_location = "current_dir",
+  --       --     disable_frontmatter = true,
+  --       --   },
+  --       -- },
+  --     },
+  --     completion = { blink = true, min_chars = 2 },
+  --     picker = { name = "snacks.picker" },
+  --   },
+  -- },
+  -- {
+  --   "tadmccorkle/markdown.nvim",
+  --   ft = "markdown",
+  --   opts = {},
+  -- },
 }
 
 -- Handled by LazyVim defaults: most Lua stuff, *some* basic shell stuff
@@ -124,6 +173,6 @@ return {
 ---- SQL
 ---- TODO: Not sure aout this extra, should roll my own
 
----- Text: Markdown
+---- Text: Markdown (LazyExtra enabled)
 
 ---- Config: JSON, YAML
