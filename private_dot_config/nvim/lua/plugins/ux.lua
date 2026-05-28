@@ -81,8 +81,10 @@ return {
   {
     "saghen/blink.cmp",
     -- blink.cmp v2 (main branch) split blink.lib into its own repo;
-    -- LazyVim's blink_main extra doesn't add it yet
-    dependencies = { "saghen/blink.lib" },
+    -- LazyVim's blink_main extra doesn't add it yet.
+    -- lazy.nvim concatenates for the `dependencies` key
+    -- so we just configure our additions
+    dependencies = { { "saghen/blink.lib" } },
     -- v2 replaces the cargo build with a build/download orchestrator
     build = function()
       require("blink.cmp").build():wait(60000)
