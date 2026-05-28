@@ -1,6 +1,6 @@
 ---
 name: orient
-description: Generate a repo-specific orientation.md for the learning-opportunities skill. Slash-only (/orient:orient); never auto-trigger.
+description: Generate a repo-specific orientation.md for the learning-opportunities skill. Slash-only — never auto-trigger.
 argument-hint: "[showboat]"
 disable-model-invocation: true
 ---

@@ -1,6 +1,6 @@
 ---
 name: neovim-config
-description: Configure Neovim with the LazyVim framework in Lua: plugins, keymaps, options, autocmds, snippets, LSP, formatters, linters, themes. Use when editing files under ~/.config/nvim/lua/.
+description: Configure Neovim with the LazyVim framework in Lua, for plugins, keymaps, options, autocmds, snippets, LSP, formatters, linters, themes. Use when editing files under ~/.config/nvim/lua/.
 ---
 
 # LazyVim Configuration

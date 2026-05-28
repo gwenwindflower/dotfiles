@@ -1,6 +1,6 @@
 ---
 name: ascii-animations
-description: Build ASCII/Unicode animations: loading spinners, logo reveals, particle effects, terminal art. Covers character grids, frame loops, per-character state machines, ordering, performance. Use when designing any character-based visual animation.
+description: Build ASCII/Unicode animations such as loading spinners, logo reveals, particle effects, and terminal art. Covers character grids, frame loops, per-character state machines, ordering, and performance. Use when designing any character-based visual animation.
 ---
 
 # ASCII Animation Techniques

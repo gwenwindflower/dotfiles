@@ -1,6 +1,6 @@
 ---
 name: bun-development
-description: Use when editing files in a Bun project (bun.lock or bun.lockb at the root, "packageManager":"bun..." in package.json, or imports from bun:*) or running bun/bunx commands. Covers Bun-native APIs, bun:test, bun build --compile, and the Bun-optimized tsconfig.
+description: Use when editing files in a Bun project (bun.lock or bun.lockb at the root, a packageManager field set to bun in package.json, or imports from the bun namespace) or running bun/bunx commands. Covers Bun-native APIs, the bun test runner, bun build --compile, and the Bun-optimized tsconfig.
 ---
 
 # Bun Development

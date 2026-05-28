@@ -1,6 +1,6 @@
 ---
 name: fish-shell
-description: Idiomatic fish shell scripting and config: functions, completions, abbreviations, conf.d, argparse. Use when editing .fish files or anything under ~/.config/fish.
+description: Idiomatic fish shell scripting and config — functions, completions, abbreviations, conf.d, argparse. Use when editing .fish files or anything under ~/.config/fish.
 ---
 
 Fish is not bash. Different syntax (`test` over `[[ ]]`, `(cmd)` over `$(cmd)`), `string`/`math` builtins, scopes via `set -l/-g/-gx/-U`, and no `&&`/`||` — use `; and`/`; or` or chained commands.

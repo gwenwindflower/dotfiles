@@ -1,6 +1,6 @@
 ---
 name: obsidian-cli
-description: Script Obsidian vaults via the Obsidian CLI: notes, tasks, properties, search; plus plugin/theme dev (reload plugins, run JS, capture errors, screenshots, DOM inspect). Use when driving an Obsidian vault from the terminal or debugging an Obsidian plugin/theme. Skip for static markdown editing (use obsidian-markdown).
+description: Script Obsidian vaults via the Obsidian CLI for notes, tasks, properties, and search, plus plugin/theme dev (reload plugins, run JS, capture errors, screenshots, DOM inspect). Use when driving an Obsidian vault from the terminal or debugging an Obsidian plugin/theme. Skip for static markdown editing (use obsidian-markdown).
 ---
 
 # Obsidian CLI
