@@ -146,6 +146,7 @@ packages:
         - cap
         - claude
         - claude-code
+        - codex
         - copilot-money
         - dbc
         - font-charter
