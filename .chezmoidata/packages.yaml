@@ -67,6 +67,7 @@ packages:
         - gpg-tui
         - gum
         - hcloud
+        - herdr
         - hyperfine
         - imagemagick
         - jq
