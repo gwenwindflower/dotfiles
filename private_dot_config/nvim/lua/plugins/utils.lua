@@ -4,7 +4,6 @@ return {
     "gwenwindflower/provisions.nvim",
     opts = {
       env_dirs = { "~/.config/op/environments" },
-      preload = { "nvim" },
     },
   },
   -- Alignment tools

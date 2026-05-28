@@ -43,3 +43,40 @@ wk.add({
     desc = "Lazygit (cwd)",
   },
 })
+wk.add({
+  {
+    "<Leader>am",
+    function()
+      vim.cmd("Provision nvim")
+      local timer = vim.uv.new_timer()
+      local attempts = 0
+      timer:start(
+        200,
+        200,
+        vim.schedule_wrap(function()
+          attempts = attempts + 1
+          if vim.env.DEEPSEEK_API_KEY then
+            timer:stop()
+            timer:close()
+            vim.cmd("Minuet blink enable")
+          elseif attempts >= 50 then
+            timer:stop()
+            timer:close()
+            vim.notify(
+              "Provisions timed out; run :Minuet blink enable after secrets load",
+              vim.log.levels.WARN
+            )
+          end
+        end)
+      )
+    end,
+    mode = { "n" },
+    desc = "Provision secrets + enable Minuet",
+  },
+  {
+    "<Leader>aM",
+    "<cmd>Minuet blink disable<cr>",
+    mode = { "n" },
+    desc = "Disable Minuet autocomplete",
+  },
+})

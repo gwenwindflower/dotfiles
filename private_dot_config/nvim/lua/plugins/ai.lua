@@ -196,8 +196,10 @@ return {
   {
     "milanglacier/minuet-ai.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
-    event = { "InsertEnter", "CmdlineEnter" },
+    cmd = "Minuet",
     opts = {
+      -- start with auto-complete off; <Leader>am loads provisions then flips this on
+      blink = { enable_auto_complete = false },
       provider = "openai_fim_compatible",
       n_completions = 1,
       context_window = 1024,
