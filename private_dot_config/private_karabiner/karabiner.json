@@ -133,21 +133,8 @@
 						]
 					},
 					{
-						"description": "Right Opt -> meh (shift+opt+ctrl), Left Ctrl -> shift+ctrl",
+						"description": "Left Ctrl -> shift+ctrl",
 						"manipulators": [
-							{
-								"from": {
-									"key_code": "right_option",
-									"modifiers": { "optional": ["any"] }
-								},
-								"to": [
-									{
-										"key_code": "left_shift",
-										"modifiers": ["left_control", "left_option"]
-									}
-								],
-								"type": "basic"
-							},
 							{
 								"from": {
 									"key_code": "left_control",
@@ -185,4 +172,3 @@
 		}
 	]
 }
-
