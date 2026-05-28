@@ -52,6 +52,7 @@ packages:
         - flyctl
         - forgit
         - freeze
+        - fx
         - fzf
         - gallery-dl
         - gh
@@ -68,7 +69,6 @@ packages:
         - hcloud
         - hyperfine
         - imagemagick
-        - jless
         - jq
         - k9s
         - lazycut
