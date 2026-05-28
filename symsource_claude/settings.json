@@ -339,8 +339,7 @@
 			"WebFetch(domain:sw.kovidgoyal.net)",
 			"WebFetch(domain:tailscale.com)",
 			"WebFetch(domain:worktrunk.dev)",
-			"WebFetch(domain:www.chezmoi.io)",
-			"mcp__claude_ai_Context7"
+			"WebFetch(domain:www.chezmoi.io)"
 		],
 		"defaultMode": "acceptEdits",
 		"deny": [
