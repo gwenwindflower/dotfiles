@@ -125,7 +125,19 @@ return {
             module = "minuet.blink",
             score_offset = 100,
             async = true,
-            timeout_ms = 3000,
+            timeout_ms = 2000,
+            -- Source-level gate: when off, blink never requires minuet.blink,
+            -- so lazy.nvim doesn't load minuet, and minuet's backend module
+            -- never runs its load-time `is_available` env var check.
+            -- This prevents Minuet reaching for `DEEPSEEK_API_KEY` when Provisions
+            -- potentially hasn't made it available yet, which can cause Minuet
+            -- to error and quit trying to load completely for the session
+            -- Using <Leader>am ensures the env var is available
+            -- loading it via Provisions if needed
+            -- then flips this variable
+            enabled = function()
+              return vim.g.blink_minuet_enabled == true
+            end,
           },
         },
       },

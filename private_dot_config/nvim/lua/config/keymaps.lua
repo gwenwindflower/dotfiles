@@ -47,6 +47,16 @@ wk.add({
   {
     "<Leader>am",
     function()
+      if vim.g.blink_minuet_enabled then
+        vim.g.blink_minuet_enabled = false
+        vim.notify("Minuet autocomplete off")
+        return
+      end
+      if vim.env.DEEPSEEK_API_KEY then
+        vim.g.blink_minuet_enabled = true
+        vim.notify("Minuet autocomplete on")
+        return
+      end
       vim.cmd("Provision nvim")
       local timer = vim.uv.new_timer()
       local attempts = 0
@@ -58,25 +68,17 @@ wk.add({
           if vim.env.DEEPSEEK_API_KEY then
             timer:stop()
             timer:close()
-            vim.cmd("Minuet blink enable")
-          elseif attempts >= 50 then
+            vim.g.blink_minuet_enabled = true
+            vim.notify("Minuet autocomplete on")
+          elseif attempts >= 150 then
             timer:stop()
             timer:close()
-            vim.notify(
-              "Provisions timed out; run :Minuet blink enable after secrets load",
-              vim.log.levels.WARN
-            )
+            vim.notify("Provisions timed out; :Provision nvim then re-toggle <Leader>am", vim.log.levels.WARN)
           end
         end)
       )
     end,
     mode = { "n" },
-    desc = "Provision secrets + enable Minuet",
-  },
-  {
-    "<Leader>aM",
-    "<cmd>Minuet blink disable<cr>",
-    mode = { "n" },
-    desc = "Disable Minuet autocomplete",
+    desc = "Toggle Minuet",
   },
 })

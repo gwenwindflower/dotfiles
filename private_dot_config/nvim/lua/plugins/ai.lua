@@ -196,14 +196,16 @@ return {
   {
     "milanglacier/minuet-ai.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
-    cmd = "Minuet",
+    -- Minuet stays unloaded until blink requires it
+    -- which is gated by `vim.g.blink_minuet_enabled`
+    -- toggles with <Leader>am
+    -- see ux.lua and keymaps.lua for more details
+    lazy = true,
     opts = {
-      -- start with auto-complete off; <Leader>am loads provisions then flips this on
-      blink = { enable_auto_complete = false },
       provider = "openai_fim_compatible",
-      n_completions = 1,
-      context_window = 1024,
-      request_timeout = 3,
+      n_completions = 3,
+      context_window = 100000,
+      request_timeout = 4,
       throttle = 600,
       debounce = 200,
       after_cursor_filter_length = 15,
@@ -215,7 +217,7 @@ return {
           model = "deepseek-v4-flash",
           stream = true,
           optional = {
-            max_tokens = 256,
+            max_tokens = 500,
             top_p = 0.9,
             extra_body = {
               thinking = { type = "disabled" },
@@ -223,6 +225,7 @@ return {
           },
         },
       },
+      -- Using blink.cmp instead of direct virtualtext
       -- virtualtext = {
       --   auto_trigger_ft = { "*" },
       --   auto_trigger_ignore_ft = {
