@@ -245,6 +245,7 @@ abbr --add pnl pnpm lint
 abbr --add pnf pnpm fix
 abbr --add pnls pnpm ls
 abbr --add pnlsg pnpm ls -g
+abbr --add pnsu pnpm self-update
 ### bun
 abbr --add bui bun install
 abbr --add bua bun add
