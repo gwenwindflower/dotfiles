@@ -16,12 +16,33 @@ No punch, no snark, no glib, no slick.
 
 The strongest tells. Cut on sight.
 
+### Spicy reframes
+
+A family of comparison moves that perform counter-intuitive insight rather than delivering it — same rhetorical maneuver in different grammatical clothes. State the destination plainly, drop the scaffolding.
+
 **"It's not A. It's B."** — false contrast to score a rhetorical point. State B directly.
 
 - Bad: "The flagship treats DVC as a participation signal; the tool operators treat it as a throughput signal."
 - Good: One sentence stating the grain mismatch.
 
 Variants: "Not because X. Because Y.", "The answer isn't X. It's Y.", "It feels like X. It's actually Y.", "The question isn't X. It's Y.", "stops being X and starts being Y." Same formula, same fix.
+
+**The negative triple — "Not a X. Not a Y. A Z."** — a striptease through negation before naming the thing. Same shape in past tense: "It wasn't X. It wasn't Y. It was Z." The most flagrant and widely-recognized member of the family.
+
+- Bad: "Not a tool. Not a framework. A philosophy."
+- Bad: "It wasn't fear. It wasn't pride. It was exhaustion."
+- Good: "A philosophy." / "It was exhaustion." Drop the runway.
+
+**Being-verb reframes — "X becomes Y" / "X is actually Y" / "X turns out to be Y."** — the binary-contrast move in copular clothing. A counter-intuitive reveal performed as a natural observation.
+
+- Bad: "The complaint becomes a fix."
+- Bad: "The error turns out to be the solution."
+- Bad: "Getting lost is actually the best way to get where you're going."
+- Good: Write the connection plainly — "she fixed it the day the complaint landed." Or drop the reframe entirely: if the underlying point doesn't survive losing the scaffolding, it wasn't a real point.
+
+Context matters. "The data tells us…" and similar inanimate-subject constructions are often the cleanest framing in technical prose. The pattern to cut is specifically the *spicy* version: a being-verb performing surprising insight rather than delivering one.
+
+### Punch tactics
 
 **Staccato triples** — three short fragments strung together for rhythm.
 
@@ -133,6 +154,8 @@ Plain language beats jargon. When in doubt, describe the situation directly.
 
 **Tech jargon cliches in general prose** — "X is a feature, not a bug" is tired unless you're literally describing a software limitation with unexpected upside.
 
+**AI-favored tech vocab** — valid technical terms that AI reaches for so reflexively the word itself becomes a tell. Currently neon-lit: `seam`. Every system boundary, every interface, every line between components gets called a seam — the word is fine, the reflex isn't. When reaching for it, check whether `boundary`, `interface`, `edge`, or the actual component name lands better. The category is open; flag others as they recur.
+
 **Tired cliches** — wholesale drop:
 
 - "Sing the praises of" → "speak highly of"
@@ -234,8 +257,22 @@ Fiction and stylized prose use fragments deliberately for rhythm. The LLM defaul
 
 ---
 
-## The subtractive pass
+## 9. Restating across sections
 
-Before shipping, read each sentence and ask whether removing it changes the meaning. If not, cut. Reread the headings — does each state a finding or label a topic? Reword the topic-labels. Pay extra attention to section openers and closers; rhetorical satisfaction tends to land at boundaries.
+The most common shape of AI bloat at the structural level: the same point gets made in multiple sections, each time with a slightly tilted angle or different examples. The piece reads as if it's building, but each section is restating rather than advancing.
 
-Every sentence the reader spends attention on should return something they didn't already have.
+The cause is usually the model padding to a target length without enough underlying material. The model has one core point and three half-points; rather than admit the half-points are thin, it puffs the core point across the structure.
+
+No sentence-level edit catches this — the fix is structural. Outline the piece conceptually: one phrase per section saying what it actually delivers. If two sections collapse to the same phrase, the idea only earns one section. Cut or merge. A callback to an earlier point is fine when it's in service of a new point; not when it's restating one.
+
+Only the intro and conclusion may legitimately echo each other.
+
+---
+
+## Before shipping
+
+**Subtractive pass.** Read each sentence and ask whether removing it changes the meaning. If not, cut. Reread the headings — does each state a finding or label a topic? Reword the topic-labels. Pay extra attention to section openers and closers; rhetorical satisfaction tends to land at boundaries.
+
+**Structural pass.** Sketch a conceptual outline — one phrase per section saying what that section actually delivers. Two sections collapsing to the same phrase means one was padding. Cut or merge. Only intro and conclusion may legitimately echo each other. See [§9](#9-restating-across-sections).
+
+Every sentence the reader spends attention on should return something they didn't already have. Every section should earn its place by advancing the argument, not restating it.

@@ -22,7 +22,7 @@ Rate prose 1-5 on each dimension:
 - **Authenticity and Tone** - Does it have a consistent and unique voice? Does it sound human without being overly conversational or formal?
 - **Density** - Is every word earning its place?
 - **Conciseness** - Like density, but for sentence, paragraph, and overall length. Can tangential threads or wandering sentences be split up or cut?
-- **Structure** - Is this is the best structure to convey the message? Should paragraphs be reorganized, should the sentences within a paragraph be rearranged, or should the information be moved to a different section?
+- **Structure** - Is this the best structure to convey the message? Should paragraphs be reorganized, sentences rearranged, or information moved between sections? Does each section advance the argument, or do any restate a point already made? Two sections collapsing to the same conceptual phrase is padding — flag the redundancy. Only intro and conclusion may legitimately echo each other.
 - **Word Choice and Voice** - Are there more precise, vivid, or engaging words that could be used? This is not about stacking adjectives, but identifying opportunities to replace a bland word - or a bland word with an emphasis filler (e.g., "really great") - with an evocative one: "He ran into the store." -> "He charged into the store." "This UX is really great." -> "This UX is smooth and responsive." Are there a minimum of cliches and emphasis filler words?
 
 Below 32/40: revise. Repeat audit until above 32.
