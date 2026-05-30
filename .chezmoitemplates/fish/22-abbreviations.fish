@@ -90,7 +90,7 @@ abbr --add lgt lazygit
 abbr --add ldr lazydocker
 # file search/view/explore
 abbr --add f fzf
-abbr --add fdf "fd . --color always --hidden --ignore | fzf --preview '_fzf_preview_file {}'"
+abbr --add fw "fzf --preview= --preview-window=hidden --bind 'enter:accept'"
 abbr --add fzfopts "echo \$FZF_DEFAULT_OPTS | sed 's/^--//; s/ --/\n/g' | bat"
 # listing
 abbr --add l lsd -lAg

@@ -4,7 +4,9 @@
 
 # fzf — read config file using fish builtins (avoids cat | tr subprocess)
 set -gx FZF_DEFAULT_OPTS (string join ' ' < ~/.config/fzf/fzf.conf)
-# fzf opts for interactive zoxide
+# fd as the default source for bare fzf — including dirs and dot dirs
+set -gx FZF_DEFAULT_COMMAND "fd --color=always --hidden"
+# fzf opts for interactive zoxide history search
 set -gx _ZO_FZF_OPTS $FZF_DEFAULT_OPTS"\
 --layout=reverse \
 --height=90% \
@@ -22,7 +24,11 @@ ctrl-y:execute-silent( \
   | fish_clipboard_copy \
 )+abort"
 set -gx fzf_directory_opts --bind 'enter:become($EDITOR {} &>/dev/tty)'
-fzf_configure_bindings --variables='ctrl-alt-v' --git_log= --git_status=
+# reassign variables so that all active fzf.fish commands 
+# are ctrl-alt-<mnemonic {s(tatus)/v(ariables)/p(rocesses)/f(files and dirs)}>
+# strip git_log binding as forgit's it's nicer, so it uses the above pattern
+# with g as binding - ctrl-alt-g
+fzf_configure_bindings --variables='ctrl-alt-v' --git_log=
 
 # ripgrep
 set -gx RIPGREP_CONFIG_PATH "$HOME/.config/ripgrep/ripgrep.conf"
