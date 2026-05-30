@@ -120,6 +120,7 @@ abbr --add ghprv gh pr view -w
 abbr --add ghprl gh pr list
 
 # ai
+abbr --add cx codex
 abbr --add oc opencode
 abbr --add occf nvim ~/.config/opencode
 abbr --add cl claude
