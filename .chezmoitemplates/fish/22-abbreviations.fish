@@ -130,6 +130,7 @@ abbr --add brsrv brew services
 abbr --add dk docker
 abbr --add dkcu docker compose up
 # ai
+abbr --add cx codex
 abbr --add oc opencode
 abbr --add occf ee $HOME/.config/opencode
 abbr --add cl claude
