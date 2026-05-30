@@ -1,5 +1,5 @@
 # =============================================================================
 # 12 — Go
 # =============================================================================
-# GOPATH is ~/.go (set by rotz install, not the default ~/go)
+# GOPATH is ~/.go (set by install script instead of default ~/go)
 fish_add_path $HOME/.go/bin
