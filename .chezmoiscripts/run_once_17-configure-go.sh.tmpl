@@ -1,0 +1,25 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+# Configure GOPATH outside the default ~/go directory (darwin only)
+
+set -euo pipefail
+
+{{ template "script-log.sh" }}
+
+log_step "Configuring Go"
+
+if ! command -v go >/dev/null 2>&1; then
+  log_error "go not found - Homebrew install may have failed"
+  exit 1
+fi
+
+GOPATH="$HOME/.go"
+
+if [ "$(go env GOPATH)" = "$GOPATH" ]; then
+  log_info "GOPATH already set to $GOPATH"
+else
+  log_info "Setting GOPATH to $GOPATH..."
+  go env -w GOPATH="$GOPATH"
+  log_success "GOPATH set to $GOPATH"
+fi
+{{ end -}}
