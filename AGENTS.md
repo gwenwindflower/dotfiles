@@ -146,6 +146,14 @@ Several files contain Nerd Font glyphs (starship.toml, yazi theme.toml, tmux sta
 
 Fragment ordering: `00–14` are environment setup (PATH, XDG, editor, git, AI, language toolchains), `20–24` are interactive-only (theme, abbreviations, keybindings, tool config) wrapped in `if status is-interactive`.
 
+### Fish plugins (tackle)
+
+Third-party fish plugins (functions, conf.d, completions, themes from upstream repos) are managed by [`tackle`](https://github.com/gwenwindflower/tackle), a personal, modern fish plugin manager. The manifest at is, by default, co-located with the fish configs at `private_dot_config/fish/tacklebox.yaml`. This manifest lists plugins (managed via `tackle add` and `tackle remove`) as a `repo + pinned SHA + files` object; `tackle sync` reconciles plugin files against the latest HEAD of each repo. Then `chezmoi add` (or `re-add`) to pull the updates into chezmoi.
+
+We initially rolled our own instead of Fisher because Fisher assumes it owns the install dir, but chezmoi is already tracking the content Fisher wants to install or update for existing plugins — even on a new machine — so `fisher update` failed every plugin and then "helpfully" cleared the manifest of any failed installs. To address this tackle is stateless beyond the manifest and idempotent, if HEAD on main has moved for the plugin, it will sync new versions of the files (and add or remove if needed). Users are responsible for tracking these changes wherever they'd prefer. After solving the initial problem it became clear having a more modern, testable tool was useful here, so `tackle` is evolving from there.
+
+Plugin file extraction matches Fisher's: top-level files in `functions/`, `completions/`, `conf.d/` (extension `.fish`) and `themes/` (extension `.theme`). Subdirectories under those are intentionally skipped for the time being.
+
 ## Scripts
 
 ```text

@@ -1,0 +1,61 @@
+updated: '2026-05-30T20:30:12.434Z'
+plugins:
+  - repo: jhillyerd/plugin-git
+    sha: dd1f559c01cde4cf0d16581b60e20d29f33c0665
+    files:
+      - exact_conf.d/git.fish
+      - exact_functions/__git.branch_has_wip.fish
+      - exact_functions/__git.current_branch.fish
+      - exact_functions/__git.default_branch.fish
+      - exact_functions/__git.delete_branches.fish
+      - exact_functions/__git.destroy.fish
+      - exact_functions/__git.develop_branch.fish
+      - exact_functions/__git.init.fish
+      - exact_functions/gbage.fish
+      - exact_functions/gbda.fish
+      - exact_functions/gdv.fish
+      - exact_functions/gignored.fish
+      - exact_functions/glp.fish
+      - exact_functions/grel.fish
+      - exact_functions/grename.fish
+      - exact_functions/grt.fish
+      - exact_functions/gtest.fish
+      - exact_functions/gtl.fish
+      - exact_functions/gunwip.fish
+      - exact_functions/gwip.fish
+  - repo: jorgebucaran/autopair.fish
+    sha: 4d1752ff5b39819ab58d7337c69220342e9de0e2
+    files:
+      - exact_conf.d/autopair.fish
+      - exact_functions/_autopair_backspace.fish
+      - exact_functions/_autopair_insert_left.fish
+      - exact_functions/_autopair_insert_right.fish
+      - exact_functions/_autopair_insert_same.fish
+      - exact_functions/_autopair_tab.fish
+  - repo: nickeb96/puffer-fish
+    sha: 83174b07de60078be79985ef6123d903329622b8
+    files:
+      - exact_conf.d/puffer_fish_key_bindings.fish
+      - exact_functions/_puffer_fish_expand_bang.fish
+      - exact_functions/_puffer_fish_expand_buck.fish
+      - exact_functions/_puffer_fish_expand_dot.fish
+      - exact_functions/_puffer_fish_expand_star.fish
+  - repo: patrickf1/fzf.fish
+    sha: 0069dbbe06cc05482bfb13063b4b4eac26318992
+    files:
+      - exact_completions/fzf_configure_bindings.fish
+      - exact_conf.d/fzf.fish
+      - exact_functions/_fzf_configure_bindings_help.fish
+      - exact_functions/_fzf_extract_var_info.fish
+      - exact_functions/_fzf_preview_changed_file.fish
+      - exact_functions/_fzf_preview_file.fish
+      - exact_functions/_fzf_report_diff_type.fish
+      - exact_functions/_fzf_report_file_type.fish
+      - exact_functions/_fzf_search_directory.fish
+      - exact_functions/_fzf_search_git_log.fish
+      - exact_functions/_fzf_search_git_status.fish
+      - exact_functions/_fzf_search_history.fish
+      - exact_functions/_fzf_search_processes.fish
+      - exact_functions/_fzf_search_variables.fish
+      - exact_functions/_fzf_wrapper.fish
+      - exact_functions/fzf_configure_bindings.fish
