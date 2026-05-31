@@ -64,7 +64,9 @@ export function toCsvRow(card: RepoCard, list: string): string {
 /** Extract list slugs from the stars/lists index page HTML. */
 export function parseListIndexHtml(html: string, user: string): string[] {
   const pattern = new RegExp(
-    `/stars/${user.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}/lists/([A-Za-z0-9_-]+)`,
+    `/stars/${
+      user.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")
+    }/lists/([A-Za-z0-9_-]+)`,
     "g",
   );
   const slugs = new Set<string>();
@@ -126,7 +128,8 @@ function sleep(ms: number): Promise<void> {
 }
 
 function jitter(): number {
-  return DELAY_MIN_MS + Math.floor(Math.random() * (DELAY_MAX_MS - DELAY_MIN_MS));
+  return DELAY_MIN_MS +
+    Math.floor(Math.random() * (DELAY_MAX_MS - DELAY_MIN_MS));
 }
 
 // ── In-page extraction scripts ─────────────────────────────────────────
@@ -235,7 +238,11 @@ async function resolveUser(): Promise<string> {
     stderr: "piped",
   });
   const { code, stdout } = await cmd.output();
-  if (code !== 0) throw new Error("Could not resolve user via `gh api user`. Pass --user <login>.");
+  if (code !== 0) {
+    throw new Error(
+      "Could not resolve user via `gh api user`. Pass --user <login>.",
+    );
+  }
   return new TextDecoder().decode(stdout).trim();
 }
 
@@ -279,8 +286,13 @@ async function main(): Promise<void> {
     await openAndWait(`https://github.com/${user}?tab=stars`);
     const slugs = await abEval(LIST_INDEX_EXTRACT_JS(user)) as string[];
     if (!Array.isArray(slugs) || slugs.length === 0) {
-      console.error("No lists discovered. Page may have changed or user has none. Aborting.");
-      console.error("Tip: run `agent-browser --session-name " + SESSION + " screenshot` to inspect.");
+      console.error(
+        "No lists discovered. Page may have changed or user has none. Aborting.",
+      );
+      console.error(
+        "Tip: run `agent-browser --session-name " + SESSION +
+          " screenshot` to inspect.",
+      );
       Deno.exit(1);
     }
     progress = {
@@ -292,7 +304,9 @@ async function main(): Promise<void> {
     console.log(`  found ${slugs.length} list(s): ${slugs.join(", ")}`);
   } else {
     console.log(
-      `\n→ Resuming. ${progress.lists.filter((l) => l.done).length}/${progress.lists.length} lists done.`,
+      `\n→ Resuming. ${
+        progress.lists.filter((l) => l.done).length
+      }/${progress.lists.length} lists done.`,
     );
   }
 
@@ -325,7 +339,9 @@ async function main(): Promise<void> {
       const hasNext = await abEval(HAS_NEXT_PAGE_JS) as boolean;
 
       if (!Array.isArray(cards)) {
-        console.error("   ! unexpected eval output, stopping list. Inspect session manually.");
+        console.error(
+          "   ! unexpected eval output, stopping list. Inspect session manually.",
+        );
         break;
       }
 
@@ -339,7 +355,9 @@ async function main(): Promise<void> {
       const rows = fresh.map((c) => toCsvRow(c, list.slug));
       await appendCsv(csvPath, rows);
       totalForList += fresh.length;
-      console.log(`     +${fresh.length} new (page total ${cards.length}, hasNext=${hasNext})`);
+      console.log(
+        `     +${fresh.length} new (page total ${cards.length}, hasNext=${hasNext})`,
+      );
 
       list.nextPage = page + 1;
       progress.seen = [...seen];
@@ -377,7 +395,9 @@ async function main(): Promise<void> {
   await ab("close").catch(() => {});
 
   const allDone = progress.lists.every((l) => l.done);
-  console.log(`\n${allDone ? "✓ All lists complete." : "Partial run; rerun to resume."}`);
+  console.log(
+    `\n${allDone ? "✓ All lists complete." : "Partial run; rerun to resume."}`,
+  );
   console.log(`csv: ${csvPath}`);
   console.log(`progress: ${progressPath}`);
 }

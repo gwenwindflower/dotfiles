@@ -1,5 +1,10 @@
 import { assertEquals } from "@std/assert";
-import { csvEscape, parseListIndexHtml, type RepoCard, toCsvRow } from "./scrape-github-stars.ts";
+import {
+  csvEscape,
+  parseListIndexHtml,
+  type RepoCard,
+  toCsvRow,
+} from "./scrape-github-stars.ts";
 
 Deno.test("csvEscape passes through plain values", () => {
   assertEquals(csvEscape("hello"), "hello");
@@ -36,7 +41,11 @@ Deno.test("parseListIndexHtml extracts unique slugs", () => {
     <a href="/stars/winnie/lists/data">Data</a>
     <a href="/stars/someone-else/lists/should-ignore">No</a>
   `;
-  assertEquals(parseListIndexHtml(html, "winnie"), ["ai_agents", "data", "dev-tools"]);
+  assertEquals(parseListIndexHtml(html, "winnie"), [
+    "ai_agents",
+    "data",
+    "dev-tools",
+  ]);
 });
 
 Deno.test("parseListIndexHtml handles users with regex-special chars", () => {

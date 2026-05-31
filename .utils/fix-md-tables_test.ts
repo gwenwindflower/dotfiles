@@ -36,7 +36,10 @@ Deno.test("fixTableLine collapses excess internal whitespace", () => {
 
 Deno.test("fixTableLine returns non-table lines unchanged", () => {
   assertEquals(fixTableLine("not a table"), "not a table");
-  assertEquals(fixTableLine("| missing trailing pipe"), "| missing trailing pipe");
+  assertEquals(
+    fixTableLine("| missing trailing pipe"),
+    "| missing trailing pipe",
+  );
 });
 
 Deno.test("fixTableLine treats escaped pipes as cell content", () => {

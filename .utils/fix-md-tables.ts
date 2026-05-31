@@ -55,7 +55,10 @@ export function fixTableLine(line: string): string {
 
 // ── File processing ────────────────────────────────────────────────────
 
-export function processContent(content: string, filePath: string): { output: string; issues: TableIssue[] } {
+export function processContent(
+  content: string,
+  filePath: string,
+): { output: string; issues: TableIssue[] } {
   const lines = content.split("\n");
   const issues: TableIssue[] = [];
   let inCodeBlock = false;
@@ -90,7 +93,8 @@ export function processContent(content: string, filePath: string): { output: str
 // ── CLI ────────────────────────────────────────────────────────────────
 
 function printHelp() {
-  console.log(`fix-md-tables — Fix markdown table formatting to proper compact style.
+  console.log(
+    `fix-md-tables — Fix markdown table formatting to proper compact style.
 
 Usage:
   deno run --allow-read --allow-write tools/fix-md-tables.ts [options] <glob...>
@@ -106,7 +110,8 @@ Options:
 Examples:
   fix-md-tables "AGENTS.md"
   fix-md-tables "dot_agents/**/*.md"
-  fix-md-tables --check "**/*.md"`);
+  fix-md-tables --check "**/*.md"`,
+  );
 }
 
 async function main() {
@@ -140,7 +145,11 @@ async function main() {
       try {
         content = await Deno.readTextFile(filePath);
       } catch (err) {
-        console.error(`error: could not read ${displayPath}: ${err instanceof Error ? err.message : err}`);
+        console.error(
+          `error: could not read ${displayPath}: ${
+            err instanceof Error ? err.message : err
+          }`,
+        );
         continue;
       }
 
@@ -153,7 +162,11 @@ async function main() {
 
       if (dryRun) {
         // In dry-run, print a header then the full fixed content to stdout
-        console.log(`── ${displayPath} (${issues.length} fix${issues.length === 1 ? "" : "es"}) ──`);
+        console.log(
+          `── ${displayPath} (${issues.length} fix${
+            issues.length === 1 ? "" : "es"
+          }) ──`,
+        );
         console.log(output);
         console.log();
       } else {
@@ -168,7 +181,11 @@ async function main() {
           try {
             await Deno.writeTextFile(filePath, output);
           } catch (err) {
-            console.error(`error: could not write ${displayPath}: ${err instanceof Error ? err.message : err}`);
+            console.error(
+              `error: could not write ${displayPath}: ${
+                err instanceof Error ? err.message : err
+              }`,
+            );
           }
         }
       }
@@ -182,10 +199,14 @@ async function main() {
   // Summary
   console.log();
   if (totalIssues === 0) {
-    console.log(`Scanned ${filesScanned} file(s) — all tables are properly formatted.`);
+    console.log(
+      `Scanned ${filesScanned} file(s) — all tables are properly formatted.`,
+    );
   } else {
     const verb = checkOnly ? "found" : "fixed";
-    console.log(`${verb} ${totalIssues} table line(s) across ${filesFixed} file(s) (${filesScanned} scanned).`);
+    console.log(
+      `${verb} ${totalIssues} table line(s) across ${filesFixed} file(s) (${filesScanned} scanned).`,
+    );
   }
 
   if (checkOnly && totalIssues > 0) {

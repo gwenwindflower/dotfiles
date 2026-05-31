@@ -23,10 +23,10 @@
 import { copies, dirs, files } from "./assets/sprite-bootstrap/manifest.ts";
 
 function dirname(p: string): string {
-	const i = p.lastIndexOf("/");
-	if (i === -1) return ".";
-	if (i === 0) return "/";
-	return p.slice(0, i);
+  const i = p.lastIndexOf("/");
+  if (i === -1) return ".";
+  if (i === 0) return "/";
+  return p.slice(0, i);
 }
 
 const REPO = "gwenwindflower/dotfiles";
@@ -35,12 +35,12 @@ const TARBALL = `https://codeload.github.com/${REPO}/tar.gz/${BRANCH}`;
 
 const HOME = Deno.env.get("HOME");
 if (!HOME) {
-	console.error("Error: HOME is not set.");
-	Deno.exit(1);
+  console.error("Error: HOME is not set.");
+  Deno.exit(1);
 }
 
 function expand(p: string): string {
-	return p.startsWith("~/") ? `${HOME}/${p.slice(2)}` : p;
+  return p.startsWith("~/") ? `${HOME}/${p.slice(2)}` : p;
 }
 
 // Strip chezmoi attribute prefixes from a single path segment and surface
@@ -48,78 +48,78 @@ function expand(p: string): string {
 // like `dot_lightdash-skill-manifest.json` or
 // `scripts/executable_install-workflow.sh` resolve correctly.
 function translateSegment(name: string): {
-	name: string;
-	executable: boolean;
+  name: string;
+  executable: boolean;
 } {
-	let executable = false;
-	let n = name;
-	for (;;) {
-		if (n.startsWith("executable_")) {
-			executable = true;
-			n = n.slice("executable_".length);
-			continue;
-		}
-		if (n.startsWith("exact_")) {
-			n = n.slice("exact_".length);
-			continue;
-		}
-		if (n.startsWith("private_")) {
-			n = n.slice("private_".length);
-			continue;
-		}
-		if (n.startsWith("dot_")) {
-			n = `.${n.slice("dot_".length)}`;
-			continue;
-		}
-		break;
-	}
-	return { name: n, executable };
+  let executable = false;
+  let n = name;
+  for (;;) {
+    if (n.startsWith("executable_")) {
+      executable = true;
+      n = n.slice("executable_".length);
+      continue;
+    }
+    if (n.startsWith("exact_")) {
+      n = n.slice("exact_".length);
+      continue;
+    }
+    if (n.startsWith("private_")) {
+      n = n.slice("private_".length);
+      continue;
+    }
+    if (n.startsWith("dot_")) {
+      n = `.${n.slice("dot_".length)}`;
+      continue;
+    }
+    break;
+  }
+  return { name: n, executable };
 }
 
 async function copyTree(
-	srcDir: string,
-	destDir: string,
-	excludes: Set<string> = new Set(),
-	rel = "",
+  srcDir: string,
+  destDir: string,
+  excludes: Set<string> = new Set(),
+  rel = "",
 ): Promise<number> {
-	let count = 0;
-	for await (const entry of Deno.readDir(srcDir)) {
-		const childRel = rel ? `${rel}/${entry.name}` : entry.name;
-		if (excludes.has(childRel)) continue;
-		const childSrc = `${srcDir}/${entry.name}`;
-		const { name: cleanName, executable } = translateSegment(entry.name);
-		const childDest = `${destDir}/${cleanName}`;
-		if (entry.isDirectory) {
-			await Deno.mkdir(childDest, { recursive: true });
-			count += await copyTree(childSrc, childDest, excludes, childRel);
-		} else if (entry.isFile) {
-			await Deno.copyFile(childSrc, childDest);
-			if (executable) await Deno.chmod(childDest, 0o755);
-			count++;
-		}
-	}
-	return count;
+  let count = 0;
+  for await (const entry of Deno.readDir(srcDir)) {
+    const childRel = rel ? `${rel}/${entry.name}` : entry.name;
+    if (excludes.has(childRel)) continue;
+    const childSrc = `${srcDir}/${entry.name}`;
+    const { name: cleanName, executable } = translateSegment(entry.name);
+    const childDest = `${destDir}/${cleanName}`;
+    if (entry.isDirectory) {
+      await Deno.mkdir(childDest, { recursive: true });
+      count += await copyTree(childSrc, childDest, excludes, childRel);
+    } else if (entry.isFile) {
+      await Deno.copyFile(childSrc, childDest);
+      if (executable) await Deno.chmod(childDest, 0o755);
+      count++;
+    }
+  }
+  return count;
 }
 
 async function run(
-	cmd: string,
-	args: string[],
-	opts: { stdin?: string } = {},
+  cmd: string,
+  args: string[],
+  opts: { stdin?: string } = {},
 ): Promise<void> {
-	const command = new Deno.Command(cmd, {
-		args,
-		stdin: opts.stdin !== undefined ? "piped" : "inherit",
-		stdout: "inherit",
-		stderr: "inherit",
-	});
-	const child = command.spawn();
-	if (opts.stdin !== undefined) {
-		const w = child.stdin.getWriter();
-		await w.write(new TextEncoder().encode(opts.stdin));
-		await w.close();
-	}
-	const { code } = await child.status;
-	if (code !== 0) throw new Error(`${cmd} exited ${code}`);
+  const command = new Deno.Command(cmd, {
+    args,
+    stdin: opts.stdin !== undefined ? "piped" : "inherit",
+    stdout: "inherit",
+    stderr: "inherit",
+  });
+  const child = command.spawn();
+  if (opts.stdin !== undefined) {
+    const w = child.stdin.getWriter();
+    await w.write(new TextEncoder().encode(opts.stdin));
+    await w.close();
+  }
+  const { code } = await child.status;
+  if (code !== 0) throw new Error(`${cmd} exited ${code}`);
 }
 
 console.log("→ configuring git");
@@ -133,77 +133,77 @@ console.log(`→ fetching tarball into ${tmp}`);
 
 const res = await fetch(TARBALL);
 if (!res.ok || !res.body) {
-	throw new Error(`tarball fetch failed: ${res.status} ${res.statusText}`);
+  throw new Error(`tarball fetch failed: ${res.status} ${res.statusText}`);
 }
 
 const tar = new Deno.Command("tar", {
-	args: ["-xzf", "-", "--strip-components=1", "-C", tmp],
-	stdin: "piped",
-	stdout: "inherit",
-	stderr: "inherit",
+  args: ["-xzf", "-", "--strip-components=1", "-C", tmp],
+  stdin: "piped",
+  stdout: "inherit",
+  stderr: "inherit",
 }).spawn();
 await res.body.pipeTo(tar.stdin);
 {
-	const { code } = await tar.status;
-	if (code !== 0) throw new Error(`tar exited ${code}`);
+  const { code } = await tar.status;
+  if (code !== 0) throw new Error(`tar exited ${code}`);
 }
 
 console.log("→ installing files");
 for (const f of files) {
-	const absSrc = `${tmp}/${f.src}`;
-	const absDest = expand(f.dest);
-	await Deno.mkdir(dirname(absDest), { recursive: true });
-	await Deno.copyFile(absSrc, absDest);
-	if (f.executable) await Deno.chmod(absDest, 0o755);
-	console.log(`  ${f.dest}`);
+  const absSrc = `${tmp}/${f.src}`;
+  const absDest = expand(f.dest);
+  await Deno.mkdir(dirname(absDest), { recursive: true });
+  await Deno.copyFile(absSrc, absDest);
+  if (f.executable) await Deno.chmod(absDest, 0o755);
+  console.log(`  ${f.dest}`);
 }
 
 for (const d of dirs) {
-	const absSrc = `${tmp}/${d.srcDir}`;
-	const absDest = expand(d.destDir);
-	await Deno.mkdir(absDest, { recursive: true });
-	const count = await copyTree(absSrc, absDest, new Set(d.exclude));
-	console.log(`  ${d.destDir}/ (${count} files)`);
+  const absSrc = `${tmp}/${d.srcDir}`;
+  const absDest = expand(d.destDir);
+  await Deno.mkdir(absDest, { recursive: true });
+  const count = await copyTree(absSrc, absDest, new Set(d.exclude));
+  console.log(`  ${d.destDir}/ (${count} files)`);
 }
 
 console.log("→ mirroring shared agent config into ~/.claude");
 for (const c of copies) {
-	const absSrc = expand(c.src);
-	const absDest = expand(c.dest);
-	await Deno.mkdir(absDest, { recursive: true });
-	const count = await copyTree(absSrc, absDest);
-	console.log(`  ${c.dest}/ (${count} files)`);
+  const absSrc = expand(c.src);
+  const absDest = expand(c.dest);
+  await Deno.mkdir(absDest, { recursive: true });
+  const count = await copyTree(absSrc, absDest);
+  console.log(`  ${c.dest}/ (${count} files)`);
 }
 
 console.log("→ switching login shell to fish");
 try {
-	const which = await new Deno.Command("which", {
-		args: ["fish"],
-		stdout: "piped",
-		stderr: "null",
-	}).output();
-	const fishPath = new TextDecoder().decode(which.stdout).trim();
+  const which = await new Deno.Command("which", {
+    args: ["fish"],
+    stdout: "piped",
+    stderr: "null",
+  }).output();
+  const fishPath = new TextDecoder().decode(which.stdout).trim();
 
-	const id = await new Deno.Command("id", {
-		args: ["-un"],
-		stdout: "piped",
-		stderr: "null",
-	}).output();
-	// Fall back to "sprite" — Fly.io Sprites all use this account name, so
-	// the script stays useful even if id/USER both come back empty.
-	const username = new TextDecoder().decode(id.stdout).trim() || "sprite";
+  const id = await new Deno.Command("id", {
+    args: ["-un"],
+    stdout: "piped",
+    stderr: "null",
+  }).output();
+  // Fall back to "sprite" — Fly.io Sprites all use this account name, so
+  // the script stays useful even if id/USER both come back empty.
+  const username = new TextDecoder().decode(id.stdout).trim() || "sprite";
 
-	if (fishPath && username) {
-		await run("sudo", ["-n", "chsh", "-s", fishPath, username]);
-	} else {
-		console.warn(
-			`  (skipping chsh: fish=${fishPath || "missing"} user=${
-				username || "missing"
-			})`,
-		);
-	}
+  if (fishPath && username) {
+    await run("sudo", ["-n", "chsh", "-s", fishPath, username]);
+  } else {
+    console.warn(
+      `  (skipping chsh: fish=${fishPath || "missing"} user=${
+        username || "missing"
+      })`,
+    );
+  }
 } catch (e) {
-	console.warn(`  (chsh failed, continuing: ${(e as Error).message})`);
+  console.warn(`  (chsh failed, continuing: ${(e as Error).message})`);
 }
 
 console.log("→ cleaning up");

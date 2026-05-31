@@ -112,7 +112,7 @@ function generate256ColorPalette(): Record<number, ColorHex> {
         palette[index] = rgbToHex(
           r ? 55 + r * 40 : 0,
           g ? 55 + g * 40 : 0,
-          b ? 55 + b * 40 : 0
+          b ? 55 + b * 40 : 0,
         );
       }
     }
@@ -151,15 +151,13 @@ export function ansiCodeToStyle(code: string): Style {
           style.fg = palette[colorIndex] ?? "#ffffff";
           i += 2;
         }
-      }
-      // 2 = 24-bit RGB color
+      } // 2 = 24-bit RGB color
       else if (parts[i + 1] === 2) {
         const [r, g, b] = parts.slice(i + 2, i + 5);
         style.fg = rgbToHex(r, g, b);
         i += 4;
       }
-    }
-    // 48 = background color
+    } // 48 = background color
     else if (part === 48) {
       // 5 = 256 color palette
       if (parts[i + 1] === 5) {
@@ -168,28 +166,23 @@ export function ansiCodeToStyle(code: string): Style {
           style.bg = palette[colorIndex] ?? "#ffffff";
           i += 2;
         }
-      }
-      // 2 = 24-bit RGB color
+      } // 2 = 24-bit RGB color
       else if (parts[i + 1] === 2) {
         const [r, g, b] = parts.slice(i + 2, i + 5);
         style.bg = rgbToHex(r, g, b);
         i += 4;
       }
-    }
-    // 0 = reset
+    } // 0 = reset
     else if (part === 0) {
       style = {};
-    }
-    // Check for mode (bold, underline, etc.)
+    } // Check for mode (bold, underline, etc.)
     else if (part in modes) {
       const mode = modes[part];
       style[mode] = true;
-    }
-    // Check for basic foreground color
+    } // Check for basic foreground color
     else if (part in fgColors) {
       style.fg = fgColors[part];
-    }
-    // Check for basic background color
+    } // Check for basic background color
     else if (part in bgColors) {
       style.bg = bgColors[part];
     }
@@ -270,7 +263,7 @@ function main() {
   if (!lsColors) {
     console.error("Error: LS_COLORS environment variable is not set.");
     console.error(
-      "Try running: eval $(dircolors) && deno run --allow-env ls-colors-to-toml.ts"
+      "Try running: eval $(dircolors) && deno run --allow-env ls-colors-to-toml.ts",
     );
     Deno.exit(1);
   }
