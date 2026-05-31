@@ -19,6 +19,7 @@ packages:
           - sassman/tap
           - supermodellabs/tap
           - yakitrak/yakitrak
+        personal: []
       formulae:
         personal:
           - exercism
@@ -193,12 +194,12 @@ packages:
       personal:
         - '@aredotna/cli'
         - '@readwise/cli'
-        
     uv:
       core:
         - ipython
         - marimo
         - rematter
+      personal: []
   linux:
     pnpm:
       core:
