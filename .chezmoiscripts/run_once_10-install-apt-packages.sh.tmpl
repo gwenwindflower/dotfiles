@@ -10,8 +10,9 @@ set -euo pipefail
 
 log_step "Installing apt packages"
 
+{{ $apt := concat .packages.linux.apt.packages.core (index .packages.linux.apt.packages .profile | default (list)) -}}
 packages=(
-{{ range .packages.linux.apt.packages -}}
+{{ range $apt -}}
   {{ . | quote }}
 {{ end -}}
 )
@@ -30,7 +31,7 @@ if [ "${#missing[@]}" -gt 0 ]; then
   log_info "Installing ${#missing[@]} package(s)..."
   DEBIAN_FRONTEND=noninteractive sudo apt-get install -y "${missing[@]}"
 else
-  log_success "All {{ len .packages.linux.apt.packages }} apt packages already present"
+  log_success "All {{ len $apt }} apt packages already present"
 fi
 
 log_info "Upgrading existing packages..."

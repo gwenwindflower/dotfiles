@@ -6,5 +6,7 @@
     {{- $brewPrefix = "/usr/local" -}}
   {{- end -}}
 {{- end -}}
+{{- $profile := promptChoiceOnce . "profile" "Machine profile" (list "personal" "work") "personal" -}}
 [data]
 brewPrefix = {{ $brewPrefix | quote }}
+profile = {{ $profile | quote }}

@@ -10,7 +10,7 @@ set -euo pipefail
 
 log_step "Installing Homebrew packages"
 
-{{- $taps := .packages.darwin.homebrew.taps }}
+{{- $taps := concat .packages.darwin.homebrew.taps.core (index .packages.darwin.homebrew.taps .profile | default (list)) }}
 {{ if $taps -}}
 # Verify taps are available before installing packages that depend on them.
 # Single `brew tap` call replaces per-tap `brew tap-info` (which can hit network).
@@ -24,13 +24,16 @@ fi
 log_info "All required taps present"
 {{ end -}}
 
-log_info "Installing {{ len .packages.darwin.homebrew.formulae }} formulae and {{ len .packages.darwin.homebrew.casks }} casks..."
+{{- $hb := .packages.darwin.homebrew -}}
+{{- $formulae := concat $hb.formulae.core (index $hb.formulae .profile | default (list)) -}}
+{{- $casks := concat $hb.casks.core (index $hb.casks .profile | default (list)) -}}
+log_info "Installing {{ len $formulae }} formulae and {{ len $casks }} casks..."
 
 brew bundle --file=/dev/stdin <<EOF
-{{ range .packages.darwin.homebrew.formulae -}}
+{{ range $formulae -}}
 brew {{ . | quote }}
 {{ end -}}
-{{ range .packages.darwin.homebrew.casks -}}
+{{ range $casks -}}
 cask {{ . | quote }}
 {{ end -}}
 EOF

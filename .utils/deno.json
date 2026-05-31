@@ -20,11 +20,13 @@
 		"twinsies": "deno run --allow-read --allow-write twinsies.ts",
 		"twinsies:check": "deno run --allow-read twinsies.ts --check",
 		"twinsies:preview": "deno run --allow-read twinsies.ts --dry-run",
+		"packy": "deno run --allow-read --allow-write --allow-env --allow-run=chezmoi,yq,brew,pnpm,uv packy.ts",
 		"test": "deno run --allow-read --allow-run=deno scripts/test.ts",
 		"test:tables": "deno test --allow-read fix-md-tables_test.ts",
 		"test:logo": "deno test --allow-read --allow-env generate-logo_test.ts",
 		"test:lscolors": "deno test lscolors_to_toml_test.ts",
 		"test:stars": "deno test --allow-read scrape-github-stars_test.ts",
-		"test:twinsies": "deno test --allow-read --allow-write twinsies_test.ts"
+		"test:twinsies": "deno test --allow-read --allow-write twinsies_test.ts",
+		"test:packy": "deno test packy_test.ts"
 	}
 }

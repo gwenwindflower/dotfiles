@@ -1,5 +1,5 @@
 {{ if eq .chezmoi.os "darwin" -}}
-{{- $taps := .packages.darwin.homebrew.taps -}}
+{{- $taps := concat .packages.darwin.homebrew.taps.core (index .packages.darwin.homebrew.taps .profile | default (list)) -}}
 {{- if not $taps -}}
 #!/bin/sh
 # No taps defined for darwin — nothing to do

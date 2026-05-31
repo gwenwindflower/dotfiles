@@ -8,11 +8,15 @@ set -euo pipefail
 {{ template "script-log.sh" }}
 
 {{- $os := .chezmoi.os -}}
-{{- $pkgs := index .packages $os }}
+{{- $pkgs := index .packages $os -}}
+{{- $pnpmGlobals := list -}}
+{{- if hasKey $pkgs "pnpm" -}}{{ $pnpmGlobals = concat $pkgs.pnpm.core (index $pkgs.pnpm .profile | default (list)) -}}{{- end -}}
+{{- $uvTools := list -}}
+{{- if hasKey $pkgs "uv" -}}{{ $uvTools = concat $pkgs.uv.core (index $pkgs.uv .profile | default (list)) -}}{{- end }}
 
 # --- pnpm globals ---
 
-{{ if and (hasKey $pkgs "pnpm") $pkgs.pnpm.globals -}}
+{{ if $pnpmGlobals -}}
 if ! command -v pnpm >/dev/null 2>&1; then
   log_error "pnpm not found — Homebrew install may have failed"
   exit 1
@@ -20,7 +24,7 @@ fi
 
 log_step "Installing pnpm global packages"
 
-{{ range $pkgs.pnpm.globals -}}
+{{ range $pnpmGlobals -}}
 if pnpm ls -g {{ . | quote }} --depth=0 >/dev/null 2>&1; then
   log_info "{{ . }} already installed"
 else
@@ -35,7 +39,7 @@ log_success "pnpm global packages complete"
 
 # --- uv tools (darwin only) ---
 
-{{ if and (hasKey $pkgs "uv") $pkgs.uv.tools -}}
+{{ if $uvTools -}}
 if ! command -v uv >/dev/null 2>&1; then
   log_error "uv not found — Homebrew install may have failed"
   exit 1
@@ -43,7 +47,7 @@ fi
 
 log_step "Installing uv tools"
 
-{{ range $pkgs.uv.tools -}}
+{{ range $uvTools -}}
 if uv tool list 2>/dev/null | grep -q "^{{ . }} "; then
   log_info "{{ . }} already installed"
 else
