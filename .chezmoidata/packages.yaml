@@ -20,6 +20,13 @@ packages:
           - supermodellabs/tap
           - yakitrak/yakitrak
       formulae:
+        personal:
+          - exercism
+          - fennel
+          - gallery-dl
+          - notesmd-cli
+          - snitch
+          - yt-dlp
         core:
           - age
           - agent-browser
@@ -43,9 +50,7 @@ packages:
           - duckdb
           - dust
           - duti
-          - exercism
           - fd
-          - fennel
           - ffmpeg
           - fish
           - flyctl
@@ -53,7 +58,6 @@ packages:
           - freeze
           - fx
           - fzf
-          - gallery-dl
           - gh
           - git
           - git-cliff
@@ -86,7 +90,6 @@ packages:
           - mq
           - mutagen
           - neovim
-          - notesmd-cli
           - opencode
           - pandoc
           - pgcli
@@ -106,12 +109,10 @@ packages:
           - ripgrep
           - rm-improved
           - rsync
-          - rtk
           - ruby
           - sc-im
           - sd
           - sevenzip
-          - snitch
           - spotify_player
           - starship
           - stripe-cli
@@ -131,12 +132,10 @@ packages:
           - wget
           - winline
           - woff2
-          - wordle
           - worktrunk
           - yazi
           - youplot
           - yq
-          - yt-dlp
           - zoxide
       casks:
         core:
@@ -148,7 +147,6 @@ packages:
           - claude
           - claude-code
           - codex
-          - copilot-money
           - dbc
           - font-charter
           - font-hanken-grotesk
@@ -171,27 +169,31 @@ packages:
           - karabiner-elements
           - lookaway
           - mimestream
-          - mitmproxy
           - monodraw
           - notion
           - notion-calendar
           - notion-cli
           - notion-mail
-          - obsidian
           - orbstack
           - orion
           - postico
           - raycast
+          - slack
+          - zoom
+        personal:
+          - copilot-money
+          - mitmproxy
+          - obsidian
           - shortcat
           - signal
-          - slack
           - tailscale-app
-          - zoom
     pnpm:
       core:
         - '@agentclientprotocol/claude-agent-acp'
+      personal:
         - '@aredotna/cli'
         - '@readwise/cli'
+        
     uv:
       core:
         - ipython
@@ -202,11 +204,6 @@ packages:
       core:
         - '@agentclientprotocol/claude-agent-acp'
     apt:
-      # Manually curated — apt names, not upstream tool names (some differ, e.g.
-      # fd-find ships `fdfind`, bat ships `batcat`; fish aliases bridge those).
-      # Tools not in standard apt repos (yazi, mise, rm-improved, vivid, lsd,
-      # zoxide, starship, sd, forgit, lazygit, neovim) are installed via mise
-      # or direct binary download — out of scope for this list.
       packages:
         core:
           - bat
