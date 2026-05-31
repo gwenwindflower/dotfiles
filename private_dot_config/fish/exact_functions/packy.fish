@@ -5,6 +5,6 @@ function packy -d "Snapshot, diff, lint, or update package managers tracked in p
         --allow-read \
         --allow-write \
         --allow-env \
-        --allow-run=chezmoi,yq,brew,pnpm,uv \
+        --allow-run=chezmoi,brew,pnpm,uv \
         (chezmoi source-path)/.utils/packy.ts $argv
 end

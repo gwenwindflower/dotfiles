@@ -7,6 +7,7 @@
 		"@std/jsonc": "jsr:@std/jsonc@^1",
 		"@std/path": "jsr:@std/path@^1",
 		"@std/toml": "jsr:@std/toml@^1",
+		"@std/yaml": "jsr:@std/yaml@^1",
 		"text-to-svg": "npm:text-to-svg@^3.1.5"
 	},
 	"nodeModulesDir": "auto",
@@ -20,7 +21,7 @@
 		"twinsies": "deno run --allow-read --allow-write twinsies.ts",
 		"twinsies:check": "deno run --allow-read twinsies.ts --check",
 		"twinsies:preview": "deno run --allow-read twinsies.ts --dry-run",
-		"packy": "deno run --allow-read --allow-write --allow-env --allow-run=chezmoi,yq,brew,pnpm,uv packy.ts",
+		"packy": "deno run --allow-read --allow-write --allow-env --allow-run=chezmoi,brew,pnpm,uv packy.ts",
 		"test": "deno run --allow-read --allow-run=deno scripts/test.ts",
 		"test:tables": "deno test --allow-read fix-md-tables_test.ts",
 		"test:logo": "deno test --allow-read --allow-env generate-logo_test.ts",

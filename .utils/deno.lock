@@ -12,6 +12,7 @@
     "jsr:@std/path@1": "1.1.4",
     "jsr:@std/path@^1.1.4": "1.1.4",
     "jsr:@std/toml@1": "1.0.11",
+    "jsr:@std/yaml@1": "1.1.0",
     "npm:text-to-svg@^3.1.5": "3.1.5"
   },
   "jsr": {
@@ -60,6 +61,9 @@
       "dependencies": [
         "jsr:@std/collections"
       ]
+    },
+    "@std/yaml@1.1.0": {
+      "integrity": "fc1c5c63e05c4c5eb6118355f557958035d41940d6c29d35b306ef7155d6edb0"
     }
   },
   "npm": {
@@ -98,6 +102,7 @@
       "jsr:@std/jsonc@1",
       "jsr:@std/path@1",
       "jsr:@std/toml@1",
+      "jsr:@std/yaml@1",
       "npm:text-to-svg@^3.1.5"
     ]
   }

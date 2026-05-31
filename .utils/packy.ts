@@ -1,12 +1,12 @@
-#!/usr/bin/env -S deno run --allow-read --allow-write --allow-env --allow-run=chezmoi,yq,brew,pnpm,uv
+#!/usr/bin/env -S deno run --allow-read --allow-write --allow-env --allow-run=chezmoi,brew,pnpm,uv
 /**
  * packy — snapshot, diff, lint, or update package managers tracked in chezmoi's packages.yaml.
  *
  * Reads state from `chezmoi data` (which merges packages.yaml + chezmoi.toml +
- * built-in vars). Writes packages.yaml via yq so the apt comment block and
- * surrounding formatting survive round-trips. Each leaf is profile-keyed
- * (core + personal/work); save prunes core to live and writes the residual to
- * the current profile's slot, leaving other slots untouched.
+ * built-in vars). Writes packages.yaml as a pure-Deno YAML round-trip via
+ * @std/yaml. Each leaf is profile-keyed (core + personal/work); save prunes
+ * core to live and writes the residual to the current profile's slot, leaving
+ * other slots untouched.
  *
  * Run via `deno task packy` from .utils, or the `packy` fish wrapper.
  */
@@ -22,6 +22,7 @@ import {
 	yellow,
 } from "@std/fmt/colors";
 import { join } from "@std/path";
+import { parse as parseYaml, stringify as stringifyYaml } from "@std/yaml";
 
 // ── Types ──────────────────────────────────────────────────────────────
 
@@ -213,28 +214,10 @@ async function uvTools() {
 	return [...tools].sort();
 }
 
-// ── yq writes ──────────────────────────────────────────────────────────
-
-/**
- * Replace the YAML list at `path` (e.g., ".packages.darwin.homebrew.taps.core")
- * with `items`. Done as `path = []` then per-item `+= [...]` so yq preserves
- * surrounding YAML (the apt comment block, in particular).
- */
-async function yqSetList(file: string, path: string, items: string[]) {
-	await runOutput(["yq", "eval", `${path} = []`, "-i", file]);
-	for (const item of items) {
-		await runOutput([
-			"yq",
-			"eval",
-			`${path} += [${JSON.stringify(item)}]`,
-			"-i",
-			file,
-		]);
-	}
-}
+// ── YAML round-trip writes ─────────────────────────────────────────────
 
 interface ListChange {
-	path: string;
+	pathSegments: string[];
 	coreItems: string[];
 	profileItems: string[] | null;
 }
@@ -243,36 +226,61 @@ function planChange(
 	saved: ProfileMap | undefined,
 	live: string[],
 	profile: Profile,
-	path: string,
+	pathSegments: string[],
 ): ListChange {
 	const { core, profileItems } = computeSplit(saved?.core ?? [], live, profile);
-	return { path, coreItems: core, profileItems };
+	return { pathSegments, coreItems: core, profileItems };
 }
 
-async function applyChanges(
-	file: string,
+/**
+ * Mutate the parsed YAML root in place: each change writes `core` + (when
+ * profile !== core) the current profile's slot. Other slots stay untouched.
+ */
+function applyChanges(
+	// deno-lint-ignore no-explicit-any
+	root: any,
 	changes: ListChange[],
 	profile: Profile,
 ) {
 	for (const c of changes) {
-		await yqSetList(file, `${c.path}.core`, c.coreItems);
+		// deno-lint-ignore no-explicit-any
+		let node: any = root;
+		for (const seg of c.pathSegments) {
+			node[seg] ??= {};
+			node = node[seg];
+		}
+		node.core = c.coreItems;
 		if (c.profileItems !== null) {
-			await yqSetList(file, `${c.path}.${profile}`, c.profileItems);
+			node[profile] = c.profileItems;
 		}
 	}
 }
 
-async function withTempCopy<T>(
-	file: string,
-	fn: (tempFile: string) => Promise<T>,
-): Promise<{ tempFile: string; result: T }> {
+/**
+ * Read packages.yaml, apply changes in memory, write to a temp file, then
+ * finalize (preview / dry-run / rename). Temp + rename keeps the write atomic
+ * — a crash mid-way leaves the original file untouched.
+ */
+async function snapshot(ctx: Ctx, changes: ListChange[], label: string) {
+	const text = await Deno.readTextFile(ctx.packagesFile);
+	const root = (parseYaml(text) ?? {}) as Record<string, unknown>;
+	applyChanges(root, changes, ctx.profile);
+
 	const tempFile = await Deno.makeTempFile({
 		prefix: "packy-",
 		suffix: ".yaml",
 	});
-	await Deno.copyFile(file, tempFile);
-	const result = await fn(tempFile);
-	return { tempFile, result };
+	await Deno.writeTextFile(
+		tempFile,
+		stringifyYaml(root, { indent: 2, lineWidth: -1 }),
+	);
+	await finalizeWrite(
+		tempFile,
+		ctx.packagesFile,
+		label,
+		ctx.dryRun,
+		ctx.verbose,
+	);
 }
 
 async function finalizeWrite(
@@ -354,40 +362,15 @@ async function homebrewSave(ctx: Ctx) {
 		`homebrew: ${taps.length} taps, ${formulae.length} formulae, ${casks.length} casks`,
 	);
 	const hb = ctx.data.packages?.[ctx.os]?.homebrew;
+	const base = ["packages", ctx.os, "homebrew"];
 	const changes: ListChange[] = [
-		planChange(
-			hb?.taps,
-			taps,
-			ctx.profile,
-			`.packages.${ctx.os}.homebrew.taps`,
-		),
-		planChange(
-			hb?.formulae,
-			formulae,
-			ctx.profile,
-			`.packages.${ctx.os}.homebrew.formulae`,
-		),
+		planChange(hb?.taps, taps, ctx.profile, [...base, "taps"]),
+		planChange(hb?.formulae, formulae, ctx.profile, [...base, "formulae"]),
 	];
 	if (ctx.os === "darwin") {
-		changes.push(
-			planChange(
-				hb?.casks,
-				casks,
-				ctx.profile,
-				`.packages.${ctx.os}.homebrew.casks`,
-			),
-		);
+		changes.push(planChange(hb?.casks, casks, ctx.profile, [...base, "casks"]));
 	}
-	const { tempFile } = await withTempCopy(ctx.packagesFile, (tmp) =>
-		applyChanges(tmp, changes, ctx.profile),
-	);
-	await finalizeWrite(
-		tempFile,
-		ctx.packagesFile,
-		`${ctx.os}.homebrew`,
-		ctx.dryRun,
-		ctx.verbose,
-	);
+	await snapshot(ctx, changes, `${ctx.os}.homebrew`);
 }
 
 async function homebrewDiff(ctx: Ctx) {
@@ -459,18 +442,9 @@ async function pnpmSave(ctx: Ctx) {
 		ctx.data.packages?.[ctx.os]?.pnpm,
 		globals,
 		ctx.profile,
-		`.packages.${ctx.os}.pnpm`,
+		["packages", ctx.os, "pnpm"],
 	);
-	const { tempFile } = await withTempCopy(ctx.packagesFile, (tmp) =>
-		applyChanges(tmp, [change], ctx.profile),
-	);
-	await finalizeWrite(
-		tempFile,
-		ctx.packagesFile,
-		`${ctx.os}.pnpm`,
-		ctx.dryRun,
-		ctx.verbose,
-	);
+	await snapshot(ctx, [change], `${ctx.os}.pnpm`);
 }
 
 async function pnpmDiff(ctx: Ctx) {
@@ -532,18 +506,9 @@ async function uvSave(ctx: Ctx) {
 		ctx.data.packages?.darwin?.uv,
 		tools,
 		ctx.profile,
-		`.packages.${ctx.os}.uv`,
+		["packages", ctx.os, "uv"],
 	);
-	const { tempFile } = await withTempCopy(ctx.packagesFile, (tmp) =>
-		applyChanges(tmp, [change], ctx.profile),
-	);
-	await finalizeWrite(
-		tempFile,
-		ctx.packagesFile,
-		`${ctx.os}.uv`,
-		ctx.dryRun,
-		ctx.verbose,
-	);
+	await snapshot(ctx, [change], `${ctx.os}.uv`);
 }
 
 async function uvDiff(ctx: Ctx) {
