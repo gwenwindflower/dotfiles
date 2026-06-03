@@ -1,12 +1,21 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write --allow-env --allow-run=chezmoi,brew,pnpm,uv
 /**
- * packy — snapshot, diff, lint, or update package managers tracked in chezmoi's packages.yaml.
+ * packy — declarative package manifest tool for chezmoi's packages.yaml.
  *
- * Reads state from `chezmoi data` (which merges packages.yaml + chezmoi.toml +
- * built-in vars). Writes packages.yaml as a pure-Deno YAML round-trip via
- * @std/yaml. Each leaf is profile-keyed (core + personal/work); save prunes
- * core to live and writes the residual to the current profile's slot, leaving
- * other slots untouched.
+ * Manifest-first: add/remove flow through packy so the YAML stays the source of
+ * truth. Drift detection (diff) and upgrades (update) never mutate the manifest
+ * — live state of the underlying package manager is read-only input.
+ *
+ * Managers (current OS gates which are usable):
+ *   formula  Homebrew formulae    (darwin)
+ *   cask     Homebrew casks       (darwin)
+ *   tap      Homebrew taps        (darwin)
+ *   pnpm     pnpm global packages (darwin + linux)
+ *   uv       uv tools             (darwin)
+ *
+ * Profiles: core, personal, work. Current profile comes from `chezmoi data .profile`.
+ * `add` defaults to the current profile; `--profile` overrides and triggers an
+ * implicit move when the package is already tracked in a different slot.
  *
  * Run via `deno task packy` from .utils, or the `packy` fish wrapper.
  */
@@ -26,7 +35,7 @@ import { parse as parseYaml, stringify as stringifyYaml } from "@std/yaml";
 
 // ── Types ──────────────────────────────────────────────────────────────
 
-export const MANAGERS = ["homebrew", "pnpm", "uv"] as const;
+export const MANAGERS = ["formula", "cask", "tap", "pnpm", "uv"] as const;
 export type Manager = (typeof MANAGERS)[number];
 
 export const PROFILES = ["core", "personal", "work"] as const;
@@ -62,12 +71,9 @@ interface Ctx {
   os: Os;
   profile: Profile;
   packagesFile: string;
-  managers: Manager[];
   dryRun: boolean;
   verbose: boolean;
 }
-
-type Subcommand = "save" | "diff" | "lint" | "update";
 
 // ── Logging ────────────────────────────────────────────────────────────
 
@@ -115,28 +121,6 @@ export function findDupes(
     .map(([item, slots]) => ({ item, slots }));
 }
 
-/**
- * Compute new (core, profile) lists with core pruning. `core` is the always-on
- * baseline per arch — if something is uninstalled locally, it leaves core too
- * (other machines must treat that as the new baseline). Items still live but
- * not in core go into the current profile slot. When profile === core,
- * `profileItems` is null and core absorbs everything live.
- */
-export function computeSplit(
-  oldCore: string[],
-  live: string[],
-  profile: Profile,
-): { core: string[]; profileItems: string[] | null } {
-  if (profile === "core") {
-    return { core: [...live], profileItems: null };
-  }
-  const liveSet = new Set(live);
-  const newCore = oldCore.filter((x) => liveSet.has(x));
-  const coreSet = new Set(newCore);
-  const newProfile = live.filter((x) => !coreSet.has(x));
-  return { core: newCore, profileItems: newProfile };
-}
-
 /** Set diff: items added (in current not saved) and removed (in saved not current). */
 export function diffLists(
   current: string[],
@@ -148,6 +132,86 @@ export function diffLists(
     added: current.filter((x) => !savedSet.has(x)),
     removed: saved.filter((x) => !currentSet.has(x)),
   };
+}
+
+// ── Add / remove planning ─────────────────────────────────────────────
+
+export type AddAction = "added" | "no-op" | "moved" | "kept";
+
+export interface AddPlan {
+  action: AddAction;
+  /** Source profile when action is "moved" or "kept". */
+  from?: Profile;
+  /** Updated map; equal to input when action is "no-op" or "kept". */
+  newMap: ProfileMap;
+}
+
+/**
+ * Plan a manifest update for `add`. Install is handled separately by the caller.
+ *
+ *  - Already in `target` → no-op.
+ *  - Already in another slot + explicit target → "moved".
+ *  - Already in another slot + implicit target → "kept" (manifest untouched
+ *    to avoid surprise profile changes when the user only meant to confirm
+ *    tracking; caller prints a hint about --profile).
+ *  - Not present → "added" into `target`.
+ */
+export function planAdd(
+  map: ProfileMap | undefined,
+  pkg: string,
+  target: Profile,
+  explicitTarget: boolean,
+): AddPlan {
+  const result: ProfileMap = {};
+  for (const p of PROFILES) result[p] = [...(map?.[p] ?? [])];
+
+  if (result[target]!.includes(pkg)) {
+    return { action: "no-op", newMap: result };
+  }
+
+  let from: Profile | undefined;
+  for (const p of PROFILES) {
+    if (p === target) continue;
+    if (result[p]!.includes(pkg)) {
+      from = p;
+      break;
+    }
+  }
+
+  if (from && !explicitTarget) {
+    return { action: "kept", from, newMap: result };
+  }
+
+  if (from) result[from] = result[from]!.filter((x) => x !== pkg);
+  result[target] = [...result[target]!, pkg].sort();
+
+  return from
+    ? { action: "moved", from, newMap: result }
+    : { action: "added", newMap: result };
+}
+
+export type RemoveAction = "removed" | "not-tracked";
+
+export interface RemovePlan {
+  action: RemoveAction;
+  from?: Profile;
+  newMap: ProfileMap;
+}
+
+export function planRemove(
+  map: ProfileMap | undefined,
+  pkg: string,
+): RemovePlan {
+  const result: ProfileMap = {};
+  for (const p of PROFILES) result[p] = [...(map?.[p] ?? [])];
+
+  for (const p of PROFILES) {
+    if (result[p]!.includes(pkg)) {
+      result[p] = result[p]!.filter((x) => x !== pkg);
+      return { action: "removed", from: p, newMap: result };
+    }
+  }
+  return { action: "not-tracked", newMap: result };
 }
 
 // ── Subprocess helpers ─────────────────────────────────────────────────
@@ -181,29 +245,26 @@ export async function loadChezmoiData(): Promise<ChezmoiData> {
   return JSON.parse(out);
 }
 
-// ── Live-state readers ─────────────────────────────────────────────────
+// ── Manager specs ──────────────────────────────────────────────────────
 
-async function brewTaps() {
-  return (await runOutput(["brew", "tap"])).split("\n").filter(Boolean).sort();
+interface ManagerSpec {
+  /** Path into the chezmoi data root to the per-profile map for this manager. */
+  yamlPath: (os: Os) => string[];
+  supports: (os: Os) => boolean;
+  bin: string;
+  listInstalled: () => Promise<string[]>;
+  install: (pkg: string) => Promise<boolean>;
+  uninstall: (pkg: string) => Promise<boolean>;
+  upgradeAll: (dryRun: boolean) => Promise<void>;
 }
-async function brewFormulae() {
-  return (await runOutput(["brew", "list", "-1", "--installed-on-request"]))
-    .split("\n")
-    .filter(Boolean)
-    .sort();
-}
-async function brewCasks() {
-  return (await runOutput(["brew", "list", "--cask", "-1"]))
-    .split("\n")
-    .filter(Boolean)
-    .sort();
-}
-async function pnpmGlobals() {
+
+async function readPnpmGlobals(): Promise<string[]> {
   const out = await runOutput(["pnpm", "ls", "-g", "--depth=0", "--json"]);
   const data = JSON.parse(out);
   return Object.keys(data?.[0]?.dependencies ?? {}).sort();
 }
-async function uvTools() {
+
+async function readUvTools(): Promise<string[]> {
   const out = await runOutput(["uv", "tool", "list"]);
   // Tool lines start with the name; bin lines start with "- ".
   const tools = new Set<string>();
@@ -214,111 +275,441 @@ async function uvTools() {
   return [...tools].sort();
 }
 
-// ── YAML round-trip writes ─────────────────────────────────────────────
-
-interface ListChange {
-  pathSegments: string[];
-  coreItems: string[];
-  profileItems: string[] | null;
+async function readBrewFormulae(): Promise<string[]> {
+  const out = await runOutput([
+    "brew",
+    "list",
+    "-1",
+    "--installed-on-request",
+  ]);
+  return out.split("\n").filter(Boolean).sort();
 }
 
-function planChange(
-  saved: ProfileMap | undefined,
-  live: string[],
-  profile: Profile,
-  pathSegments: string[],
-): ListChange {
-  const { core, profileItems } = computeSplit(saved?.core ?? [], live, profile);
-  return { pathSegments, coreItems: core, profileItems };
+async function readBrewCasks(): Promise<string[]> {
+  const out = await runOutput(["brew", "list", "--cask", "-1"]);
+  return out.split("\n").filter(Boolean).sort();
 }
 
-/**
- * Mutate the parsed YAML root in place: each change writes `core` + (when
- * profile !== core) the current profile's slot. Other slots stay untouched.
- */
-function applyChanges(
-  // deno-lint-ignore no-explicit-any
-  root: any,
-  changes: ListChange[],
-  profile: Profile,
-) {
-  for (const c of changes) {
-    // deno-lint-ignore no-explicit-any
-    let node: any = root;
-    for (const seg of c.pathSegments) {
-      node[seg] ??= {};
-      node = node[seg];
-    }
-    node.core = c.coreItems;
-    if (c.profileItems !== null) {
-      node[profile] = c.profileItems;
-    }
+async function readBrewTaps(): Promise<string[]> {
+  const out = await runOutput(["brew", "tap"]);
+  return out.split("\n").filter(Boolean).sort();
+}
+
+const SPECS: Record<Manager, ManagerSpec> = {
+  formula: {
+    yamlPath: (os) => ["packages", os, "homebrew", "formulae"],
+    supports: (os) => os === "darwin",
+    bin: "brew",
+    listInstalled: readBrewFormulae,
+    install: (pkg) => runInteractive(["brew", "install", pkg]),
+    uninstall: (pkg) => runInteractive(["brew", "uninstall", pkg]),
+    upgradeAll: async (dryRun) => {
+      if (dryRun) {
+        log.info(
+          "[DRY RUN] brew update; brew upgrade; brew autoremove; brew cleanup",
+        );
+        return;
+      }
+      for (
+        const cmd of [
+          ["brew", "update"],
+          ["brew", "upgrade"],
+          ["brew", "autoremove"],
+          ["brew", "cleanup"],
+        ]
+      ) {
+        log.info(`${cmd.join(" ")}...`);
+        if (!(await runInteractive(cmd))) {
+          log.warn(`${cmd.join(" ")} returned non-zero — continuing`);
+        }
+      }
+    },
+  },
+  cask: {
+    yamlPath: (os) => ["packages", os, "homebrew", "casks"],
+    supports: (os) => os === "darwin",
+    bin: "brew",
+    listInstalled: readBrewCasks,
+    install: (pkg) => runInteractive(["brew", "install", "--cask", pkg]),
+    uninstall: (pkg) => runInteractive(["brew", "uninstall", "--cask", pkg]),
+    upgradeAll: async (dryRun) => {
+      if (dryRun) {
+        log.info("[DRY RUN] brew upgrade --cask");
+        return;
+      }
+      log.info("brew upgrade --cask...");
+      if (!(await runInteractive(["brew", "upgrade", "--cask"]))) {
+        log.warn("brew upgrade --cask returned non-zero — continuing");
+      }
+    },
+  },
+  tap: {
+    yamlPath: (os) => ["packages", os, "homebrew", "taps"],
+    supports: (os) => os === "darwin",
+    bin: "brew",
+    listInstalled: readBrewTaps,
+    install: (pkg) => runInteractive(["brew", "tap", pkg]),
+    uninstall: (pkg) => runInteractive(["brew", "untap", pkg]),
+    upgradeAll: () => {
+      log.info("taps have no upgrade step — skipping");
+      return Promise.resolve();
+    },
+  },
+  pnpm: {
+    yamlPath: (os) => ["packages", os, "pnpm"],
+    supports: () => true,
+    bin: "pnpm",
+    listInstalled: readPnpmGlobals,
+    install: (pkg) => runInteractive(["pnpm", "add", "-g", pkg]),
+    uninstall: (pkg) => runInteractive(["pnpm", "remove", "-g", pkg]),
+    upgradeAll: async (dryRun) => {
+      if (dryRun) {
+        log.info("[DRY RUN] pnpm update -g");
+        return;
+      }
+      log.info("pnpm update -g...");
+      await runInteractive(["pnpm", "update", "-g"]);
+    },
+  },
+  uv: {
+    yamlPath: (os) => ["packages", os, "uv"],
+    supports: (os) => os === "darwin",
+    bin: "uv",
+    listInstalled: readUvTools,
+    install: (pkg) => runInteractive(["uv", "tool", "install", pkg]),
+    uninstall: (pkg) => runInteractive(["uv", "tool", "uninstall", pkg]),
+    upgradeAll: async (dryRun) => {
+      if (dryRun) {
+        log.info("[DRY RUN] uv tool upgrade --all");
+        return;
+      }
+      log.info("uv tool upgrade --all...");
+      await runInteractive(["uv", "tool", "upgrade", "--all"]);
+    },
+  },
+};
+
+function applicableManagers(os: Os, filter?: Manager): Manager[] {
+  const all = MANAGERS.filter((m) => SPECS[m].supports(os));
+  return filter ? all.filter((m) => m === filter) : all;
+}
+
+// deno-lint-ignore no-explicit-any
+function getMap(
+  data: ChezmoiData,
+  manager: Manager,
+  os: Os,
+): ProfileMap | undefined {
+  const path = SPECS[manager].yamlPath(os);
+  let node: any = data;
+  for (const seg of path) {
+    if (node == null) return undefined;
+    node = node[seg];
+  }
+  return node as ProfileMap | undefined;
+}
+
+async function check(manager: Manager): Promise<boolean> {
+  try {
+    await runOutput([SPECS[manager].bin, "--version"]);
+    return true;
+  } catch {
+    log.error(`${SPECS[manager].bin} not found in PATH`);
+    return false;
   }
 }
 
+// ── YAML write ─────────────────────────────────────────────────────────
+
 /**
- * Read packages.yaml, apply changes in memory, write to a temp file, then
- * finalize (preview / dry-run / rename). Temp + rename keeps the write atomic
- * — a crash mid-way leaves the original file untouched.
+ * Replace the per-profile map for `manager` at its yamlPath. Other branches of
+ * the YAML tree are preserved. Refreshes ctx.data after a successful write so
+ * subsequent ops in the same run see the new state.
  */
-async function snapshot(ctx: Ctx, changes: ListChange[], label: string) {
+async function writeMap(
+  ctx: Ctx,
+  manager: Manager,
+  newMap: ProfileMap,
+  label: string,
+) {
   const text = await Deno.readTextFile(ctx.packagesFile);
   const root = (parseYaml(text) ?? {}) as Record<string, unknown>;
-  applyChanges(root, changes, ctx.profile);
+  const path = SPECS[manager].yamlPath(ctx.os);
+  // deno-lint-ignore no-explicit-any
+  let node: any = root;
+  for (let i = 0; i < path.length - 1; i++) {
+    const seg = path[i];
+    node[seg] ??= {};
+    node = node[seg];
+  }
+  node[path[path.length - 1]] = newMap;
 
+  const yamlOut = stringifyYaml(root, { indent: 2, lineWidth: -1 });
+  if (ctx.verbose) {
+    console.log();
+    console.log(yamlOut);
+    console.log();
+  }
+  if (ctx.dryRun) {
+    log.info(`[DRY RUN] would update ${label} in ${ctx.packagesFile}`);
+    return;
+  }
   const tempFile = await Deno.makeTempFile({
     prefix: "packy-",
     suffix: ".yaml",
   });
-  await Deno.writeTextFile(
-    tempFile,
-    stringifyYaml(root, { indent: 2, lineWidth: -1 }),
-  );
-  await finalizeWrite(
-    tempFile,
-    ctx.packagesFile,
-    label,
-    ctx.dryRun,
-    ctx.verbose,
-  );
+  await Deno.writeTextFile(tempFile, yamlOut);
+  await Deno.rename(tempFile, ctx.packagesFile);
+  log.success(`Updated ${label}`);
+  ctx.data = await loadChezmoiData();
 }
 
-async function finalizeWrite(
-  tempFile: string,
-  target: string,
+// ── add ────────────────────────────────────────────────────────────────
+
+async function addOne(
+  ctx: Ctx,
+  manager: Manager,
+  pkg: string,
+  target: Profile,
+  explicitTarget: boolean,
+): Promise<boolean> {
+  const spec = SPECS[manager];
+  const installed = await spec.listInstalled();
+  if (!installed.includes(pkg)) {
+    if (ctx.dryRun) {
+      log.info(`[DRY RUN] would install ${pkg} via ${manager}`);
+    } else {
+      log.info(`Installing ${pkg} via ${manager}...`);
+      if (!(await spec.install(pkg))) {
+        log.error(`Install failed for ${pkg} — leaving manifest untouched`);
+        return false;
+      }
+    }
+  } else {
+    log.info(`${pkg} already installed`);
+  }
+
+  const map = getMap(ctx.data, manager, ctx.os);
+  const plan = planAdd(map, pkg, target, explicitTarget);
+
+  switch (plan.action) {
+    case "no-op":
+      log.success(`${pkg} already tracked in ${target}`);
+      return true;
+    case "added":
+      await writeMap(ctx, manager, plan.newMap, `${ctx.os}.${manager}`);
+      log.success(`Tracked ${pkg} in ${target}`);
+      return true;
+    case "moved":
+      await writeMap(ctx, manager, plan.newMap, `${ctx.os}.${manager}`);
+      log.success(`Moved ${pkg}: ${plan.from} → ${target}`);
+      return true;
+    case "kept":
+      log.info(
+        `${pkg} is already tracked in ${plan.from} — manifest unchanged. ` +
+          `Pass --profile ${target} to move it.`,
+      );
+      return true;
+  }
+}
+
+async function cmdAdd(
+  ctx: Ctx,
+  manager: Manager,
+  pkgs: string[],
+  target: Profile,
+  explicitTarget: boolean,
+): Promise<boolean> {
+  if (!SPECS[manager].supports(ctx.os)) {
+    log.error(`${manager} is not supported on ${ctx.os}`);
+    return false;
+  }
+  if (!(await check(manager))) return false;
+
+  let allOk = true;
+  for (const pkg of pkgs) {
+    console.log();
+    log.step(`add ${manager} ${pkg}`);
+    allOk = (await addOne(ctx, manager, pkg, target, explicitTarget)) && allOk;
+  }
+  return allOk;
+}
+
+// ── remove ─────────────────────────────────────────────────────────────
+
+interface RemoveLocation {
+  manager: Manager;
+  profile: Profile;
+}
+
+function findInManifest(
+  data: ChezmoiData,
+  os: Os,
+  pkg: string,
+): RemoveLocation[] {
+  const hits: RemoveLocation[] = [];
+  for (const m of applicableManagers(os)) {
+    const map = getMap(data, m, os);
+    if (!map) continue;
+    for (const p of PROFILES) {
+      if ((map[p] ?? []).includes(pkg)) hits.push({ manager: m, profile: p });
+    }
+  }
+  return hits;
+}
+
+async function removeOne(
+  ctx: Ctx,
+  manager: Manager,
+  pkg: string,
+): Promise<boolean> {
+  const spec = SPECS[manager];
+  const installed = await spec.listInstalled();
+  if (installed.includes(pkg)) {
+    if (ctx.dryRun) {
+      log.info(`[DRY RUN] would uninstall ${pkg} via ${manager}`);
+    } else {
+      log.info(`Uninstalling ${pkg} via ${manager}...`);
+      if (!(await spec.uninstall(pkg))) {
+        log.warn(
+          `Uninstall returned non-zero — proceeding with manifest update anyway`,
+        );
+      }
+    }
+  } else {
+    log.info(`${pkg} not installed — untracking from manifest only`);
+  }
+
+  const map = getMap(ctx.data, manager, ctx.os);
+  const plan = planRemove(map, pkg);
+  if (plan.action === "not-tracked") {
+    log.warn(`${pkg} was not tracked under ${manager}`);
+    return true;
+  }
+  await writeMap(ctx, manager, plan.newMap, `${ctx.os}.${manager}`);
+  log.success(`Untracked ${pkg} from ${plan.from}`);
+  return true;
+}
+
+async function cmdRemove(
+  ctx: Ctx,
+  pkgs: string[],
+  managerFilter?: Manager,
+): Promise<boolean> {
+  let allOk = true;
+  for (const pkg of pkgs) {
+    console.log();
+    log.step(`remove ${pkg}`);
+    const hits = findInManifest(ctx.data, ctx.os, pkg);
+    const targetHits = managerFilter
+      ? hits.filter((h) => h.manager === managerFilter)
+      : hits;
+    if (targetHits.length === 0) {
+      log.error(
+        `${pkg} not found in manifest${
+          managerFilter ? ` under ${managerFilter}` : ""
+        }`,
+      );
+      allOk = false;
+      continue;
+    }
+    if (targetHits.length > 1 && !managerFilter) {
+      const where = targetHits.map((h) => `${h.manager}/${h.profile}`).join(
+        ", ",
+      );
+      log.error(
+        `${pkg} is tracked in multiple managers (${where}). Pass -m to disambiguate.`,
+      );
+      allOk = false;
+      continue;
+    }
+    if (!(await check(targetHits[0].manager))) {
+      allOk = false;
+      continue;
+    }
+    allOk = (await removeOne(ctx, targetHits[0].manager, pkg)) && allOk;
+  }
+  return allOk;
+}
+
+// ── list ───────────────────────────────────────────────────────────────
+
+function cmdList(ctx: Ctx, managerFilter?: Manager): boolean {
+  const managers = applicableManagers(ctx.os, managerFilter);
+  for (const m of managers) {
+    const map = getMap(ctx.data, m, ctx.os);
+    console.log();
+    log.step(`${ctx.os}.${m}`);
+    if (!map) {
+      console.log("  (nothing tracked)");
+      continue;
+    }
+    let any = false;
+    for (const p of PROFILES) {
+      const items = map[p] ?? [];
+      if (items.length === 0) continue;
+      any = true;
+      console.log(`  ${bold(p)}:`);
+      for (const item of items) console.log(`    ${item}`);
+    }
+    if (!any) console.log("  (nothing tracked)");
+  }
+  return true;
+}
+
+// ── diff ───────────────────────────────────────────────────────────────
+
+function printDiff(
   label: string,
-  dryRun: boolean,
-  verbose: boolean,
-) {
-  if (verbose) {
-    console.log();
-    console.log(await Deno.readTextFile(tempFile));
-    console.log();
-  }
-  if (dryRun) {
-    await Deno.remove(tempFile);
-    console.log(
-      `${bold(cyan("󰐪 [DRY RUN]"))} ${
-        bold(brightGreen(label))
-      } — packages.yaml not updated`,
-    );
-    return;
-  }
-  await Deno.rename(tempFile, target);
-  log.success(`Updated ${label} in ${target}`);
-}
-
-// ── Diff + dedup display ───────────────────────────────────────────────
-
-function printDiff(label: string, current: string[], saved: string[]): number {
-  const { added, removed } = diffLists(current, saved);
+  current: string[],
+  tracked: string[],
+): number {
+  const { added, removed } = diffLists(current, tracked);
   if (added.length === 0 && removed.length === 0) return 0;
   console.log(`${bold(label)}:`);
-  for (const x of added) console.log(`  ${green(`+ ${x}`)}`);
-  for (const x of removed) console.log(`  ${red(`- ${x}`)}`);
+  for (const x of added) {
+    console.log(`  ${green(`+ ${x}`)}  (installed, not tracked)`);
+  }
+  for (const x of removed) {
+    console.log(`  ${red(`- ${x}`)}  (tracked, not installed)`);
+  }
   console.log();
   return added.length + removed.length;
 }
+
+async function cmdDiff(ctx: Ctx, managerFilter?: Manager): Promise<boolean> {
+  const managers = applicableManagers(ctx.os, managerFilter);
+  let totalChanges = 0;
+  let allOk = true;
+  for (const m of managers) {
+    if (!(await check(m))) {
+      allOk = false;
+      continue;
+    }
+    console.log();
+    log.step(`${ctx.os}.${m}`);
+    try {
+      const installed = await SPECS[m].listInstalled();
+      const tracked = getEffective(getMap(ctx.data, m, ctx.os), ctx.profile);
+      const count = printDiff(m, installed, tracked);
+      if (count === 0) log.success(`${m}: in sync`);
+      totalChanges += count;
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      log.error(`${m} diff failed: ${msg}`);
+      allOk = false;
+    }
+  }
+  if (totalChanges > 0) {
+    console.log();
+    log.info(
+      "Reconcile with: packy add -m <mgr> <pkg> (track installs) or packy remove <pkg> (untrack)",
+    );
+  }
+  return allOk;
+}
+
+// ── lint ───────────────────────────────────────────────────────────────
 
 function reportDupes(label: string, map: ProfileMap | undefined): boolean {
   const dupes = findDupes(map);
@@ -330,349 +721,167 @@ function reportDupes(label: string, map: ProfileMap | undefined): boolean {
   return false;
 }
 
-// ── Per-manager ops ────────────────────────────────────────────────────
-
-function isApplicable(mgr: Manager, os: Os): boolean {
-  if (mgr === "pnpm") return true;
-  return os === "darwin"; // homebrew, uv
-}
-
-async function check(mgr: Manager): Promise<boolean> {
-  const bins: Record<Manager, string> = {
-    homebrew: "brew",
-    pnpm: "pnpm",
-    uv: "uv",
-  };
-  try {
-    await runOutput([bins[mgr], "--version"]);
-    return true;
-  } catch {
-    log.error(`${bins[mgr]} not found in PATH`);
-    return false;
-  }
-}
-
-// homebrew
-
-async function homebrewSave(ctx: Ctx) {
-  const [taps, formulae, casks] = await Promise.all([
-    brewTaps(),
-    brewFormulae(),
-    brewCasks(),
-  ]);
-  log.info(
-    `homebrew: ${taps.length} taps, ${formulae.length} formulae, ${casks.length} casks`,
-  );
-  const hb = ctx.data.packages?.[ctx.os]?.homebrew;
-  const base = ["packages", ctx.os, "homebrew"];
-  const changes: ListChange[] = [
-    planChange(hb?.taps, taps, ctx.profile, [...base, "taps"]),
-    planChange(hb?.formulae, formulae, ctx.profile, [...base, "formulae"]),
-  ];
-  if (ctx.os === "darwin") {
-    changes.push(planChange(hb?.casks, casks, ctx.profile, [...base, "casks"]));
-  }
-  await snapshot(ctx, changes, `${ctx.os}.homebrew`);
-}
-
-async function homebrewDiff(ctx: Ctx) {
-  const [taps, formulae, casks] = await Promise.all([
-    brewTaps(),
-    brewFormulae(),
-    brewCasks(),
-  ]);
-  log.info(
-    `homebrew: ${taps.length} taps, ${formulae.length} formulae, ${casks.length} casks`,
-  );
-  const hb = ctx.data.packages?.[ctx.os]?.homebrew;
-  let total = 0;
-  total += printDiff("Taps", taps, getEffective(hb?.taps, ctx.profile));
-  total += printDiff(
-    "Formulae",
-    formulae,
-    getEffective(hb?.formulae, ctx.profile),
-  );
-  if (ctx.os === "darwin") {
-    total += printDiff("Casks", casks, getEffective(hb?.casks, ctx.profile));
-  }
-  if (total === 0) log.success("homebrew: no differences");
-  else log.info(`homebrew: ${total} change(s)`);
-}
-
-async function homebrewUpdate(_ctx: Ctx, dryRun: boolean) {
-  if (dryRun) {
-    log.info(
-      "[DRY RUN] would run: brew update; brew upgrade; brew upgrade --cask; brew autoremove; brew cleanup",
-    );
-    return;
-  }
-  for (
-    const cmd of [
-      ["brew", "update"],
-      ["brew", "upgrade"],
-      ["brew", "upgrade", "--cask"],
-      ["brew", "autoremove"],
-      ["brew", "cleanup"],
-    ]
-  ) {
-    log.info(`${cmd.join(" ")}...`);
-    if (!(await runInteractive(cmd))) {
-      log.warn(`${cmd.join(" ")} returned non-zero — continuing`);
-    }
-  }
-}
-
-function homebrewLint(ctx: Ctx): boolean {
-  const hb = ctx.data.packages?.darwin?.homebrew;
-  const tapsOk = reportDupes("Taps", hb?.taps);
-  const formOk = reportDupes("Formulae", hb?.formulae);
-  const casksOk = reportDupes("Casks", hb?.casks);
-  const ok = tapsOk && formOk && casksOk;
-  if (ok) {
-    log.success("homebrew lint passed — no duplicates across profile slots");
-  } else {
-    log.info(
-      "Promote shared items to core, or remove duplicates from the secondary slot.",
-    );
-  }
-  return ok;
-}
-
-// pnpm
-
-async function pnpmSave(ctx: Ctx) {
-  const globals = await pnpmGlobals();
-  log.info(`pnpm: ${globals.length} globals`);
-  const change = planChange(
-    ctx.data.packages?.[ctx.os]?.pnpm,
-    globals,
-    ctx.profile,
-    ["packages", ctx.os, "pnpm"],
-  );
-  await snapshot(ctx, [change], `${ctx.os}.pnpm`);
-}
-
-async function pnpmDiff(ctx: Ctx) {
-  const globals = await pnpmGlobals();
-  log.info(`pnpm: ${globals.length} globals`);
-  const saved = getEffective(ctx.data.packages?.[ctx.os]?.pnpm, ctx.profile);
-  const total = printDiff("pnpm globals", globals, saved);
-  if (total === 0) log.success("pnpm: no differences");
-  else log.info(`pnpm: ${total} change(s)`);
-}
-
-async function pnpmUpdate(_ctx: Ctx, dryRun: boolean) {
-  if (dryRun) {
-    log.info("[DRY RUN] would run: pnpm update -g");
-    return;
-  }
-  log.info("pnpm update -g...");
-  await runInteractive(["pnpm", "update", "-g"]);
-}
-
-function pnpmLint(ctx: Ctx): boolean {
-  const darwinOk = reportDupes(
-    "darwin pnpm globals",
-    ctx.data.packages?.darwin?.pnpm,
-  );
-  const linuxOk = reportDupes(
-    "linux pnpm globals",
-    ctx.data.packages?.linux?.pnpm,
-  );
-
-  const darwinAll = new Set(getAllSlots(ctx.data.packages?.darwin?.pnpm));
-  const linuxAll = getAllSlots(ctx.data.packages?.linux?.pnpm);
-  const missing = linuxAll.filter((g) => !darwinAll.has(g));
-  let subsetOk = true;
-  if (missing.length > 0) {
-    subsetOk = false;
-    log.warn(
-      `pnpm: linux globals not present in darwin (${missing.length} issue(s))`,
-    );
-    for (const g of missing) console.log(`  ${yellow(`! ${g}`)}`);
-    log.info("Either install on darwin and re-run save, or drop from linux.");
-  }
-
-  const ok = darwinOk && linuxOk && subsetOk;
-  if (ok) {
-    log.success(
-      `pnpm lint passed — ${linuxAll.length} linux globals all in darwin, no duplicates`,
-    );
-  }
-  return ok;
-}
-
-// uv
-
-async function uvSave(ctx: Ctx) {
-  const tools = await uvTools();
-  log.info(`uv: ${tools.length} tools`);
-  const change = planChange(
-    ctx.data.packages?.darwin?.uv,
-    tools,
-    ctx.profile,
-    ["packages", ctx.os, "uv"],
-  );
-  await snapshot(ctx, [change], `${ctx.os}.uv`);
-}
-
-async function uvDiff(ctx: Ctx) {
-  const tools = await uvTools();
-  log.info(`uv: ${tools.length} tools`);
-  const saved = getEffective(ctx.data.packages?.darwin?.uv, ctx.profile);
-  const total = printDiff("uv tools", tools, saved);
-  if (total === 0) log.success("uv: no differences");
-  else log.info(`uv: ${total} change(s)`);
-}
-
-async function uvUpdate(_ctx: Ctx, dryRun: boolean) {
-  if (dryRun) {
-    log.info("[DRY RUN] would run: uv tool upgrade --all");
-    return;
-  }
-  log.info("uv tool upgrade --all...");
-  await runInteractive(["uv", "tool", "upgrade", "--all"]);
-}
-
-function uvLint(ctx: Ctx): boolean {
-  const ok = reportDupes("uv tools", ctx.data.packages?.darwin?.uv);
-  if (ok) log.success("uv lint passed — no duplicates across profile slots");
-  return ok;
-}
-
-// ── Dispatch ───────────────────────────────────────────────────────────
-
-interface ManagerOps {
-  save: (ctx: Ctx) => Promise<void>;
-  diff: (ctx: Ctx) => Promise<void>;
-  update: (ctx: Ctx, dryRun: boolean) => Promise<void>;
-  lint: (ctx: Ctx) => boolean;
-}
-
-const managerOps: Record<Manager, ManagerOps> = {
-  homebrew: {
-    save: homebrewSave,
-    diff: homebrewDiff,
-    update: homebrewUpdate,
-    lint: homebrewLint,
-  },
-  pnpm: { save: pnpmSave, diff: pnpmDiff, update: pnpmUpdate, lint: pnpmLint },
-  uv: { save: uvSave, diff: uvDiff, update: uvUpdate, lint: uvLint },
-};
-
-async function dispatch(
-  ctx: Ctx,
-  subcommand: "save" | "diff" | "update",
-): Promise<boolean> {
+function cmdLint(ctx: Ctx, managerFilter?: Manager): boolean {
   let ok = true;
-  for (const mgr of ctx.managers) {
-    if (!isApplicable(mgr, ctx.os)) {
-      if (ctx.verbose) log.info(`Skipping ${mgr} (no ${ctx.os} section)`);
-      continue;
+  const managers = MANAGERS.filter(
+    (m) => !managerFilter || m === managerFilter,
+  );
+  for (const m of managers) {
+    for (const os of ["darwin", "linux"] as const) {
+      if (!SPECS[m].supports(os)) continue;
+      const map = getMap(ctx.data, m, os);
+      ok = reportDupes(`${os}.${m}`, map) && ok;
     }
-    if (!(await check(mgr))) {
-      log.warn(`Skipping ${mgr} (dependency check failed)`);
+  }
+
+  // pnpm: linux ⊆ darwin so that any linux-installable global is also part of
+  // the darwin install set.
+  if (!managerFilter || managerFilter === "pnpm") {
+    const darwinAll = new Set(getAllSlots(getMap(ctx.data, "pnpm", "darwin")));
+    const linuxAll = getAllSlots(getMap(ctx.data, "pnpm", "linux"));
+    const missing = linuxAll.filter((g) => !darwinAll.has(g));
+    if (missing.length > 0) {
+      log.warn(
+        `pnpm: linux globals not present in darwin (${missing.length} issue(s))`,
+      );
+      for (const g of missing) console.log(`  ${yellow(`! ${g}`)}`);
+      log.info(
+        "Add to darwin via `packy add -m pnpm <pkg>`, or remove from linux.",
+      );
       ok = false;
+    }
+  }
+
+  if (ok) log.success("lint passed");
+  return ok;
+}
+
+// ── update ─────────────────────────────────────────────────────────────
+
+async function cmdUpdate(ctx: Ctx, managerFilter?: Manager): Promise<boolean> {
+  const managers = applicableManagers(ctx.os, managerFilter);
+  let allOk = true;
+  for (const m of managers) {
+    if (!(await check(m))) {
+      allOk = false;
       continue;
     }
     console.log();
-    log.step(`── ${mgr}: ${subcommand} ──`);
+    log.step(`update ${m}`);
     try {
-      if (subcommand === "update") {
-        await managerOps[mgr].update(ctx, ctx.dryRun);
-      } else {
-        await managerOps[mgr][subcommand](ctx);
-      }
+      await SPECS[m].upgradeAll(ctx.dryRun);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
-      log.error(`${mgr} ${subcommand} failed: ${msg}`);
-      ok = false;
+      log.error(`${m} update failed: ${msg}`);
+      allOk = false;
     }
   }
-  return ok;
-}
-
-function dispatchLint(ctx: Ctx): boolean {
-  let ok = true;
-  for (const mgr of ctx.managers) {
-    ok = managerOps[mgr].lint(ctx) && ok;
-  }
-  return ok;
+  return allOk;
 }
 
 // ── CLI ────────────────────────────────────────────────────────────────
 
 function printHelp() {
-  console.log(`Manage multi-tool package state in chezmoi's packages.yaml.
+  console.log(
+    `Declaratively manage chezmoi's packages.yaml across package managers.
 
-Usage: packy [OPTIONS] [SUBCOMMAND]
+Usage:
+  packy add <pkg>... -m <mgr> [--profile <p>]
+  packy remove <pkg>... [-m <mgr>]
+  packy list [-m <mgr>]
+  packy diff [-m <mgr>]
+  packy lint [-m <mgr>]
+  packy update [-m <mgr>]
 
 Subcommands:
-  save        Capture current state into core + current profile (default)
-  diff        Compare current state against core + current profile
-  lint        Cross-profile dedup; linux pnpm ⊂ darwin pnpm
-  update      Run upgrades for each manager, then save the new state
+  add       Install (if missing) and track package(s) under the target profile
+  remove    Uninstall (if present) and untrack package(s)
+  list      Show tracked packages for the current OS
+  diff      Show drift between manifest and live state (no writes)
+  lint      Cross-profile dedup; linux pnpm ⊂ darwin pnpm
+  update    Run upgrade commands for each manager (no manifest writes)
 
 Options:
   -h, --help                Show this help
-  -d, --dry-run             Show what would happen without writing or upgrading
-  -v, --verbose             Print full package lists / extra detail
-  -m, --manager <name>      Limit to one manager: homebrew, pnpm, uv
+  -d, --dry-run             Preview without writing or running install/uninstall
+  -v, --verbose             Show extra detail (e.g. full YAML on write)
+  -m, --manager <name>      formula, cask, tap, pnpm, uv
+  -p, --profile <name>      Override the add target (default: current profile)
 
 Managers:
-  homebrew    taps, formulae, casks (darwin-only; linux uses apt)
-  pnpm        global packages (both OSes)
-  uv          tools (darwin-only)
+  formula   Homebrew formulae    (darwin)
+  cask      Homebrew casks       (darwin)
+  tap       Homebrew taps        (darwin)
+  pnpm      pnpm global packages (darwin + linux)
+  uv        uv tools             (darwin)
 
 Profiles:
-  Every leaf is profile-keyed: core / personal / work.
-  Current profile comes from \`chezmoi data .profile\`.
-  save writes to core + current profile only. core is pruned to live —
-  if you uninstall something locally, it leaves core (the per-arch baseline).
-  Other profile slots are never touched; promote between profiles by hand.
+  core, personal, work — current profile comes from \`chezmoi data .profile\`.
+  add without --profile only ever adds to the current profile or no-ops if the
+  package is already tracked there. If it's tracked in a different profile and
+  --profile isn't passed, add warns and leaves the manifest alone. Passing
+  --profile moves the entry between slots and prints a notice.
 
 Examples:
-  packy                       # Save all managers, then lint
-  packy diff                  # Show every change vs packages.yaml
-  packy update                # Upgrade all, snapshot result, lint
-  packy update -m pnpm        # Just upgrade pnpm globals + save
-  packy save -m homebrew      # Snapshot only homebrew state
-  packy diff -m uv -v         # Verbose diff for uv tools only`);
+  packy add -m pnpm '@agentclientprotocol/claude-agent-acp'
+  packy add -m formula gh
+  packy add -m cask --profile personal obsidian
+  packy remove '@aredotna/cli'
+  packy diff -m pnpm
+  packy update -m formula`,
+  );
 }
 
-const VALID_SUBCOMMANDS = ["save", "diff", "lint", "update"] as const;
+const SUBCOMMANDS = [
+  "add",
+  "remove",
+  "list",
+  "diff",
+  "lint",
+  "update",
+] as const;
+type Subcommand = (typeof SUBCOMMANDS)[number];
 
 export async function main(args: string[] = Deno.args): Promise<number> {
   const parsed = parseArgs(args, {
     boolean: ["help", "dry-run", "verbose"],
-    string: ["manager"],
-    alias: { h: "help", d: "dry-run", v: "verbose", m: "manager" },
+    string: ["manager", "profile"],
+    alias: {
+      h: "help",
+      d: "dry-run",
+      v: "verbose",
+      m: "manager",
+      p: "profile",
+    },
   });
 
   if (parsed.help) {
     printHelp();
     return 0;
   }
+  if (parsed._.length === 0) {
+    printHelp();
+    return 2;
+  }
 
-  const sub = (parsed._[0] as string | undefined) ?? "save";
-  if (!(VALID_SUBCOMMANDS as readonly string[]).includes(sub)) {
+  const sub = String(parsed._[0]);
+  if (!(SUBCOMMANDS as readonly string[]).includes(sub)) {
     log.error(`Unknown subcommand: ${sub}`);
-    console.error(`  Supported: ${VALID_SUBCOMMANDS.join(", ")}`);
+    console.error(`  Supported: ${SUBCOMMANDS.join(", ")}`);
     console.error("Try: packy --help");
     return 2;
   }
   const subcommand = sub as Subcommand;
+  const pkgs = parsed._.slice(1).map(String);
 
-  let managers: Manager[];
+  let managerFilter: Manager | undefined;
   if (parsed.manager) {
     if (!(MANAGERS as readonly string[]).includes(parsed.manager)) {
       log.error(`Unknown manager: ${parsed.manager}`);
       console.error(`  Supported: ${MANAGERS.join(", ")}`);
       return 2;
     }
-    managers = [parsed.manager as Manager];
-  } else {
-    managers = [...MANAGERS];
+    managerFilter = parsed.manager as Manager;
   }
 
   let data: ChezmoiData;
@@ -688,11 +897,9 @@ export async function main(args: string[] = Deno.args): Promise<number> {
     log.error(`Unsupported OS: ${data.chezmoi.os}`);
     return 1;
   }
-  const profile = (data.profile ?? "core") as Profile;
-  if (!(PROFILES as readonly string[]).includes(profile)) {
-    log.error(
-      `Unknown profile: ${profile} (expected one of ${PROFILES.join(", ")})`,
-    );
+  const currentProfile = (data.profile ?? "core") as Profile;
+  if (!(PROFILES as readonly string[]).includes(currentProfile)) {
+    log.error(`Unknown profile: ${currentProfile}`);
     return 1;
   }
   const packagesFile = join(
@@ -707,39 +914,67 @@ export async function main(args: string[] = Deno.args): Promise<number> {
     return 1;
   }
 
-  log.info(`Profile: ${profile} (${data.chezmoi.os})`);
+  let targetProfile = currentProfile;
+  let explicitProfile = false;
+  if (parsed.profile) {
+    if (!(PROFILES as readonly string[]).includes(parsed.profile)) {
+      log.error(`Unknown profile: ${parsed.profile}`);
+      console.error(`  Supported: ${PROFILES.join(", ")}`);
+      return 2;
+    }
+    targetProfile = parsed.profile as Profile;
+    explicitProfile = true;
+  }
+
+  log.info(`Profile: ${currentProfile} (${data.chezmoi.os})`);
 
   const ctx: Ctx = {
     data,
     os: data.chezmoi.os,
-    profile,
+    profile: currentProfile,
     packagesFile,
-    managers,
     dryRun: parsed["dry-run"] ?? false,
     verbose: parsed.verbose ?? false,
   };
 
-  if (subcommand === "lint") {
-    return dispatchLint(ctx) ? 0 : 1;
-  }
-
-  let ok = await dispatch(ctx, subcommand);
-
-  if (subcommand === "update") {
-    console.log();
-    log.step("Snapshotting post-update state...");
-    ctx.data = await loadChezmoiData();
-    ok = (await dispatch({ ...ctx }, "save")) && ok;
-  }
-
-  // Auto-lint after any state-changing op (refresh data so we lint what we
-  // just wrote, not the pre-save state). Always covers every manager,
-  // regardless of the -m filter.
-  if (subcommand === "save" || subcommand === "update") {
-    console.log();
-    log.step("Running lint check...");
-    ctx.data = await loadChezmoiData();
-    dispatchLint({ ...ctx, managers: [...MANAGERS] });
+  let ok = true;
+  switch (subcommand) {
+    case "add":
+      if (!managerFilter) {
+        log.error("packy add requires -m <manager>");
+        return 2;
+      }
+      if (pkgs.length === 0) {
+        log.error("packy add requires one or more package names");
+        return 2;
+      }
+      ok = await cmdAdd(
+        ctx,
+        managerFilter,
+        pkgs,
+        targetProfile,
+        explicitProfile,
+      );
+      break;
+    case "remove":
+      if (pkgs.length === 0) {
+        log.error("packy remove requires one or more package names");
+        return 2;
+      }
+      ok = await cmdRemove(ctx, pkgs, managerFilter);
+      break;
+    case "list":
+      ok = cmdList(ctx, managerFilter);
+      break;
+    case "diff":
+      ok = await cmdDiff(ctx, managerFilter);
+      break;
+    case "lint":
+      ok = cmdLint(ctx, managerFilter);
+      break;
+    case "update":
+      ok = await cmdUpdate(ctx, managerFilter);
+      break;
   }
 
   return ok ? 0 : 1;

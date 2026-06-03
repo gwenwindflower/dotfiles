@@ -20,14 +20,8 @@ packages:
           - supermodellabs/tap
           - yakitrak/yakitrak
         personal: []
+        work: []
       formulae:
-        personal:
-          - exercism
-          - fennel
-          - gallery-dl
-          - notesmd-cli
-          - snitch
-          - yt-dlp
         core:
           - age
           - agent-browser
@@ -138,11 +132,19 @@ packages:
           - youplot
           - yq
           - zoxide
+        personal:
+          - exercism
+          - fennel
+          - gallery-dl
+          - notesmd-cli
+          - snitch
+          - yt-dlp
+        work:
+          - ollama
       casks:
         core:
           - 1password
           - 1password-cli
-          - anytype
           - arc
           - cap
           - claude
@@ -168,6 +170,7 @@ packages:
           - google-chrome
           - ia-presenter
           - karabiner-elements
+          - kitty
           - lookaway
           - mimestream
           - monodraw
@@ -180,26 +183,33 @@ packages:
           - postico
           - raycast
           - slack
+          - superwhisper
           - zoom
         personal:
+          - anytype
           - copilot-money
           - mitmproxy
           - obsidian
           - shortcat
           - signal
           - tailscale-app
+        work:
+          - linear
     pnpm:
       core:
         - '@agentclientprotocol/claude-agent-acp'
       personal:
         - '@aredotna/cli'
         - '@readwise/cli'
+      work: []
     uv:
       core:
+        - databow
         - ipython
         - marimo
         - rematter
       personal: []
+      work: []
   linux:
     pnpm:
       core:

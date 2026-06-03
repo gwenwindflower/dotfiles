@@ -1,10 +1,11 @@
 import { assertEquals } from "@std/assert";
 import {
-  computeSplit,
   diffLists,
   findDupes,
   getAllSlots,
   getEffective,
+  planAdd,
+  planRemove,
 } from "./packy.ts";
 
 // ── getEffective ──────────────────────────────────────────────────────
@@ -92,48 +93,6 @@ Deno.test("findDupes: undefined map → empty", () => {
   assertEquals(findDupes(undefined), []);
 });
 
-// ── computeSplit ──────────────────────────────────────────────────────
-
-Deno.test("computeSplit: profile=core collapses live into core, profileItems null", () => {
-  const result = computeSplit(["a", "b"], ["a", "b", "c"], "core");
-  assertEquals(result.core, ["a", "b", "c"]);
-  assertEquals(result.profileItems, null);
-});
-
-Deno.test("computeSplit: prunes core to (oldCore ∩ live), residual → profile", () => {
-  // oldCore = [a, b, c]; live = [a, c, d]
-  // → newCore = [a, c]; newProfile = [d]
-  const result = computeSplit(["a", "b", "c"], ["a", "c", "d"], "personal");
-  assertEquals(result.core, ["a", "c"]);
-  assertEquals(result.profileItems, ["d"]);
-});
-
-Deno.test("computeSplit: empty live → both empty", () => {
-  const result = computeSplit(["a", "b"], [], "personal");
-  assertEquals(result.core, []);
-  assertEquals(result.profileItems, []);
-});
-
-Deno.test("computeSplit: live exactly matches old core → empty profile", () => {
-  const result = computeSplit(["a", "b"], ["a", "b"], "personal");
-  assertEquals(result.core, ["a", "b"]);
-  assertEquals(result.profileItems, []);
-});
-
-Deno.test("computeSplit: empty oldCore → everything goes to profile", () => {
-  const result = computeSplit([], ["a", "b"], "personal");
-  assertEquals(result.core, []);
-  assertEquals(result.profileItems, ["a", "b"]);
-});
-
-Deno.test("computeSplit: preserves core ordering (filter, not rebuild)", () => {
-  // oldCore order matters for diff readability — verify we filter rather than
-  // re-sort into live's order.
-  const result = computeSplit(["c", "a", "b"], ["a", "b", "c"], "work");
-  assertEquals(result.core, ["c", "a", "b"]);
-  assertEquals(result.profileItems, []);
-});
-
 // ── diffLists ─────────────────────────────────────────────────────────
 
 Deno.test("diffLists: identical → empty added/removed", () => {
@@ -163,4 +122,94 @@ Deno.test("diffLists: mixed", () => {
 
 Deno.test("diffLists: empty both", () => {
   assertEquals(diffLists([], []), { added: [], removed: [] });
+});
+
+// ── planAdd ───────────────────────────────────────────────────────────
+
+Deno.test("planAdd: already in target → no-op, map unchanged", () => {
+  const map = { core: ["a"], personal: ["b"], work: [] };
+  const plan = planAdd(map, "a", "core", false);
+  assertEquals(plan.action, "no-op");
+  assertEquals(plan.newMap.core, ["a"]);
+  assertEquals(plan.newMap.personal, ["b"]);
+});
+
+Deno.test("planAdd: new package + implicit target → added, sorted", () => {
+  const map = { core: ["b"], personal: [], work: [] };
+  const plan = planAdd(map, "a", "core", false);
+  assertEquals(plan.action, "added");
+  assertEquals(plan.newMap.core, ["a", "b"]);
+});
+
+Deno.test("planAdd: undefined map → added into empty target", () => {
+  const plan = planAdd(undefined, "a", "work", false);
+  assertEquals(plan.action, "added");
+  assertEquals(plan.newMap.work, ["a"]);
+  assertEquals(plan.newMap.core, []);
+  assertEquals(plan.newMap.personal, []);
+});
+
+Deno.test("planAdd: in different profile + implicit target → kept, map untouched", () => {
+  const map = { core: ["a"], personal: [], work: [] };
+  const plan = planAdd(map, "a", "work", false);
+  assertEquals(plan.action, "kept");
+  assertEquals(plan.from, "core");
+  assertEquals(plan.newMap.core, ["a"]);
+  assertEquals(plan.newMap.work, []);
+});
+
+Deno.test("planAdd: in different profile + explicit target → moved", () => {
+  const map = { core: ["a"], personal: [], work: [] };
+  const plan = planAdd(map, "a", "work", true);
+  assertEquals(plan.action, "moved");
+  assertEquals(plan.from, "core");
+  assertEquals(plan.newMap.core, []);
+  assertEquals(plan.newMap.work, ["a"]);
+});
+
+Deno.test("planAdd: explicit target same as where pkg lives → no-op", () => {
+  const map = { core: ["a"], personal: [], work: [] };
+  const plan = planAdd(map, "a", "core", true);
+  assertEquals(plan.action, "no-op");
+});
+
+Deno.test("planAdd: input map not mutated", () => {
+  const map = { core: ["a"], personal: ["b"], work: [] };
+  const snapshot = JSON.stringify(map);
+  planAdd(map, "c", "work", false);
+  assertEquals(JSON.stringify(map), snapshot);
+});
+
+// ── planRemove ────────────────────────────────────────────────────────
+
+Deno.test("planRemove: removes from the slot it lives in", () => {
+  const map = { core: ["a", "b"], personal: ["c"], work: [] };
+  const plan = planRemove(map, "b");
+  assertEquals(plan.action, "removed");
+  assertEquals(plan.from, "core");
+  assertEquals(plan.newMap.core, ["a"]);
+  assertEquals(plan.newMap.personal, ["c"]);
+});
+
+Deno.test("planRemove: not in any slot → not-tracked", () => {
+  const map = { core: ["a"], personal: [], work: [] };
+  const plan = planRemove(map, "z");
+  assertEquals(plan.action, "not-tracked");
+  assertEquals(plan.from, undefined);
+  assertEquals(plan.newMap.core, ["a"]);
+});
+
+Deno.test("planRemove: undefined map → not-tracked, all slots empty", () => {
+  const plan = planRemove(undefined, "a");
+  assertEquals(plan.action, "not-tracked");
+  assertEquals(plan.newMap.core, []);
+  assertEquals(plan.newMap.personal, []);
+  assertEquals(plan.newMap.work, []);
+});
+
+Deno.test("planRemove: input map not mutated", () => {
+  const map = { core: ["a"], personal: ["b"], work: [] };
+  const snapshot = JSON.stringify(map);
+  planRemove(map, "a");
+  assertEquals(JSON.stringify(map), snapshot);
 });

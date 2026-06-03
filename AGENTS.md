@@ -171,7 +171,7 @@ Plugin file extraction matches Fisher's: top-level files in `functions/`, `compl
 
 Scripts are a surface to minimize. Each is an imperative action that can fail. If something can be a file, make it a file. `run_once_` runs once per content hash — on a fresh machine all fire on first apply. `run_onchange_` re-runs when rendered content changes (also fires on first apply since no previous hash → new hash = change).
 
-**Linux package philosophy:** apt only, manually curated in `packages.yaml` under `linux.apt.packages`. Linuxbrew is intentionally not used — too heavy for the small-VM Linux use case. Tools not in standard apt repos (yazi, mise, rm-improved, vivid, lsd, zoxide, starship, sd, forgit, lazygit, neovim) are installed via mise or direct binary download. The apt install script checks `dpkg -s` for each package and only fetches what's missing — fast on Sprites/exe machines that arrive pre-loaded. `packy` does **not** snapshot apt (the curated list is the source of truth, not the live system).
+**Linux package philosophy:** apt only, manually curated in `packages.yaml` under `linux.apt.packages`. Linuxbrew is intentionally not used — too heavy for the small-VM Linux use case. Tools not in standard apt repos (yazi, mise, rm-improved, vivid, lsd, zoxide, starship, sd, forgit, lazygit, neovim) are installed via mise or direct binary download. The apt install script checks `dpkg -s` for each package and only fetches what's missing — fast on Sprites/exe machines that arrive pre-loaded. `packy` does **not** manage apt — apt entries are hand-edited in `packages.yaml`.
 
 ## chezmoi Naming Reference
 
