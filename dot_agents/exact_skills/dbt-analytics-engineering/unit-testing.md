@@ -1,57 +1,55 @@
-# Unit Testing Reference
+# Unit Testing
 
-YAML spec, data formats, special cases, and warehouse caveats for dbt unit tests.
+YAML spec, data formats, special cases, warehouse caveats. Unit tests validate complex SQL logic with given/expected rows — distinct from data tests, which check production data.
 
-## YAML Spec
+## YAML
 
 ```yaml
 unit_tests:
   - name: <test-name>            # Required, unique
-    description: <string>        # Optional
+    description: <string>
     model: <model-name>          # Required
-    versions:                    # Optional (for versioned models)
+    versions:                    # Versioned models
       include: [2]               # or exclude: [1]
     given:                       # Required
       - input: ref('model')      # or source('schema', 'table')
         format: dict | csv | sql # Default: dict
-        rows: [{...}]            # Inline data, or:
-        fixture: <fixture-name>  # For csv/sql formats
+        rows: [{...}]            # Inline, or:
+        fixture: <fixture-name>  # csv / sql formats
     expect:                      # Required
       format: dict | csv | sql
       rows: [{...}]
       fixture: <fixture-name>
-    overrides:                   # Optional
+    overrides:
       macros:
         is_incremental: true | false
         dbt_utils.star: col_a,col_b
       vars: {key: value}
       env_vars: {KEY: value}
-    config:                      # Optional
+    config:
       tags: [tag]
-      enabled: false             # v1.9+, disable without deleting
+      enabled: false             # Disable without deleting
 ```
 
-### Placement and file conventions
+Placement and conventions:
 
-- Unit tests go in YAML files in `model-paths` (`models/` by default)
-- Fixture files go in `test-paths` (`tests/fixtures/` by default)
-- Include all `ref`/`source` dependencies as `input`s -- even irrelevant ones with `rows: []`
-- Seeds without an explicit `input` use their CSV file as-is
-- Use table aliases when testing `join` logic
+- Unit tests in YAML files under `model-paths` (`models/` by default).
+- Fixtures under `test-paths/fixtures/` (`tests/fixtures/` by default).
+- Include all `ref`/`source` deps as `input`s — even irrelevant ones with `rows: []`.
+- Seeds without an explicit `input` use their CSV file as-is.
+- Use table aliases when testing `join` logic.
 
-## Data Formats
+## Data formats
 
-### Choosing a format
-
-| Format | Subset Columns? | Fixture Files? | Ephemeral Models? | Jinja? |
+| Format | Subset columns? | Fixture files? | Ephemeral models? | Jinja? |
 | --- | --- | --- | --- | --- |
 | `dict` (default) | Yes | No (inline only) | No | No |
 | `csv` | Yes | Yes | No | No |
 | `sql` | No (all columns) | Yes | Yes | No |
 
-Default to `dict`. Use `csv` for fixture files. Use `sql` for ephemeral dependencies or unsupported data types.
+Default to `dict`. `csv` for fixture files. `sql` for ephemeral deps or unsupported types.
 
-### Dict (default)
+### Dict
 
 ```yaml
 given:
@@ -67,7 +65,7 @@ given:
 given:
   - input: ref('my_model')
     format: csv
-    rows: |                    # Inline
+    rows: |
       id,name
       1,gerda
       2,michelle
@@ -82,7 +80,7 @@ given:
 given:
   - input: ref('my_model')
     format: sql
-    rows: |                    # Inline
+    rows: |
       select 1 as id, 'gerda' as name union all
       select 2 as id, 'michelle' as name
   - input: ref('other_model')
@@ -90,13 +88,13 @@ given:
     fixture: my_fixture        # tests/fixtures/my_fixture.sql
 ```
 
-`sql` format requires all columns. Jinja is not supported in fixtures.
+`sql` requires all columns. Jinja is not supported in fixtures.
 
-## Special Cases
+## Special cases
 
 ### Incremental models
 
-Override `is_incremental` macro. Test both modes (full-refresh with `false`, incremental with `true`):
+Override `is_incremental` and test both modes:
 
 ```yaml
 unit_tests:
@@ -114,20 +112,20 @@ unit_tests:
         rows:
           - {event_id: 1, event_time: 2020-01-01}
     expect:
-      # Expected = what gets merged/inserted, NOT final table state
+      # What gets merged/inserted, NOT final table state
       rows:
         - {event_id: 2, event_time: 2020-01-02}
 ```
 
-Incremental models must exist in the database before unit tests run:
+The model must exist in the database before unit tests run:
 
 ```bash
 dbt run --select "config.materialized:incremental" --empty
 ```
 
-### Ephemeral dependencies
+### Ephemeral inputs
 
-Must use `format: sql` for ephemeral model inputs:
+`format: sql` required:
 
 ```yaml
 given:
@@ -139,8 +137,6 @@ given:
 
 ### `dbt_utils.star` override
 
-If the model uses `star()`, override with an explicit column list:
-
 ```yaml
 overrides:
   macros:
@@ -149,30 +145,27 @@ overrides:
 
 ### Versioned models
 
-By default, unit tests run on all versions. Use `versions:` to target specific ones:
+Default: run on all versions. Target specific ones:
 
 ```yaml
-unit_tests:
-  - name: test_email_validation
-    model: my_model
-    versions:
-      include: [2]      # Only version 2
-      # or exclude: [1] # All except version 1
+versions:
+  include: [2]      # Only version 2
+  # exclude: [1]    # All except version 1
 ```
 
-## Running Unit Tests
+## Running
 
 ```bash
-dbt build --select my_model                      # Unit tests + build + data tests
-dbt test --select "my_model,test_type:unit"      # Only unit tests for a model
-dbt test --select test_my_specific_test          # Single unit test by name
+dbt build --select my_model                      # Unit + build + data tests
+dbt test --select "my_model,test_type:unit"      # Unit tests for one model
+dbt test --select test_my_specific_test          # Single unit test
 ```
 
 Exclude from production: `--exclude-resource-type unit_test` or `DBT_EXCLUDE_RESOURCE_TYPES=unit_test`.
 
-## Interpreting Failures
+## Failures
 
-Output shows a diff between actual and expected:
+Output shows a row-level diff:
 
 ```text
 actual differs from expected:
@@ -182,38 +175,30 @@ actual differs from expected:
    ,cool@unknown.com,False
 ```
 
-Two possibilities: (1) the test expectation is wrong, or (2) the model has a bug. Requires judgment based on the intended logic.
+Two possibilities: test expectation wrong, or model has a bug. Judgment call from the intended logic.
 
-## Warehouse-Specific Caveats
+## Warehouse caveats
 
 ### BigQuery
 
-- Must specify **all** fields in a `STRUCT` -- subsets not supported
-- Complex types: `geography_field: 'st_geogpoint(75, 45)'`, `struct_field: 'struct("Isha" as name, 22 as age)'`
-- JSON: `json_field: {"name": "Cooper", "forname": "Alice"}`
-- Arrays: `str_array_field: ['a','b','c']`
-
-### Redshift
-
-- No unit tests with CTE functions like `LISTAGG`, `MEDIAN`, `PERCENTILE_CONT` (unsupported in CTEs)
-- Sources must be in the same database as models
-- `array` not supported in `dict` format -- use `sql`
-
-### Postgres
-
-- `array` not supported in `dict` format -- use `sql`
-- JSON: `json_field: '{"bar": "baz", "balance": 7.77, "active": false}'`
+- **All** fields required in a `STRUCT` — subsets not supported.
+- `geography_field: 'st_geogpoint(75, 45)'`, `struct_field: 'struct("Isha" as name, 22 as age)'`
+- JSON: `json_field: {"name": "Cooper"}`. Arrays: `str_array_field: ['a','b','c']`.
 
 ### Snowflake
 
-- Variant: `variant_field: 3`
-- Geo: `geography_field: POINT(-122.35 37.55)`, `geometry_field: POINT(1820.12 890.56)`
-- Object: `object_field: {'Alberta':'Edmonton','Manitoba':'Winnipeg'}`
-- Arrays: `str_array_field: ['a','b','c']`, `int_array_field: [1, 2, 3]`
-- Binary: `binary_field: 19E1FFDCCB6CDEE788BF631C1C4905D1`
+- Variant: `variant_field: 3`. Object: `object_field: {'Alberta':'Edmonton'}`.
+- Geo: `geography_field: POINT(-122.35 37.55)`, `geometry_field: POINT(1820.12 890.56)`.
+- Arrays: `str_array_field: ['a','b','c']`, `int_array_field: [1, 2, 3]`.
+- Binary: `binary_field: 19E1FFDCCB6CDEE788BF631C1C4905D1`.
+
+### Postgres / Redshift
+
+- `array` not supported in `dict` — use `sql`.
+- Postgres JSON: `json_field: '{"bar": "baz", "balance": 7.77, "active": false}'`.
+- Redshift sources must share the database with models.
+- Redshift CTE functions like `LISTAGG`, `MEDIAN`, `PERCENTILE_CONT` are unsupported in CTEs and so cannot be unit-tested.
 
 ### Spark
 
-- Arrays: `int_array_field: 'array(1, 2, 3)'`
-- Maps: `map_field: 'map("10", "t", "15", "f", "20", NULL)'`
-- Structs: `named_struct_field: 'named_struct("a", 1, "b", 2, "c", 3)'`
+- Arrays: `int_array_field: 'array(1, 2, 3)'`. Maps: `'map("10", "t")'`. Structs: `'named_struct("a", 1, "b", 2)'`.

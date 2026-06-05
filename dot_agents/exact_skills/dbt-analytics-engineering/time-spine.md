@@ -1,34 +1,28 @@
-# Time Spine Setup
+# Time Spine
 
-Required for time-based joins and aggregations in MetricFlow: cumulative metrics, time-window metrics, and `join_to_timespine`.
+Required for time-based joins and aggregations: cumulative metrics, time-window metrics, `join_to_timespine`.
 
-## Daily Time Spine Model
+## Daily
 
 `models/marts/time_spine_daily.sql`:
 
 ```sql
-{{
-    config(
-        materialized = 'table',
-    )
-}}
+{{ config(materialized = 'table') }}
 
 with base_dates as (
     {{ dbt.date_spine('day', "DATE('2000-01-01')", "DATE('2030-01-01')") }}
 ),
-
 final as (
     select cast(date_day as date) as date_day
     from base_dates
 )
-
 select *
 from final
 where date_day > dateadd(year, -5, current_date())
   and date_day < dateadd(day, 30, current_date())
 ```
 
-> `dbt.date_spine()` is not available for all adapters. Use `generate_series` or your warehouse's equivalent if unsupported.
+> `dbt.date_spine()` isn't available on every adapter. Use `generate_series` or the warehouse equivalent if unsupported.
 
 ```yaml
 models:
@@ -41,7 +35,7 @@ models:
         granularity: day
 ```
 
-## Using an Existing dim_date
+## Using an existing dim_date
 
 ```yaml
 models:
@@ -53,9 +47,7 @@ models:
         granularity: day
 ```
 
-## Yearly Granularity
-
-`models/marts/time_spine_yearly.sql`:
+## Yearly
 
 ```sql
 {{ config(materialized = 'table') }}
@@ -81,7 +73,7 @@ models:
         granularity: year
 ```
 
-## Custom Granularities (Fiscal Calendar)
+## Custom granularities (fiscal calendar)
 
 Build on the daily time spine:
 
@@ -111,20 +103,20 @@ models:
         granularity: day
 ```
 
-Query: `mf query --metrics orders --group-by metric_time__fiscal_year`
+Query: `dbt sl query --metrics orders --group-by metric_time__fiscal_year`.
 
-## Build and Validate
+## Build and validate
 
 ```bash
 dbt run --select time_spine_daily
 dbt show --select time_spine_daily
-mf validate-configs
+dbt sl validate
 ```
 
-## Common Mistakes
+## Common mistakes
 
 | Mistake | Fix |
 | --- | --- |
 | Using `semantic_models:` instead of `time_spine:` | Time spines use `time_spine:` under `models:` |
-| Missing `standard_granularity_column` | Required to tell MetricFlow which column to use |
-| Missing `granularity` on columns | Each time column needs a `granularity:` attribute |
+| Missing `standard_granularity_column` | Required so MetricFlow knows which column to use |
+| Missing `granularity` on columns | Each time column needs a `granularity:` |

@@ -1,10 +1,10 @@
-# Latest Semantic Layer YAML Spec
+# Current Semantic Layer YAML
 
-For **dbt Core 1.12+** and **Fusion**. Semantic models are metadata annotations on dbt models.
+For **v2, Fusion, Core 1.12+**. Semantic models are metadata annotations on dbt models.
 
-## Implementation Workflow
+## Workflow
 
-### Step 1: Enable Semantic Model
+### 1. Enable on the model
 
 ```yaml
 models:
@@ -14,29 +14,29 @@ models:
     agg_time_dimension: ordered_at
 ```
 
-Without a time column, the model cannot contain time-based metrics.
+Without a time column, the model cannot host time-based metrics. `agg_time_dimension` goes at the model level, not nested under `semantic_model:`.
 
-### Step 2: Define Entities
+### 2. Entities — under columns
 
 ```yaml
     columns:
       - name: order_id
         entity:
-          type: primary    # primary | foreign | unique | natural (SCD II)
-          name: order
+          type: primary     # primary | foreign | unique | natural (SCD II)
+          name: order       # singular
       - name: customer_id
         entity:
           type: foreign
           name: customer
 ```
 
-A column can be an entity **or** a dimension, not both.
+A column is an entity **or** a dimension, not both. Use singular names with `expr:` if it differs from the column (`name: customer, expr: customer_id`).
 
-### Step 3: Define Dimensions
+### 3. Dimensions — under columns
 
 ```yaml
       - name: ordered_at
-        granularity: day           # Required at column level for time dims
+        granularity: day        # Column-level for time dims
         dimension:
           type: time
       - name: order_status
@@ -44,11 +44,11 @@ A column can be an entity **or** a dimension, not both.
           type: categorical
 ```
 
-`granularity:` goes at column level, **not** inside `dimension:`.
+`granularity:` lives at column level, **not** inside `dimension:`. Every semantic model with metrics needs at least one primary time dimension.
 
-### Step 4: Define Simple Metrics
+### 4. Simple metrics
 
-Aggregation types: `sum`, `min`, `max`, `average`, `median`, `count`, `count_distinct`, `percentile`, `sum_boolean`.
+Aggregations: `sum`, `min`, `max`, `average`, `median`, `count`, `count_distinct`, `percentile`, `sum_boolean`.
 
 ```yaml
     metrics:
@@ -73,16 +73,15 @@ Aggregation types: `sum`, `min`, `max`, `average`, `median`, `count`, `count_dis
         filter: "{{ Dimension('customer__customer_total') }} >= 20"
       - name: revenue_p95
         type: simple
-        label: Revenue P95
         agg: percentile
         expr: amount
         percentile: 95.0
-        percentile_type: discrete   # discrete | continuous
+        percentile_type: discrete       # discrete | continuous
 ```
 
-## Derived Semantics
+## Derived semantics
 
-For dimensions/entities not mapped 1:1 to a physical column:
+For dimensions/entities not 1:1 with a physical column:
 
 ```yaml
     derived_semantics:
@@ -96,9 +95,9 @@ For dimensions/entities not mapped 1:1 to a physical column:
           expr: "substring(id_order from 2)"
 ```
 
-## Advanced Metrics
+## Advanced metrics
 
-Same-model advanced metrics go under the model's `metrics:`. Cross-model advanced metrics go under top-level `metrics:`.
+Single-model advanced metrics go under the model's `metrics:`. Cross-model under top-level `metrics:`.
 
 ### Derived
 
@@ -106,14 +105,12 @@ Same-model advanced metrics go under the model's `metrics:`. Cross-model advance
     metrics:
       - name: order_gross_profit
         type: derived
-        label: Order gross profit
         expr: revenue - cost
         input_metrics:
           - name: order_total
             alias: revenue
           - name: order_cost
             alias: cost
-      # Offset window (period-over-period)
       - name: order_total_growth_mom
         type: derived
         expr: (order_total - prev) * 100 / prev
@@ -124,7 +121,7 @@ Same-model advanced metrics go under the model's `metrics:`. Cross-model advance
             offset_window: 1 month
 ```
 
-Filter on input metric:
+Filter on an input metric:
 
 ```yaml
         input_metrics:
@@ -136,7 +133,7 @@ Filter on input metric:
 
 ### Cumulative
 
-Requires a [time spine](time-spine.md). Top-level `metrics:` key. `window` and `grain_to_date` cannot be used together.
+Top-level `metrics:`. Requires a [time spine](time-spine.md). `window` and `grain_to_date` are mutually exclusive.
 
 ```yaml
 metrics:
@@ -154,7 +151,7 @@ metrics:
   - name: cumulative_revenue
     type: cumulative
     input_metric: revenue
-    period_agg: first   # first | last | average
+    period_agg: first       # first | last | average
 ```
 
 ### Ratio
@@ -182,7 +179,6 @@ metrics:
 metrics:
   - name: visit_to_buy_7d
     type: conversion
-    label: Visit to buy (7-day)
     entity: user
     calculation: conversion_rate   # conversion_rate (default) | conversions
     base_metric:
@@ -190,14 +186,12 @@ metrics:
       filter: "{{ Dimension('visits__referrer_id') }} = 'facebook'"
     conversion_metric: buys
     window: 7 days
-    constant_properties:           # Optional: same dimension across events
+    constant_properties:
       - base_property: product
         conversion_property: product
 ```
 
-### Cross-Model Metrics
-
-Top-level `metrics:` key, for metrics spanning multiple semantic models:
+### Cross-model
 
 ```yaml
 metrics:
@@ -212,7 +206,7 @@ metrics:
 
 ## SCD Type II
 
-Use `validity_params` on time dimensions and `natural` entity type. SCD Type II semantic models cannot contain simple metrics.
+`validity_params` on time dimensions, `natural` entity type. SCD II semantic models cannot contain simple metrics.
 
 ```yaml
 models:
@@ -242,17 +236,17 @@ models:
           name: sales_person
 ```
 
-## Rules and Pitfalls
+## Rules and pitfalls
 
 | Rule | Detail |
 | --- | --- |
 | `semantic_model: enabled: true` | Required at model level |
 | `agg_time_dimension` | At model level, not nested under `semantic_model:` |
-| `granularity` | At column level, not inside `dimension:` block |
+| `granularity` | Column level, not inside `dimension:` |
 | Entity or dimension | One per column, not both |
-| Model-level `metrics:` | Single-model simple and advanced metrics |
-| Top-level `metrics:` | Cross-model advanced metrics only |
-| `derived_semantics:` | For computed dimensions/entities |
-| `window` + `grain_to_date` | Pick one, cannot combine |
-| `input_metrics` on derived | Must list all metrics used in `expr` |
-| `type_params` / `measures` | Legacy syntax, do not use |
+| Model-level `metrics:` | Single-model simple and advanced |
+| Top-level `metrics:` | Cross-model advanced only |
+| `derived_semantics:` | For computed dimensions / entities |
+| `window` + `grain_to_date` | Pick one |
+| `input_metrics` on derived | Must list every metric used in `expr` |
+| `type_params` / `measures` | Legacy syntax — do not use |

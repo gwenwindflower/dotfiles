@@ -1,10 +1,10 @@
-# Legacy Semantic Layer YAML Spec
+# Legacy Semantic Layer YAML — 1.11 only
 
-For **dbt Core 1.6-1.11**. Supported by Core 1.12+ for backward compatibility, but [latest spec](semantic-layer-latest-spec.md) is recommended for new projects.
+For **Core 1.11** (last Python release). Backward-compatible on 1.12+/v2/Fusion but **new work goes in the [current spec](semantic-layer-latest-spec.md)**. Migrate with `uvx dbt-autofix deprecations --semantic-layer`.
 
-## Implementation Workflow
+## Workflow
 
-### Step 1: Define Semantic Model
+### 1. Define the semantic model
 
 ```yaml
 semantic_models:
@@ -14,21 +14,21 @@ semantic_models:
       agg_time_dimension: ordered_at
 ```
 
-### Step 2: Define Entities
+### 2. Entities
 
 ```yaml
     entities:
       - name: order
         type: primary              # primary | foreign | unique | natural (SCD II)
-        expr: order_id             # Column name (defaults to name if omitted)
+        expr: order_id             # Defaults to name if omitted
       - name: customer
         type: foreign
         expr: customer_id
 ```
 
-If no physical primary key, use `primary_entity: entity_name` at the semantic model level.
+If no physical PK, declare `primary_entity: entity_name` at the model level.
 
-### Step 3: Define Dimensions
+### 3. Dimensions
 
 ```yaml
     dimensions:
@@ -40,11 +40,11 @@ If no physical primary key, use `primary_entity: entity_name` at the semantic mo
         type: categorical
 ```
 
-Computed dimensions use `expr`.
+Computed dimensions: use `expr`.
 
-### Step 4: Define Measures and Metrics
+### 4. Measures and metrics
 
-Aggregation types: `sum`, `min`, `max`, `average`, `sum_boolean`, `count_distinct`, `median`, `percentile`.
+Aggregations: `sum`, `min`, `max`, `average`, `sum_boolean`, `count_distinct`, `median`, `percentile`.
 
 ```yaml
     measures:
@@ -63,43 +63,41 @@ metrics:
       measure: total_revenue
 ```
 
-### Measure Properties
+### Measure properties
 
 | Property | Required | Description |
 | --- | --- | --- |
 | `name` | Yes | Unique across all semantic models |
 | `agg` | Yes | Aggregation type |
 | `expr` | No | Column or SQL expression (defaults to name) |
-| `create_metric` | No | Auto-generate simple metric (`true`/`false`) |
-| `agg_time_dimension` | No | Override default time dimension |
+| `create_metric` | No | Auto-generate simple metric |
+| `agg_time_dimension` | No | Override default |
 | `agg_params` | No | Extra params (e.g., percentile) |
-| `non_additive_dimension` | No | For measures that shouldn't sum across time |
+| `non_additive_dimension` | No | Measures that shouldn't sum across time |
 
-### Percentile and Non-Additive Measures
+### Percentile and non-additive
 
 ```yaml
     measures:
-      # Percentile
       - name: p99_transaction_value
         expr: transaction_amount_usd
         agg: percentile
         agg_params:
           percentile: .99
           use_discrete_percentile: false
-      # Non-additive (account balances, MRR)
       - name: mrr
         expr: subscription_value
         agg: sum
         non_additive_dimension:
           name: subscription_date
           window_choice: max     # max (period end) | min (period start)
-          window_groupings:      # Optional
+          window_groupings:
             - user_id
 ```
 
 ## Metrics
 
-All metrics use top-level `metrics:` key, referencing measures via `type_params`.
+All metrics under top-level `metrics:`, referencing measures via `type_params`.
 
 ### Simple
 
@@ -124,7 +122,6 @@ Shorthand: `type_params: { measure: total_revenue }`.
 metrics:
   - name: order_gross_profit
     type: derived
-    label: Order gross profit
     type_params:
       expr: revenue - cost
       metrics:
@@ -134,7 +131,7 @@ metrics:
           alias: cost
 ```
 
-Offset window and filter on input metrics:
+Offset window + filter on inputs:
 
 ```yaml
       metrics:
@@ -150,7 +147,7 @@ Offset window and filter on input metrics:
 
 ### Cumulative
 
-Requires a [time spine](time-spine.md). `window` and `grain_to_date` cannot be used together.
+Requires a [time spine](time-spine.md). `window` and `grain_to_date` are mutually exclusive.
 
 ```yaml
 metrics:
@@ -159,7 +156,7 @@ metrics:
     type_params:
       measure: { name: order_total }
       cumulative_type_params:
-        window: 1 month            # Omit for all-time cumulative
+        window: 1 month
   - name: cumulative_mtd
     type: cumulative
     type_params:
@@ -171,7 +168,7 @@ metrics:
     type_params:
       measure: revenue
       cumulative_type_params:
-        period_agg: first          # first | last | average
+        period_agg: first
 ```
 
 ### Ratio
@@ -181,7 +178,7 @@ metrics:
   - name: food_order_pct
     type: ratio
     type_params:
-      numerator: food_orders       # Shorthand
+      numerator: food_orders
       denominator: orders
   - name: frequent_purchaser_pct
     type: ratio
@@ -201,7 +198,6 @@ metrics:
 metrics:
   - name: visit_to_buy_7d
     type: conversion
-    label: Visit to buy (7-day)
     type_params:
       conversion_type_params:
         base_measure:
@@ -248,21 +244,21 @@ semantic_models:
         expr: sales_person_id
 ```
 
-## Key Rules
+## Rules
 
-- Top-level `semantic_models:` key (not nested under `models:`)
-- `model: ref('...')` required, no curly braces
-- `defaults.agg_time_dimension` required for any semantic model with measures
-- All metrics at top-level `metrics:` referencing measures via `type_params`
-- `expr` for column aliasing or computed values
+- Top-level `semantic_models:` key (not nested under `models:`).
+- `model: ref('...')` required, no curly braces.
+- `defaults.agg_time_dimension` required for any semantic model with measures.
+- All metrics under top-level `metrics:` referencing measures via `type_params`.
+- `expr` for aliasing or computed values.
 
-## Common Pitfalls
+## Pitfalls
 
 | Pitfall | Fix |
 | --- | --- |
-| `time_granularity` outside `type_params` | Must nest under `type_params` |
+| `time_granularity` outside `type_params` | Nest under `type_params` |
 | Missing `model: ref('...')` | Required for every semantic model |
-| Metrics without `type_params` | All metrics must reference measures through `type_params` |
+| Metrics without `type_params` | All metrics must reference measures via `type_params` |
 | `window` + `grain_to_date` together | Pick one |
-| Missing `type_params.metrics` on derived | Must list metrics used in `expr` |
-| Using `semantic_model:` on models or `agg` on metrics | Those are latest spec syntax |
+| Missing `type_params.metrics` on derived | Must list every metric used in `expr` |
+| Using `semantic_model:` on models or `agg` on metrics | Those are current-spec syntax |
