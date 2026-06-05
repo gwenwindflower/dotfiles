@@ -9,6 +9,7 @@ vim.g.lazyvim_prettier_needs_config = true
 -- zg works a bit more magically, it will create a spellfile here if doesn't exist
 -- spellrare will not, so it fails if this is not specified
 vim.opt.spellfile = vim.fn.stdpath("config") .. "/spell/en.utf-8.add"
+-- vim.g.blink_minuet_enabled = false
 vim.lsp.config("lua_ls", {
   settings = {
     Lua = {
@@ -18,3 +19,4 @@ vim.lsp.config("lua_ls", {
     },
   },
 })
+vim.g.ai_cmp = false

@@ -101,7 +101,7 @@ return {
           window = { border = "rounded" },
         },
         -- stop blink from firing constant completions requests through minuet
-        trigger = { prefetch_on_insert = false },
+        -- trigger = { prefetch_on_insert = false },
         list = {
           selection = {
             preselect = function()
@@ -117,41 +117,41 @@ return {
           },
         },
       },
-      sources = {
-        default = { "minuet" },
-        providers = {
-          minuet = {
-            name = "minuet",
-            module = "minuet.blink",
-            score_offset = 100,
-            async = true,
-            timeout_ms = 2000,
-            -- Source-level gate: when off, blink never requires minuet.blink,
-            -- so lazy.nvim doesn't load minuet, and minuet's backend module
-            -- never runs its load-time `is_available` env var check.
-            -- This prevents Minuet reaching for `DEEPSEEK_API_KEY` when Provisions
-            -- potentially hasn't made it available yet, which can cause Minuet
-            -- to error and quit trying to load completely for the session
-            -- Using <Leader>am ensures the env var is available
-            -- loading it via Provisions if needed
-            -- then flips this variable
-            enabled = function()
-              return vim.g.blink_minuet_enabled == true
-            end,
-          },
-        },
-      },
+      -- sources = {
+      --   default = { "minuet" },
+      --   providers = {
+      --     minuet = {
+      --       name = "minuet",
+      --       module = "minuet.blink",
+      --       score_offset = 100,
+      --       async = true,
+      --       timeout_ms = 2000,
+      --       -- Source-level gate: when off, blink never requires minuet.blink,
+      --       -- so lazy.nvim doesn't load minuet, and minuet's backend module
+      --       -- never runs its load-time `is_available` env var check.
+      --       -- This prevents Minuet reaching for `DEEPSEEK_API_KEY` when Provisions
+      --       -- potentially hasn't made it available yet, which can cause Minuet
+      --       -- to error and quit trying to load completely for the session
+      --       -- Using <Leader>am ensures the env var is available
+      --       -- loading it via Provisions if needed
+      --       -- then flips this variable
+      --       enabled = function()
+      --         return vim.g.blink_minuet_enabled == true
+      --       end,
+      --     },
+      --   },
+      -- },
       signature = { window = { border = "rounded" } },
       keymap = {
         preset = "super-tab",
         -- I use C-space as tmux prefix
         -- so add this as an alternate option for when I'm in tmux
         ["<M-space>"] = { "show", "show_documentation", "hide_documentation" },
-        ["<M-m>"] = {
-          function(cmp)
-            cmp.show({ providers = { "minuet" } })
-          end,
-        },
+        -- ["<M-m>"] = {
+        --   function(cmp)
+        --     cmp.show({ providers = { "minuet" } })
+        --   end,
+        -- },
       },
     },
   },
