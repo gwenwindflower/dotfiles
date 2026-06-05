@@ -196,6 +196,7 @@ packages:
           - tailscale-app
         work:
           - linear
+          - loom
     pnpm:
       core:
         - '@agentclientprotocol/claude-agent-acp'
