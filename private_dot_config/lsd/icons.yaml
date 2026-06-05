@@ -67,11 +67,7 @@ name:
   winnie: 
   chezmoi: 
   ## dev dirs
-  01_agent-workbench: 󱜙
-  02_spellbook: 
-  03_sandboxes: 
-  04_forks: 
-  05_utils: 
+  graveyard: 󰮢
   zzz-rip: 󰮢
   zzz: 󰒲
   # git and github
