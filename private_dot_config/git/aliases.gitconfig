@@ -33,3 +33,5 @@
   fgsp = forgit stash_push
   fgcp = forgit cherry_pick
   fgcpb = forgit cherry_pick_branch
+  local-ignore = update-index --skip-worktree
+  local-ignore-retrack = update-index --no-skip-worktree
