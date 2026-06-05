@@ -41,7 +41,8 @@ set -gx TLRC_CONFIG $XDG_CONFIG_HOME/tlrc/tlrc.toml
 set -gx TMUX_PLUGIN_MANAGER_PATH $XDG_CONFIG_HOME/tmux/plugins
 set -gx TMUX_PLUGIN_MANAGER_INSTALL $HOMEBREW_PREFIX/opt/tpm/share/tpm
 
-#  1Password env dir
+#  1Password
+set -gx OP_ACCOUNT my.1password.com
 set -gx OP_ENV_DIR $XDG_CONFIG_HOME/op/environments
 
 #  Project Bookmarks
