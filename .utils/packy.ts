@@ -3,7 +3,7 @@
  * packy — declarative package manifest tool for chezmoi's packages.yaml.
  *
  * Manifest-first: add/remove flow through packy so the YAML stays the source of
- * truth. Drift detection (diff) and upgrades (update) never mutate the manifest
+ * truth. Drift detection (diff) and upgrades (upgrade) never mutate the manifest
  * — live state of the underlying package manager is read-only input.
  *
  * Managers (current OS gates which are usable):
@@ -709,7 +709,7 @@ async function cmdDiff(ctx: Ctx, managerFilter?: Manager): Promise<boolean> {
   return allOk;
 }
 
-// ── lint ───────────────────────────────────────────────────────────────
+// ── check ──────────────────────────────────────────────────────────────
 
 function reportDupes(label: string, map: ProfileMap | undefined): boolean {
   const dupes = findDupes(map);
@@ -721,7 +721,7 @@ function reportDupes(label: string, map: ProfileMap | undefined): boolean {
   return false;
 }
 
-function cmdLint(ctx: Ctx, managerFilter?: Manager): boolean {
+function cmdCheck(ctx: Ctx, managerFilter?: Manager): boolean {
   let ok = true;
   const managers = MANAGERS.filter(
     (m) => !managerFilter || m === managerFilter,
@@ -752,13 +752,13 @@ function cmdLint(ctx: Ctx, managerFilter?: Manager): boolean {
     }
   }
 
-  if (ok) log.success("lint passed");
+  if (ok) log.success("check passed");
   return ok;
 }
 
-// ── update ─────────────────────────────────────────────────────────────
+// ── upgrade ────────────────────────────────────────────────────────────
 
-async function cmdUpdate(ctx: Ctx, managerFilter?: Manager): Promise<boolean> {
+async function cmdUpgrade(ctx: Ctx, managerFilter?: Manager): Promise<boolean> {
   const managers = applicableManagers(ctx.os, managerFilter);
   let allOk = true;
   for (const m of managers) {
@@ -767,12 +767,12 @@ async function cmdUpdate(ctx: Ctx, managerFilter?: Manager): Promise<boolean> {
       continue;
     }
     console.log();
-    log.step(`update ${m}`);
+    log.step(`upgrade ${m}`);
     try {
       await SPECS[m].upgradeAll(ctx.dryRun);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
-      log.error(`${m} update failed: ${msg}`);
+      log.error(`${m} upgrade failed: ${msg}`);
       allOk = false;
     }
   }
@@ -786,20 +786,20 @@ function printHelp() {
     `Declaratively manage chezmoi's packages.yaml across package managers.
 
 Usage:
-  packy add <pkg>... -m <mgr> [--profile <p>]
-  packy remove <pkg>... [-m <mgr>]
-  packy list [-m <mgr>]
-  packy diff [-m <mgr>]
-  packy lint [-m <mgr>]
-  packy update [-m <mgr>]
+  packy add     | a   <pkg>... -m <mgr> [--profile <p>]
+  packy remove  | rm  <pkg>... [-m <mgr>]
+  packy list    | ls  [-m <mgr>]
+  packy diff    | d   [-m <mgr>]
+  packy check   | c   [-m <mgr>]
+  packy upgrade | up  [-m <mgr>]
 
 Subcommands:
-  add       Install (if missing) and track package(s) under the target profile
-  remove    Uninstall (if present) and untrack package(s)
-  list      Show tracked packages for the current OS
-  diff      Show drift between manifest and live state (no writes)
-  lint      Cross-profile dedup; linux pnpm ⊂ darwin pnpm
-  update    Run upgrade commands for each manager (no manifest writes)
+  add       (a)   Install (if missing) and track package(s) under the target profile
+  remove    (rm)  Uninstall (if present) and untrack package(s)
+  list      (ls)  Show tracked packages for the current OS
+  diff      (d)   Show drift between manifest and live state (no writes)
+  check     (c)   Cross-profile dedup; linux pnpm ⊂ darwin pnpm
+  upgrade   (up)  Run upgrade commands for each manager (no manifest writes)
 
 Options:
   -h, --help                Show this help
@@ -824,11 +824,11 @@ Profiles:
 
 Examples:
   packy add -m pnpm '@agentclientprotocol/claude-agent-acp'
-  packy add -m formula gh
+  packy a -m formula gh
   packy add -m cask --profile personal obsidian
-  packy remove '@aredotna/cli'
-  packy diff -m pnpm
-  packy update -m formula`,
+  packy rm '@aredotna/cli'
+  packy d -m pnpm
+  packy upgrade -m formula`,
   );
 }
 
@@ -837,10 +837,19 @@ const SUBCOMMANDS = [
   "remove",
   "list",
   "diff",
-  "lint",
-  "update",
+  "check",
+  "upgrade",
 ] as const;
 type Subcommand = (typeof SUBCOMMANDS)[number];
+
+const SUBCOMMAND_ALIASES: Record<string, Subcommand> = {
+  a: "add",
+  rm: "remove",
+  ls: "list",
+  d: "diff",
+  c: "check",
+  up: "upgrade",
+};
 
 export async function main(args: string[] = Deno.args): Promise<number> {
   const parsed = parseArgs(args, {
@@ -864,9 +873,10 @@ export async function main(args: string[] = Deno.args): Promise<number> {
     return 2;
   }
 
-  const sub = String(parsed._[0]);
+  const subInput = String(parsed._[0]);
+  const sub = SUBCOMMAND_ALIASES[subInput] ?? subInput;
   if (!(SUBCOMMANDS as readonly string[]).includes(sub)) {
-    log.error(`Unknown subcommand: ${sub}`);
+    log.error(`Unknown subcommand: ${subInput}`);
     console.error(`  Supported: ${SUBCOMMANDS.join(", ")}`);
     console.error("Try: packy --help");
     return 2;
@@ -969,11 +979,11 @@ export async function main(args: string[] = Deno.args): Promise<number> {
     case "diff":
       ok = await cmdDiff(ctx, managerFilter);
       break;
-    case "lint":
-      ok = cmdLint(ctx, managerFilter);
+    case "check":
+      ok = cmdCheck(ctx, managerFilter);
       break;
-    case "update":
-      ok = await cmdUpdate(ctx, managerFilter);
+    case "upgrade":
+      ok = await cmdUpgrade(ctx, managerFilter);
       break;
   }
 
