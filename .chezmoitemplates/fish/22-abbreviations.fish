@@ -175,6 +175,20 @@ abbr --add dbx databricks
 abbr --add ddb duckdb --cmd \'.read ~/dev/02_spellbook/pastel_duck_theme.sql\'
 abbr --add pg pgcli
 abbr --add sqli sqlite3
+## lightdash
+abbr --add ld lightdash
+abbr --add ldc lightdash config
+abbr --add ldd lightdash deploy
+abbr --add ldp lightdash preview
+abbr --add ldv lightdash validate
+abbr --add ldg lightdash generate
+abbr --add lddb lightdash dbt
+abbr --add lddbbs lightdash dbt build -s
+abbr --add lddbba lightdash dbt build
+abbr --add lddbts lightdash dbt test -s
+abbr --add lddbta lightdash dbt test
+abbr --add lddbrs lightdash dbt run -s
+abbr --add lddbra lightdash dbt run
 ## dbt
 ### dbt core
 abbr --add dbbs uv run dbt build -s
@@ -287,6 +301,7 @@ abbr --add mipth $HOME/.local/share/mise/installs/
 abbr --add ghro gh repo view -w
 abbr --add ghrc gh repo create
 abbr --add ghrcd gh repo create --push --private --source .
+abbr --add ghrcl gh repo clone
 abbr --add ghd gh dash
 abbr --add ghdo opo gh dash
 ## critique
