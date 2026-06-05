@@ -1,168 +1,10 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "agentPushNotifEnabled": true,
-  "autoMemoryEnabled": false,
-  "autoMode": {
-    "soft_deny": [
-      "User-level configs: editing dotfiles in chezmoi is allowed, but applying them out into userspace or editing user-level configs directly is blocked"
-    ]
-  },
-  "awaySummaryEnabled": false,
-  "editorMode": "vim",
-  "effortLevel": "xhigh",
-  "enabledPlugins": {
-    "deno-or-ts@winnie-local": true,
-    "gopls-lsp@claude-plugins-official": true,
-    "lua-lsp@claude-plugins-official": true,
-    "mcp-apps@mcp-apps": true,
-    "pyright-lsp@claude-plugins-official": false,
-    "pyright-or-ruff@winnie-local": true,
-    "ruby-lsp@claude-plugins-official": true,
-    "rust-analyzer-lsp@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": false,
-    "worktrunk@worktrunk": true
-  },
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "DISABLE_AUTO_UPDATER": "1",
     "ENABLE_CLAUDEAI_MCP_SERVERS": "false"
   },
-  "extraKnownMarketplaces": {
-    "mcp-apps": {
-      "source": {
-        "repo": "modelcontextprotocol/ext-apps",
-        "source": "github"
-      }
-    }
-  },
-  "hooks": {
-    "PermissionRequest": [
-      {
-        "hooks": [
-          {
-            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' blocked",
-            "timeout": 10,
-            "type": "command"
-          }
-        ],
-        "matcher": "*"
-      }
-    ],
-    "PreToolUse": [
-      {
-        "hooks": [
-          {
-            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
-            "timeout": 10,
-            "type": "command"
-          }
-        ],
-        "matcher": "*"
-      },
-      {
-        "hooks": [
-          {
-            "command": "$HOME/.claude/hooks/worktree-guardrails.sh",
-            "type": "command"
-          }
-        ],
-        "matcher": "Write|Edit|NotebookEdit"
-      },
-      {
-        "hooks": [
-          {
-            "command": "$HOME/.claude/hooks/block-cross-worktree-bash.sh",
-            "type": "command"
-          }
-        ],
-        "matcher": "Bash"
-      }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' release",
-            "timeout": 10,
-            "type": "command"
-          }
-        ],
-        "matcher": "*"
-      }
-    ],
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "command": "$HOME/.claude/hooks/set-sandbox-tmpdir.sh",
-            "type": "command"
-          },
-          {
-            "command": "$HOME/.claude/hooks/set-git-nosign.sh",
-            "type": "command"
-          }
-        ],
-        "matcher": ""
-      },
-      {
-        "hooks": [
-          {
-            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' idle",
-            "timeout": 10,
-            "type": "command"
-          }
-        ],
-        "matcher": "*"
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' idle",
-            "timeout": 10,
-            "type": "command"
-          }
-        ],
-        "matcher": "*"
-      }
-    ],
-    "SubagentStart": [
-      {
-        "hooks": [
-          {
-            "command": "$HOME/.claude/hooks/dev-worktree-anchor.sh",
-            "type": "command"
-          }
-        ],
-        "matcher": "dev"
-      }
-    ],
-    "TaskCompleted": [
-      {
-        "hooks": [
-          {
-            "command": "$HOME/.claude/hooks/require-teammate-commit.sh",
-            "type": "command"
-          }
-        ],
-        "matcher": ""
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' working",
-            "timeout": 10,
-            "type": "command"
-          }
-        ],
-        "matcher": "*"
-      }
-    ]
-  },
-  "maxSkillDescriptionCharacters": "1000",
   "permissions": {
     "allow": [
       "Bash(* --help *)",
@@ -352,8 +194,6 @@
       "WebFetch(domain:worktrunk.dev)",
       "WebFetch(domain:www.chezmoi.io)"
     ],
-    "ask": [],
-    "defaultMode": "acceptEdits",
     "deny": [
       "Bash(chmod -R 777 *)",
       "Bash(dd *)",
@@ -402,39 +242,118 @@
       "Read(~/.config/gcloud/**)",
       "Read(~/.gnupg/**)",
       "Read(~/.ssh/**)"
+    ],
+    "ask": [],
+    "defaultMode": "acceptEdits"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/worktree-guardrails.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/block-cross-worktree-bash.sh"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/set-sandbox-tmpdir.sh"
+          },
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/set-git-nosign.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' session",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "matcher": "dev",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/dev-worktree-anchor.sh"
+          }
+        ]
+      }
+    ],
+    "TaskCompleted": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/require-teammate-commit.sh"
+          }
+        ]
+      }
     ]
   },
-  "preferredNotifChannel": "kitty",
-  "sandbox": {
-    "allowUnsandboxedCommands": false,
-    "autoAllowBashIfSandboxed": false,
-    "enabled": true,
-    "filesystem": {
-      "allowRead": [
-        "~/.claude/**",
-        "~/.agent-browser/**"
-      ],
-      "allowWrite": [
-        "~/.agent-browser/**",
-        "~/.cache/prek/**",
-        "~/.local/share/graveyard/**",
-        "~/.blacksmith/**",
-        "~/.bun/install/**",
-        "~/.cache/uv/**",
-        "~/.local/share/uv/**",
-        "~/.config/.wrangler/**",
-        "~/.go/pkg/mod/**",
-        "~/Library/Caches/go-build/**",
-        "~/.local/share/pnpm/**",
-        "~/.cache/pnpm/**",
-        "/var/folders/lb/tp644g_n0nx5v96h2vt8zyzm0000gn/T/"
-      ]
+  "worktree": {
+    "baseRef": "head"
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "winline",
+    "padding": 0
+  },
+  "enabledPlugins": {
+    "deno-or-ts@winnie-local": true,
+    "gopls-lsp@claude-plugins-official": true,
+    "lua-lsp@claude-plugins-official": true,
+    "mcp-apps@mcp-apps": true,
+    "pyright-lsp@claude-plugins-official": false,
+    "pyright-or-ruff@winnie-local": true,
+    "ruby-lsp@claude-plugins-official": true,
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": false,
+    "worktrunk@worktrunk": true
+  },
+  "extraKnownMarketplaces": {
+    "mcp-apps": {
+      "source": {
+        "source": "github",
+        "repo": "modelcontextprotocol/ext-apps"
+      }
     },
+    "worktrunk": {
+      "source": {
+        "source": "github",
+        "repo": "max-sixty/worktrunk"
+      }
+    }
+  },
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": false,
+    "allowUnsandboxedCommands": false,
     "network": {
-      "allowLocalBinding": true,
-      "allowUnixSockets": [
-        "~/.agent-browser/default.sock"
-      ],
       "allowedDomains": [
         "api.github.com",
         "github.com",
@@ -454,11 +373,34 @@
         "sum.golang.org",
         "telemetry.astro.build",
         "workers.cloudflare.com"
+      ],
+      "allowUnixSockets": [
+        "~/.agent-browser/default.sock"
+      ],
+      "allowLocalBinding": true
+    },
+    "filesystem": {
+      "allowWrite": [
+        "~/.agent-browser/**",
+        "~/.cache/prek/**",
+        "~/.local/share/graveyard/**",
+        "~/.blacksmith/**",
+        "~/.bun/install/**",
+        "~/.cache/uv/**",
+        "~/.local/share/uv/**",
+        "~/.config/.wrangler/**",
+        "~/.go/pkg/mod/**",
+        "~/Library/Caches/go-build/**",
+        "~/.local/share/pnpm/**",
+        "~/.cache/pnpm/**",
+        "/var/folders/lb/tp644g_n0nx5v96h2vt8zyzm0000gn/T/"
+      ],
+      "allowRead": [
+        "~/.claude/**",
+        "~/.agent-browser/**"
       ]
     }
   },
-  "skipAutoPermissionPrompt": true,
-  "skipDangerousModePermissionPrompt": true,
   "spinnerTipsEnabled": false,
   "spinnerVerbs": {
     "mode": "replace",
@@ -504,21 +446,27 @@
       "Shopping with the girlypops"
     ]
   },
-  "statusLine": {
-    "command": "winline",
-    "padding": 0,
-    "type": "command"
-  },
   "syntaxHighlightingDisabled": false,
-  "teammateMode": "in-process",
-  "theme": "auto",
-  "useAutoModeDuringPlan": true,
+  "effortLevel": "xhigh",
+  "awaySummaryEnabled": false,
   "voice": {
     "enabled": true,
     "mode": "hold"
   },
+  "autoMemoryEnabled": false,
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "auto",
+  "editorMode": "vim",
+  "preferredNotifChannel": "kitty",
+  "teammateMode": "in-process",
+  "agentPushNotifEnabled": true,
+  "skipAutoPermissionPrompt": true,
+  "useAutoModeDuringPlan": true,
+  "autoMode": {
+    "soft_deny": [
+      "User-level configs: editing dotfiles in chezmoi is allowed, but applying them out into userspace or editing user-level configs directly is blocked"
+    ]
+  },
   "voiceEnabled": true,
-  "worktree": {
-    "baseRef": "head"
-  }
+  "maxSkillDescriptionCharacters": "1000"
 }
