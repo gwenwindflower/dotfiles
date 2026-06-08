@@ -153,7 +153,12 @@ packages:
           - codex
           - dbc
           - font-charter
+          - font-cormorant
+          - font-eb-garamond
           - font-hanken-grotesk
+          - font-ia-writer-duo
+          - font-ia-writer-mono
+          - font-ia-writer-quattro
           - font-ibm-plex-mono
           - font-ibm-plex-sans
           - font-ibm-plex-serif
