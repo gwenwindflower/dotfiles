@@ -86,6 +86,7 @@ packages:
           - mq
           - mutagen
           - neovim
+          - notesmd-cli
           - opencode
           - pandoc
           - pgcli
@@ -137,7 +138,6 @@ packages:
           - exercism
           - fennel
           - gallery-dl
-          - notesmd-cli
           - snitch
           - yt-dlp
         work:
@@ -179,6 +179,7 @@ packages:
           - notion-calendar
           - notion-cli
           - notion-mail
+          - obsidian
           - orbstack
           - orion
           - postico
@@ -190,7 +191,6 @@ packages:
           - anytype
           - copilot-money
           - mitmproxy
-          - obsidian
           - shortcat
           - signal
           - tailscale-app
