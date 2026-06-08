@@ -4,6 +4,8 @@ CLAUDE.md
 PLAN.md
 README.md
 AGENTS.md
+dot_agents/AGENTS.md
+dot_agents/CLAUDE.md
 TODO.md
 .markdownlint.yaml
 opencode.json
