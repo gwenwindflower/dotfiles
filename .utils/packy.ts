@@ -702,8 +702,12 @@ async function cmdDiff(ctx: Ctx, managerFilter?: Manager): Promise<boolean> {
   }
   if (totalChanges > 0) {
     console.log();
+    log.info("Reconcile with:");
     log.info(
-      "Reconcile with: packy add -m <mgr> <pkg> (track installs) or packy remove <pkg> (untrack)",
+      "  + installed, not tracked → packy add -m <mgr> <pkg> (track it) or packy remove <pkg> (uninstall it)",
+    );
+    log.info(
+      "  - tracked, not installed → packy sync (install all missing) or packy remove <pkg> (untrack it)",
     );
   }
   return allOk;
@@ -779,6 +783,72 @@ async function cmdUpgrade(ctx: Ctx, managerFilter?: Manager): Promise<boolean> {
   return allOk;
 }
 
+// ── sync ───────────────────────────────────────────────────────────────
+
+async function cmdSync(ctx: Ctx, managerFilter?: Manager): Promise<boolean> {
+  if (!ctx.data.profile) {
+    log.warn(
+      "No profile set in chezmoi data — syncing 'core' baseline only. " +
+        "Set a profile to include personal/work extras.",
+    );
+  }
+
+  const managers = applicableManagers(ctx.os, managerFilter);
+  let allOk = true;
+  let totalInstalled = 0;
+  let totalFailed = 0;
+
+  for (const m of managers) {
+    if (!(await check(m))) {
+      allOk = false;
+      continue;
+    }
+    console.log();
+    log.step(`sync ${m}`);
+    try {
+      const installed = await SPECS[m].listInstalled();
+      const tracked = getEffective(getMap(ctx.data, m, ctx.os), ctx.profile);
+      const { removed: missing } = diffLists(installed, tracked);
+
+      if (missing.length === 0) {
+        log.success(`${m}: in sync`);
+        continue;
+      }
+
+      log.info(`${missing.length} to install: ${missing.join(", ")}`);
+      for (const pkg of missing) {
+        if (ctx.dryRun) {
+          log.info(`[DRY RUN] would install ${pkg} via ${m}`);
+          continue;
+        }
+        log.info(`Installing ${pkg} via ${m}...`);
+        if (await SPECS[m].install(pkg)) {
+          totalInstalled++;
+        } else {
+          log.error(`Install failed for ${pkg}`);
+          totalFailed++;
+          allOk = false;
+        }
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      log.error(`${m} sync failed: ${msg}`);
+      allOk = false;
+    }
+  }
+
+  console.log();
+  if (ctx.dryRun) {
+    log.info("[DRY RUN] no packages installed");
+  } else if (totalInstalled === 0 && totalFailed === 0) {
+    log.success("Already in sync — nothing to install");
+  } else {
+    log.success(`Installed ${totalInstalled} package(s)`);
+    if (totalFailed > 0) log.warn(`${totalFailed} install(s) failed`);
+  }
+  return allOk;
+}
+
 // ── CLI ────────────────────────────────────────────────────────────────
 
 function printHelp() {
@@ -792,6 +862,7 @@ Usage:
   packy diff    | d   [-m <mgr>]
   packy check   | c   [-m <mgr>]
   packy upgrade | up  [-m <mgr>]
+  packy sync    | s   [-m <mgr>]
 
 Subcommands:
   add       (a)   Install (if missing) and track package(s) under the target profile
@@ -800,6 +871,7 @@ Subcommands:
   diff      (d)   Show drift between manifest and live state (no writes)
   check     (c)   Cross-profile dedup; linux pnpm ⊂ darwin pnpm
   upgrade   (up)  Run upgrade commands for each manager (no manifest writes)
+  sync      (s)   Install any tracked packages missing from the system (no uninstall, no manifest writes)
 
 Options:
   -h, --help                Show this help
@@ -828,7 +900,8 @@ Examples:
   packy add -m cask --profile personal obsidian
   packy rm '@aredotna/cli'
   packy d -m pnpm
-  packy upgrade -m formula`,
+  packy upgrade -m formula
+  packy sync`,
   );
 }
 
@@ -839,6 +912,7 @@ const SUBCOMMANDS = [
   "diff",
   "check",
   "upgrade",
+  "sync",
 ] as const;
 type Subcommand = (typeof SUBCOMMANDS)[number];
 
@@ -849,6 +923,7 @@ const SUBCOMMAND_ALIASES: Record<string, Subcommand> = {
   d: "diff",
   c: "check",
   up: "upgrade",
+  s: "sync",
 };
 
 export async function main(args: string[] = Deno.args): Promise<number> {
@@ -984,6 +1059,9 @@ export async function main(args: string[] = Deno.args): Promise<number> {
       break;
     case "upgrade":
       ok = await cmdUpgrade(ctx, managerFilter);
+      break;
+    case "sync":
+      ok = await cmdSync(ctx, managerFilter);
       break;
   }
 
