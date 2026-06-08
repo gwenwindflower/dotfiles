@@ -7,7 +7,6 @@ packages:
           - charmbracelet/tap
           - columnar-tech/tap
           - databricks/tap
-          - dbcli/tap
           - denisotree/tuitab
           - huseyinbabal/tap
           - jesseduffield/lazydocker
