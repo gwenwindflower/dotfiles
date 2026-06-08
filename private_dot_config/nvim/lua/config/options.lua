@@ -28,4 +28,6 @@ vim.lsp.config("lua_ls", {
     },
   },
 })
-vim.g.ai_cmp = false
+
+-- Use blink.cmp for copilot not native ghost text
+vim.g.ai_cmp = true
