@@ -103,6 +103,7 @@ abbr --add lt lsd --tree
 # navigation
 abbr --add s z
 abbr --add dots "ee -e $DOTFILES"
+abbr --add de "ee -e $DOTFILES"
 abbr --add conf "ee $XDG_CONFIG_HOME"
 abbr --add proj "ee $PROJECTS"
 abbr --add keeb "ee -e $PROJECTS/05_utils/tinybabykeeb"
@@ -132,13 +133,14 @@ abbr --add dk docker
 abbr --add dkcu docker compose up
 # ai
 abbr --add cx codex
+abbr --add cxcf "ee $HOME/.codex"
 abbr --add oc opencode
-abbr --add occf ee $HOME/.config/opencode
+abbr --add occf "ee $HOME/.config/opencode"
 abbr --add cl claude
 abbr --add clc claude -c
 abbr --add cl! claude --allow-dangerously-skip-permissions
 abbr --add clc! claude -c --allow-dangerously-skip-permissions
-abbr --add clcf ee $HOME/.claude
+abbr --add clcf "ee $HOME/.claude"
 abbr --add ccu bunx ccusage@latest
 ## skills
 abbr --add sku skillutil
