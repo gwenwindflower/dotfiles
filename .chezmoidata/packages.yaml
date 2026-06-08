@@ -141,6 +141,7 @@ packages:
           - yt-dlp
         work:
           - ollama
+          - pnpm@10
       casks:
         core:
           - 1password
