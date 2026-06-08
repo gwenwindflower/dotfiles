@@ -19,6 +19,19 @@ vim.opt.spellfile = vim.fn.stdpath("config") .. "/spell/en.utf-8.add"
 -- Personally defined var for toggling minuet as a blink source
 -- See plugins/ai.lua for details
 -- vim.g.blink_minuet_enabled = false
+
+-- LSP
+vim.lsp.config("harper_ls", {
+  settings = {
+    ["harper-ls"] = {
+      userDictPath = "~/.local/share/harper-ls/dictionary.txt",
+      fileDictionariesPath = "~/.local/share/harper-ls/file_dictionaries",
+      linters = {
+        UseTitleCase = false,
+      },
+    },
+  },
+})
 vim.lsp.config("lua_ls", {
   settings = {
     Lua = {
