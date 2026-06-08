@@ -210,7 +210,8 @@ packages:
         - ipython
         - marimo
         - rematter
-      personal: []
+      personal:
+        - zmk
       work: []
   linux:
     pnpm:
