@@ -1,13 +1,119 @@
 {
 	"$schema": "https://json.schemastore.org/claude-code-settings.json",
+	"agentPushNotifEnabled": true,
+	"autoMemoryEnabled": false,
+	"autoMode": {
+		"soft_deny": [
+			"User-level configs: editing dotfiles in chezmoi is allowed, but applying them out into userspace or editing user-level configs directly is blocked"
+		]
+	},
+	"awaySummaryEnabled": false,
+	"editorMode": "vim",
+	"effortLevel": "high",
+	"enabledPlugins": {
+		"deno-or-ts@winnie-local": true,
+		"gopls-lsp@claude-plugins-official": true,
+		"lua-lsp@claude-plugins-official": true,
+		"mcp-apps@mcp-apps": true,
+		"pyright-lsp@claude-plugins-official": false,
+		"pyright-or-ruff@winnie-local": true,
+		"ruby-lsp@claude-plugins-official": true,
+		"rust-analyzer-lsp@claude-plugins-official": true,
+		"typescript-lsp@claude-plugins-official": false,
+		"worktrunk@worktrunk": true
+	},
 	"env": {
+		"CLAUDE_CODE_ATTRIBUTION_HEADER": "0",
+		"CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+		"CLAUDE_CODE_ENABLE_TELEMETRY": "0",
 		"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
 		"DISABLE_AUTO_UPDATER": "1",
-		"ENABLE_CLAUDEAI_MCP_SERVERS": "false",
-		"CLAUDE_CODE_ENABLE_TELEMETRY": "0",
-		"CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
-		"CLAUDE_CODE_ATTRIBUTION_HEADER": "0"
+		"ENABLE_CLAUDEAI_MCP_SERVERS": "false"
 	},
+	"extraKnownMarketplaces": {
+		"mcp-apps": {
+			"source": {
+				"repo": "modelcontextprotocol/ext-apps",
+				"source": "github"
+			}
+		},
+		"worktrunk": {
+			"source": {
+				"repo": "max-sixty/worktrunk",
+				"source": "github"
+			}
+		}
+	},
+	"hooks": {
+		"PreToolUse": [
+			{
+				"hooks": [
+					{
+						"command": "$HOME/.claude/hooks/worktree-guardrails.sh",
+						"type": "command"
+					}
+				],
+				"matcher": "Write|Edit|NotebookEdit"
+			},
+			{
+				"hooks": [
+					{
+						"command": "$HOME/.claude/hooks/block-cross-worktree-bash.sh",
+						"type": "command"
+					}
+				],
+				"matcher": "Bash"
+			}
+		],
+		"SessionStart": [
+			{
+				"hooks": [
+					{
+						"command": "$HOME/.claude/hooks/set-sandbox-tmpdir.sh",
+						"type": "command"
+					},
+					{
+						"command": "$HOME/.claude/hooks/set-git-nosign.sh",
+						"type": "command"
+					}
+				],
+				"matcher": ""
+			},
+			{
+				"hooks": [
+					{
+						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' session",
+						"timeout": 10,
+						"type": "command"
+					}
+				],
+				"matcher": "*"
+			}
+		],
+		"SubagentStart": [
+			{
+				"hooks": [
+					{
+						"command": "$HOME/.claude/hooks/dev-worktree-anchor.sh",
+						"type": "command"
+					}
+				],
+				"matcher": "dev"
+			}
+		],
+		"TaskCompleted": [
+			{
+				"hooks": [
+					{
+						"command": "$HOME/.claude/hooks/require-teammate-commit.sh",
+						"type": "command"
+					}
+				],
+				"matcher": ""
+			}
+		]
+	},
+	"maxSkillDescriptionCharacters": "1000",
 	"permissions": {
 		"allow": [
 			"Bash(* --help *)",
@@ -218,6 +324,8 @@
 			"WebFetch(domain:worktrunk.dev)",
 			"WebFetch(domain:www.chezmoi.io)"
 		],
+		"ask": [],
+		"defaultMode": "acceptEdits",
 		"deny": [
 			"Bash(chmod -R 777 *)",
 			"Bash(dd *)",
@@ -267,125 +375,41 @@
 			"Read(~/.config/gcloud/**)",
 			"Read(~/.gnupg/**)",
 			"Read(~/.ssh/**)"
-		],
-		"ask": [],
-		"defaultMode": "acceptEdits"
-	},
-	"hooks": {
-		"PreToolUse": [
-			{
-				"matcher": "Write|Edit|NotebookEdit",
-				"hooks": [
-					{
-						"type": "command",
-						"command": "$HOME/.claude/hooks/worktree-guardrails.sh"
-					}
-				]
-			},
-			{
-				"matcher": "Bash",
-				"hooks": [
-					{
-						"type": "command",
-						"command": "$HOME/.claude/hooks/block-cross-worktree-bash.sh"
-					}
-				]
-			}
-		],
-		"SessionStart": [
-			{
-				"matcher": "",
-				"hooks": [
-					{
-						"type": "command",
-						"command": "$HOME/.claude/hooks/set-sandbox-tmpdir.sh"
-					},
-					{
-						"type": "command",
-						"command": "$HOME/.claude/hooks/set-git-nosign.sh"
-					}
-				]
-			},
-			{
-				"matcher": "*",
-				"hooks": [
-					{
-						"type": "command",
-						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' session",
-						"timeout": 10
-					}
-				]
-			}
-		],
-		"SubagentStart": [
-			{
-				"matcher": "dev",
-				"hooks": [
-					{
-						"type": "command",
-						"command": "$HOME/.claude/hooks/dev-worktree-anchor.sh"
-					}
-				]
-			}
-		],
-		"TaskCompleted": [
-			{
-				"matcher": "",
-				"hooks": [
-					{
-						"type": "command",
-						"command": "$HOME/.claude/hooks/require-teammate-commit.sh"
-					}
-				]
-			}
 		]
 	},
-	"worktree": {
-		"baseRef": "head"
-	},
-	"statusLine": {
-		"type": "command",
-		"command": "winline",
-		"padding": 0
-	},
-	"enabledPlugins": {
-		"deno-or-ts@winnie-local": true,
-		"gopls-lsp@claude-plugins-official": true,
-		"lua-lsp@claude-plugins-official": true,
-		"mcp-apps@mcp-apps": true,
-		"pyright-lsp@claude-plugins-official": false,
-		"pyright-or-ruff@winnie-local": true,
-		"ruby-lsp@claude-plugins-official": true,
-		"rust-analyzer-lsp@claude-plugins-official": true,
-		"typescript-lsp@claude-plugins-official": false,
-		"worktrunk@worktrunk": true
-	},
-	"extraKnownMarketplaces": {
-		"mcp-apps": {
-			"source": {
-				"source": "github",
-				"repo": "modelcontextprotocol/ext-apps"
-			}
-		},
-		"worktrunk": {
-			"source": {
-				"source": "github",
-				"repo": "max-sixty/worktrunk"
-			}
-		}
-	},
+	"preferredNotifChannel": "kitty",
 	"sandbox": {
-		"enabled": true,
-		"autoAllowBashIfSandboxed": false,
 		"allowUnsandboxedCommands": false,
+		"autoAllowBashIfSandboxed": false,
+		"enabled": true,
+		"filesystem": {
+			"allowRead": ["~/.claude/**", "~/.agent-browser/**"],
+			"allowWrite": [
+				"/var/folders/lb/tp644g_n0nx5v96h2vt8zyzm0000gn/T/",
+				"~/.agent-browser/**",
+				"~/.blacksmith/**",
+				"~/.bun/install/**",
+				"~/.cache/pnpm/**",
+				"~/.cache/prek/**",
+				"~/.cache/uv/**",
+				"~/.config/.wrangler/**",
+				"~/.go/pkg/mod/**",
+				"~/.local/share/graveyard/**",
+				"~/.local/share/pnpm/**",
+				"~/.local/share/uv/**",
+				"~/Library/Caches/go-build/**"
+			]
+		},
 		"network": {
+			"allowLocalBinding": true,
+			"allowUnixSockets": ["~/.agent-browser/default.sock"],
 			"allowedDomains": [
 				"api.github.com",
-				"github.com",
 				"backend.blacksmith.sh",
 				"clireleases.blacksmith.sh",
 				"context7.com",
 				"dl.deno.land",
+				"github.com",
 				"jsr.io",
 				"pkg.go.dev",
 				"proxy.golang.org",
@@ -398,34 +422,11 @@
 				"sum.golang.org",
 				"telemetry.astro.build",
 				"workers.cloudflare.com"
-			],
-			"allowUnixSockets": [
-				"~/.agent-browser/default.sock"
-			],
-			"allowLocalBinding": true
-		},
-		"filesystem": {
-			"allowWrite": [
-				"~/.agent-browser/**",
-				"~/.cache/prek/**",
-				"~/.local/share/graveyard/**",
-				"~/.blacksmith/**",
-				"~/.bun/install/**",
-				"~/.cache/uv/**",
-				"~/.local/share/uv/**",
-				"~/.config/.wrangler/**",
-				"~/.go/pkg/mod/**",
-				"~/Library/Caches/go-build/**",
-				"~/.local/share/pnpm/**",
-				"~/.cache/pnpm/**",
-				"/var/folders/lb/tp644g_n0nx5v96h2vt8zyzm0000gn/T/"
-			],
-			"allowRead": [
-				"~/.claude/**",
-				"~/.agent-browser/**"
 			]
 		}
 	},
+	"skipAutoPermissionPrompt": true,
+	"skipDangerousModePermissionPrompt": true,
 	"spinnerTipsEnabled": false,
 	"spinnerVerbs": {
 		"mode": "replace",
@@ -471,27 +472,21 @@
 			"Shopping with the girlypops"
 		]
 	},
+	"statusLine": {
+		"command": "winline",
+		"padding": 0,
+		"type": "command"
+	},
 	"syntaxHighlightingDisabled": false,
-	"effortLevel": "high",
-	"awaySummaryEnabled": false,
+	"teammateMode": "in-process",
+	"theme": "auto",
+	"useAutoModeDuringPlan": true,
 	"voice": {
 		"enabled": true,
 		"mode": "hold"
 	},
-	"autoMemoryEnabled": false,
-	"skipDangerousModePermissionPrompt": true,
-	"theme": "auto",
-	"editorMode": "vim",
-	"preferredNotifChannel": "kitty",
-	"teammateMode": "in-process",
-	"agentPushNotifEnabled": true,
-	"skipAutoPermissionPrompt": true,
-	"useAutoModeDuringPlan": true,
-	"autoMode": {
-		"soft_deny": [
-			"User-level configs: editing dotfiles in chezmoi is allowed, but applying them out into userspace or editing user-level configs directly is blocked"
-		]
-	},
 	"voiceEnabled": true,
-	"maxSkillDescriptionCharacters": "1000"
+	"worktree": {
+		"baseRef": "head"
+	}
 }
