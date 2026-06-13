@@ -16,6 +16,7 @@ abbr --add rr fresh
 abbr --add rrh fresh -g
 abbr --add fun functions
 abbr --add cmd command
+abbr --add wa which -a
 # processes
 abbr --add pps procs
 abbr --add ppsm procs --sortd usagemem
@@ -37,6 +38,8 @@ abbr --add vi nvim
 abbr --add eee ee -e
 # network
 abbr --add ipext "curl https://api64.ipify.org | fish_clipboard_copy"
+# cloud
+abbr --add gcplogin "gcloud auth application-default login"
 # ssh (kitten ssh — macOS only, kitty terminal)
 abbr --add sshk kitten ssh -A
 abbr --add ssha ssh -A
@@ -179,7 +182,8 @@ abbr --add pg pgcli
 abbr --add sqli sqlite3
 ## lightdash
 abbr --add ld lightdash
-abbr --add ldc lightdash config
+abbr --add ldc lightdash compile
+abbr --add ldcf lightdash config
 abbr --add ldd lightdash deploy
 abbr --add ldp lightdash preview
 abbr --add ldv lightdash validate
@@ -206,7 +210,7 @@ abbr --add dbfts dbtf test -s
 abbr --add dbfta dbtf test
 abbr --add dbfrs dbtf run -s
 abbr --add dbfra dbtf run
-abbr --add dbtpo nvim ~/.dbt/profiles.yml
+abbr --add dbtpe nvim ~/.dbt/profiles.yml
 abbr --add dbtpp bat ~/.dbt/profiles.yml
 # languages
 ## python
@@ -230,6 +234,9 @@ abbr --add uvpi uv pip install
 abbr --add uvpir "uv pip install -r requirements.txt"
 abbr --add uva uv add
 abbr --add uvs uv sync
+abbr --add uvup uv lock --upgrade-package
+abbr --add uvupg uv lock --upgrade-group
+abbr --add uvupa uv lock --upgrade
 abbr --add uvi uv init
 abbr --add uvb uv build
 abbr --add va source .venv/bin/activate.fish
@@ -243,6 +250,28 @@ abbr --add gob go build
 ## rust
 abbr --add ruu rustup up
 ## typescript
+### mise
+abbr --add mi mise
+abbr --add mia "mise activate fish | source"
+abbr --add mida mise deactivate
+abbr --add miu mise use
+abbr --add mii mise install
+abbr --add mir mise run
+abbr --add mic mise config
+abbr --add micl mise config list
+abbr --add mics mise config set
+abbr --add mipth $HOME/.local/share/mise/installs/
+### aube
+abbr --add an aube
+abbr --add anx aubx
+abbr --add ani aube install
+abbr --add ana aube add
+abbr --add anrm aube remove
+abbr --add anu aube update
+abbr --add and aubr dev
+abbr --add anb aubr build
+abbr --add anls aube ls
+abbr --add anlsg aube ls -g
 ### node
 abbr --add np npm
 abbr --add npi npm install
@@ -253,8 +282,8 @@ abbr --add npb npm run build
 abbr --add pn pnpm
 abbr --add pnx pnpm dlx
 abbr --add pni pnpm install
-abbr --add pnrm pnpm remove
 abbr --add pna pnpm add
+abbr --add pnrm pnpm remove
 abbr --add pnu pnpm update
 abbr --add pnd pnpm dev
 abbr --add pnb pnpm build
@@ -287,17 +316,6 @@ abbr --add dnu deno remove
 abbr --add dnq deno info
 abbr --add dnsh deno repl
 abbr --add dnru deno run
-### mise
-abbr --add mi mise
-abbr --add mia "mise activate fish | source"
-abbr --add mida mise deactivate
-abbr --add miu mise use
-abbr --add mii mise install
-abbr --add mir mise run
-abbr --add mic mise config
-abbr --add micl mise config list
-abbr --add mics mise config set
-abbr --add mipth $HOME/.local/share/mise/installs/
 # git
 ## github
 abbr --add ghro gh repo view -w
@@ -308,6 +326,8 @@ abbr --add ghd gh dash
 abbr --add ghdo opo gh dash
 ## critique
 abbr --add crit bunx critique
+## degit
+abbr --add degit aubx degit
 ### blacksmith
 abbr --add bs blacksmith
 abbr --add bsau blacksmith auth status
