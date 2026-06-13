@@ -22,4 +22,4 @@ set -gx OBSIDIAN_DEFAULT_VAULT $OBSIDIAN_HOME/girlOS
 # GUIs that have bundled CLIs located in their .app/Contents/
 # we use -a to append rather than prepend as they are low-priority and don't conflict
 fish_add_path -a /Applications/Obsidian.app/Contents/MacOS
-fish_add_path -a /Applications/Monodraw.app/Contents/Resources/monodraw
+fish_add_path -a /Applications/Monodraw.app/Contents/Resources/

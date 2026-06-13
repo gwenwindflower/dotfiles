@@ -1,5 +1,12 @@
 [tools]
-node = "lts"
+node = ["lts", "latest"]
+aube = "latest"
+
+"npm:@agentclientprotocol/claude-agent-acp" = "latest"
+"npm:@aredotna/cli" = "latest"
+"npm:@readwise/cli" = "latest"
+"npm:mintlify" = "latest"
 
 [settings]
+npm.package_manager = "aube"
 idiomatic_version_file_enable_tools = ["node"]

@@ -1,0 +1,32 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/bash
+# Bootstrap mise on linux via the official installer.
+# darwin gets mise from Homebrew (see packages.yaml). mise isn't in the
+# standard apt repos, and adding its custom apt source adds more moving parts
+# (GPG keyring + arch detection + sudo dance) than the one-shot installer.
+
+set -euo pipefail
+
+{{ template "script-log.sh" }}
+
+log_step "Bootstrapping mise"
+
+if command -v mise >/dev/null 2>&1; then
+  log_success "mise already installed: $(mise --version)"
+  exit 0
+fi
+
+log_info "Installing mise via https://mise.run ..."
+curl -fsSL https://mise.run | sh
+
+# mise.run installs to ~/.local/bin/mise — make it resolvable for the rest of
+# this script run and any sibling scripts that look there.
+export PATH="$HOME/.local/bin:$PATH"
+
+if command -v mise >/dev/null 2>&1; then
+  log_success "mise installed: $(mise --version)"
+else
+  log_error "mise install completed but mise is not on PATH"
+  exit 1
+fi
+{{ end -}}

@@ -26,20 +26,14 @@ set -gx TERM xterm-256color
 # Dotfiles home
 set -gx DOTFILES '{{ .chezmoi.sourceDir }}'
 
-{{ template "fish/01-editor.fish" . }}
-{{ template "fish/02-git.fish" . }}
-{{ template "fish/03-cloud.fish" . }}
+{{ template "fish/01-git.fish" . }}
+{{ template "fish/02-cloud.fish" . }}
 {{ template "fish/10-rust.fish" . }}
 {{ template "fish/11-typescript.fish" . }}
 {{ template "fish/12-go.fish" . }}
 {{ template "fish/13-python.fish" . }}
 {{ template "fish/14-ruby.fish" . }}
-
-# We re-add Homebrew with -m here
-# which pushes it to the front of PATH
-# so that it still takes precedence over all
-# the language and tool-specific paths set above
-fish_add_path -m $HOMEBREW_PREFIX/bin
+{{ template "fish/19-finalize.fish" . }}
 
 # =============================================================================
 # Interactive-only

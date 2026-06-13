@@ -1,4 +1,4 @@
-#!/usr/bin/env -S deno run --allow-read --allow-write --allow-env --allow-run=chezmoi,brew,pnpm,uv
+#!/usr/bin/env -S deno run --allow-read --allow-write --allow-env --allow-run=chezmoi,brew,uv
 /**
  * packy — declarative package manifest tool for chezmoi's packages.yaml.
  *
@@ -7,11 +7,13 @@
  * — live state of the underlying package manager is read-only input.
  *
  * Managers (current OS gates which are usable):
- *   formula  Homebrew formulae    (darwin)
- *   cask     Homebrew casks       (darwin)
- *   tap      Homebrew taps        (darwin)
- *   pnpm     pnpm global packages (darwin + linux)
- *   uv       uv tools             (darwin)
+ *   formula  Homebrew formulae (darwin)
+ *   cask     Homebrew casks    (darwin)
+ *   tap      Homebrew taps     (darwin)
+ *   uv       uv tools          (darwin)
+ *
+ * JS/TS globals (node, aube, and npm-backend CLIs) are managed by mise via
+ * `symsource_mise/config.toml`, not packy.
  *
  * Profiles: core, personal, work. Current profile comes from `chezmoi data .profile`.
  * `add` defaults to the current profile; `--profile` overrides and triggers an
@@ -35,7 +37,7 @@ import { parse as parseYaml, stringify as stringifyYaml } from "@std/yaml";
 
 // ── Types ──────────────────────────────────────────────────────────────
 
-export const MANAGERS = ["formula", "cask", "tap", "pnpm", "uv"] as const;
+export const MANAGERS = ["formula", "cask", "tap", "uv"] as const;
 export type Manager = (typeof MANAGERS)[number];
 
 export const PROFILES = ["core", "personal", "work"] as const;
@@ -51,7 +53,6 @@ export interface OsPackages {
     formulae?: ProfileMap;
     casks?: ProfileMap;
   };
-  pnpm?: ProfileMap;
   uv?: ProfileMap;
 }
 
@@ -258,12 +259,6 @@ interface ManagerSpec {
   upgradeAll: (dryRun: boolean) => Promise<void>;
 }
 
-async function readPnpmGlobals(): Promise<string[]> {
-  const out = await runOutput(["pnpm", "ls", "-g", "--depth=0", "--json"]);
-  const data = JSON.parse(out);
-  return Object.keys(data?.[0]?.dependencies ?? {}).sort();
-}
-
 async function readUvTools(): Promise<string[]> {
   const out = await runOutput(["uv", "tool", "list"]);
   // Tool lines start with the name; bin lines start with "- ".
@@ -353,22 +348,6 @@ const SPECS: Record<Manager, ManagerSpec> = {
     upgradeAll: () => {
       log.info("taps have no upgrade step — skipping");
       return Promise.resolve();
-    },
-  },
-  pnpm: {
-    yamlPath: (os) => ["packages", os, "pnpm"],
-    supports: () => true,
-    bin: "pnpm",
-    listInstalled: readPnpmGlobals,
-    install: (pkg) => runInteractive(["pnpm", "add", "-g", pkg]),
-    uninstall: (pkg) => runInteractive(["pnpm", "remove", "-g", pkg]),
-    upgradeAll: async (dryRun) => {
-      if (dryRun) {
-        log.info("[DRY RUN] pnpm update -g");
-        return;
-      }
-      log.info("pnpm update -g...");
-      await runInteractive(["pnpm", "update", "-g"]);
     },
   },
   uv: {
@@ -738,24 +717,6 @@ function cmdCheck(ctx: Ctx, managerFilter?: Manager): boolean {
     }
   }
 
-  // pnpm: linux ⊆ darwin so that any linux-installable global is also part of
-  // the darwin install set.
-  if (!managerFilter || managerFilter === "pnpm") {
-    const darwinAll = new Set(getAllSlots(getMap(ctx.data, "pnpm", "darwin")));
-    const linuxAll = getAllSlots(getMap(ctx.data, "pnpm", "linux"));
-    const missing = linuxAll.filter((g) => !darwinAll.has(g));
-    if (missing.length > 0) {
-      log.warn(
-        `pnpm: linux globals not present in darwin (${missing.length} issue(s))`,
-      );
-      for (const g of missing) console.log(`  ${yellow(`! ${g}`)}`);
-      log.info(
-        "Add to darwin via `packy add -m pnpm <pkg>`, or remove from linux.",
-      );
-      ok = false;
-    }
-  }
-
   if (ok) log.success("check passed");
   return ok;
 }
@@ -869,7 +830,7 @@ Subcommands:
   remove    (rm)  Uninstall (if present) and untrack package(s)
   list      (ls)  Show tracked packages for the current OS
   diff      (d)   Show drift between manifest and live state (no writes)
-  check     (c)   Cross-profile dedup; linux pnpm ⊂ darwin pnpm
+  check     (c)   Cross-profile dedup across managers
   upgrade   (up)  Run upgrade commands for each manager (no manifest writes)
   sync      (s)   Install any tracked packages missing from the system (no uninstall, no manifest writes)
 
@@ -877,15 +838,17 @@ Options:
   -h, --help                Show this help
   -d, --dry-run             Preview without writing or running install/uninstall
   -v, --verbose             Show extra detail (e.g. full YAML on write)
-  -m, --manager <name>      formula, cask, tap, pnpm, uv
+  -m, --manager <name>      formula, cask, tap, uv
   -p, --profile <name>      Override the add target (default: current profile)
 
 Managers:
-  formula   Homebrew formulae    (darwin)
-  cask      Homebrew casks       (darwin)
-  tap       Homebrew taps        (darwin)
-  pnpm      pnpm global packages (darwin + linux)
-  uv        uv tools             (darwin)
+  formula   Homebrew formulae (darwin)
+  cask      Homebrew casks    (darwin)
+  tap       Homebrew taps     (darwin)
+  uv        uv tools          (darwin)
+
+JS/TS globals (node, aube, npm-backend CLIs) are managed by mise via
+symsource_mise/config.toml — outside packy's surface.
 
 Profiles:
   core, personal, work — current profile comes from \`chezmoi data .profile\`.
@@ -895,11 +858,10 @@ Profiles:
   --profile moves the entry between slots and prints a notice.
 
 Examples:
-  packy add -m pnpm '@agentclientprotocol/claude-agent-acp'
   packy a -m formula gh
   packy add -m cask --profile personal obsidian
-  packy rm '@aredotna/cli'
-  packy d -m pnpm
+  packy rm gallery-dl
+  packy d -m formula
   packy upgrade -m formula
   packy sync`,
   );

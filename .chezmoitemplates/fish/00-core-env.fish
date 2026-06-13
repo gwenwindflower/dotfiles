@@ -6,10 +6,13 @@
 # Construct fish_user_paths as a global (not universal) to avoid stale accumulation
 set -e fish_user_paths
 set -gx fish_user_paths $HOME/.local/bin
-fish_add_path -g $HOME/.local/bin
+fish_add_path $XDG_DATA_HOME/nvim/mason/bin
 
 #  Terminal and Shell
 set -gx SHELL $HOMEBREW_PREFIX/bin/fish
+
+#  Editor
+set -gx EDITOR nvim
 
 #  GPG
 set -gx GPG_TTY (tty)

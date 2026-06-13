@@ -1,0 +1,4 @@
+allowedUnpopularPackages = [
+  "@aredotna/cli",
+  "@readwise/cli",
+]

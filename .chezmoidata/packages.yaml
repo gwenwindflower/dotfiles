@@ -141,7 +141,6 @@ packages:
           - yt-dlp
         work:
           - ollama
-          - pnpm@10
       casks:
         core:
           - 1password
@@ -151,6 +150,7 @@ packages:
           - claude
           - claude-code
           - codex
+          - codex-app
           - dbc
           - font-charter
           - font-cormorant
@@ -202,13 +202,6 @@ packages:
         work:
           - linear
           - loom
-    pnpm:
-      core:
-        - '@agentclientprotocol/claude-agent-acp'
-      personal:
-        - '@aredotna/cli'
-        - '@readwise/cli'
-      work: []
     uv:
       core:
         - databow
@@ -219,9 +212,6 @@ packages:
         - zmk
       work: []
   linux:
-    pnpm:
-      core:
-        - '@agentclientprotocol/claude-agent-acp'
     apt:
       packages:
         core:
@@ -232,7 +222,6 @@ packages:
           - gh
           - git
           - git-delta
-          - pnpm
           - ripgrep
           - tmux
           - yq

@@ -1,0 +1,32 @@
+#!/bin/bash
+# Materialize tools listed in symsource_mise/config.toml — node, aube, and the
+# npm-backend CLI globals. Re-runs whenever the mise config changes.
+#
+# Mise config hash: {{ include "symsource_mise/config.toml" | sha256sum }}
+
+set -euo pipefail
+
+{{ template "script-log.sh" }}
+
+log_step "mise install"
+
+# mise install location varies by OS (brew on darwin, ~/.local/bin on linux via
+# run_once_07-install-mise.sh.tmpl). Try the known spots before bailing.
+if ! command -v mise >/dev/null 2>&1; then
+  for prefix in /opt/homebrew/bin /usr/local/bin "$HOME/.local/bin"; do
+    if [ -x "$prefix/mise" ]; then
+      export PATH="$prefix:$PATH"
+      break
+    fi
+  done
+fi
+
+if ! command -v mise >/dev/null 2>&1; then
+  log_error "mise not found — Homebrew (darwin) or run_once_07 (linux) should have installed it"
+  exit 1
+fi
+
+# `mise install` skips already-installed versions, so this is naturally idempotent.
+mise install
+
+log_success "mise tools installed"
