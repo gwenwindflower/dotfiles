@@ -1,25 +1,33 @@
 # twinsies.toml — source of truth for entries synced across agent configs.
 #
 # Each [<domain>.<channel>] table lists entries that every supporting agent
-# should have. Run `deno task twinsies` to add missing entries; `deno task
-# check-twinsies` to lint without writing. Additive only — never removes
-# entries from target files.
+# should have. Run `deno task twinsies` to reconcile target files to this
+# manifest (full sync — adds missing, removes extras, fixes mode drift inside
+# the regions twinsies owns). `deno task twinsies:preview` for a rich diff +
+# proposed file contents (exit 0); `deno task twinsies:check` for a terse
+# drift report (exit 1 on any drift, for CI / pre-commit).
 #
 # Channels (under [permissions]):
-#   bash     — shell command patterns        → Claude `Bash(<p>)`, OpenCode `permission.bash[<p>]`
-#   read     — file read patterns            → Claude `Read(<p>)`,  OpenCode `permission.read[<p>]`
-#   edit     — file edit patterns            → Claude `Edit(<p>)`,  OpenCode `permission.edit[<p>]`
-#   scalars  — single-key capability toggles → Claude bare key,     OpenCode `permission.<key>`
+#   bash  — shell command patterns → Claude `Bash(<p>)`, OpenCode `permission.bash[<p>]`
+#   edit  — file edit patterns     → Claude `Edit(<p>)`, OpenCode `permission.edit[<p>]`
 #
-# Anything Claude-only (WebFetch domains, MCP server names, Read allowlists)
-# stays in symsource_claude/settings.json — twinsies only handles cross-agent
-# patterns. Same for OpenCode-only bits (the catch-all `"*" = "ask"`).
+# Out of scope (hand-maintained per agent — too agent-specific to be worth
+# wrangling here):
+#   • Read permissions — Claude's sandbox read-root allowlist is a Claude-only
+#     feature; OpenCode has no parallel.
+#   • Scalar/capability toggles (Claude `Skill`, OpenCode `permission.skill`)
+#     — one line per agent.
+#   • Claude-only knobs (WebFetch domains, MCP server names) in settings.json.
+#   • OpenCode-only knobs (the `"*" = "ask"` catch-all inside `permission.bash`,
+#     other top-level config) in opencode.jsonc.
+# Twinsies leaves all of these untouched.
 
 # ── Bash ──────────────────────────────────────────────────────────────
 
 [permissions.bash]
 # allow
 "* --help *" = "allow"
+"* --version" = "allow"
 "* --version *" = "allow"
 "bat *" = "allow"
 "blacksmith *" = "allow"
@@ -39,7 +47,8 @@
 "cargo clippy *" = "allow"
 "cargo test *" = "allow"
 "cat *" = "allow"
-"chezmoi --dry-run --no-pager *" = "allow"
+"chezmoi * --dry-run*" = "allow"
+"chezmoi * -n*" = "allow"
 "chezmoi doctor *" = "allow"
 "ctx7 docs *" = "allow"
 "ctx7 library *" = "allow"
@@ -111,14 +120,33 @@
 "pnpm run test *" = "allow"
 "pnpm typecheck *" = "allow"
 "pnpm types *" = "allow"
-"pnpx ctx7 docs *" = "allow"
-"pnpx ctx7 library *" = "allow"
+"aubr build *" = "allow"
+"aubr check *" = "allow"
+"aubr dev *" = "allow"
+"aubr fix *" = "allow"
+"aubr fix-format *" = "allow"
+"aubr fmt *" = "allow"
+"aubr format *" = "allow"
+"aubr lint *" = "allow"
+"aubr ls *" = "allow"
+"aubr run build *" = "allow"
+"aubr run dev *" = "allow"
+"aubr run lint *" = "allow"
+"aubr run test *" = "allow"
+"aubr typecheck *" = "allow"
+"aubr types *" = "allow"
 "pnpx fallow *" = "allow"
 "pnpx skills list -g *" = "allow"
 "pnpx skills list *" = "allow"
 "pnpx skills upgrade -g *" = "allow"
 "pnpx skills upgrade *" = "allow"
 "pnpx tsc *" = "allow"
+"aubx fallow *" = "allow"
+"aubx skills list -g *" = "allow"
+"aubx skills list *" = "allow"
+"aubx skills upgrade -g *" = "allow"
+"aubx skills upgrade *" = "allow"
+"aubx tsc *" = "allow"
 "prek *" = "allow"
 "printf *" = "allow"
 "procs *" = "allow"
@@ -161,31 +189,12 @@
 "sudo rm *" = "deny"
 "terraform destroy *" = "deny"
 
-# ── File reads ────────────────────────────────────────────────────────
-
-[permissions.read]
-".env" = "deny"
-".env.*" = "deny"
-"*.env" = "deny"
-"*.key" = "deny"
-"*.p12" = "deny"
-"*.pem" = "deny"
-"*.pfx" = "deny"
-"**/*.env" = "deny"
-"**/.env" = "deny"
-"**/.env.*" = "deny"
-"**/credentials/**" = "deny"
-"**/secrets/**" = "deny"
-"id_ed25519" = "deny"
-"id_rsa" = "deny"
-"~/.aws/**" = "deny"
-"~/.config/gcloud/**" = "deny"
-"~/.gnupg/**" = "deny"
-"~/.ssh/**" = "deny"
-
 # ── File edits ────────────────────────────────────────────────────────
 
 [permissions.edit]
+".env" = "deny"
+".env.*" = "deny"
+"*.env" = "deny"
 "**/*.env" = "deny"
 "**/.env" = "deny"
 "**/.env.*" = "deny"
@@ -201,8 +210,3 @@
 "~/.config/gcloud/**" = "deny"
 "~/.gnupg/**" = "deny"
 "~/.ssh/**" = "deny"
-
-# ── Scalar capabilities ───────────────────────────────────────────────
-
-[permissions.scalars]
-skill = "allow"

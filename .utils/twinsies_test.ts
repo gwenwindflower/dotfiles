@@ -1,8 +1,11 @@
 import { assert, assertEquals, assertObjectMatch } from "@std/assert";
+import { parse as parseJsonc } from "@std/jsonc";
 import {
   applyClaudeText,
   applyOpencodeText,
   type Channel,
+  CHANNELS,
+  decodeClaude,
   diffClaudeText,
   diffOpencodeText,
   encodeClaude,
@@ -13,7 +16,7 @@ import {
   type SourceConfig,
 } from "./twinsies.ts";
 
-const ALL_CHANNELS = new Set<Channel>(["bash", "read", "edit", "scalars"]);
+const ALL_CHANNELS = new Set<Channel>(CHANNELS);
 
 // ── findObjectBlock ────────────────────────────────────────────────
 
@@ -45,7 +48,6 @@ Deno.test("findObjectBlock handles nested braces and string-literal braces", () 
   assert(outer);
   const inner = findObjectBlock(text, "bash", outer.openBrace);
   assert(inner);
-  // Inner block should encompass exactly the bash entries.
   const innerBody = text.slice(inner.openBrace, inner.closeBrace + 1);
   assert(innerBody.includes(`"echo {weird}": "allow"`));
   assert(innerBody.includes(`"awk '{ print $1 }'": "allow"`));
@@ -58,8 +60,6 @@ Deno.test("findObjectBlock returns null when key not found", () => {
 });
 
 Deno.test("findObjectBlock skips keys that match strings but not actual object values", () => {
-  // The string `"permission": {` appears inside a value, but only as data —
-  // the real key match should still resolve correctly when present later.
   const text = `{
 \t"comment": "look: \\"permission\\": {",
 \t"permission": { "skill": "allow" }
@@ -109,14 +109,8 @@ Deno.test("loadSource parses a TOML fixture into channels", async () => {
 "pnpm test *" = "allow"
 "rm -rf *" = "deny"
 
-[permissions.read]
-".env" = "deny"
-
 [permissions.edit]
 ".env" = "deny"
-
-[permissions.scalars]
-skill = "allow"
 `,
     );
     const source = await loadSource(tmp);
@@ -124,9 +118,30 @@ skill = "allow"
       "pnpm test *": "allow",
       "rm -rf *": "deny",
     });
-    assertEquals(source.permissions.read, { ".env": "deny" });
     assertEquals(source.permissions.edit, { ".env": "deny" });
-    assertEquals(source.permissions.scalars, { skill: "allow" });
+  } finally {
+    await Deno.remove(tmp);
+  }
+});
+
+Deno.test("loadSource ignores out-of-scope channels (read, scalars)", async () => {
+  const tmp = await Deno.makeTempFile({ suffix: ".toml" });
+  try {
+    await Deno.writeTextFile(
+      tmp,
+      `[permissions.bash]
+"ls *" = "allow"
+
+[permissions.read]
+".env" = "deny"
+
+[permissions.scalars]
+skill = "allow"
+`,
+    );
+    const source = await loadSource(tmp);
+    assertEquals(source.permissions.bash, { "ls *": "allow" });
+    assertEquals(Object.keys(source.permissions).sort(), ["bash"]);
   } finally {
     await Deno.remove(tmp);
   }
@@ -138,21 +153,38 @@ Deno.test("loadSource leaves missing channels undefined", async () => {
     await Deno.writeTextFile(tmp, `[permissions.bash]\n"ls *" = "allow"\n`);
     const source = await loadSource(tmp);
     assertEquals(source.permissions.bash, { "ls *": "allow" });
-    assertEquals(source.permissions.read, undefined);
     assertEquals(source.permissions.edit, undefined);
-    assertEquals(source.permissions.scalars, undefined);
   } finally {
     await Deno.remove(tmp);
   }
 });
 
-// ── encodeClaude ───────────────────────────────────────────────────
+// ── encodeClaude / decodeClaude ────────────────────────────────────
 
-Deno.test("encodeClaude wraps channel patterns and capitalizes scalars", () => {
+Deno.test("encodeClaude wraps channel patterns", () => {
   assertEquals(encodeClaude("bash", "ls *"), "Bash(ls *)");
-  assertEquals(encodeClaude("read", ".env"), "Read(.env)");
   assertEquals(encodeClaude("edit", ".env"), "Edit(.env)");
-  assertEquals(encodeClaude("scalars", "skill"), "Skill");
+});
+
+Deno.test("decodeClaude extracts channel and pattern from owned wires", () => {
+  assertEquals(decodeClaude("Bash(ls *)"), { channel: "bash", pattern: "ls *" });
+  assertEquals(decodeClaude("Edit(.env)"), { channel: "edit", pattern: ".env" });
+});
+
+Deno.test("decodeClaude returns null for unowned wires", () => {
+  assertEquals(decodeClaude("Skill"), null);
+  assertEquals(decodeClaude("WebFetch(domain:example.com)"), null);
+  assertEquals(decodeClaude("mcp__foo__bar"), null);
+  // Read is intentionally not twinsies-owned — Claude sandbox-specific.
+  assertEquals(decodeClaude("Read(~/foo/**)"), null);
+  assertEquals(decodeClaude("Read(.env)"), null);
+});
+
+Deno.test("decodeClaude handles patterns containing parens", () => {
+  assertEquals(
+    decodeClaude("Bash(awk '{ print $1 }')"),
+    { channel: "bash", pattern: "awk '{ print $1 }'" },
+  );
 });
 
 // ── Claude adapter: diff ───────────────────────────────────────────
@@ -160,7 +192,12 @@ Deno.test("encodeClaude wraps channel patterns and capitalizes scalars", () => {
 const CLAUDE_FIXTURE = JSON.stringify(
   {
     permissions: {
-      allow: ["Bash(ls *)", "Read(~/foo/**)", "Skill"],
+      allow: [
+        "Bash(ls *)",
+        "Read(~/foo/**)",
+        "Skill",
+        "WebFetch(domain:example.com)",
+      ],
       ask: [],
       deny: ["Bash(rm -rf *)", "Read(.env)", "Edit(.env)"],
     },
@@ -173,13 +210,12 @@ Deno.test("diffClaudeText reports missing entries per channel", () => {
   const source: SourceConfig = {
     permissions: {
       bash: { "ls *": "allow", "pnpm test *": "allow", "rm -rf *": "deny" },
-      read: { ".env": "deny" },
       edit: { ".env": "deny" },
-      scalars: { skill: "allow" },
     },
   };
   const diff = diffClaudeText(CLAUDE_FIXTURE, source, ALL_CHANNELS);
   assertEquals(diff.conflicts, []);
+  assertEquals(diff.extras, []);
   assertEquals(diff.missing.length, 1);
   assertObjectMatch(diff.missing[0], {
     channel: "bash",
@@ -190,7 +226,7 @@ Deno.test("diffClaudeText reports missing entries per channel", () => {
 
 Deno.test("diffClaudeText flags same-pattern-different-mode as conflict", () => {
   const source: SourceConfig = {
-    permissions: { bash: { "rm -rf *": "allow" } }, // target has it under deny
+    permissions: { bash: { "rm -rf *": "allow" } },
   };
   const diff = diffClaudeText(CLAUDE_FIXTURE, source, ALL_CHANNELS);
   assertEquals(diff.missing, []);
@@ -203,42 +239,70 @@ Deno.test("diffClaudeText flags same-pattern-different-mode as conflict", () => 
   });
 });
 
-Deno.test("diffClaudeText reports nothing when source is a subset of target", () => {
+Deno.test("diffClaudeText reports target-only owned entries as extras", () => {
   const source: SourceConfig = {
-    permissions: {
-      bash: { "ls *": "allow" },
-      scalars: { skill: "allow" },
-    },
+    permissions: { bash: { "ls *": "allow" } },
   };
   const diff = diffClaudeText(CLAUDE_FIXTURE, source, ALL_CHANNELS);
-  assertEquals(diff.missing, []);
-  assertEquals(diff.conflicts, []);
+  // Only Bash(...) and Edit(...) extras surface. Read(...) is unowned.
+  const extras = diff.extras.map((e) => `${e.channel}:${e.pattern}=${e.mode}`)
+    .sort();
+  assertEquals(extras, [
+    "bash:rm -rf *=deny",
+    "edit:.env=deny",
+  ]);
+});
+
+Deno.test("diffClaudeText ignores unowned wires (Skill, WebFetch, Read, mcp__*)", () => {
+  const source: SourceConfig = { permissions: {} };
+  const diff = diffClaudeText(CLAUDE_FIXTURE, source, ALL_CHANNELS);
+  for (const e of diff.extras) {
+    assert(
+      !["Skill", "WebFetch", "Read"].some((p) => e.pattern.startsWith(p)),
+      `unowned entry leaked into extras: ${e.pattern}`,
+    );
+  }
 });
 
 // ── Claude adapter: apply ──────────────────────────────────────────
 
-Deno.test("applyClaudeText adds missing entries, sorts, and preserves modes", () => {
-  const diff = {
-    target: "claude",
-    missing: [
-      {
-        channel: "bash" as Channel,
-        pattern: "pnpm test *",
-        mode: "allow" as Mode,
-      },
-      { channel: "bash" as Channel, pattern: "dd *", mode: "deny" as Mode },
-    ],
-    conflicts: [],
+Deno.test("applyClaudeText reconciles to source, sorts, dedupes", () => {
+  const source: SourceConfig = {
+    permissions: {
+      bash: { "ls *": "allow", "pnpm test *": "allow", "dd *": "deny" },
+      edit: {},
+    },
   };
-  const out = applyClaudeText(CLAUDE_FIXTURE, diff);
+  const out = applyClaudeText(CLAUDE_FIXTURE, source);
   const data = JSON.parse(out);
+  // Missing added.
   assert(data.permissions.allow.includes("Bash(pnpm test *)"));
   assert(data.permissions.deny.includes("Bash(dd *)"));
-  // Allow list must be alphabetically sorted.
-  const allow = data.permissions.allow as string[];
-  assertEquals([...allow].sort(), allow);
-  // No duplicate entries.
-  assertEquals(new Set(allow).size, allow.length);
+  // Existing owned entries that aren't in source are removed.
+  assert(!data.permissions.deny.includes("Bash(rm -rf *)"));
+  assert(!data.permissions.deny.includes("Edit(.env)"));
+  // Unowned entries preserved — including Read(...) sandbox roots.
+  assert(data.permissions.allow.includes("Skill"));
+  assert(data.permissions.allow.includes("WebFetch(domain:example.com)"));
+  assert(data.permissions.allow.includes("Read(~/foo/**)"));
+  assert(data.permissions.deny.includes("Read(.env)"));
+  // Each bucket sorted, no dupes.
+  for (const m of ["allow", "ask", "deny"] as const) {
+    const arr = data.permissions[m] as string[];
+    assertEquals([...arr].sort(), arr);
+    assertEquals(new Set(arr).size, arr.length);
+  }
+});
+
+Deno.test("applyClaudeText resolves mode conflicts source-wins", () => {
+  // Target has Bash(rm -rf *) under deny; source says allow.
+  const source: SourceConfig = {
+    permissions: { bash: { "rm -rf *": "allow" } },
+  };
+  const out = applyClaudeText(CLAUDE_FIXTURE, source);
+  const data = JSON.parse(out);
+  assert(data.permissions.allow.includes("Bash(rm -rf *)"));
+  assert(!data.permissions.deny.includes("Bash(rm -rf *)"));
 });
 
 // ── OpenCode adapter: diff ─────────────────────────────────────────
@@ -265,12 +329,13 @@ const OPENCODE_FIXTURE = `{
 Deno.test("diffOpencodeText finds missing bash entries", () => {
   const source: SourceConfig = {
     permissions: {
-      bash: { "ls *": "allow", "pnpm test *": "allow" },
-      scalars: { skill: "allow" },
+      bash: { "ls *": "allow", "pnpm test *": "allow", "rm -rf *": "deny" },
+      edit: { ".env": "deny" },
     },
   };
   const diff = diffOpencodeText(OPENCODE_FIXTURE, source, ALL_CHANNELS);
   assertEquals(diff.conflicts, []);
+  assertEquals(diff.extras, []);
   assertEquals(diff.missing.length, 1);
   assertObjectMatch(diff.missing[0], {
     channel: "bash",
@@ -294,65 +359,89 @@ Deno.test("diffOpencodeText flags mode mismatch as conflict", () => {
   });
 });
 
-Deno.test("diffOpencodeText handles scalar capability presence", () => {
+Deno.test("diffOpencodeText reports target-only entries as extras", () => {
   const source: SourceConfig = {
-    permissions: { scalars: { skill: "allow", webfetch: "allow" } },
+    permissions: { bash: { "ls *": "allow" } },
   };
   const diff = diffOpencodeText(OPENCODE_FIXTURE, source, ALL_CHANNELS);
+  // The catch-all "*" is preserved, NOT an extra. The fixture's `read` block
+  // is unowned so its entries never surface.
+  const extras = diff.extras.map((e) => `${e.channel}:${e.pattern}=${e.mode}`)
+    .sort();
+  assertEquals(extras, [
+    "bash:rm -rf *=deny",
+    "edit:.env=deny",
+  ]);
+});
+
+Deno.test("diffOpencodeText preserves catch-all '*' in bash (not an extra)", () => {
+  const source: SourceConfig = {
+    permissions: {
+      bash: { "ls *": "allow", "rm -rf *": "deny" },
+      edit: { ".env": "deny" },
+    },
+  };
+  const diff = diffOpencodeText(OPENCODE_FIXTURE, source, ALL_CHANNELS);
+  assertEquals(diff.extras, []);
+  assertEquals(diff.missing, []);
   assertEquals(diff.conflicts, []);
-  assertEquals(diff.missing.length, 1);
-  assertObjectMatch(diff.missing[0], {
-    channel: "scalars",
-    pattern: "webfetch",
-    mode: "allow",
-  });
 });
 
 // ── OpenCode adapter: apply ────────────────────────────────────────
 
-Deno.test("applyOpencodeText rewrites a channel block additively, sorted", () => {
-  const diff = {
-    target: "opencode",
-    missing: [
-      {
-        channel: "bash" as Channel,
-        pattern: "pnpm test *",
-        mode: "allow" as Mode,
+Deno.test("applyOpencodeText reconciles bash to source and preserves catch-all", () => {
+  const source: SourceConfig = {
+    permissions: {
+      bash: {
+        "ls *": "allow",
+        "pnpm test *": "allow",
+        "dd *": "deny",
       },
-      { channel: "bash" as Channel, pattern: "dd *", mode: "deny" as Mode },
-    ],
-    conflicts: [],
+      edit: { ".env": "deny" },
+    },
   };
-  const out = applyOpencodeText(OPENCODE_FIXTURE, diff);
-  // New entries present.
+  const out = applyOpencodeText(OPENCODE_FIXTURE, source);
+  // Added.
   assert(out.includes(`"pnpm test *": "allow"`));
   assert(out.includes(`"dd *": "deny"`));
-  // Existing entries preserved.
+  // Preserved existing source-tracked entry.
   assert(out.includes(`"ls *": "allow"`));
-  assert(out.includes(`"rm -rf *": "deny"`));
+  // Removed target-only entry (rm -rf was not in this source).
+  assert(!out.includes(`"rm -rf *": "deny"`));
+  // Catch-all preserved.
   assert(out.includes(`"*": "ask"`));
-  // Skill scalar untouched.
+  // Sibling scalar untouched.
   assert(out.includes(`"skill": "allow"`));
-  // Allow group precedes deny group within the bash block.
-  const lsIdx = out.indexOf(`"ls *"`);
-  const rmIdx = out.indexOf(`"rm -rf *"`);
-  assert(lsIdx < rmIdx, "allow entries should come before deny entries");
+  // Catch-all "*" should sort to top of ask group (no other ask entries here).
+  const starIdx = out.indexOf(`"*": "ask"`);
+  const lsIdx = out.indexOf(`"ls *": "allow"`);
+  assert(starIdx < lsIdx, "ask group should come before allow group");
 });
 
-Deno.test("applyOpencodeText inserts a new scalar key under permission", () => {
-  const diff = {
-    target: "opencode",
-    missing: [
-      {
-        channel: "scalars" as Channel,
-        pattern: "webfetch",
-        mode: "allow" as Mode,
-      },
-    ],
-    conflicts: [],
+Deno.test("applyOpencodeText removes target-only entries in owned channels", () => {
+  const source: SourceConfig = {
+    permissions: {
+      bash: { "ls *": "allow" },
+      edit: {}, // empty — target's `.env` deny should vanish from edit
+    },
   };
-  const out = applyOpencodeText(OPENCODE_FIXTURE, diff);
-  assert(out.includes(`"webfetch": "allow"`));
-  // Existing scalar untouched.
-  assert(out.includes(`"skill": "allow"`));
+  const out = applyOpencodeText(OPENCODE_FIXTURE, source);
+  assert(!out.includes(`"rm -rf *": "deny"`));
+  const data = parseJsonc(out) as { permission: Record<string, unknown> };
+  assertEquals(data.permission.edit, {});
+  // `read` block is unowned — left exactly as it was in the fixture.
+  assertEquals(data.permission.read, { ".env": "deny" });
+});
+
+Deno.test("applyOpencodeText resolves mode conflicts source-wins", () => {
+  const source: SourceConfig = {
+    permissions: {
+      bash: { "ls *": "allow", "rm -rf *": "allow" }, // target has rm -rf as deny
+      edit: { ".env": "deny" },
+    },
+  };
+  const out = applyOpencodeText(OPENCODE_FIXTURE, source);
+  // The deny version is replaced by the allow version — only one occurrence.
+  const matches = out.match(/"rm -rf \*": "(allow|deny)"/g) ?? [];
+  assertEquals(matches, [`"rm -rf *": "allow"`]);
 });

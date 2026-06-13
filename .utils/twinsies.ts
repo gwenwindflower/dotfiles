@@ -4,14 +4,18 @@
  *
  * Source: twinsies.toml in the same dir. Each [<domain>.<channel>] table
  * holds entries every supporting agent should have. Adapters translate
- * source entries into each agent's native wire format and merge them in
- * additively (existing entries are never removed).
+ * source entries into each agent's native wire format and reconcile the
+ * regions they own: missing entries added, extras removed, mode drift
+ * resolved source-wins. Entries outside the owned regions (Claude's
+ * `WebFetch(…)` / `Skill` / `mcp__*`, OpenCode's catch-all `"*": "ask"`
+ * inside `permission.bash`, sibling scalar keys under `permission`) are
+ * left alone.
  *
  * Usage:
- *   deno run --allow-read --allow-write twinsies.ts            # apply fixes
- *   deno run --allow-read twinsies.ts --check                  # lint, exit 1 on drift
- *   deno run --allow-read twinsies.ts --dry-run                # print proposed writes
- *   deno run --allow-read twinsies.ts --target claude          # limit to one adapter
+ *   deno run --allow-read --allow-write twinsies.ts   # reconcile in place
+ *   deno run --allow-read twinsies.ts --dry-run       # rich diff + proposed file contents, exit 0
+ *   deno run --allow-read twinsies.ts --check         # terse drift report, exit 1 on drift
+ *   deno run --allow-read twinsies.ts --target claude # limit to one adapter
  */
 
 import { parse as parseToml } from "@std/toml";
@@ -23,13 +27,21 @@ import { dirname, fromFileUrl, resolve } from "@std/path";
 
 export type Mode = "allow" | "ask" | "deny";
 
-export type Channel = "bash" | "read" | "edit" | "scalars";
+export type Channel = "bash" | "edit";
+
+export const CHANNELS: readonly Channel[] = ["bash", "edit"];
 
 export interface SourceConfig {
   permissions: Partial<Record<Channel, Record<string, Mode>>>;
 }
 
 export interface Missing {
+  channel: Channel;
+  pattern: string;
+  mode: Mode;
+}
+
+export interface Extra {
   channel: Channel;
   pattern: string;
   mode: Mode;
@@ -45,6 +57,7 @@ export interface Conflict {
 export interface TargetDiff {
   target: string;
   missing: Missing[];
+  extras: Extra[];
   conflicts: Conflict[];
 }
 
@@ -53,7 +66,7 @@ interface Adapter {
   readonly path: string;
   readonly supports: ReadonlySet<Channel>;
   diff(source: SourceConfig): Promise<TargetDiff>;
-  apply(diff: TargetDiff): Promise<string>; // returns new file contents
+  apply(source: SourceConfig): Promise<string>; // returns new file contents
 }
 
 // ── Source loading ─────────────────────────────────────────────────────
@@ -65,7 +78,7 @@ export async function loadSource(path: string): Promise<SourceConfig> {
   const text = await Deno.readTextFile(path);
   const data = parseToml(text) as { permissions?: Record<string, unknown> };
   const perms: SourceConfig["permissions"] = {};
-  for (const channel of ["bash", "read", "edit", "scalars"] as Channel[]) {
+  for (const channel of CHANNELS) {
     const block = data.permissions?.[channel];
     if (block && typeof block === "object") {
       perms[channel] = block as Record<string, Mode>;
@@ -122,7 +135,6 @@ function detectBlockIndent(
   openBrace: number,
   fallback: string,
 ): string {
-  // Look at the first non-whitespace, non-newline character after the `{`.
   const after = text.slice(openBrace + 1);
   const m = after.match(/\n([ \t]*)\S/);
   return m ? m[1] : fallback;
@@ -155,20 +167,86 @@ export function sortEntries(
   });
 }
 
+// ── Shared diff machinery ──────────────────────────────────────────────
+
+/**
+ * Compute the three-way diff between a source channel map and a target
+ * channel map (both `pattern → mode`). Pure — no I/O, no encoding.
+ */
+function diffChannel(
+  channel: Channel,
+  source: Record<string, Mode>,
+  target: Record<string, Mode>,
+): { missing: Missing[]; extras: Extra[]; conflicts: Conflict[] } {
+  const missing: Missing[] = [];
+  const extras: Extra[] = [];
+  const conflicts: Conflict[] = [];
+  for (const [pattern, mode] of Object.entries(source)) {
+    const current = target[pattern];
+    if (current === undefined) {
+      missing.push({ channel, pattern, mode });
+    } else if (current !== mode) {
+      conflicts.push({
+        channel,
+        pattern,
+        sourceMode: mode,
+        targetMode: current,
+      });
+    }
+  }
+  for (const [pattern, mode] of Object.entries(target)) {
+    if (source[pattern] === undefined) {
+      extras.push({ channel, pattern, mode });
+    }
+  }
+  return { missing, extras, conflicts };
+}
+
 // ── Claude adapter ────────────────────────────────────────────────────
 
 export function encodeClaude(channel: Channel, pattern: string): string {
   switch (channel) {
     case "bash":
       return `Bash(${pattern})`;
-    case "read":
-      return `Read(${pattern})`;
     case "edit":
       return `Edit(${pattern})`;
-    case "scalars":
-      // Claude uses bare capitalized capability names (e.g. "Skill").
-      return pattern.charAt(0).toUpperCase() + pattern.slice(1);
   }
+}
+
+const CLAUDE_WIRE_RE = /^(Bash|Edit)\((.+)\)$/;
+
+/**
+ * Decode a Claude wire-format entry back into (channel, pattern), or null
+ * if it isn't twinsies-owned (e.g. `WebFetch(domain:…)`, `Skill`,
+ * `mcp__server__tool`, `Read(…)` sandbox roots).
+ */
+export function decodeClaude(
+  wire: string,
+): { channel: Channel; pattern: string } | null {
+  const m = CLAUDE_WIRE_RE.exec(wire);
+  if (!m) return null;
+  const kind = m[1] as "Bash" | "Edit";
+  const channel: Channel = kind === "Bash" ? "bash" : "edit";
+  return { channel, pattern: m[2] };
+}
+
+/** Pull twinsies-owned entries out of Claude's allow/ask/deny arrays. */
+function readClaudeOwned(
+  data: {
+    permissions?: { allow?: string[]; ask?: string[]; deny?: string[] };
+  },
+): Record<Channel, Record<string, Mode>> {
+  const owned: Record<Channel, Record<string, Mode>> = {
+    bash: {},
+    edit: {},
+  };
+  for (const mode of MODE_ORDER) {
+    for (const wire of data.permissions?.[mode] ?? []) {
+      const decoded = decodeClaude(wire);
+      if (decoded) owned[decoded.channel][decoded.pattern] = mode;
+    }
+  }
+  return owned;
 }
 
 export function diffClaudeText(
@@ -180,56 +258,45 @@ export function diffClaudeText(
   const data = JSON.parse(text) as {
     permissions?: { allow?: string[]; ask?: string[]; deny?: string[] };
   };
-  const buckets = {
-    allow: new Set(data.permissions?.allow ?? []),
-    ask: new Set(data.permissions?.ask ?? []),
-    deny: new Set(data.permissions?.deny ?? []),
-  };
+  const owned = readClaudeOwned(data);
 
   const missing: Missing[] = [];
+  const extras: Extra[] = [];
   const conflicts: Conflict[] = [];
-
   for (const channel of supports) {
-    const entries = source.permissions[channel];
-    if (!entries) continue;
-    for (const [pattern, mode] of Object.entries(entries)) {
-      const wire = encodeClaude(channel, pattern);
-      if (buckets[mode].has(wire)) continue;
-      let conflictMode: Mode | null = null;
-      for (const m of MODE_ORDER) {
-        if (m !== mode && buckets[m].has(wire)) {
-          conflictMode = m;
-          break;
-        }
-      }
-      if (conflictMode) {
-        conflicts.push({
-          channel,
-          pattern,
-          sourceMode: mode,
-          targetMode: conflictMode,
-        });
-      } else {
-        missing.push({ channel, pattern, mode });
-      }
-    }
+    const sourceMap = source.permissions[channel] ?? {};
+    const targetMap = owned[channel];
+    const d = diffChannel(channel, sourceMap, targetMap);
+    missing.push(...d.missing);
+    extras.push(...d.extras);
+    conflicts.push(...d.conflicts);
   }
-
-  return { target: targetName, missing, conflicts };
+  return { target: targetName, missing, extras, conflicts };
 }
 
-export function applyClaudeText(text: string, diff: TargetDiff): string {
+export function applyClaudeText(text: string, source: SourceConfig): string {
   const data = JSON.parse(text) as {
     permissions?: { allow?: string[]; ask?: string[]; deny?: string[] };
   };
   data.permissions ??= {};
+  for (const m of MODE_ORDER) data.permissions[m] ??= [];
+
+  // Strip all twinsies-owned entries; leave WebFetch/Skill/mcp__* in place.
   for (const m of MODE_ORDER) {
-    data.permissions[m] ??= [];
+    data.permissions[m] = data.permissions[m]!.filter(
+      (wire) => decodeClaude(wire) === null,
+    );
   }
-  for (const entry of diff.missing) {
-    const wire = encodeClaude(entry.channel, entry.pattern);
-    data.permissions[entry.mode]!.push(wire);
+
+  // Re-add owned entries from source under the correct mode.
+  for (const channel of CHANNELS) {
+    const entries = source.permissions[channel];
+    if (!entries) continue;
+    for (const [pattern, mode] of Object.entries(entries)) {
+      data.permissions[mode]!.push(encodeClaude(channel, pattern));
+    }
   }
+
   for (const m of MODE_ORDER) {
     data.permissions[m] = [...new Set(data.permissions[m])].sort();
   }
@@ -239,34 +306,32 @@ export function applyClaudeText(text: string, diff: TargetDiff): string {
 class ClaudeAdapter implements Adapter {
   readonly name = "claude";
   readonly path = resolve(REPO_ROOT, "symsource_claude/settings.json");
-  readonly supports = new Set<Channel>(["bash", "read", "edit", "scalars"]);
+  readonly supports = new Set<Channel>(CHANNELS);
 
   async diff(source: SourceConfig): Promise<TargetDiff> {
     const text = await Deno.readTextFile(this.path);
     return diffClaudeText(text, source, this.supports, this.name);
   }
 
-  async apply(diff: TargetDiff): Promise<string> {
+  async apply(source: SourceConfig): Promise<string> {
     const text = await Deno.readTextFile(this.path);
-    return applyClaudeText(text, diff);
+    return applyClaudeText(text, source);
   }
 }
 
 // ── OpenCode adapter ──────────────────────────────────────────────────
 
-function lookupOpencode(
-  data: { permission?: Record<string, unknown> },
-  channel: Channel,
-  pattern: string,
-): Mode | undefined {
-  if (channel === "scalars") {
-    const v = data.permission?.[pattern];
-    return typeof v === "string" ? (v as Mode) : undefined;
-  }
-  const block = data.permission?.[channel];
-  if (!block || typeof block !== "object") return undefined;
-  const v = (block as Record<string, unknown>)[pattern];
-  return typeof v === "string" ? (v as Mode) : undefined;
+/**
+ * Entries that live inside an owned `permission.<channel>` block but are
+ * intentionally not in the source manifest — they're agent-specific and
+ * should survive a full reconciliation. Keep this list short and obvious.
+ */
+const OPENCODE_PRESERVED: Partial<Record<Channel, ReadonlySet<string>>> = {
+  bash: new Set(["*"]), // OpenCode-only catch-all ask floor
+};
+
+function isPreserved(channel: Channel, pattern: string): boolean {
+  return OPENCODE_PRESERVED[channel]?.has(pattern) ?? false;
 }
 
 export function diffOpencodeText(
@@ -277,48 +342,35 @@ export function diffOpencodeText(
 ): TargetDiff {
   const data = parseJsonc(text) as { permission?: Record<string, unknown> };
   const missing: Missing[] = [];
+  const extras: Extra[] = [];
   const conflicts: Conflict[] = [];
+
   for (const channel of supports) {
-    const entries = source.permissions[channel];
-    if (!entries) continue;
-    for (const [pattern, mode] of Object.entries(entries)) {
-      const current = lookupOpencode(data, channel, pattern);
-      if (current === mode) continue;
-      if (current !== undefined) {
-        conflicts.push({
-          channel,
-          pattern,
-          sourceMode: mode,
-          targetMode: current,
-        });
-      } else {
-        missing.push({ channel, pattern, mode });
+    const block = data.permission?.[channel];
+    const targetMap: Record<string, Mode> = {};
+    if (block && typeof block === "object") {
+      for (const [k, v] of Object.entries(block as Record<string, unknown>)) {
+        if (typeof v === "string" && !isPreserved(channel, k)) {
+          targetMap[k] = v as Mode;
+        }
       }
     }
+    const sourceMap = source.permissions[channel] ?? {};
+    const d = diffChannel(channel, sourceMap, targetMap);
+    missing.push(...d.missing);
+    extras.push(...d.extras);
+    conflicts.push(...d.conflicts);
   }
-  return { target: targetName, missing, conflicts };
+  return { target: targetName, missing, extras, conflicts };
 }
 
-export function applyOpencodeText(text: string, diff: TargetDiff): string {
-  const byChannel = new Map<Channel, Missing[]>();
-  for (const m of diff.missing) {
-    if (m.channel === "scalars") continue;
-    const arr = byChannel.get(m.channel) ?? [];
-    arr.push(m);
-    byChannel.set(m.channel, arr);
-  }
-
+export function applyOpencodeText(text: string, source: SourceConfig): string {
   const permBlock = findObjectBlock(text, "permission");
   if (!permBlock) throw new Error("opencode: 'permission' block not found");
 
-  for (const [channel, entries] of byChannel) {
-    text = rewriteJsoncObjectBlock(text, permBlock.openBrace, channel, entries);
+  for (const channel of CHANNELS) {
+    text = reconcileOpencodeBlock(text, permBlock.openBrace, channel, source);
   }
-
-  for (const m of diff.missing.filter((m) => m.channel === "scalars")) {
-    text = upsertScalarInBlock(text, "permission", m.pattern, m.mode);
-  }
-
   return text;
 }
 
@@ -328,46 +380,46 @@ class OpencodeAdapter implements Adapter {
     REPO_ROOT,
     "private_dot_config/opencode/opencode.jsonc",
   );
-  readonly supports = new Set<Channel>(["bash", "read", "edit", "scalars"]);
+  readonly supports = new Set<Channel>(CHANNELS);
 
   async diff(source: SourceConfig): Promise<TargetDiff> {
     const text = await Deno.readTextFile(this.path);
     return diffOpencodeText(text, source, this.supports, this.name);
   }
 
-  async apply(diff: TargetDiff): Promise<string> {
+  async apply(source: SourceConfig): Promise<string> {
     const text = await Deno.readTextFile(this.path);
-    return applyOpencodeText(text, diff);
+    return applyOpencodeText(text, source);
   }
 }
 
 /**
- * Merge `additions` into the JSONC object at `"<channel>": { ... }` inside
- * the block that starts at `parentOpenBrace`. Rewrites the entire child
- * block contents — assumes the block has no comments (true for our perm
+ * Rebuild the `permission.<channel>` block from source, preserving any
+ * adapter-specific keys flagged via `OPENCODE_PRESERVED`. Pure text rewrite
+ * — assumes the block contains no JSONC comments (true for our perm
  * blocks today; doc this contract upstream).
  */
-function rewriteJsoncObjectBlock(
+function reconcileOpencodeBlock(
   text: string,
   parentOpenBrace: number,
-  channel: string,
-  additions: Missing[],
+  channel: Channel,
+  source: SourceConfig,
 ): string {
   const block = findObjectBlock(text, channel, parentOpenBrace);
   if (!block) {
     throw new Error(`opencode: '${channel}' block not found inside permission`);
   }
   const body = text.slice(block.openBrace + 1, block.closeBrace);
-  const existing: Array<[string, Mode]> = [];
-  // Parse via JSONC of the synthetic `{ <body> }` so we get clean kv pairs.
   const parsed = parseJsonc(`{${body}}`) as Record<string, Mode>;
+
+  const entries: Array<[string, Mode]> = [];
   for (const [k, v] of Object.entries(parsed)) {
-    existing.push([k, v]);
+    if (isPreserved(channel, k)) entries.push([k, v]);
   }
-  for (const a of additions) {
-    existing.push([a.pattern, a.mode]);
+  for (const [pattern, mode] of Object.entries(source.permissions[channel] ?? {})) {
+    entries.push([pattern, mode]);
   }
-  const sorted = sortEntries(existing);
+  const sorted = sortEntries(entries);
 
   const innerIndent = detectBlockIndent(text, block.openBrace, "\t\t");
   const outerIndent = detectOuterIndent(text, block.openBrace);
@@ -379,40 +431,11 @@ function rewriteJsoncObjectBlock(
     .map((l, i) => (i === lines.length - 1 ? l : l + ","))
     .join("\n");
 
-  const newBlock = `{\n${joined}\n${outerIndent}}`;
+  const newBlock = sorted.length === 0
+    ? `{}`
+    : `{\n${joined}\n${outerIndent}}`;
   return text.slice(0, block.openBrace) + newBlock +
     text.slice(block.closeBrace + 1);
-}
-
-/**
- * Insert or update a scalar key inside the named parent block. If the key
- * already exists with a different mode, replaces its value; otherwise
- * inserts before the closing brace.
- */
-function upsertScalarInBlock(
-  text: string,
-  parentKey: string,
-  key: string,
-  mode: Mode,
-): string {
-  const parent = findObjectBlock(text, parentKey);
-  if (!parent) throw new Error(`opencode: '${parentKey}' block not found`);
-  const body = text.slice(parent.openBrace + 1, parent.closeBrace);
-  const keyRe = new RegExp(
-    `("${key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"\\s*:\\s*)"[^"]*"`,
-  );
-  const m = keyRe.exec(body);
-  if (m) {
-    const replaced = body.replace(keyRe, `$1"${mode}"`);
-    return text.slice(0, parent.openBrace + 1) + replaced +
-      text.slice(parent.closeBrace);
-  }
-  // Insert before close brace.
-  const innerIndent = detectBlockIndent(text, parent.openBrace, "\t");
-  const insertion = `${innerIndent}"${key}": "${mode}",\n`;
-  // Find the closing brace's line start.
-  const closeLineStart = text.lastIndexOf("\n", parent.closeBrace) + 1;
-  return text.slice(0, closeLineStart) + insertion + text.slice(closeLineStart);
 }
 
 // ── CLI ────────────────────────────────────────────────────────────────
@@ -420,36 +443,54 @@ function upsertScalarInBlock(
 const ADAPTERS: Adapter[] = [new ClaudeAdapter(), new OpencodeAdapter()];
 
 function printHelp() {
-  console.log(`twinsies — sync agent config entries from twinsies.toml
+  console.log(`twinsies — reconcile agent config entries to twinsies.toml
 
 Usage:
-  deno task twinsies            apply (additive merge into each target)
-  deno task check-twinsies      lint only, exit 1 on drift
-  deno task preview-twinsies    print proposed writes to stdout
+  deno task twinsies            apply (full sync inside owned regions)
+  deno task twinsies:check      drift report, exit 1 on drift
+  deno task twinsies:preview    rich diff + proposed file contents, exit 0
 
 Options:
-  --check         report drift without writing
-  --dry-run       print proposed file contents to stdout
+  --check         report drift tersely and exit 1 if any, no write
+  --dry-run       print full diff and proposed file contents, exit 0, no write
   --target <n>    limit to one adapter (claude | opencode); repeatable
   --source <p>    override source TOML path (default: ./twinsies.toml)
   --help          show this help`);
 }
 
-function reportDiff(diff: TargetDiff) {
+function hasDrift(diff: TargetDiff): boolean {
+  return diff.missing.length > 0 || diff.extras.length > 0 ||
+    diff.conflicts.length > 0;
+}
+
+function reportDiff(diff: TargetDiff, verbose: boolean) {
   const head = bold(diff.target);
-  if (diff.missing.length === 0 && diff.conflicts.length === 0) {
+  if (!hasDrift(diff)) {
     console.log(`${green("✓")} ${head}  in sync`);
     return;
   }
   console.log(`${yellow("·")} ${head}`);
+  if (!verbose) {
+    const parts: string[] = [];
+    if (diff.missing.length) parts.push(`${diff.missing.length} missing`);
+    if (diff.extras.length) parts.push(`${diff.extras.length} extra`);
+    if (diff.conflicts.length) parts.push(`${diff.conflicts.length} drifted`);
+    console.log(`    ${parts.join(", ")}`);
+    return;
+  }
   for (const m of diff.missing) {
     console.log(
-      `    ${dim("+")} ${cyan(m.channel)}  ${m.pattern}  ${dim("=")} ${m.mode}`,
+      `    ${green("+")} ${cyan(m.channel)}  ${m.pattern}  ${dim("=")} ${m.mode}`,
+    );
+  }
+  for (const e of diff.extras) {
+    console.log(
+      `    ${red("-")} ${cyan(e.channel)}  ${e.pattern}  ${dim("(was ")}${e.mode}${dim(")")}`,
     );
   }
   for (const c of diff.conflicts) {
     console.log(
-      `    ${red("!")} ${cyan(c.channel)}  ${c.pattern}  ${
+      `    ${yellow("~")} ${cyan(c.channel)}  ${c.pattern}  ${
         dim("source=")
       }${c.sourceMode} ${dim("target=")}${c.targetMode}`,
     );
@@ -481,54 +522,35 @@ async function main() {
 
   const source = await loadSource(sourcePath);
 
-  let totalMissing = 0;
-  let totalConflicts = 0;
+  let anyDrift = false;
 
   for (const adapter of adapters) {
     const diff = await adapter.diff(source);
-    reportDiff(diff);
-    totalMissing += diff.missing.length;
-    totalConflicts += diff.conflicts.length;
-
-    if (diff.missing.length === 0) continue;
+    reportDiff(diff, !checkOnly);
+    if (!hasDrift(diff)) continue;
+    anyDrift = true;
 
     if (dryRun) {
-      const newText = await adapter.apply(diff);
+      const newText = await adapter.apply(source);
       console.log(dim(`── ${adapter.path} ──`));
       console.log(newText);
     } else if (!checkOnly) {
-      const newText = await adapter.apply(diff);
+      const newText = await adapter.apply(source);
       await Deno.writeTextFile(adapter.path, newText);
       console.log(`  ${green("→")} wrote ${dim(adapter.path)}`);
     }
   }
 
   console.log();
-  if (totalConflicts > 0) {
-    console.log(
-      red(
-        `${totalConflicts} conflict(s) found — resolve in source or target before re-running.`,
-      ),
-    );
-    Deno.exit(2);
-  }
-  if (totalMissing === 0) {
+  if (!anyDrift) {
     console.log(green("All targets in sync."));
     return;
   }
   if (checkOnly) {
-    console.log(
-      yellow(
-        `${totalMissing} missing entr${
-          totalMissing === 1 ? "y" : "ies"
-        } — run \`deno task twinsies\` to fix.`,
-      ),
-    );
+    console.log(yellow("Drift detected — run `deno task twinsies` to fix."));
     Deno.exit(1);
   }
-  console.log(
-    green(`Added ${totalMissing} entr${totalMissing === 1 ? "y" : "ies"}.`),
-  );
+  if (!dryRun) console.log(green("Reconciled."));
 }
 
 if (import.meta.main) {
