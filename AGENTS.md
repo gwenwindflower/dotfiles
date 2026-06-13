@@ -13,8 +13,8 @@ OSes supported:
 ## Repo Structure
 
 ```text
-.chezmoidata/packages.yaml        # Packages: darwin (homebrew + pnpm + uv), linux (apt + pnpm)
-.chezmoiscripts/                  # Lifecycle scripts (bootstrap, taps, packages, global tools, shell, yazi plugins, bat cache, ephemeral symlink materialization)
+.chezmoidata/packages.yaml        # Packages: darwin (homebrew + uv), linux (apt). JS/TS globals live in symsource_mise/config.toml.
+.chezmoiscripts/                  # Lifecycle scripts (bootstrap, taps, packages, global tools, mise install, shell, yazi plugins, bat cache, ephemeral symlink materialization)
 .chezmoiignore                    # Excludes dev files + OS-conditional dirs
 .chezmoitemplates/fish/           # Fish config fragment templates (assembled into config.fish)
 
@@ -57,6 +57,8 @@ symsource_nvim/                   # lazy-lock.json, lazyvim.json, spell/en.utf-8
 symsource_claude/                 # settings.json
 symsource_yazi/                   # package.toml
 symsource_mise/                   # config.toml
+symsource_uv/                     # .python-version
+symsource_aube/                   # config.toml
 symsource_amoxide/                # config.toml, profiles.toml
 symsource_worktrunk/              # config.toml
 symsource_git/                    # gitconfig (root config; [include]s ~/.config/git/*.gitconfig fragments)
@@ -87,6 +89,8 @@ chezmoi copies by default, which is the right call for almost everything — it 
 | `~/.claude/settings.json` | Claude Code edits its own settings | `symsource_claude/` |
 | `~/.config/yazi/package.toml` | `ya pkg add` edits it | `symsource_yazi/` |
 | `~/.config/mise/config.toml` | `mise use` edits it | `symsource_mise/` |
+| `~/.config/uv/.python-version` | `uv python pin --global` writes it | `symsource_uv/` |
+| `~/.config/aube/config.toml` | `aube config` edits it | `symsource_aube/` |
 | `~/.config/amoxide/config.toml` | `amoxide` CLI edits aliases | `symsource_amoxide/` |
 | `~/.config/amoxide/profiles.toml` | `amoxide` CLI edits profiles | `symsource_amoxide/` |
 | `~/.config/worktrunk/config.toml` | `wt` CLI edits its own config | `symsource_worktrunk/` |
@@ -160,9 +164,11 @@ Plugin file extraction matches Fisher's: top-level files in `functions/`, `compl
 .chezmoiscripts/
   run_once_before_00-bootstrap.sh.tmpl           # darwin: install Homebrew
   run_once_05-add-taps.sh.tmpl                   # darwin: add Homebrew taps (retry + verify)
+  run_once_07-install-mise.sh.tmpl               # linux: install mise via `mise.run` (not in standard apt repos; darwin gets it from brew)
   run_once_10-install-homebrew-packages.sh.tmpl  # darwin: brew bundle (formulae + casks)
   run_once_10-install-apt-packages.sh.tmpl       # linux: apt install (dpkg-s presence check + upgrade)
-  run_once_15-install-global-tools.sh.tmpl       # Global CLIs via pnpm + uv (uv darwin-only)
+  run_once_15-install-global-tools.sh.tmpl       # uv tools (darwin-only)
+  run_onchange_18-mise-install.sh.tmpl           # `mise install` to materialize node + aube + npm-backend CLI globals; re-runs on mise config change
   run_once_20-configure-shell.sh.tmpl            # Fish → /etc/shells, chsh
   run_once_30-yazi-plugins.sh.tmpl               # ya pkg install (yazi plugin sync)
   run_once_31-bat-cache.sh.tmpl                  # Build bat theme cache (after themes deployed)
@@ -172,6 +178,8 @@ Plugin file extraction matches Fisher's: top-level files in `functions/`, `compl
 Scripts are a surface to minimize. Each is an imperative action that can fail. If something can be a file, make it a file. `run_once_` runs once per content hash — on a fresh machine all fire on first apply. `run_onchange_` re-runs when rendered content changes (also fires on first apply since no previous hash → new hash = change).
 
 **Linux package philosophy:** apt only, manually curated in `packages.yaml` under `linux.apt.packages`. Linuxbrew is intentionally not used — too heavy for the small-VM Linux use case. Tools not in standard apt repos (yazi, mise, rm-improved, vivid, lsd, zoxide, starship, sd, forgit, lazygit, neovim) are installed via mise or direct binary download. The apt install script checks `dpkg -s` for each package and only fetches what's missing — fast on Sprites/exe machines that arrive pre-loaded. `packy` does **not** manage apt — apt entries are hand-edited in `packages.yaml`.
+
+**JS/TS tooling (aube via mise):** Node and the npm-ecosystem package manager [`aube`](https://github.com/jdx/aube) are installed and pinned by mise (`symsource_mise/config.toml`). Aube reads and writes `pnpm-lock.yaml` in place, so projects with a pnpm lockfile (including ones that pin pnpm via `packageManager`) keep working without pnpm on PATH. Mise's `npm.package_manager = "aube"` setting routes mise's own npm-backend tool installs through aube. The four global CLIs (`@agentclientprotocol/claude-agent-acp`, `@aredotna/cli`, `@readwise/cli`, `mintlify`) live in the same mise config as `npm:*` entries — they're materialized on a fresh machine by `run_onchange_18-mise-install.sh.tmpl` and re-materialized whenever the mise config changes. The two low-traffic CLIs (`@aredotna/cli`, `@readwise/cli`) are exempted from aube's low-download supply-chain gate in `symsource_aube/config.toml` via `allowedUnpopularPackages`, without lowering the threshold for everything else. Bun and Deno are unchanged — still Homebrew, still owning their own dirs.
 
 ## chezmoi Naming Reference
 
