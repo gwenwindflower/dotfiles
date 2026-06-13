@@ -140,7 +140,7 @@ packages:
           - snitch
           - yt-dlp
         work:
-          - ollama
+          - llama.cpp
       casks:
         core:
           - 1password
