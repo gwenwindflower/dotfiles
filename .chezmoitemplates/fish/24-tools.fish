@@ -17,7 +17,15 @@ set -gx fzf_fd_opts --hidden
 set -gx fzf_preview_file_cmd bat --style=numbers,changes --color always
 set -gx fzf_preview_dir_cmd lsd --color=always --group-directories-first --tree --depth=2
 set -gx fzf_diff_highlighter delta --paging=never --width=20
-set -gx fzf_variables_opts --bind "\
+# fzf.fish wrappers capture fzf stdout — override our global enter:become so
+# the wrapper actually receives a selection and can rewrite the command line.
+set -gx fzf_history_opts --bind 'enter:accept'
+set -gx fzf_processes_opts --bind 'enter:accept'
+# Variables: enter inserts $NAME (plugin default)
+# ctrl-y copies the value to clipboard then aborts.
+set -gx fzf_variables_opts \
+    --bind 'enter:accept' \
+    --bind "\
 ctrl-y:execute-silent( \
   echo {} \
   | xargs -I{} sh -c '"'eval printf '%s' \$$0'"' {} \
