@@ -1,0 +1,23 @@
+{{ if eq .chezmoi.os "darwin" "linux" -}}
+#!/bin/bash
+# Install the globally-pinned uv-managed Python and alias `python`/`python3` to it.
+# Re-runs whenever ~/.config/uv/.python-version changes.
+#
+# python-version hash: {{ include "symsource_uv/.python-version" | sha256sum }}
+
+set -euo pipefail
+
+{{ template "script-log.sh" }}
+
+log_step "uv python --default"
+
+if ! command -v uv >/dev/null 2>&1; then
+  log_error "uv not found — Homebrew install may have failed"
+  exit 1
+fi
+
+uv python install --default
+log_success "default python ready"
+{{ else -}}
+{{ fail (printf "unsupported OS: %s" .chezmoi.os) }}
+{{ end -}}
