@@ -30,3 +30,7 @@ next_agent = "ctrl+alt+j"
 key = "prefix+ctrl+g"
 type = "pane"
 command = "lazygit"
+description = "launch lazygit in a new pane"
+
+[experimental]
+kitty_graphics = true
