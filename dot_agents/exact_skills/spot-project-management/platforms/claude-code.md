@@ -8,11 +8,11 @@ The split matters because Claude Code has first-class worktree primitives. `Agen
 
 | Surface | Owner | Tool |
 | --- | --- | --- |
-| Phase trunk branch+worktree | User or Executive | `wt switch --create phase-<n>-<slug>` |
+| Phase trunk branch+worktree | User or Director | `wt switch --create phase-<n>-<slug>` |
 | Objective worktree spawn | Manager | `Agent { subagent_type: "dev" }` (frontmatter handles isolation) |
 | Objective worktree cleanup | Manager (via Claude's internal hook) | `WorktreeRemove` fires on Subagent exit |
 | Objective → Phase trunk merge | Manager | Raw `git` — squash merge + branch delete |
-| Phase trunk → main merge | User or Executive | `wt merge --no-squash` |
+| Phase trunk → main merge | User or Director | `wt merge --no-squash` |
 
 **Manager does not invoke `wt` at all.** The escape hatch when something goes sideways is raw `git` (see [Escape hatch: raw git](#escape-hatch-raw-git)). If you find yourself reaching for `wt switch` or `wt merge` mid-Phase, stop — you're outside the contract.
 
@@ -86,7 +86,7 @@ When all Objectives are squashed onto the Phase trunk:
 2. **Update `docs/`** for current-state changes; index new files from `CLAUDE.md`/`AGENTS.md`. Append any surfaced harness/tooling needs to the right `dev-*` spec.
 3. **Commit the close** — one `chore(spot):` (or `chore(specs):` if spec edits ride along) commit on the Phase trunk.
 4. **Report back.** Manager's done. Leave the Phase trunk worktree clean, close commit at HEAD. **Do not merge to main.**
-5. **User or Executive runs `wt merge --no-squash`** from the Phase trunk worktree (or the Executive flow's Reviewer-gated equivalent — see [EXECUTIVE.md](../EXECUTIVE.md)). That step rebases onto main, runs full pre-merge hooks, fast-forwards, removes the Phase trunk worktree.
+5. **User or Director runs `wt merge --no-squash`** from the Phase trunk worktree (or Director's Reviewer-gated equivalent — see [directing-sessions.md](../directing-sessions.md)). That step rebases onto main, runs full pre-merge hooks, fast-forwards, removes the Phase trunk worktree.
 
 The Manager's last action is the close commit, not the merge. Phase trunk → main is a cross-session promotion and belongs with whoever owns the queue.
 
@@ -109,7 +109,7 @@ The safety floor — the Dev cannot return "done" with uncommitted work or no co
 
 This is the one place `wt` shows up in a Manager session, and it's read-only — `wt list` only, never `wt switch` or `wt merge`. Treat it like `git status` for the broader worktree picture.
 
-The cross-worktree PreToolUse hooks (block writes/edits/git mutations outside a Dev's worktree) make structural contamination rare. Treat `wt list` as general dashboard awareness, not a drift detector — sibling uncommitted work usually reflects normal team activity (user-executive edits, another Manager mid-Phase, an in-flight Objective). If something looks genuinely inconsistent with what you spawned, call `medic` to diagnose.
+The cross-worktree PreToolUse hooks (block writes/edits/git mutations outside a Dev's worktree) make structural contamination rare. Treat `wt list` as general dashboard awareness, not a drift detector — sibling uncommitted work usually reflects normal team activity (user or Director edits, another Manager mid-Phase, an in-flight Objective). If something looks genuinely inconsistent with what you spawned, call `medic` to diagnose.
 
 ## Statusline
 

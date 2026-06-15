@@ -2,10 +2,10 @@
 
 Worktrunk (`wt`) is the cross-session worktree-and-merge layer. Two distinct uses in SPOT:
 
-- **User/Executive surface** — creating Phase trunk worktrees, closing them to main. This is the *primary* worktrunk surface and the one the Manager hands off to.
+- **User/Director surface** — creating Phase trunk worktrees, closing them to main. This is the *primary* worktrunk surface and the one the Manager hands off to.
 - **Manager-internal surface, on platforms without native worktree primitives** — OpenCode and others. The Manager uses `wt switch --create` for Objective worktrees, `wt merge` for Objective→Phase merges, etc.
 
-**Claude Code has native worktree primitives** (`Agent { isolation: "worktree" }`, `WorktreeCreate` / `WorktreeRemove` hooks, `worktree.baseRef` setting) and the Manager **does not invoke `wt` at all** — see [platforms/claude-code.md](platforms/claude-code.md) for the canonical Claude Manager runbook. The sections below describe the wt-direct flow used by Users, Executives, and Managers on non-native platforms.
+**Claude Code has native worktree primitives** (`Agent { isolation: "worktree" }`, `WorktreeCreate` / `WorktreeRemove` hooks, `worktree.baseRef` setting) and the Manager **does not invoke `wt` at all** — see [platforms/claude-code.md](platforms/claude-code.md) for the canonical Claude Manager runbook. The sections below describe the wt-direct flow used by Users, Directors, and Managers on non-native platforms.
 
 Across all uses, raw `git` stays in the toolbox for what `wt` doesn't cover — `git status`, `git log`, `git diff`, the occasional `git rebase -i` to clean unpushed history, one-off rescues. See [What stays raw git](#what-stays-raw-git) below.
 
@@ -17,7 +17,7 @@ SPOT uses two levels of branch+worktree, mapped onto familiar git concepts:
 
 | Level | Branch role | Naming | Off | When complete | Squash? | Who runs the wt command |
 | --- | --- | --- | --- | --- | --- | --- |
-| **Phase trunk branch** | Acts as the temporary trunk for one Phase's Objectives | `phase-<n>-<slug>` | main | `wt merge --no-squash` to main at Phase close | **No** — preserve per-Objective story on main | **User or Executive** — Manager hands off a clean Phase trunk |
+| **Phase trunk branch** | Acts as the temporary trunk for one Phase's Objectives | `phase-<n>-<slug>` | main | `wt merge --no-squash` to main at Phase close | **No** — preserve per-Objective story on main | **User or Director** — Manager hands off a clean Phase trunk |
 | **Objective feature branch** | One Subagent's lane within a Phase | `obj-<slug>` (or platform default like `agent-<id>`) | Phase trunk (or main, see platform docs) | `wt merge phase-<n>-<slug>` from the Objective worktree on Subagent close | **Yes** (default) — collapse Subagent's commits into one Objective commit on Phase trunk | **Manager** (on non-native platforms only) — on Claude Code the Manager uses raw `git`, not wt |
 
 The two levels mirror trunk-based development one layer down: the Phase trunk is to the Objective what main is to the Phase trunk. The same `wt merge` pipeline runs at both levels with different squash defaults — though on Claude Code the Manager replaces the Objective-level `wt merge` with raw `git merge --squash` + cleanup ([platforms/claude-code.md](platforms/claude-code.md)).
@@ -40,7 +40,7 @@ Worktrunk's skill documents a tmux/Zellij "handoff" pattern — `wt switch --cre
 The distinction matters:
 
 - **Agent Teams** (default): Manager spawns Subagents *inside the current session* via the platform's Agent tool. One conversation, one Manager, fan-out into parallel Subagents whose worktrees are tracked by `wt list`. This is what every Phase uses.
-- **Agent Handoff** (rare, explicit): A separate session is spawned in a tmux pane / Zellij tab, with its own agent loop. Used for higher-level orchestration (e.g. an Executive spawning Manager sessions, one per Phase, across tmux panes — see [EXECUTIVE.md](EXECUTIVE.md) for the speculative shape) or when a user wants to hand off and continue elsewhere.
+- **Agent Handoff** (rare, explicit): A separate session is spawned in a tmux pane / Zellij tab, with its own agent loop. Used for higher-level orchestration (e.g. Director coordinating Manager sessions, one per Phase, across separate tabs — see [directing-sessions.md](directing-sessions.md)) or when a user wants to hand off and continue elsewhere.
 
 If you find yourself reaching for tmux to spawn Subagents within a single Phase, stop — that's an Agent Team, not a Handoff. Use the platform's internal mechanism.
 
@@ -74,7 +74,7 @@ If a platform plugin is installed (Claude Code today), `wt list` also shows 🤖
 
 ## Creating a Phase trunk branch
 
-**Run by the User or Executive** before a Manager session starts. The Manager arrives inside the Phase trunk worktree; it doesn't create one itself.
+**Run by the User or Director** before a Manager session starts. The Manager arrives inside the Phase trunk worktree; it doesn't create one itself.
 
 ```bash
 wt switch --create phase-<n>-<slug>    # New branch off main, switch into it
@@ -129,7 +129,7 @@ Result on Phase trunk: one well-named commit per Objective. **No fixups, no `git
 
 ## Closing a Phase
 
-**Run by the User or Executive** after the Manager hands off the Phase trunk (clean tree, close commit at HEAD with TODO→DONE + spec/doc edits). The Manager's last action was the close commit, not the merge.
+**Run by the User or Director** after the Manager hands off the Phase trunk (clean tree, close commit at HEAD with TODO→DONE + spec/doc edits). The Manager's last action was the close commit, not the merge.
 
 From the Phase trunk worktree:
 

@@ -16,6 +16,7 @@ This rule covers execution — what every agent needs to read TODO and complete 
 
 - **Planner** — owns *what*. Writes and refines specs and TODO.
 - **Manager** — owns *execution*. Coordinates a Phase, moves it to DONE.
+- **Director** — owns *coordination*. Runs in the primary thread, determines the requested Phase scope, and coordinates one or more Managers.
 - **Subagent** — owns one Objective. Commits, never rebases.
 
 Roles, not threads. One agent can play several.
@@ -34,6 +35,8 @@ Phase numbers are stable IDs, not sequence — `Phase 5` doesn't mean "after Pha
 
 **Two boundaries, two units.** A Phase is a context boundary — one agent team's worth of work, sized so a Manager can pick it up cold from `SPEC.md` + the Phase's requirement IDs. Phases often run in parallel across worktrees, but they don't have to: a Manager can compact or clear context at the boundary and assemble a fresh team for the next one. An Objective is a parallel work unit — one subagent's lane within a Phase, designed to map one-to-one onto a subagent on the team.
 
+Director sits above that boundary. A Director coordinates Manager sessions; it does not erase Manager's one-Phase contract or become a durable agent type by default.
+
 The Phase header carries up to two metadata lines, in this order:
 
 - `**Dependencies**: <N>, <N>, ...` — bare Phase numbers this Phase depends on. Type is implicit: dependencies can only be other Phases. Omit the line entirely when there are none. A Phase is **unblocked** once every listed dependency is in DONE — not "started," not "merged onto a feature branch," but fully promoted.
@@ -47,6 +50,8 @@ Pacing controls user check-ins; it's orthogonal to parallelism. Independent Phas
 
 - **"Phase by phase"** — stop and check in each time a Phase moves to DONE.
 - **"Move freely"** — pick up any unblocked Phase whenever, including in parallel across worktrees or agent teams. Always finish a Phase fully (all Tasks done, all requirement IDs met, promoted to DONE) before considering its dependents unblocked.
+
+Managers have a hard stop at the end of their Phase unless explicitly instructed otherwise. Directors determine pacing from the user's request: everything possible, a specific range/set, or one specific Phase. If unclear, Directors clarify before starting.
 
 ## Task completion
 

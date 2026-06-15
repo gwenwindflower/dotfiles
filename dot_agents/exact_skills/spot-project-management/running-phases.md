@@ -4,13 +4,13 @@ Manager work. Coordinate one Phase end-to-end, keep history clean, hand off clea
 
 This doc is the **cross-platform conceptual flow**. Subagent fan-out mechanics and Objective merge specifics vary by platform — Claude Code uses native worktree primitives, OpenCode and others use worktrunk (`wt`) directly. Load the platform-specific runbook alongside this one:
 
-- [platforms/claude-code.md](platforms/claude-code.md) — Claude-internal flow with the Dev subagent. The Manager never invokes `wt`; Phase trunk creation + Phase close to main belong to User/Executive.
+- [platforms/claude-code.md](platforms/claude-code.md) — Claude-internal flow with the Dev subagent. The Manager never invokes `wt`; Phase trunk creation + Phase close to main belong to User/Director.
 - [platforms/opencode.md](platforms/opencode.md) — Worktrunk at the Subagent layer (no native worktree primitive on OpenCode yet).
 
 A Manager session is one Phase. It can be invoked two ways, and the workflow below covers both:
 
 - **User-initiated.** Most common. User opens a fresh session inside the Phase trunk worktree (created with `wt switch --create phase-<n>-<slug>` beforehand), points at the Phase, and the Manager works straight through to a clean Phase trunk handoff. The user runs the final `wt merge --no-squash` to land on main.
-- **Executive-initiated.** Executive opens a [herdr](https://github.com/ogulcancelik/herdr) tab per Phase, fires up the Manager session inside it (`wt switch --create -x <agent-cli>`), and gates the final Phase-trunk → main merge through a separate Reviewer agent. See [EXECUTIVE.md](EXECUTIVE.md) for the orchestrator side.
+- **Director-coordinated.** Director starts or steers one Manager session per Phase, using the platform's available session/subagent/worktree mechanics, and decides whether Reviewer gates the final Phase-trunk → main merge. See [directing-sessions.md](directing-sessions.md) for the coordinator side.
 
 The Manager's starting brief shape is identical in both cases: *"Finish this Phase. Use a team if the Objectives warrant one."* Don't branch behavior on starting source.
 
@@ -18,9 +18,9 @@ The Manager's starting brief shape is identical in both cases: *"Finish this Pha
 
 | Surface | Owner |
 | --- | --- |
-| Phase trunk branch+worktree creation | User or Executive (`wt switch --create`) |
+| Phase trunk branch+worktree creation | User or Director (`wt switch --create`) |
 | Objective worktrees, fan-out, merge into Phase trunk | Manager (platform-specific mechanics — see platform doc) |
-| Phase trunk → main merge | User or Executive (`wt merge --no-squash`) |
+| Phase trunk → main merge | User or Director (`wt merge --no-squash`) |
 
 Manager owns the inside of the Phase. The boundary on each side — Phase trunk creation before, Phase trunk → main after — is a cross-session surface, owned outside the Manager session.
 
@@ -45,11 +45,11 @@ Default: every Phase gets a small Subagent team, one Subagent per Objective, wor
 
 Before dispatching any work:
 
-1. **Confirm you're inside the Phase trunk worktree.** It was created by the User or Executive before the Manager session started.
+1. **Confirm you're inside the Phase trunk worktree.** It was created by the User or Director before the Manager session started.
 2. Read **all** Phases in `TODO.md`, not just the next one. Note every `**Dependencies**:` line.
 3. Verify the picked Phase is unblocked — every dependency in DONE, fully promoted (not just merged to a branch).
 4. Identify the Objectives. Each becomes one Subagent in the team.
-5. As the Phase closes and lands on main (via User/Executive), pick the next unblocked Phase in a fresh Manager session.
+5. As the Phase closes and lands on main (via User/Director), pick the next unblocked Phase in a fresh Manager session only when that broader coordination scope was explicit.
 
 `wt list` (read-only) is useful at this stage to scan worktree state across parallel Phases — dirty trees, conflicts, integrated leftovers, Subagent activity markers (🤖 working / 💬 waiting). See [using-worktrunk#surveying-worktrees](using-worktrunk.md#surveying-worktrees) for columns worth scanning.
 
@@ -63,7 +63,7 @@ Before dispatching any work:
 6. **Promote to DONE.** When all Objectives are on the Phase trunk, edit `TODO.md` and `DONE.md`: move the Phase block, header verbatim with `✅`, Objectives and Tasks verbatim with checked boxes, Phase-level narrative under the header.
 7. **Capture context.** Update `docs/` for current-state changes; index new files from `CLAUDE.md`/`AGENTS.md`. Append surfaced harness/tooling needs to the right `dev-*` spec.
 8. **Commit the close.** One `chore(specs):` commit on the Phase trunk covering the DONE move + spec/doc edits.
-9. **Hand off.** Phase trunk is clean with the close commit at HEAD. **Manager does not merge to main.** Report back; User or Executive runs `wt merge --no-squash` from the Phase trunk worktree to land it. Under Executive, a Reviewer gates first — see [EXECUTIVE.md](EXECUTIVE.md#reviewer-flow).
+9. **Hand off.** Phase trunk is clean with the close commit at HEAD. **Manager does not merge to main.** Report back; User or Director runs `wt merge --no-squash` from the Phase trunk worktree to land it. Under Director coordination, a Reviewer may gate first — see [directing-sessions.md](directing-sessions.md#review-and-merge-loop).
 10. **Hand off to Planner.** What shipped, satisfied IDs, surprises worth folding into durable specs, new Backlog items.
 
 ## Per-Objective cadence inside a Phase
@@ -77,7 +77,7 @@ The shape is consistent across platforms; the commands differ.
 3. **Manager squash-merges the Objective** into the Phase trunk with one well-named conventional commit, folding in the TODO checkoff. Platform-specific mechanics in the platform doc.
 4. **Repeat for each Objective.** The Phase trunk accumulates one Objective commit per Subagent.
 5. **When all Objectives are on Phase trunk** → Manager (back in the Phase trunk worktree) edits `TODO.md`/`DONE.md` to promote the Phase, edits `docs/` if needed, commits the close.
-6. **Manager hands off the Phase trunk to User or Executive** — clean tree, close commit at HEAD. The User/Executive runs `wt merge --no-squash` to land on main, which rebases onto main, runs full pre-merge hooks, fast-forwards, removes the Phase trunk worktree.
+6. **Manager hands off the Phase trunk to User or Director** — clean tree, close commit at HEAD. The User/Director runs `wt merge --no-squash` to land on main, which rebases onto main, runs full pre-merge hooks, fast-forwards, removes the Phase trunk worktree.
 
 **Never start a new Phase on a dirty tree or with stale Phase-trunk worktrees lying around.** Reconstructing linear history after burning through several incomplete Phases is wasteful and error-prone — easily avoided by closing each Phase fully before moving on. `wt list` shows the state; check it.
 
@@ -131,11 +131,11 @@ Rollback mechanics are platform-specific — see the platform doc.
 
 Multiple Phases without mutual dependencies can run in parallel — typically one Manager session per Phase, each on its own Phase trunk worktree. The 🌀 marker can apply to several Phases at once.
 
-A single Manager session runs one Phase at a time. Multi-Phase orchestration is the Executive's job — see [EXECUTIVE.md](EXECUTIVE.md).
+A single Manager session runs one Phase at a time. Multi-Phase orchestration is Director's job — see [directing-sessions.md](directing-sessions.md).
 
 When two parallel Phases land on main:
 
-- **`wt merge --no-squash` handles rebase-onto-main automatically** at the User/Executive surface. Each Phase closes with its own merge from its Phase trunk worktree. The first lands main-clean; the second's pipeline rebases onto the now-updated main and fast-forwards. No merge commit. The Manager doesn't see this — it hands off a clean Phase trunk and the User/Executive handles the rest.
+- **`wt merge --no-squash` handles rebase-onto-main automatically** at the User/Director surface. Each Phase closes with its own merge from its Phase trunk worktree. The first lands main-clean; the second's pipeline rebases onto the now-updated main and fast-forwards. No merge commit. The Manager doesn't see this — it hands off a clean Phase trunk and the User/Director handles the rest.
 - **`TODO.md` / `DONE.md` conflicts** are common — both Phases edited the same files. Resolved at the merge step by accepting the later state (DONE accumulates; TODO shrinks). Surface anything ambiguous.
 - **Spec touches go to Planner.** If both Phases needed to amend the same durable spec mid-flight, that's a Planner coordination point, not a merge decision.
 
