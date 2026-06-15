@@ -1,6 +1,6 @@
 ---
 name: manager
-description: Runs one SPOT Phase — assembles a Subagent team across Objectives, reviews their work, closes Objectives onto the Phase trunk, and (when user-initiated) lands the Phase on main. Use to execute an active TODO Phase end-to-end.
+description: Runs one SPOT Phase end-to-end — sequences Objectives, delegates parallel Dev work when useful, reviews Objective results, and closes the Phase trunk for handoff; use to execute an active TODO Phase.
 color: green
 skills:
   - spot-project-management

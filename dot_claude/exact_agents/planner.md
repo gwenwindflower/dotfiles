@@ -1,6 +1,6 @@
 ---
 name: planner
-description: Authors and maintains SPEC.md, specs/<dom>-*.md, TODO.md, project docs, and synthesizes external research. Use when scoping new work, recording requirements, planning Phases, distilling learnings, or pulling in framework/library docs.
+description: Authors and maintains SPOT specs, requirement IDs, TODO Phases, project docs, and research synthesis; use when scoping work, planning Phases, recording requirements, or distilling learnings.
 color: pink
 disallowedTools: Bash
 skills:
