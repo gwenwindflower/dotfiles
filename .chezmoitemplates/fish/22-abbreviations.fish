@@ -293,15 +293,18 @@ abbr --add pnls pnpm ls
 abbr --add pnlsg pnpm ls -g
 abbr --add pnsu pnpm self-update
 ### bun
-abbr --add bui bun install
-abbr --add bua bun add
-abbr --add burm bun remove
-abbr --add buup bun upgrade
-abbr --add bus bun start
-abbr --add but bun test
-abbr --add bur bun run
-abbr --add buc bun create
-abbr --add bulsg bun pm ls -g
+abbr --add bni bun install
+abbr --add bna bun add
+abbr --add bnag bun add -g
+abbr --add bnrm bun remove
+abbr --add bnrmg bun remove -g
+abbr --add bnup bun upgrade
+abbr --add bnupg bun upgrade -g
+abbr --add bns bun start
+abbr --add bnt bun test
+abbr --add bnr bun run
+abbr --add bnc bun create
+abbr --add bnlsg bun pm ls -g
 ### deno
 abbr --add dn deno
 abbr --add dncli deno install -grAf --root $DENO_HOME
@@ -325,7 +328,7 @@ abbr --add ghrcl gh repo clone
 abbr --add ghd gh dash
 abbr --add ghdo opo gh dash
 ## critique
-abbr --add crit bunx critique
+abbr --add gdpp critique
 ## degit
 abbr --add degit aubx degit
 ### blacksmith
