@@ -9,7 +9,7 @@ YAML at the top of SKILL.md. The schema is mostly shared across agents, with a f
 | `name` | yes | kebab-case, matches the skill directory |
 | `description` | yes | what + when, ≤1024 chars — see [effective descriptions](effective-descriptions.md) |
 
-Don't quote string values unless they contain a colon or start with a YAML-reserved character.
+Keep descriptions as plain scalars. Avoid colons and YAML-reserved leading characters so descriptions do not need quotes; use em dashes, semicolons, or a second sentence for separation. Avoid long repetitive lists of variations — clear trigger language beats exhaustive enumeration.
 
 ## Claude Code
 

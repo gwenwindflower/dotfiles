@@ -5,7 +5,7 @@ The description is the only metadata Claude sees at startup. It must answer two 
 ## Anatomy
 
 ```text
-<verb-phrase: what it does>. Use when <concrete triggers>. [Skip when <adjacent-but-wrong cases>.]
+<verb phrase for what it does>. Use when <concrete triggers>. [Skip when <adjacent-but-wrong cases>.]
 ```
 
 Constraints:
@@ -14,18 +14,19 @@ Constraints:
 - Third person only — never "I can…" or "You can…"
 - Concrete keywords users actually say: file extensions, CLI names, domain terms
 - Slightly directive — Claude under-triggers by default
+- Avoid colons in YAML frontmatter descriptions. Use em dashes, semicolons, or a second sentence so the value can stay unquoted.
 
 ## Bad → good
 
 **Vague**
 
 - ❌ `dbt Analytics Engineering`
-- ✅ `Build, test, and debug dbt projects: models, tests, semantic layer, CLI. Use when editing files in a dbt project (.sql/.yml under models/, dbt_project.yml) or running dbt commands.`
+- ✅ `Build, test, and debug dbt projects — models, tests, semantic layer, CLI. Use when editing files in a dbt project (.sql/.yml under models/, dbt_project.yml) or running dbt commands.`
 
 **First-person, no triggers**
 
 - ❌ `Always load when working with fish files to get guidance on idiomatic fish syntax and better terminal UX.`
-- ✅ `Idiomatic fish shell scripting: functions, completions, abbreviations, conf.d. Use when editing .fish files or fish config under ~/.config/fish.`
+- ✅ `Idiomatic fish shell scripting — functions, completions, abbreviations, conf.d. Use when editing .fish files or fish config under ~/.config/fish.`
 
 **Step list bloat**
 
@@ -55,7 +56,8 @@ If two skills have overlapping triggers and no clean disambiguator, that's a sig
 - XML tags inside the description — rejected by spec
 - Restating the skill name in the description body
 - Listing every feature instead of the actual triggers users will type
-- YAML quoting (`"…"`) unless the value contains a colon or starts with a special char
+- Colons in YAML frontmatter descriptions — they force quoting and break too easily during edits
+- YAML quoting (`"…"`) for descriptions — prefer wording that remains a plain scalar
 
 ## Self-check
 
