@@ -12,7 +12,7 @@
 # I've swept for env vars that might be installing it
 # no idea, so I've just fallen back to setting it explicitly to fix it
 set -gx BUN_INSTALL $HOME/.bun
-fish_add_path $BUN_INSTALL/install/bin
+fish_add_path $BUN_INSTALL/bin
 
 # DENO_DIR sets cache dir
 # DENO_INSTALL_ROOT changes where installs go
