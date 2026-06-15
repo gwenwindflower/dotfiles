@@ -40,3 +40,6 @@ fzf_configure_bindings --variables='ctrl-alt-v' --git_log=
 
 # ripgrep
 set -gx RIPGREP_CONFIG_PATH "$HOME/.config/ripgrep/ripgrep.conf"
+
+# qmd
+set -gx QMD_EDITOR_URI "obsidian://open?path={path}"
