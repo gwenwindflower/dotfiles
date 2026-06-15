@@ -13,6 +13,7 @@ name = "terminal"
 [keys]
 prefix = "ctrl+space"
 reload_config = "prefix+shift+r"
+split_vertical = "prefix+|"
 new_tab = "prefix+c"
 rename_tab = "prefix+shift+c"
 previous_tab = "ctrl+alt+h"
