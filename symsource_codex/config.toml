@@ -1,0 +1,319 @@
+model = "gpt-5.5"
+personality = "pragmatic"
+approval_policy = "on-request"
+approvals_reviewer = "auto_review"
+default_permissions = "workspace"
+web_search = "cached"
+project_doc_max_bytes = 65536
+sqlite_home = "~/.codex/sqlite"
+model_reasoning_effort = "medium"
+
+notify = [
+  "/Users/winnie/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient",
+  "turn-ended"
+]
+
+[projects."/Users/winnie/.local/share/chezmoi"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/99_work/analytics"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/00_supermodel/reishi"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-06-12/what-is-node-gyp"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-06-12/how-do-you-get-uv-to"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/winnie-phosphor"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/99_work/queria"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-06-14/what-s-the-best-uv-init"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/999_freelance/indivisible/indi"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-06-14/what-are-the-various-internal-dbs"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-06-14/use-fal-plugin-fal-openai-curated"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/00_supermodel/aloha"]
+trust_level = "trusted"
+
+[tui]
+pet = "disabled"
+show_tooltips = false
+theme = "catppuccin-frappe"
+status_line = [
+  "model-with-reasoning",
+  "project-name",
+  "git-branch",
+  "branch-changes",
+  "five-hour-limit",
+  "weekly-limit",
+  "task-progress"
+]
+status_line_use_colors = true
+
+[tui.keymap.composer]
+submit = [
+  "ctrl-return",
+  "alt-return",
+]
+queue = "alt-tab"
+
+[tui.keymap.editor]
+insert_newline = ["return"]
+
+[tui.keymap.pager]
+jump_top = ["home", "g"]
+jump_bottom = ["end", "shift-g"]
+
+[tui.keymap.list]
+jump_top = ["home", "g"]
+jump_bottom = ["end", "shift-g"]
+
+[tui.model_availability_nux]
+"gpt-5.5" = 4
+
+[features]
+hooks = true
+multi_agent = true
+terminal_resize_reflow = true
+external_migration = true
+prevent_idle_sleep = true
+js_repl = false
+
+[permissions.workspace.filesystem]
+":minimal" = "read"
+":tmpdir" = "write"
+":slash_tmp" = "write"
+glob_scan_max_depth = 4
+"~/.aws" = "deny"
+"~/.config/gcloud" = "deny"
+"~/.gnupg" = "deny"
+"~/.ssh" = "deny"
+
+[permissions.workspace.filesystem.":workspace_roots"]
+"." = "write"
+".env" = "deny"
+".env.*" = "deny"
+"*.env" = "deny"
+"*.key" = "deny"
+"*.p12" = "deny"
+"*.pem" = "deny"
+"*.pfx" = "deny"
+"id_ed25519" = "deny"
+"id_rsa" = "deny"
+"**/.env" = "deny"
+"**/.env.*" = "deny"
+"**/*.env" = "deny"
+"**/*.key" = "deny"
+"**/*.p12" = "deny"
+"**/*.pem" = "deny"
+"**/*.pfx" = "deny"
+"**/credentials/**" = "deny"
+"**/secrets/**" = "deny"
+"**/id_ed25519" = "deny"
+"**/id_rsa" = "deny"
+
+[permissions.workspace.network]
+enabled = true
+
+[permissions.workspace.network.domains]
+"**.openai.com" = "allow"
+
+[agents]
+max_threads = 6
+max_depth = 1
+job_max_runtime_seconds = 1800
+
+[hooks.state]
+[hooks.state."/Users/winnie/.codex/hooks.json:session_start:0:0"]
+trusted_hash = "sha256:1d35af394dbcd2b93315f3c526a1369dc2c48ebed7e4520ff09999283c78f65b"
+enabled = true
+
+[hooks.state."worktrunk@worktrunk:hooks/hooks.json:user_prompt_submit:0:0"]
+trusted_hash = "sha256:86a49b4b05a9805452d08caf78b88216621055aebc8a7afccfd55b459939b494"
+enabled = true
+
+[hooks.state."worktrunk@worktrunk:hooks/hooks.json:pre_tool_use:0:0"]
+trusted_hash = "sha256:16017ebee7cf0c67c9a73f75514b3d52d1f0c1de443cb36294f20bf715812c73"
+
+[hooks.state."worktrunk@worktrunk:hooks/hooks.json:permission_request:0:0"]
+trusted_hash = "sha256:c2f38a99e16bc21ab2fbdfd0942d961a7293eccfdd26ca8fe1134722486ae46f"
+
+[hooks.state."worktrunk@worktrunk:hooks/hooks.json:stop:0:0"]
+trusted_hash = "sha256:ae39455d097e32699e48441ade7671d9db5b80b17943aa3cc0901386b714a896"
+
+[marketplaces.worktrunk]
+last_updated = "2026-06-15T05:41:53Z"
+last_revision = "e947b8708a784939d63742381c33db3d17fbb654"
+source_type = "git"
+source = "https://github.com/max-sixty/worktrunk.git"
+
+[marketplaces.mcp-apps]
+last_updated = "2026-06-06T01:31:05Z"
+last_revision = "ca1d29894fabbd1558885a9ec8620dcb01d7457e"
+source_type = "git"
+source = "https://github.com/modelcontextprotocol/ext-apps.git"
+
+[marketplaces.openai-bundled]
+last_updated = "2026-06-14T22:17:41Z"
+source_type = "local"
+source = "/Users/winnie/.codex/.tmp/bundled-marketplaces/openai-bundled"
+
+[marketplaces.openai-primary-runtime]
+last_updated = "2026-06-15T00:53:44Z"
+source_type = "local"
+source = "/Users/winnie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
+
+[notice.external_config_migration_prompts]
+home_last_prompted_at = 1781365511
+home = true
+
+[shell_environment_policy]
+inherit = "core"
+ignore_default_excludes = false
+exclude = [
+  "AWS_*",
+  "AZURE_*",
+  "CLOUDSDK_*",
+  "GCP_*",
+  "GH_TOKEN",
+  "GITHUB_TOKEN",
+  "GITLAB_TOKEN",
+  "GOOGLE_*",
+  "KUBE*",
+  "KUBECONFIG",
+  "NPM_TOKEN",
+  "OP_*",
+  "PYPI_TOKEN",
+  "RUBYGEMS_*",
+]
+
+[shell_environment_policy.set]
+GIT_CONFIG_COUNT = "3"
+GIT_CONFIG_KEY_0 = "commit.gpgsign"
+GIT_CONFIG_VALUE_0 = "false"
+GIT_CONFIG_KEY_1 = "tag.gpgsign"
+GIT_CONFIG_VALUE_1 = "false"
+GIT_CONFIG_KEY_2 = "user.name"
+GIT_CONFIG_VALUE_2 = "Codex (winnie)"
+
+[plugins."mcp-apps@mcp-apps"]
+enabled = true
+
+[plugins."worktrunk@worktrunk"]
+enabled = true
+
+[plugins."documents@openai-primary-runtime"]
+enabled = true
+
+[plugins."spreadsheets@openai-primary-runtime"]
+enabled = true
+
+[plugins."presentations@openai-primary-runtime"]
+enabled = true
+
+[plugins."computer-use@openai-bundled"]
+enabled = false
+
+[plugins."browser@openai-bundled"]
+enabled = true
+
+[plugins."pdf@openai-primary-runtime"]
+enabled = true
+
+[[skills.config]]
+path = "/Users/winnie/.agents/skills/dogfood/SKILL.md"
+enabled = false
+
+[mcp_servers.node_repl]
+args = []
+command = "/Applications/Codex.app/Contents/Resources/cua_node/bin/node_repl"
+startup_timeout_sec = 120
+
+[mcp_servers.node_repl.env]
+NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
+NODE_REPL_NODE_MODULE_DIRS = "/Applications/Codex.app/Contents/Resources/cua_node/lib/node_modules"
+NODE_REPL_NODE_PATH = "/Applications/Codex.app/Contents/Resources/cua_node/bin/node"
+NODE_REPL_TRUSTED_CODE_PATHS = "/Users/winnie/.codex"
+CODEX_HOME = "/Users/winnie/.codex"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "27dca86fd6b571c49414a4b78e46b57bcf683a46cd1319799c11fbb6cfae3110"
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
+NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
+BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
+BROWSER_USE_CODEX_APP_VERSION = "26.609.41114"
+CODEX_CLI_PATH = "/Applications/Codex.app/Contents/Resources/codex"
+
+[mcp_servers.lightdash]
+enabled = true
+url = "https://analytics.lightdash.cloud/api/v1/mcp"
+
+[desktop]
+conversationDetailMode = "STEPS_COMMANDS"
+ambient-suggestions-enabled = true
+appearanceLightCodeThemeId = "rose-pine"
+appearanceDarkCodeThemeId = "catppuccin"
+codeFontSize = 12
+appearanceDiffMarkerStyle = "color"
+mac-menu-bar-enabled = false
+preventSleepWhileRunning = true
+reviewDelivery = "inline"
+composerEnterBehavior = "cmdIfMultiline"
+followUpQueueMode = "steer"
+show-context-window-usage = true
+git-pull-request-merge-method = "squash"
+git-show-sidebar-pr-icons = true
+git-always-force-push = true
+git-branch-prefix = "winnie-cdx/"
+appearanceTheme = "system"
+selected-avatar-id = "custom:kero"
+hotkey-window-projectless-default-enabled = true
+
+[desktop.appearanceLightChromeTheme]
+accent = "#56949f"
+contrast = 0
+ink = "#575279"
+opaqueWindows = false
+surface = "#faf4ed"
+
+[desktop.appearanceLightChromeTheme.fonts]
+code = '"Ellograph CF Fixed Pitch Light", "Maple Mono NF"'
+
+[desktop.appearanceLightChromeTheme.semanticColors]
+diffAdded = "#56949f"
+diffRemoved = "#797593"
+skill = "#907aa9"
+
+[desktop.appearanceDarkChromeTheme]
+accent = "#ca9ee6"
+contrast = 22
+ink = "#c6d0f5"
+opaqueWindows = true
+surface = "#303446"
+
+[desktop.appearanceDarkChromeTheme.fonts]
+code = '"Ellograph CF Fixed Pitch Light", "Maple Mono NF"'
+
+[desktop.appearanceDarkChromeTheme.semanticColors]
+diffAdded = "#a6e3a1"
+diffRemoved = "#f38ba8"
+skill = "#cba6f7"
+
+[desktop.open-in-target-preferences]
+global = "systemDefault"
+
+[desktop.open-in-target-preferences.perPath]
+"/Users/winnie/dev/winnie-phosphor" = "fileManager"
