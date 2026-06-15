@@ -1,4 +1,4 @@
-## Temp Dirs while Sandboxed
+# Temp Dirs while Sandboxed
 
 `$TMPDIR` and `$TEMP` are automatically set to the sandbox-writable project temp dir via a `SessionStart` hook (`~/.claude/hooks/set-sandbox-tmpdir.sh`). All subprocesses inherit these, so tools like `go build`, `pytest`, `npm scripts`, etc. use the sandbox-safe path without manual intervention.
 

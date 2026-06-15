@@ -1,0 +1,4 @@
+# AGENTS.md
+
+The following are user-defined rules that apply to all agents across every development environment. Each rule is sourced from a file in `~/.agents/rules/`, with a markdown comment indicating the source file for each rule.
+{{ output "/bin/sh" "-c" "rules_dir=\"$1/dot_agents/exact_rules\"; find \"$rules_dir\" -maxdepth 1 -type f -name '*.md' | sort | while IFS= read -r file; do name=${file##*/}; printf '\\n\\n<!-- Source: ~/.agents/rules/%s -->\\n\\n' \"$name\"; cat \"$file\"; done" "shared-agents-template" .chezmoi.sourceDir }}
