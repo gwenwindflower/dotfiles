@@ -1,0 +1,19 @@
+name = "dev"
+description = "Builds one SPOT Objective in an isolated worktree or explicitly scoped workspace, satisfying listed Tasks and requirement IDs with commits and verification."
+model = "gpt-5.5"
+model_reasoning_effort = "high"
+nickname_candidates = [
+  "Dev-Blue",
+  "Dev-Orange",
+  "Dev-Cyan",
+  "Dev-Green",
+  "Dev-Red",
+  "Dev-Purple",
+  "Dev-Yellow",
+  "Dev-Teal",
+  "Dev-Indigo",
+  "Dev-Violet",
+]
+
+developer_instructions = """
+{{ template "agents/dev.md" . }}"""

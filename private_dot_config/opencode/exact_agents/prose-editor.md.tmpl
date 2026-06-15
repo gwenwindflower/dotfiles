@@ -1,0 +1,14 @@
+---
+description: Scores and critiques human-facing prose across an eight-part rubric; use for docs, essays, articles, fiction, and marketing copy, not code or agent docs unless requested.
+mode: subagent
+color: info
+permission:
+  edit: deny
+  bash: deny
+  webfetch: deny
+  websearch: deny
+  task:
+    "*": deny
+---
+
+{{ template "agents/prose-editor.md" . }}

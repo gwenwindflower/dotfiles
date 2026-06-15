@@ -1,0 +1,11 @@
+---
+name: medic
+description: Diagnoses and recovers broken git states such as detached HEAD, bad rebases, lost commits, corrupted index, merge conflicts, and diverged remotes.
+color: red
+permissions:
+  allow:
+    - Edit(~/.claude/**)
+    - Write(~/.claude/**)
+---
+
+{{ template "agents/medic.md" . }}

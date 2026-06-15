@@ -1,0 +1,24 @@
+---
+description: Diagnoses and recovers broken git states such as detached HEAD, bad rebases, lost commits, corrupted index, merge conflicts, and diverged remotes.
+mode: subagent
+color: "#e78284"
+permission:
+  edit: deny
+  task:
+    "*": deny
+  bash:
+    "git *": allow
+    "wt *": allow
+    "git gc": deny
+    "git gc *": deny
+    "git prune": deny
+    "git prune *": deny
+    "git push --force": deny
+    "git push --force *": deny
+    "git push --force-with-lease": deny
+    "git push --force-with-lease *": deny
+    "git push -f": deny
+    "git push -f *": deny
+---
+
+{{ template "agents/medic.md" . }}

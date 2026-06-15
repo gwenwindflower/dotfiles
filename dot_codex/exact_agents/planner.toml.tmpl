@@ -1,0 +1,19 @@
+name = "planner"
+description = "Authors and maintains SPOT specs, requirement IDs, TODO Phases, project docs, and research synthesis; use when scoping work, planning Phases, recording requirements, or distilling learnings."
+model = "gpt-5.5"
+model_reasoning_effort = "high"
+nickname_candidates = [
+  "Planner-Orion",
+  "Planner-Lyra",
+  "Planner-Draco",
+  "Planner-Phoenix",
+  "Planner-Cygnus",
+  "Planner-Andromeda",
+  "Planner-Perseus",
+  "Planner-Cassiopeia",
+  "Planner-Aquila",
+  "Planner-Carina",
+]
+
+developer_instructions = """
+{{ template "agents/planner.md" . }}"""

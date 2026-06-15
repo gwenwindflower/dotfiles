@@ -1,0 +1,26 @@
+---
+description: Builds one SPOT Objective in an explicitly assigned worktree, satisfying listed Tasks and requirement IDs with commits and verification; use when Manager fans out a Phase's Objectives across a parallel team.
+mode: subagent
+hidden: true
+color: "#e5c890"
+permission:
+  edit:
+    "SPEC.md": deny
+    "specs/**": deny
+  bash:
+    "git add *": allow
+    "git commit *": allow
+    "git restore --staged *": allow
+    "git rebase *": deny
+    "git reset *": deny
+    "git merge *": deny
+    "git push *": deny
+    "git checkout *": deny
+    "git switch *": deny
+    "git worktree *": deny
+    "wt *": deny
+  task:
+    "*": deny
+---
+
+{{ template "agents/dev.md" . }}

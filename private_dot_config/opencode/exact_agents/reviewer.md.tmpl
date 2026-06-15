@@ -1,0 +1,28 @@
+---
+description: Audits a finished SPOT Phase trunk against SPEC.md and its requirement IDs before merge to main, recommending merge, making small fixes, or proposing changes back to Director.
+mode: subagent
+color: "#85c1dc"
+permission:
+  edit:
+    "SPEC.md": deny
+    "specs/**": deny
+    "TODO.md": deny
+    "DONE.md": deny
+  bash:
+    "git status": allow
+    "git log *": allow
+    "git diff *": allow
+    "git show *": allow
+    "git branch *": allow
+    "wt list *": allow
+    "wt step diff *": allow
+    "wt merge *": ask
+    "git rebase *": deny
+    "git reset *": deny
+    "git push *": deny
+  task:
+    "*": deny
+    "medic": allow
+---
+
+{{ template "agents/reviewer.md" . }}

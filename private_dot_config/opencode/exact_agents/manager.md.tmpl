@@ -1,0 +1,21 @@
+---
+description: Runs one SPOT Phase end-to-end, delegates parallel Dev work when useful, reviews Objective results, and closes the Phase trunk for handoff; use to execute an active TODO Phase.
+mode: all
+color: "#a6d189"
+permission:
+  edit:
+    "SPEC.md": deny
+    "specs/**": deny
+  bash:
+    "wt *": allow
+    "git add *": allow
+    "git restore --staged *": allow
+    "git commit *": allow
+    "git rebase *": allow
+  task:
+    "*": deny
+    "dev": allow
+    "medic": allow
+---
+
+{{ template "agents/manager.md" . }}

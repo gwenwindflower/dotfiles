@@ -1,0 +1,19 @@
+name = "medic"
+description = "Diagnoses and recovers confusing git states such as detached HEAD, bad rebases, lost commits, corrupted index, merge conflicts, and diverged remotes."
+model = "gpt-5.5"
+model_reasoning_effort = "high"
+nickname_candidates = [
+  "Medic-Cherry",
+  "Medic-Apple",
+  "Medic-Pear",
+  "Medic-Plum",
+  "Medic-Peach",
+  "Medic-Fig",
+  "Medic-Mango",
+  "Medic-Kiwi",
+  "Medic-Apricot",
+  "Medic-Citrus",
+]
+
+developer_instructions = """
+{{ template "agents/medic.md" . }}"""

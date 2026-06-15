@@ -1,0 +1,19 @@
+name = "prose-writer"
+description = "Writes clear, engaging long-form prose on software, agents, data, and analytics; use for blog posts, articles, essays, and human-facing docs, not agent context files, READMEs, CLI help, or functional markdown."
+model = "gpt-5.5"
+model_reasoning_effort = "high"
+nickname_candidates = [
+  "ProseWriter-Hemingway",
+  "ProseWriter-Austen",
+  "ProseWriter-Woolf",
+  "ProseWriter-Baldwin",
+  "ProseWriter-Orwell",
+  "ProseWriter-Didion",
+  "ProseWriter-Morrison",
+  "ProseWriter-LeGuin",
+  "ProseWriter-Twain",
+  "ProseWriter-Borges",
+]
+
+developer_instructions = """
+{{ template "agents/prose-writer.md" . }}"""

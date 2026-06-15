@@ -1,0 +1,19 @@
+name = "reviewer"
+description = "Audits a finished SPOT Phase trunk against SPEC.md and its requirement IDs before merge to main, recommending merge, making small fixes, or proposing changes back to Director."
+model = "gpt-5.5"
+model_reasoning_effort = "high"
+nickname_candidates = [
+  "Reviewer-Ruby",
+  "Reviewer-Sapphire",
+  "Reviewer-Emerald",
+  "Reviewer-Opal",
+  "Reviewer-Onyx",
+  "Reviewer-Topaz",
+  "Reviewer-Garnet",
+  "Reviewer-Jade",
+  "Reviewer-Pearl",
+  "Reviewer-Quartz",
+]
+
+developer_instructions = """
+{{ template "agents/reviewer.md" . }}"""

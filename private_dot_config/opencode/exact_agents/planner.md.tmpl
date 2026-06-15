@@ -1,0 +1,16 @@
+---
+description: Authors and maintains SPOT specs, requirement IDs, TODO Phases, project docs, and research synthesis; use when scoping work, planning Phases, recording requirements, or distilling learnings.
+mode: all
+color: "#f4b8e4"
+permission:
+  edit:
+    "*": deny
+    "*.md": allow
+    "**/*.md": allow
+  bash: deny
+  task:
+    "*": deny
+    "manager": allow
+---
+
+{{ template "agents/planner.md" . }}
