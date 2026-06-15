@@ -8,7 +8,7 @@ local bookmarks = {
 	{ key = { "l", "b" }, path = "~/.local/bin", desc = " Local bin" },
 	{ key = { "l", "s" }, path = "~/.local/share", desc = " Local share" },
 	{ key = { "c", "m" }, path = "~/.local/share/chezmoi", desc = "󰠧 Chez Moi" },
-	{ key = { "c", "s" }, path = "~/.agents", desc = " Agent Config" },
+	{ key = { "c", "a" }, path = "~/.agents", desc = " Agent Config" },
 	{ key = { "c", "c" }, path = "~/.claude", desc = "󰚩 Claude Code Config" },
 	{ key = { "c", "x" }, path = "~/.codex", desc = "󱚝 Codex Config" },
 	{
