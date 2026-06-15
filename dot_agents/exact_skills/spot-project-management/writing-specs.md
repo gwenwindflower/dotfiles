@@ -38,13 +38,23 @@ Bulleted list. ID format: <dom>-R001, <dom>-R002, ...
 
 Skip empty sections. Domain specs don't carry their own Backlog — that stays project-scope in `SPEC.md`.
 
+## Greenfield mode — edit ruthlessly before ship
+
+The append-only rules below (and most of SPOT's preservation discipline — stable IDs, edits in place, retirement-not-renumbering, ADRs for reversals, DONE rationale) exist to keep **external references** honest: tests citing IDs, commits closing Phases, DONE entries narrating rationale, follow-up Phases referencing earlier ones. Those references only exist once the project has started shipping.
+
+While a project is still in the planning, spec-writing, and doc-drafting stage — no Phases in DONE, no commits referencing requirement IDs, no shipped code citing the spec — there's nothing to preserve. **Edit ruthlessly.** Renumber freely. Delete obsolete requirements outright rather than retiring them. Restructure domain splits. Rewrite goals and non-goals. Wipe whole sections of the Backlog. If a decision gets superseded before the first Phase lands, replace it cleanly — no ADR, no `~~retired~~` marker, no historical breadcrumb.
+
+The switch flips at first ship. Once the first Phase moves to DONE — or the first commit references a requirement ID — treat IDs as soft-immutable and preservation rules apply from that point forward. Existing IDs keep their numbers and edit in place; new requirements append; substantive reversals on already-shipped requirements get ADRs.
+
+This applies to **plans, specs, and project docs alike.** Early-stage planning is meant to be reshaped; the spec is a living draft, not a record yet. Don't conserve decisions for their own sake before there's anything depending on them.
+
 ## Requirement IDs
 
 Every requirement gets a stable, soft-immutable ID:
 
 - **Format.** `<dom>-R<NNN>` for domain-scoped (e.g. `sk-R001`, `dc-R014`); `R<NNN>` for project-scoped in SPEC.md. Three-digit zero-padded, sequential within scope.
 - **Domain prefixes.** Two letters by convention (`sk`, `dc`, `cf`). One reserved 3-letter exception: `dev-` for development-meta domains — tooling, test infrastructure, build/release plumbing, CI, internal-only requirements that aren't user-visible. Lives in one or more `specs/dev-*.md` files (e.g. `specs/dev-testing.md`, `specs/dev-release.md`) and ships as normal Phases. Keep new domains 2-letter unless they're development-meta.
-- **Append-only.** Never reuse a retired ID. Never renumber. Gaps are cheap; broken external references (tests, TODO, DONE, commits) are not.
+- **Append-only — once the project has shipped.** Never reuse a retired ID. Never renumber. Gaps are cheap; broken external references (tests, TODO, DONE, commits) are not. Before first ship there are no such references — see [Greenfield mode](#greenfield-mode--edit-ruthlessly-before-ship) — edit freely until then.
 - **Granularity: one ID per testable check.** Each `If <bad cond>, then...` edge case is its own ID. Heuristic: *can I write a single test for exactly this?* Bundling lets a Manager mark "done" while only covering one of several checks.
 - **Splits.** Original ID stays for whichever half kept the spirit; the new piece gets the next available ID. Note the split in DONE.
 - **Edits in place.** Clarification, edge case added, wording sharpened — same ID, content changes. Git is the version history.
@@ -191,7 +201,7 @@ When implementation reveals a wrong, impossible, or incomplete requirement, upda
 
 If a spec or TODO change is needed mid-Phase, stop work, make the change, resume. Never edit while subagents are running.
 
-For substantive reversals on requirements **already shipped to main** — wording changes that alter behavior, retirements, behavior pivots — write an [ADR](adrs.md) alongside the spec edit so the change of direction is publicized and the rationale preserved. Edits to in-flight or never-shipped requirements don't need one.
+For substantive reversals on requirements **already shipped to main** — wording changes that alter behavior, retirements, behavior pivots — write an [ADR](adrs.md) alongside the spec edit so the change of direction is publicized and the rationale preserved. Edits to in-flight or never-shipped requirements don't need one. And before *any* Phase has shipped, [Greenfield mode](#greenfield-mode--edit-ruthlessly-before-ship) applies — restructure freely without ADRs, retirement markers, or preservation overhead.
 
 ## Backlog
 

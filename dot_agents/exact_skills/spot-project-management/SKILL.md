@@ -42,7 +42,7 @@ The rule defines Planner / Manager / Subagent. On top of that:
 
 ## Requirement IDs at a glance
 
-Stable, soft-immutable IDs let Phases reference requirements without restating them. Format: `<dom>-R<NNN>` (domain-scoped) or `R<NNN>` (project-scoped in `SPEC.md`). Append-only, never renumber, one ID per testable check. Full rules in [writing-specs](writing-specs.md).
+Stable, soft-immutable IDs let Phases reference requirements without restating them. Format: `<dom>-R<NNN>` (domain-scoped) or `R<NNN>` (project-scoped in `SPEC.md`). Append-only once the project has shipped, never renumber, one ID per testable check. Before the first Phase moves to DONE, edit plans/specs/docs ruthlessly — preservation rules only earn their keep once external references exist. Full rules in [writing-specs](writing-specs.md).
 
 ## Jobs to be done
 

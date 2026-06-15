@@ -200,6 +200,8 @@ When implementation reveals a wrong, impossible, or incomplete requirement, upda
 
 If a spec or TODO change is needed mid-Phase, **stop work, make the change, resume.** Never edit while subagents are running.
 
+**Greenfield exception.** The append-only / preserve-history discipline exists to keep external references honest — tests, commits, DONE entries, follow-up Phases citing earlier IDs. Before any Phase has shipped, those references don't exist yet. Edit plans, specs, and project docs **ruthlessly**: renumber, delete superseded requirements outright, restructure domain splits, rewrite goals. The switch flips once the first Phase moves to DONE or the first commit references a requirement ID; from there, treat IDs as soft-immutable and preserve rationale.
+
 ## Backlog
 
 Lives in `SPEC.md` only — domain specs don't carry one. Future requirements, open questions, big ideas. Don't start without promotion to Requirements + a Phase. **Promote or delete** — lingering items are noise.

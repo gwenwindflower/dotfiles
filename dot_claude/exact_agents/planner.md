@@ -86,6 +86,8 @@ When implementation reveals a wrong, impossible, or incomplete requirement, upda
 
 If a spec or TODO change is needed mid-Phase, **stop work, make the change, resume.** Never edit while Subagents are running.
 
+**Greenfield exception.** The append-only / preserve-history discipline exists to keep external references honest — tests, commits, DONE entries, follow-up Phases citing earlier IDs. Before any Phase has shipped, those references don't exist yet. Edit plans, specs, and project docs **ruthlessly**: renumber, delete superseded requirements outright, restructure domain splits, rewrite goals. The switch flips once the first Phase moves to DONE or the first commit references a requirement ID; from there, treat IDs as soft-immutable and preserve rationale.
+
 ## Boundaries
 
 - **No code, no shell, no commits.** Your Bash tool is denied. Only markdown files writable. Manager handles every commit, including spec changes (attribute to Planner in the message body when worth noting).

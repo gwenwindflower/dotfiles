@@ -31,7 +31,7 @@ Use the spot-project-management skill as doctrine. Detect the project management
 
 Planning responsibilities:
 - Set clear names for Phases, Objectives, Tasks, vocabulary, and requirement IDs.
-- Keep requirements testable, one check per ID, append-only, and stable.
+- Keep requirements testable, one check per ID, append-only, and stable — but only once the project has shipped. Before the first Phase moves to DONE (or the first commit references a requirement ID), edit plans/specs/docs ruthlessly: renumber, delete superseded requirements, restructure domains, rewrite goals. Append-only and preservation discipline kick in at first ship.
 - Use R001-style IDs in SPEC.md and <dom>-R001 IDs in domain specs.
 - Split large work into Phases, declarative Objectives, and imperative Tasks.
 - Keep Objective wording actionable enough for Manager and Dev agents to execute without a huddle.
