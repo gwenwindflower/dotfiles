@@ -2,52 +2,21 @@ model = "gpt-5.5"
 personality = "pragmatic"
 approval_policy = "on-request"
 approvals_reviewer = "auto_review"
-default_permissions = "workspace"
+# Legacy sandboxing is disabled while testing beta permission profiles.
+# sandbox_mode = "workspace-write"
+# [sandbox_workspace_write]
+# network_access = true
+default_permissions = "workspace-winnie"
 web_search = "cached"
 project_doc_max_bytes = 65536
 sqlite_home = "~/.codex/sqlite"
-model_reasoning_effort = "medium"
+model_reasoning_effort = "high"
 
 notify = [
   "/Users/winnie/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient",
   "turn-ended"
 ]
-
-[projects."/Users/winnie/.local/share/chezmoi"]
-trust_level = "trusted"
-
-[projects."/Users/winnie/dev/99_work/analytics"]
-trust_level = "trusted"
-
-[projects."/Users/winnie/dev/00_supermodel/reishi"]
-trust_level = "trusted"
-
-[projects."/Users/winnie/Documents/Codex/2026-06-12/what-is-node-gyp"]
-trust_level = "trusted"
-
-[projects."/Users/winnie/Documents/Codex/2026-06-12/how-do-you-get-uv-to"]
-trust_level = "trusted"
-
-[projects."/Users/winnie/dev/winnie-phosphor"]
-trust_level = "trusted"
-
-[projects."/Users/winnie/dev/99_work/queria"]
-trust_level = "trusted"
-
-[projects."/Users/winnie/Documents/Codex/2026-06-14/what-s-the-best-uv-init"]
-trust_level = "trusted"
-
-[projects."/Users/winnie/dev/999_freelance/indivisible/indi"]
-trust_level = "trusted"
-
-[projects."/Users/winnie/Documents/Codex/2026-06-14/what-are-the-various-internal-dbs"]
-trust_level = "trusted"
-
-[projects."/Users/winnie/Documents/Codex/2026-06-14/use-fal-plugin-fal-openai-curated"]
-trust_level = "trusted"
-
-[projects."/Users/winnie/dev/00_supermodel/aloha"]
-trust_level = "trusted"
+service_tier = "default"
 
 [tui]
 pet = "disabled"
@@ -93,18 +62,101 @@ external_migration = true
 prevent_idle_sleep = true
 js_repl = false
 
-[permissions.workspace.filesystem]
+[permissions.workspace-winnie]
+extends = ":workspace"
+
+[permissions.workspace-winnie.filesystem]
+glob_scan_max_depth = 4
+":root" = "deny"
 ":minimal" = "read"
 ":tmpdir" = "write"
 ":slash_tmp" = "write"
-glob_scan_max_depth = 4
-"~/.aws" = "deny"
-"~/.config/gcloud" = "deny"
-"~/.gnupg" = "deny"
-"~/.ssh" = "deny"
+# core paths
+"/usr/local" = "read"
+"/opt/homebrew" = "read"
+# system
+"/System/Cryptexes/App/usr/bin" = "read"
+"/System/Library/OpenSSL" = "read"
+# bins in app contents
+"/Applications/kitty.app/Contents/MacOS" = "read"
+"/Applications/Obsidian.app/Contents/MacOS" = "read"
+"/Applications/Monodraw.app/Contents/Resources" = "read"
 
-[permissions.workspace.filesystem.":workspace_roots"]
-"." = "write"
+[permissions.workspace-winnie.filesystem."~"]
+# tools
+".local/bin" = "read"
+".local/share/nvim" = "read"
+".orbstack/bin" = "read"
+# tool state, config, caches
+".agent-browser" = "write"
+"Library/Caches/dev.biomejs.biome" = "write"
+".blacksmith" = "write"
+".config" = "read"
+".config/.wrangler" = "write"  # cloudflare
+".context7" = "write"
+".critique" = "write"
+".dbt" = "read"
+".docker" = "read"
+".duckdb" = "write"
+".local/state/herdr" = "write"
+"Library/Caches/kitty" = "write"
+".local/share/graveyard" = "write"  # rip
+".local/share/chezmoi" = "read"
+## agents
+".codex" = "read"
+".codex/tmp" = "write"
+".codex/.tmp" = "write"
+".codex/sqlite" = "write"
+".codex/cache" = "write"
+".codex/memories" = "write"
+".codex/plugins" = "write"
+".codex/skills" = "write"
+".claude" = "read"
+".agents" = "read"
+# runtimes and package managers
+## brew
+"Library/Caches/Homebrew" = "write"
+## js/ts
+### bun
+".bun" = "read"
+".bun/install" = "write"
+### deno
+".deno" = "read"
+".deno/bin" = "write"
+"Library/Caches/deno" = "write"
+### mise + aube
+".local/share/aube" = "write"
+".local/share/mise" = "write"
+".local/state/mise" = "write"
+### npm
+".npm" = "write"
+"Library/Caches/node-gyp" = "write"
+### pnpm
+".local/share/pnpm" = "write"
+## go
+".go" = "read"
+".go/pkg/mod" = "write"
+"Library/Caches/go-build" = "write"
+## rust
+".cargo/bin" = "read"
+".cargo/env" = "read"
+".cargo/registry" = "write"
+".cargo/git" = "write"
+".rustup" = "read"
+## python
+".local/share/uv" = "write"
+"Library/Caches/pip" = "write"
+# shell
+".profile" = "read"
+".bashrc" = "read"
+".zshrc" = "read"
+".zprofile" = "read"
+".zshenv" = "read"
+# secrets and keys
+".aws" = "deny"
+".config/gcloud" = "deny"
+".gnupg" = "deny"
+".ssh" = "deny"
 ".env" = "deny"
 ".env.*" = "deny"
 "*.env" = "deny"
@@ -112,8 +164,6 @@ glob_scan_max_depth = 4
 "*.p12" = "deny"
 "*.pem" = "deny"
 "*.pfx" = "deny"
-"id_ed25519" = "deny"
-"id_rsa" = "deny"
 "**/.env" = "deny"
 "**/.env.*" = "deny"
 "**/*.env" = "deny"
@@ -126,11 +176,95 @@ glob_scan_max_depth = 4
 "**/id_ed25519" = "deny"
 "**/id_rsa" = "deny"
 
-[permissions.workspace.network]
-enabled = true
+# workspace-level secret patterns
+[permissions.workspace-winnie.filesystem.":workspace_roots"]
+"." = "write"
+".env" = "deny"
+".env.*" = "deny"
+"*.env" = "deny"
+"*.key" = "deny"
+"*.p12" = "deny"
+"*.pem" = "deny"
+"*.pfx" = "deny"
+"**/.env" = "deny"
+"**/.env.*" = "deny"
+"**/*.env" = "deny"
+"**/*.key" = "deny"
+"**/*.p12" = "deny"
+"**/*.pem" = "deny"
+"**/*.pfx" = "deny"
+"**/credentials/**" = "deny"
+"**/secrets/**" = "deny"
+"**/id_ed25519" = "deny"
+"**/id_rsa" = "deny"
 
-[permissions.workspace.network.domains]
-"**.openai.com" = "allow"
+# network permissions
+[permissions.workspace-winnie.network]
+enabled = true
+allow_local_binding = true
+
+[permissions.workspace-winnie.network.domains]
+"::1" = "allow"
+"127.0.0.1" = "allow"
+"agentskills.io" = "allow"
+"amoxide.rs" = "allow"
+"api.github.com" = "allow"
+"backend.blacksmith.sh" = "allow"
+"blacksmith.sh" = "allow"
+"bun.com" = "allow"
+"charm.land" = "allow"
+"chezmoi.io" = "allow"
+"claude.com" = "allow"
+"cli.github.com" = "allow"
+"cliffy.io" = "allow"
+"clireleases.blacksmith.sh" = "allow"
+"codecompanion.olimorris.dev" = "allow"
+"context7.com" = "allow"
+"deno.land" = "allow"
+"developer.1password.com" = "allow"
+"developers.openai.com" = "allow"
+"dl.deno.land" = "allow"
+"docs.astral.sh" = "allow"
+"docs.blacksmith.sh" = "allow"
+"docs.brew.sh" = "allow"
+"docs.deno.com" = "allow"
+"docs.github.com" = "allow"
+"exe.dev" = "allow"
+"fishshell.com" = "allow"
+"git-cliff.org" = "allow"
+"github.com" = "allow"
+"jdx.dev" = "allow"
+"json.schemastore.org" = "allow"
+"jsr.io" = "allow"
+"lazy.folke.io" = "allow"
+"lazyvim.org" = "allow"
+"localhost" = "allow"
+"lunarmodules.github.io" = "allow"
+"neovim.io" = "allow"
+"notion.com" = "allow"
+"notion.so" = "allow"
+"opencode.ai" = "allow"
+"pkg.go.dev" = "allow"
+"prek.j178.dev" = "allow"
+"proxy.golang.org" = "allow"
+"pypi.org" = "allow"
+"pythonhosted.org" = "allow"
+"registry.npmjs.org" = "allow"
+"releases.astral.sh" = "allow"
+"schemastore.org" = "allow"
+"sparrow.cloudflare.com" = "allow"
+"storage.googleapis.com" = "allow"
+"sum.golang.org" = "allow"
+"sw.kovidgoyal.net" = "allow"
+"tailscale.com" = "allow"
+"telemetry.astro.build" = "allow"
+"workers.cloudflare.com" = "allow"
+"worktrunk.dev" = "allow"
+"www.chezmoi.io" = "allow"
+
+[permissions.workspace-winnie.network.unix_sockets]
+"~/.agent-browser/default.sock" = "allow"
+"~/.orbstack/run/docker.sock" = "allow"
 
 [agents]
 max_threads = 6
@@ -156,8 +290,8 @@ trusted_hash = "sha256:c2f38a99e16bc21ab2fbdfd0942d961a7293eccfdd26ca8fe11347224
 trusted_hash = "sha256:ae39455d097e32699e48441ade7671d9db5b80b17943aa3cc0901386b714a896"
 
 [marketplaces.worktrunk]
-last_updated = "2026-06-15T05:41:53Z"
-last_revision = "e947b8708a784939d63742381c33db3d17fbb654"
+last_updated = "2026-06-16T04:23:42Z"
+last_revision = "f334794fb65b941dc91b96e3abbde1e7be8b3e1d"
 source_type = "git"
 source = "https://github.com/max-sixty/worktrunk.git"
 
@@ -168,7 +302,7 @@ source_type = "git"
 source = "https://github.com/modelcontextprotocol/ext-apps.git"
 
 [marketplaces.openai-bundled]
-last_updated = "2026-06-14T22:17:41Z"
+last_updated = "2026-06-16T02:31:34Z"
 source_type = "local"
 source = "/Users/winnie/.codex/.tmp/bundled-marketplaces/openai-bundled"
 
@@ -228,10 +362,10 @@ enabled = true
 [plugins."computer-use@openai-bundled"]
 enabled = false
 
-[plugins."browser@openai-bundled"]
+[plugins."pdf@openai-primary-runtime"]
 enabled = true
 
-[plugins."pdf@openai-primary-runtime"]
+[plugins."browser@openai-bundled"]
 enabled = true
 
 [[skills.config]]
@@ -249,12 +383,12 @@ NODE_REPL_NODE_MODULE_DIRS = "/Applications/Codex.app/Contents/Resources/cua_nod
 NODE_REPL_NODE_PATH = "/Applications/Codex.app/Contents/Resources/cua_node/bin/node"
 NODE_REPL_TRUSTED_CODE_PATHS = "/Users/winnie/.codex"
 CODEX_HOME = "/Users/winnie/.codex"
-NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "27dca86fd6b571c49414a4b78e46b57bcf683a46cd1319799c11fbb6cfae3110"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "89809670b247cbaffbc4f87d9fa9742a9038c0f4a06fb822d7f85ff19bf24215"
 BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
 NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.609.41114"
+BROWSER_USE_CODEX_APP_VERSION = "26.609.71450"
 CODEX_CLI_PATH = "/Applications/Codex.app/Contents/Resources/codex"
 
 [mcp_servers.lightdash]
@@ -317,3 +451,42 @@ global = "systemDefault"
 
 [desktop.open-in-target-preferences.perPath]
 "/Users/winnie/dev/winnie-phosphor" = "fileManager"
+
+[projects."/Users/winnie/.local/share/chezmoi"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/99_work/analytics"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/00_supermodel/reishi"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-06-12/what-is-node-gyp"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-06-12/how-do-you-get-uv-to"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/winnie-phosphor"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/99_work/queria"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-06-14/what-s-the-best-uv-init"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/999_freelance/indivisible/indi"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-06-14/what-are-the-various-internal-dbs"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-06-14/use-fal-plugin-fal-openai-curated"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/00_supermodel/aloha"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-06-15/what-s-the-most-robust-native"]
+trust_level = "trusted"
