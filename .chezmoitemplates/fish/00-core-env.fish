@@ -3,10 +3,10 @@
 # =============================================================================
 
 #  PATH
-# Construct fish_user_paths as a global (not universal) to avoid stale accumulation
+# Instantiate fish_user_paths as a fresh global (not universal) variable
+# this avoids stale paths accumulating and tracking hidden state
 set -e fish_user_paths
 set -gx fish_user_paths $HOME/.local/bin
-fish_add_path $XDG_DATA_HOME/nvim/mason/bin
 
 #  Terminal and Shell
 set -gx SHELL $HOMEBREW_PREFIX/bin/fish
@@ -62,3 +62,10 @@ set -a fish_lsp_ignore_paths \
     '**/containerized/**', \
     '**/*.log', \
     "**/*.tmpl"
+
+#    Mason - Neovim tooling (formatter, linter, DAP, LSP, etc.) package manager
+# No strict need to have mason's bin directory on PATH
+# they are primarily wired up through Neovim plugins
+# but it can be helpful to easily run LSPs and formatters, etc. directly on-the-fly
+# without an extra project-local install
+fish_add_path $XDG_DATA_HOME/nvim/mason/bin
