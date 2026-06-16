@@ -112,30 +112,30 @@ return {
       vim.g.vmt_fence_closing_text = "/TOC"
     end,
   },
-  {
-    "neovim/nvim-lspconfig",
-    opts = function(_, opts)
-      opts.servers = opts.servers or {}
-      opts.servers.harper_ls = {
-        filetypes = {
-          "asciidoc",
-          "codecompanion",
-          "gitcommit",
-          "json",
-          "json5",
-          "jsonc",
-          "markdown",
-          "sidekick_terminal",
-          "text",
-          "tex",
-          "toml",
-          "typst",
-          "yaml",
-        },
-      }
-      return opts
-    end,
-  },
+  -- {
+  --   "neovim/nvim-lspconfig",
+  --   opts = function(_, opts)
+  --     opts.servers = opts.servers or {}
+  --     opts.servers.harper_ls = {
+  --       filetypes = {
+  --         "asciidoc",
+  --         "codecompanion",
+  --         "gitcommit",
+  --         "json",
+  --         "json5",
+  --         "jsonc",
+  --         "markdown",
+  --         "sidekick_terminal",
+  --         "text",
+  --         "tex",
+  --         "toml",
+  --         "typst",
+  --         "yaml",
+  --       },
+  --     }
+  --     return opts
+  --   end,
+  -- },
   -- {
   --   "obsidian-nvim/obsidian.nvim",
   --   version = "*",
