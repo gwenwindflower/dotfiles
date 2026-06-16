@@ -1,7 +1,7 @@
 # Managing Skills with `rei`
 
 > [!CAUTION]
-> Reishi (`rei`) is **experimental and in active development**. Skills and rules are currently managed by **chezmoi** (source of truth at `~/.local/share/chezmoi/dot_agents/exact_skills/` and `…/exact_rules/`). Only three `rei` subcommands are permitted right now:
+> Reishi (`rei`) is **experimental and in active development**. Skills and rules are currently managed by **chezmoi** (skill source at `~/.local/share/chezmoi/dot_agents/exact_skills/`; rule source at `.chezmoitemplates/agents/rules/`). Only three `rei` subcommands are permitted right now:
 >
 > - `rei skills new`
 > - `rei skills add`

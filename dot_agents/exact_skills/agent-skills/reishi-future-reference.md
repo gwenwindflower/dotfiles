@@ -36,7 +36,7 @@ rei skills activate <name>            # restore
 
 ## Rules and docs subcommands (do not run)
 
-`rei rules …` and `rei docs …` are off-limits while chezmoi manages those trees (`dot_agents/exact_rules/` and the docs distributed alongside agent configs). Edit the chezmoi source directly and run `chezmoi apply`.
+`rei rules …` and `rei docs …` are off-limits while chezmoi manages those trees (`.chezmoitemplates/agents/rules/`, generated `dot_agents/exact_rules/` wrappers, and docs distributed alongside agent configs). Edit the chezmoi source directly and run `chezmoi apply`.
 
 ## Source-of-truth notes (for the future)
 
