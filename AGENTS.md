@@ -17,6 +17,7 @@ OSes supported:
 .chezmoiscripts/                  # Lifecycle scripts (bootstrap, taps, packages, global tools, mise install, shell, yazi plugins, bat cache, ephemeral symlink materialization)
 .chezmoiignore                    # Excludes dev files + OS-conditional dirs
 .chezmoitemplates/fish/           # Fish config fragment templates (assembled into config.fish)
+.chezmoitemplates/agents/         # Shared agent prompt/rule fragments (assembled into platform guidance files)
 
 private_dot_config/               # → ~/.config/
   fish/                           #   config.fish.tmpl + exact_functions/ + exact_completions/ + exact_conf.d/
@@ -41,10 +42,12 @@ dot_claude/                       # → ~/.claude/
   keybindings.json, statusline.toml  # Copied normally
   exact_hooks/, exact_agents/     # Pruned-on-apply collections
   symlink_settings.json.tmpl      #   → symsource_claude/settings.json
-  symlink_{rules,skills}.tmpl     #   → ~/.agents/{rules,skills} (post-apply targets)
+  symlink_skills.tmpl             #   → ~/.agents/skills (post-apply target)
 
 dot_agents/                       # → ~/.agents/ (shared agent hub)
-  exact_rules/, exact_skills/     # Pruned-on-apply collections (source of truth for shared agent config)
+  AGENTS.md.tmpl                  #   → ~/.agents/AGENTS.md, assembled from .chezmoitemplates/agents/
+  exact_rules/                    #   → ~/.agents/rules/ generated from .chezmoitemplates/agents/rules/
+  exact_skills/                   # Pruned-on-apply skill collection
 
 symlink_dot_gitconfig.tmpl        # → symsource_git/gitconfig (externally writable; native git [include]s pull fragments from ~/.config/git/)
 dot_gitignore_global              # → ~/.gitignore_global
@@ -109,11 +112,11 @@ Source files live in `symsource_*/` dirs at repo root, excluded by `.chezmoiigno
 
 The env var is the only knob — no config-file flag, no template detection. Set it on the parent process; it propagates to chezmoi and to the apply-phase scripts.
 
-#### Agent Config Symlinks
+#### Agent Config Templates
 
-There's a different set of symlinks related to coding agent configs, for a different use case. Some agent configs - specifically skills and rules - are largely compatible across agents. Because of this, many agents have standardized on using a unified `~/.agents/` directory for configs. Claude Code remains idiosyncratic with its own `~/.claude/` dir and `CLAUDE.md` files though. As such, we use `dot_agents/` as the source of truth for shared agent configs (deployed via `dot_agents/exact_skills/`, `dot_agents/exact_rules/`, etc.). Then, `dot_claude/` contains symlinks pointing at the applied `~/.agents/skills` and `~/.agents/rules` targets, which surface as `~/.claude/skills` and `~/.claude/rules` respectively. This way, shared configs are edited in one place (`dot_agents/exact_skills/` and friends), applied out to `~/.agents/*` with full reconciliation, and Claude Code picks up those changes via symlink without duplication or drift.
+Shared agent rules live in `.chezmoitemplates/agents/rules/`. The platform root files (`~/.agents/AGENTS.md`, `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`, and `~/.config/opencode/AGENTS.md`) render `.chezmoitemplates/agents/AGENTS.md`, which includes those fragments with native `{{ template }}` calls.
 
-If other file relationships like this arise, where you need a set of files in 2 locations, this is the pattern to follow. Pick a unified source of truth to function like normal chezmoi-managed files, then symlink any secondary locations to those applied source-of-truth files.
+`dot_agents/exact_rules/*.md.tmpl` are generated wrappers for tools and skill docs that still read `~/.agents/rules/*.md` directly. Edit the `.chezmoitemplates/agents/rules/` fragments, not the wrappers. Shared skills remain normal copied files in `dot_agents/exact_skills/`, with `~/.claude/skills` symlinked to the applied `~/.agents/skills` target.
 
 ### `exact_` dirs: full reconciliation for churn-prone collections
 
@@ -127,7 +130,7 @@ The `exact_` directory prefix opts a dir into full reconciliation: on `chezmoi a
 | `private_dot_config/fish/exact_completions/` | `~/.config/fish/completions/` |
 | `private_dot_config/fish/exact_conf.d/` | `~/.config/fish/conf.d/` |
 | `dot_agents/exact_skills/` | `~/.agents/skills/` |
-| `dot_agents/exact_rules/` | `~/.agents/rules/` |
+| `dot_agents/exact_rules/` | `~/.agents/rules/` generated from `.chezmoitemplates/agents/rules/` |
 | `dot_claude/exact_hooks/` | `~/.claude/hooks/` |
 | `dot_claude/exact_agents/` | `~/.claude/agents/` |
 | `private_dot_config/opencode/exact_agents/` | `~/.config/opencode/agents/` |
