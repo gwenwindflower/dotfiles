@@ -29,7 +29,7 @@ Manager owns the inside of the Phase. The boundary on each side — Phase trunk 
 In priority order:
 
 1. **Sequencing.** Read every Phase in `TODO.md` before assigning anyone. Map dependencies. Pick the right level of parallelism — enough to move efficiently, not so much that the diff becomes incoherent. Independent Phases run in parallel across Manager sessions; Objectives within a Phase always run in parallel as a Subagent team. Single-threaded plans are a last resort.
-2. **Linear git history that tells the story.** This is the hardest part of the job and the most important. Subjects are concise and specific. Conventional types stay consistent across similar work — three Objective commits in one Phase shouldn't span `feat`, `chore`, `refactor` for the same kind of change. Sizes don't whipsaw. The Phase close is one `chore(spot)` (or `chore(specs)`) commit on top of the per-Objective story. Future readers (humans and agents) trace the project through the log; if it doesn't read clearly, the work is harder to build on.
+2. **Linear git history that tells the story.** This is the hardest part of the job and the most important. Subjects are concise and specific. Conventional types stay consistent across similar work — three Objective commits in one Phase shouldn't span `feat`, `chore`, `refactor` for the same kind of change. Sizes don't whipsaw. The Phase close is one `chore(plan)` (or `chore(specs)` if the diff is mostly durable spec edits) commit on top of the per-Objective story. Future readers (humans and agents) trace the project through the log; if it doesn't read clearly, the work is harder to build on.
 3. **Quality at Objective close.** Not line-by-line review — does it meet the requirements? Did the Subagent stay on the agreed names? Did they leave a pile of code comments where the structure should have done the work? Tests, lint, formatter, typecheck — `pre-commit` hooks fail closed at the Subagent's commit boundary so job-3 review focuses on what hooks can't catch. If anything's off: **roll back and re-assign the Objective.** Don't try to patch a sloppy Subagent commit on top — the Objective merge squashes anyway, so a clean re-run produces a clean result.
 
 ## Phases are teams, Objectives are agents
@@ -62,7 +62,7 @@ Before dispatching any work:
 5. **Close each Objective.** When a Subagent finishes (commit guard satisfied), Manager reviews the diff against the requirement IDs and the job-2/job-3 quality checks. If clean, squash-merge the Objective into the Phase trunk with one well-named conventional commit. If anything's off, roll back and re-spawn ([Subagent drift](#subagent-drift)). Mechanics vary by platform — see the platform doc.
 6. **Promote to DONE.** When all Objectives are on the Phase trunk, edit `TODO.md` and `DONE.md`: move the Phase block, header verbatim with `✅`, Objectives and Tasks verbatim with checked boxes, Phase-level narrative under the header.
 7. **Capture context.** Update `docs/` for current-state changes; index new files from `CLAUDE.md`/`AGENTS.md`. Append surfaced harness/tooling needs to the right `dev-*` spec.
-8. **Commit the close.** One `chore(specs):` commit on the Phase trunk covering the DONE move + spec/doc edits.
+8. **Commit the close.** One commit on the Phase trunk covering the DONE move + spec/doc edits — `chore(plan)` when DONE.md dominates, `chore(specs)` when durable spec edits dominate, unscoped `docs` when only `AGENTS.md`/`README.md`/`docs/` changed. See [SKILL.md#commits](SKILL.md#commits).
 9. **Hand off.** Phase trunk is clean with the close commit at HEAD. **Manager does not merge to main.** Report back; User or Director runs `wt merge --no-squash` from the Phase trunk worktree to land it. Under Director coordination, a Reviewer may gate first — see [directing-sessions.md](directing-sessions.md#review-and-merge-loop).
 10. **Hand off to Planner.** What shipped, satisfied IDs, surprises worth folding into durable specs, new Backlog items.
 
@@ -142,7 +142,7 @@ When two parallel Phases land on main:
 ## Manager-side commit hygiene
 
 - **Per-Objective commits** are squash-merges of the Subagent's branch into the Phase trunk, with a single well-named conventional subject. Bodies are 3-5 bullets max if any; usually the subject alone is enough.
-- **Phase-close commit** is one `chore(spot):` (or `chore(specs):`) commit covering TODO→DONE + spec/doc edits.
+- **Phase-close commit** is one commit covering TODO→DONE + spec/doc edits, typed by what dominates the diff (`chore(plan)` / `chore(specs)` / unscoped `docs`).
 - **Raw `git rebase -i` is for cleaning local history before handoff** — squash messy WIP, sharpen drifted subjects, drop spec-only commits. Fair game on unpushed Phase trunk; never on shared history.
 - See [git-commits](../../rules/git-commits.md) for subject/body conventions.
 - Spec changes that alter intent are authored by the Planner (Planner can't commit; Manager commits on Planner's behalf, attributing in the message body when worth noting).

@@ -45,6 +45,18 @@ The rule defines Planner / Manager / Director / Subagent. On top of that:
 
 Stable, soft-immutable IDs let Phases reference requirements without restating them. Format: `<dom>-R<NNN>` (domain-scoped) or `R<NNN>` (project-scoped in `SPEC.md`). Append-only once the project has shipped, never renumber, one ID per testable check. Before the first Phase moves to DONE, edit plans/specs/docs ruthlessly — preservation rules only earn their keep once external references exist. Full rules in [writing-specs](writing-specs.md).
 
+## Commits
+
+Follow [git-commits](../../rules/git-commits.md) for format, signing, linear history, and trailer order. SPOT-specific nuances on top:
+
+- **Per-Objective commit.** One squash-merge of the Subagent's branch into the Phase trunk with a single conventional subject (e.g. `feat(<scope>): …`), folding in any TODO checkoff for that Objective.
+- **Phase-close commit (optional).** One commit covering the TODO→DONE move plus spec/doc edits. Choose type and scope by what dominates the diff: `chore(plan)` for `DONE.md`, `chore(specs)` for durable spec edits, unscoped `docs` for `AGENTS.md`/`README.md`/`docs/`.
+- **No bookkeeping-only commits.** Pure `TODO.md` checkoffs and standalone `DONE.md` edits ride inside the Objective squash or the Phase-close commit — they never earn their own line. If one lands by accident on the Phase trunk, drop it via interactive rebase before handoff.
+- **Spec-only commits are rare.** Land them only when a future log reader would learn something the surrounding behavior commits don't already convey: a sharpened requirement after a Phase, a multi-Phase plan scoped in `TODO.md` ahead of code, a retrospective ADR.
+- **SPOT trailers.** Use `Closes Phase <n>` on the Phase-close commit and `Completes <Objective> Objective for Phase <n>` on each per-Objective squash. Both sit above the agent attribution line, after any GitHub closing keywords.
+
+Spec changes that alter intent are authored by Planner; Manager commits them on Planner's behalf when needed.
+
 ## Jobs to be done
 
 - [Writing specs](writing-specs.md) — Planner work: spec shape, requirement IDs, phrasing patterns, the four hardening checks (unambiguous / consistent / complete / verifiable), edge cases, anti-patterns, scoping a Phase, Backlog, the `dev-` domain.
