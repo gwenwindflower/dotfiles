@@ -12,7 +12,12 @@ name = "terminal"
 
 [keys]
 prefix = "ctrl+space"
-reload_config = "prefix+shift+r"
+reload_config = ["prefix+alt+r", "prefix+super+r"]
+focus_pane_left = "prefix+h"
+focus_pane_down = "prefix+j"
+focus_pane_up = "prefix+k"
+focus_pane_right = "prefix+l"
+close_pane = ["prefix+x", "prefix+d"]
 split_vertical = "prefix+|"
 new_tab = "prefix+c"
 rename_tab = "prefix+shift+c"
@@ -20,12 +25,15 @@ previous_tab = "ctrl+alt+h"
 next_tab = "ctrl+alt+l"
 focus_tab_left = "shift+alt+h"
 focus_tab_right = "shift+alt+l"
+close_tab = ["prefix+shift+x", "prefix+shift+d"]
 new_workspace = "prefix+n"
 rename_workspace = "prefix+shift+n"
 previous_workspace = "ctrl+super+k"
 next_workspace = "ctrl+super+j"
-previous_agent = "ctrl+alt+k"
-next_agent = "ctrl+alt+j"
+close_workspace = ["prefix+ctrl+x", "prefix+ctrl+d"]
+previous_agent = "ctrl+super+p"
+next_agent = "ctrl+super+n"
+toggle_sidebar = ["prefix+b", "ctrl+super+["]
 
 [[keys.command]]
 key = "prefix+ctrl+g"
