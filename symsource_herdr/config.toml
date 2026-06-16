@@ -10,6 +10,9 @@ delivery = "terminal"
 [theme]
 name = "terminal"
 
+[theme.custom]
+accent = "#ca9ee6"
+
 [keys]
 prefix = "ctrl+space"
 reload_config = ["prefix+alt+r", "prefix+super+r"]
