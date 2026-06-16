@@ -200,6 +200,7 @@ packages:
           - signal
           - tailscale-app
         work:
+          - chatgpt
           - linear
           - loom
     uv:
