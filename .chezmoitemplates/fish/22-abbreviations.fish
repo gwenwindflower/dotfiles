@@ -39,7 +39,7 @@ abbr --add eee ee -e
 # network
 abbr --add ipext "curl https://api64.ipify.org | fish_clipboard_copy"
 # cloud
-abbr --add gcplogin "gcloud auth application-default login"
+abbr --add gauth "gcloud auth application-default login"
 # ssh (kitten ssh — macOS only, kitty terminal)
 abbr --add sshk kitten ssh -A
 abbr --add ssha ssh -A
