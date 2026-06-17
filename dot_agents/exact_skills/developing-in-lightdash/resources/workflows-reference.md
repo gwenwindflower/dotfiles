@@ -13,7 +13,6 @@ lightdash upload
 ```
 
 **When to use:**
-
 - Solo developer or small team
 - Single environment
 - No CI/CD pipeline
@@ -38,7 +37,6 @@ lightdash upload
 ```
 
 **When to use:**
-
 - Multiple team members
 - Want to test before pushing
 - Complex changes spanning multiple models/charts
@@ -150,7 +148,6 @@ workflows:
 ```
 
 **When to use:**
-
 - Team uses pull requests
 - Want automated, reproducible deploys
 - Need audit trail of deployments
@@ -229,7 +226,6 @@ jobs:
 ```
 
 **When to use:**
-
 - Want preview links in PRs
 - Multiple reviewers need to see changes
 - Complex approval workflows
@@ -264,7 +260,6 @@ git commit -m "Add charts and dashboards as code"
 ```
 
 **Directory structure after download:**
-
 ```
 lightdash/
 ├── charts/
@@ -281,7 +276,6 @@ lightdash/
 ```
 
 **When to use:**
-
 - Existing charts/dashboards built in UI
 - Want to start managing as code
 - Need to make bulk edits
@@ -371,7 +365,6 @@ jobs:
 ```
 
 **When to use:**
-
 - Multiple Lightdash projects exist
 - Different dbt targets for each environment
 - Formal promotion process
@@ -380,7 +373,7 @@ jobs:
 ## Environment Variables Reference
 
 | Variable | Description |
-| ---------- | ------------- |
+|----------|-------------|
 | `LIGHTDASH_API_KEY` | API key for authentication |
 | `LIGHTDASH_URL` | Lightdash instance URL |
 | `LIGHTDASH_PROJECT` | Project UUID to deploy to |

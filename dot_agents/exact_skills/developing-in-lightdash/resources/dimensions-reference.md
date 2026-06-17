@@ -19,7 +19,7 @@ columns:
 ## Dimension Types
 
 | Type | Description | SQL Examples |
-| ------ | ------------- | -------------- |
+|------|-------------|--------------|
 | `string` | Text values | VARCHAR, TEXT, CHAR |
 | `number` | Numeric values | INT, FLOAT, DECIMAL |
 | `boolean` | True/false values | BOOLEAN |
@@ -50,7 +50,6 @@ dimension:
 ```
 
 **Compact Options:**
-
 - Numbers: `thousands` (K), `millions` (M), `billions` (B), `trillions` (T)
 - Bytes: `kilobytes`, `megabytes`, `gigabytes`, `terabytes`, `petabytes`
 - Binary: `kibibytes`, `mebibytes`, `gibibytes`, `tebibytes`, `pebibytes`
@@ -75,7 +74,6 @@ dimension:
 ```
 
 **Disable time intervals:**
-
 ```yaml
 dimension:
   type: timestamp
@@ -85,7 +83,7 @@ dimension:
 **All available intervals:**
 
 | Interval | Description | Example Output |
-| ---------- | ------------- | ---------------- |
+|----------|-------------|----------------|
 | `RAW` | Original timestamp | 2024-01-15 14:30:00 |
 | `YEAR` | Truncated to year | 2024-01-01 |
 | `QUARTER` | Truncated to quarter | 2024-01-01 |
@@ -160,7 +158,6 @@ dimension:
 ```
 
 **URL Variables:**
-
 - `${value}` - The dimension value
 - `${row.other_dimension}` - Value from another dimension in the same row
 

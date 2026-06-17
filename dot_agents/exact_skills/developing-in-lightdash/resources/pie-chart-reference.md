@@ -11,13 +11,11 @@ Pie charts display part-to-whole relationships by dividing a circle into slices 
 ### When to Use
 
 **Best for:**
-
 - Showing proportions of a whole (percentages that sum to 100%)
 - Comparing 3-7 categories
 - When exact values are less important than relative proportions
 
 **Avoid when:**
-
 - Comparing many categories (>7 slices)
 - Precise comparisons are needed (use bar chart instead)
 - Showing changes over time (use line chart instead)
@@ -25,7 +23,7 @@ Pie charts display part-to-whole relationships by dividing a circle into slices 
 ### Pie vs Donut
 
 | Feature | Pie Chart | Donut Chart |
-| --------- | ----------- | ------------- |
+|---------|-----------|-------------|
 | Visual | Solid circle | Ring with hole |
 | Use case | Single metric focus | Better for comparisons |
 | Center space | None | Can display total/summary |
@@ -33,7 +31,6 @@ Pie charts display part-to-whole relationships by dividing a circle into slices 
 ## Basic Structure
 
 Every pie chart requires:
-
 1. `groupFieldIds` - One or more dimension fields to slice by
 2. `metricId` - The metric to measure
 3. Chart type set to `pie`
@@ -68,7 +65,7 @@ version: 1
 ### Core Settings
 
 | Property | Type | Description |
-| ---------- | ------ | ------------- |
+|----------|------|-------------|
 | `groupFieldIds` | `string[]` | Array of field IDs for slicing (required) |
 | `metricId` | `string` | The metric to display (required) |
 | `isDonut` | `boolean` | `true` = donut chart with hollow center |
@@ -76,23 +73,23 @@ version: 1
 ### Value Labels
 
 | Property | Type | Description |
-| ---------- | ------ | ------------- |
-| `valueLabel` | `"hidden" \ | "inside" \ | "outside"` | Position of labels on slices |
+|----------|------|-------------|
+| `valueLabel` | `"hidden" \| "inside" \| "outside"` | Position of labels on slices |
 | `showValue` | `boolean` | Show actual numeric values |
 | `showPercentage` | `boolean` | Show percentage of total |
 
 ### Legend
 
 | Property | Type | Description |
-| ---------- | ------ | ------------- |
+|----------|------|-------------|
 | `showLegend` | `boolean` | Show/hide legend |
-| `legendPosition` | `"horizontal" \ | "vertical"` | Legend orientation |
+| `legendPosition` | `"horizontal" \| "vertical"` | Legend orientation |
 | `legendMaxItemLength` | `number` | Max characters before truncation |
 
 ### Customization
 
 | Property | Type | Description |
-| ---------- | ------ | ------------- |
+|----------|------|-------------|
 | `groupLabelOverrides` | `Record<string, string>` | Custom display labels for slices |
 | `groupColorOverrides` | `Record<string, string>` | Custom hex colors for slices |
 | `groupSortOverrides` | `string[]` | Custom sort order (clockwise from top) |
@@ -178,7 +175,7 @@ version: 1
 ### Label Placement
 
 | Position | Best for |
-| ---------- | ---------- |
+|----------|----------|
 | `inside` | Few slices (3-5), large slices |
 | `outside` | Many slices (6-7), long labels |
 | `hidden` | 7+ slices, comprehensive legend |
@@ -194,7 +191,6 @@ version: 1
 ### Slices Too Small to Read
 
 Hide labels for small slices:
-
 ```yaml
 groupValueOptionOverrides:
   "Small Category":

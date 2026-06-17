@@ -9,7 +9,7 @@ A guide to building effective, user-friendly dashboards in Lightdash based on da
 Match your visualization to the type of insight you're communicating:
 
 | Insight Type | Recommended Charts | Avoid |
-| ------------- | ------------------- | ------- |
+|-------------|-------------------|-------|
 | **Trends over time** | Line chart, area chart | Pie chart |
 | **Comparisons** | Bar chart (horizontal for many categories) | Overloaded charts |
 | **Parts of a whole** | Pie/donut (max 5 segments), stacked bar | Too many segments |
@@ -36,13 +36,11 @@ Match your visualization to the type of insight you're communicating:
 Maximize the ratio of data to non-data ink:
 
 **Do:**
-
 - Remove unnecessary gridlines
 - Use subtle axis lines
 - Let data stand out
 
 **Don't:**
-
 - Add heavy borders around charts
 - Use gradient fills
 - Include decorative images
@@ -60,7 +58,6 @@ Structure dashboards like a news article:
 ### Common Layout Patterns
 
 **Executive Dashboard:**
-
 ```
 ┌─────────────────────────────────────────────┐
 │  KPI  │  KPI  │  KPI  │  KPI  │  (w: 9 each)
@@ -74,7 +71,6 @@ Structure dashboards like a news article:
 ```
 
 **Operational Dashboard:**
-
 ```
 ┌─────────────────────────────────────────────┐
 │              Filters Bar                     │
@@ -88,7 +84,6 @@ Structure dashboards like a news article:
 ```
 
 **Analytical Dashboard:**
-
 ```
 ┌─────────────────────────────────────────────┐
 │              Summary Metrics                 │
@@ -110,28 +105,31 @@ Tabs help organize complex dashboards without overwhelming users:
 ```yaml
 tabs:
   - name: "Overview"      # Start with high-level view
+    hidden: false
     order: 0
-    uuid: "overview"
+    uuid: "1b1f4a7b-7e2d-4e91-8fd7-0d2bb54cb0c1"
   - name: "Trends"        # Time-based analysis
+    hidden: false
     order: 1
-    uuid: "trends"
+    uuid: "2c2f5b8c-8f3e-4fa2-90e8-1e3cc65dc1d2"
   - name: "Breakdown"     # Dimensional analysis
+    hidden: false
     order: 2
-    uuid: "breakdown"
+    uuid: "3d3f6c9d-904f-40b3-a1f9-2f4dd76ed2e3"
   - name: "Details"       # Detailed data tables
+    hidden: true          # Optional: editors can keep draft tabs out of view mode
     order: 3
-    uuid: "details"
+    uuid: "4e4f7dae-a150-41c4-b20a-3f5ee87fe3f4"
 ```
 
 **When to use tabs:**
-
 - Dashboard has more than 8-10 tiles
 - Content naturally groups into themes
 - Different audiences need different views
 - Analysis flows from summary to detail
+- Some tabs are draft/internal only: set `hidden: true` so editors keep them without exposing them in view mode
 
 **Tab naming tips:**
-
 - Keep names short (1-2 words)
 - Use nouns, not verbs ("Overview" not "View Overview")
 - Order logically (general → specific)
@@ -164,7 +162,6 @@ tiles:
 ```
 
 **When to use headings:**
-
 - Grouping related charts within a tab
 - Separating logical sections
 - Creating a table of contents feel
@@ -174,7 +171,6 @@ tiles:
 Markdown tiles add context, explanations, and guidance:
 
 **Use markdown for:**
-
 - Explaining what the dashboard shows
 - Highlighting key insights
 - Providing interpretation guidance
@@ -210,7 +206,6 @@ Markdown tiles add context, explanations, and guidance:
 ```
 
 **Markdown tips:**
-
 - Don't overdo it: Keep explanations concise
 - Use formatting: Bold for emphasis, headers for structure
 - Include links: To documentation, related dashboards, or contacts
@@ -255,16 +250,15 @@ filters:
         fieldId: orders_region
         tableName: orders
       values: []                # No default = show all regions
+      disabled: true            # Important: This keeps the filter available on the dashboard without applying it until a value is provided
 ```
 
 **When to use default values:**
-
 - Time filters that should constrain data (e.g., last 90 days)
 - Status filters where you want to show active/open items by default
 - Any filter that meaningfully improves the initial view
 
 **When to omit default values:**
-
 - Suggested filters users might want but aren't essential
 - Filters where "all" is the sensible starting point
 - Exploratory dashboards where users should choose their own scope
@@ -288,7 +282,6 @@ filters:
 ```
 
 **When to require filters:**
-
 - Dashboard only makes sense for a specific context (e.g., account, region)
 - Data volume is too large without filtering
 - Security/privacy requires explicit selection
@@ -314,7 +307,7 @@ Structure the dashboard to answer questions in order:
 #### Design for Your Audience
 
 | Audience | Focus On | Avoid |
-| ---------- | ---------- | ------- |
+|----------|----------|-------|
 | **Executives** | KPIs, trends, summaries | Technical details, too many charts |
 | **Analysts** | Breakdowns, filters, drill-downs | Oversimplification |
 | **Operations** | Current status, exceptions, actions | Historical trends |

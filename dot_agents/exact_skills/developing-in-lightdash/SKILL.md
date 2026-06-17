@@ -1,6 +1,6 @@
 ---
 name: developing-in-lightdash
-description: Work with Lightdash YAML, dbt models with Lightdash metadata, and the lightdash CLI (deploy, upload, download, preview, lint, sql, set-warehouse). Use when editing Lightdash chart/dashboard/metric/dimension YAML or running lightdash commands.
+description: Use when working with Lightdash YAML files, dbt models with Lightdash metadata, the lightdash CLI (deploy, upload, download, preview, lint, sql, set-warehouse), or creating/editing charts, dashboards, metrics, and dimensions as code
 ---
 
 # Developing in Lightdash
@@ -19,7 +19,7 @@ Build and deploy Lightdash analytics projects. This skill covers the **semantic 
 ## What You Can Do
 
 | Task | Commands | References |
-| ------ | ---------- | ------------ |
+|------|----------|------------|
 | Explore data warehouse | `lightdash sql` to execute raw sql, read .csv results | [CLI Reference](./resources/cli-reference.md) |
 | Define metrics & dimensions | Edit dbt YAML or Lightdash YAML | [Metrics](./resources/metrics-reference.md), [Dimensions](./resources/dimensions-reference.md) |
 | Create charts | `lightdash download`, edit YAML, `lightdash upload` | [Chart Types](#chart-types) |
@@ -33,7 +33,7 @@ Build and deploy Lightdash analytics projects. This skill covers the **semantic 
 ## Common Mistakes
 
 | Mistake | Consequence | Prevention |
-| --------- | ------------- | ------------ |
+|---------|-------------|------------|
 | **Guessing filter values** | Case mismatches (`'Payment'` vs `'payment'`) cause charts to silently return no data | Always run `lightdash sql "SELECT DISTINCT column FROM table LIMIT 50" -o values.csv` and use exact values |
 | **Not updating dashboard tiles after renaming a chart** | Dashboard tile still shows old title — `title` and `chartName` are independent overrides that do NOT auto-update | Download the dashboard, find tiles with matching `chartSlug`, update `title` and `chartName` to match |
 | **Including unused dimensions in metricQuery** | "Results may be incorrect" warning — extra dimensions change SQL grouping and produce wrong numbers | Every dimension in `metricQuery.dimensions` must appear in the chart config. For cartesian: `layout.xField`, `layout.yField`, or `pivotConfig.columns` |
@@ -58,7 +58,7 @@ lightdash config set-project --name "My Project"  # Switch project
 **The YAML syntax differs significantly between project types.**
 
 | Type | Detection | Key Difference |
-| ------ | ----------- | ---------------- |
+|------|-----------|----------------|
 | **dbt Project** | Has `dbt_project.yml` | Metadata nested under `meta:` |
 | **dbt Fusion / dbt 1.10+** | Has `dbt_project.yml`, uses dbt Fusion or dbt >= 1.10 | Metadata nested under `config: meta:` |
 | **Pure Lightdash** | Has `lightdash.config.yml`, no dbt | Top-level properties |
@@ -69,7 +69,6 @@ ls lightdash.config.yml 2>/dev/null && echo "Pure Lightdash" || echo "Not pure L
 ```
 
 > **dbt Fusion / dbt 1.10+:** Lightdash metadata must be nested under `config: meta:` instead of `meta:`. The properties are identical — only the nesting changes. Example:
->
 > ```yaml
 > models:
 >   - name: orders
@@ -84,7 +83,6 @@ ls lightdash.config.yml 2>/dev/null && echo "Pure Lightdash" || echo "Not pure L
 ### Syntax Comparison
 
 **dbt YAML** (metadata under `meta:`):
-
 ```yaml
 models:
   - name: orders
@@ -101,7 +99,6 @@ models:
 ```
 
 **Pure Lightdash YAML** (top-level):
-
 ```yaml
 type: model
 name: orders
@@ -139,6 +136,12 @@ lightdash set-warehouse --project-dir ./dbt --profiles-dir ./profiles --project 
 ### Verify Filter Values Before Using Them
 
 **CRITICAL**: Never guess filter values. Case mismatches (e.g., `'Payment'` vs `'payment'`) cause charts to silently return no data.
+
+Filters are case-sensitive by default. The `case_sensitive` key can override this in order of priority:
+
+- Dimension metadata
+- Model/explore metadata
+- `lightdash.config.yml` `defaults.case_sensitive`
 
 **Before writing any string filter**, query actual values from the warehouse:
 
@@ -209,7 +212,7 @@ lightdash stop-preview --name "my-feature"
 ## CLI Quick Reference
 
 | Command | Purpose |
-| --------- | --------- |
+|---------|---------|
 | `lightdash deploy` | Sync semantic layer (metrics, dimensions) |
 | `lightdash upload` | Upload charts/dashboards |
 | `lightdash download` | Download charts/dashboards as YAML |
@@ -228,6 +231,7 @@ The semantic layer defines your data model. See individual references for full c
 - [Metrics Reference](./resources/metrics-reference.md) — aggregated calculations (`count`, `sum`, `average`, `min`, `max`, `number`, etc.)
 - [Dimensions Reference](./resources/dimensions-reference.md) — attributes for grouping/filtering (`string`, `number`, `boolean`, `date`, `timestamp`)
 - [Joins Reference](./resources/joins-reference.md) — cross-table relationships
+- [User Attributes Reference](./resources/user-attributes-reference.md) — SQL variables, row-level security, access control
 
 ## Chart Types
 
@@ -261,10 +265,20 @@ version: 1
 
 **Chart scoping:** Use `spaceSlug` only for shared charts. Add `dashboardSlug` to scope a chart to a specific dashboard (it won't appear in the space).
 
+**Nested spaces:** Spaces can be nested. In YAML, `spaceSlug` uses `parent/child` syntax to address a sub-space — the `/` denotes hierarchy. Examples:
+
+```yaml
+spaceSlug: sales              # Top-level space "sales"
+spaceSlug: sales/maps         # Sub-space "maps" inside "sales"
+spaceSlug: sales/eu/forecasts # Deeper nesting works the same way
+```
+
+Each path segment must be the slug of an existing (or to-be-created) space at that level. A bare slug like `sales-maps` is a flat top-level space, NOT a sub-space — the slash is the only thing that creates the hierarchy.
+
 ### Choosing the Right Chart Type
 
 | Data Pattern | Recommended Chart | Why |
-| -------------- | ------------------- | ----- |
+|--------------|-------------------|-----|
 | Trends over time | Line or area (`cartesian`) | Shows continuous change with time on X-axis |
 | Category comparisons | Bar (`cartesian`) | Easy visual comparison between discrete categories |
 | Part-of-whole relationships | `pie` or `treemap` | Shows proportions summing to 100% |
@@ -272,11 +286,12 @@ version: 1
 | Conversion stages | `funnel` | Visualizes drop-off between sequential steps |
 | Progress toward target | `gauge` | Shows current value relative to goal |
 | Geographic data | `map` | Plots data points or regions on a map |
+| Flow between categories | `sankey` | Shows how values move from source to target nodes |
 | Detailed records | `table` | Displays raw data with sorting and formatting |
 | Advanced custom needs | `custom` | Full Vega-Lite spec for custom visualizations |
 
 | Type | Use Case | Reference |
-| ------ | ---------- | ----------- |
+|------|----------|-----------|
 | `cartesian` | Bar, line, area, scatter | [Cartesian](./resources/cartesian-chart-reference.md) |
 | `pie` | Parts of whole | [Pie](./resources/pie-chart-reference.md) |
 | `table` | Data tables | [Table](./resources/table-chart-reference.md) |
@@ -285,6 +300,7 @@ version: 1
 | `gauge` | Progress indicators | [Gauge](./resources/gauge-chart-reference.md) |
 | `treemap` | Hierarchical data | [Treemap](./resources/treemap-chart-reference.md) |
 | `map` | Geographic data | [Map](./resources/map-chart-reference.md) |
+| `sankey` | Flow diagrams | [Sankey](./resources/sankey-chart-reference.md) |
 | `custom` | Vega-Lite | [Custom Viz](./resources/custom-viz-reference.md) |
 
 ## Dashboards
@@ -309,7 +325,7 @@ lightdash sql "SELECT SUM(amount) FROM orders" -o test.csv
 ## Workflow Patterns
 
 | Pattern | When to Use |
-| --------- | ------------- |
+|---------|-------------|
 | **Direct** (`deploy` + `upload`) | Solo dev, rapid iteration |
 | **Preview-First** | Team, complex changes |
 | **CI/CD** | Automated on merge |
@@ -319,14 +335,13 @@ See [Workflows Reference](./resources/workflows-reference.md) for detailed examp
 ## Resources
 
 ### Semantic Layer
-
 - [Dimensions Reference](./resources/dimensions-reference.md)
 - [Metrics Reference](./resources/metrics-reference.md)
 - [Tables Reference](./resources/tables-reference.md)
 - [Joins Reference](./resources/joins-reference.md)
+- [User Attributes Reference](./resources/user-attributes-reference.md)
 
 ### Charts
-
 - [Cartesian Chart Reference](./resources/cartesian-chart-reference.md) - Bar, line, area, scatter
 - [Pie Chart Reference](./resources/pie-chart-reference.md)
 - [Table Chart Reference](./resources/table-chart-reference.md)
@@ -335,16 +350,15 @@ See [Workflows Reference](./resources/workflows-reference.md) for detailed examp
 - [Gauge Chart Reference](./resources/gauge-chart-reference.md)
 - [Treemap Chart Reference](./resources/treemap-chart-reference.md)
 - [Map Chart Reference](./resources/map-chart-reference.md)
+- [Sankey Chart Reference](./resources/sankey-chart-reference.md)
 - [Custom Viz Reference](./resources/custom-viz-reference.md)
 - [Period over Period Reference](./resources/period-over-period-reference.md) - PoP comparisons (YoY, MoM, etc.)
 
 ### Dashboards & Workflows
-
 - [Dashboard Reference](./resources/dashboard-reference.md)
 - [Dashboard Best Practices](./resources/dashboard-best-practices.md)
 - [CLI Reference](./resources/cli-reference.md)
 - [Workflows Reference](./resources/workflows-reference.md)
 
 ### External
-
 - [Lightdash Docs](https://docs.lightdash.com)

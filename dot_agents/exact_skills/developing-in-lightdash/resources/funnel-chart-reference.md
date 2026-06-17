@@ -48,7 +48,6 @@ How the data is structured in your query results.
 - `column`: Each column represents a funnel stage
 
 **Row-based example** (recommended):
-
 ```
 | stage          | count |
 |----------------|-------|
@@ -59,7 +58,6 @@ How the data is structured in your query results.
 ```
 
 **Column-based example**:
-
 ```
 | awareness | interest | consideration | purchase |
 |-----------|----------|---------------|----------|
@@ -73,7 +71,6 @@ The field ID (metric or dimension) to display as the funnel values.
 #### `labels`
 
 Control label display:
-
 - `position`: `inside` (default), `left`, `right`, or `hidden`
 - `showValue`: Show actual values (e.g., "5,000")
 - `showPercentage`: Show percentage of max (e.g., "50%")

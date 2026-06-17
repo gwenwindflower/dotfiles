@@ -15,13 +15,11 @@ Treemap charts are ideal for:
 - **Dual metric visualization**: Size by one metric, color by another
 
 **Use treemaps when:**
-
 - You have 1-3 levels of categorical hierarchy
 - You want to show both composition and relative size
 - You need to compare values across many categories efficiently
 
 **Avoid treemaps when:**
-
 - You need precise value comparisons (use bar charts)
 - Exact proportions matter (use pie/donut charts)
 - You have more than 3 hierarchy levels (too complex)
@@ -41,7 +39,7 @@ chartConfig:
 ## Key Properties
 
 | Property | Type | Description | Required |
-| ---------- | ------ | ------------- | ---------- |
+|----------|------|-------------|----------|
 | `groupFieldIds` | array | Field IDs for hierarchical grouping (1-3 levels) | Yes |
 | `sizeMetricId` | string | Field ID that determines rectangle size | Yes |
 | `colorMetricId` | string | Field ID that determines rectangle color value | No |
@@ -156,7 +154,6 @@ version: 1
 
 **Problem**: Chart is cluttered with tiny rectangles
 **Solutions**:
-
 - Increase `visibleMin` to hide small values
 - Reduce `limit` in metricQuery
 - Add filters to exclude low-value categories
@@ -165,7 +162,6 @@ version: 1
 
 **Problem**: Only showing flat categories, not nested
 **Solutions**:
-
 - Verify `groupFieldIds` array has multiple fields
 - Check that dimensions are in metricQuery
 - Confirm `leafDepth` setting if specified
@@ -174,7 +170,6 @@ version: 1
 
 **Problem**: All rectangles same color or unexpected colors
 **Solutions**:
-
 - Verify `colorMetricId` is in metricQuery metrics
 - Check that color metric has varying values
 - Set explicit `startColor` and `endColor`
@@ -182,7 +177,7 @@ version: 1
 ## Comparison: Treemap vs Other Charts
 
 | Need | Use Treemap | Alternative |
-| ------ | ------------- | ------------- |
+|------|-------------|-------------|
 | Simple part-to-whole | Maybe | Pie/Donut (clearer for 3-7 categories) |
 | Hierarchical data | Yes | Sunburst (circular alternative) |
 | Precise comparisons | No | Bar chart (easier to compare lengths) |

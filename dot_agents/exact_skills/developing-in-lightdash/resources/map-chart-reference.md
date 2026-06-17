@@ -9,7 +9,7 @@ Guide to creating map visualizations in Lightdash charts-as-code.
 Map charts visualize geographical data with three location types:
 
 | Location Type | Description | Best For |
-| -------------- | ------------- | ---------- |
+|--------------|-------------|----------|
 | `scatter` | Points at lat/lon coordinates | Store locations, customer addresses |
 | `area` | Regions colored by metric (choropleth) | Sales by state/country |
 | `heatmap` | Density visualization | Activity hotspots |
@@ -17,7 +17,7 @@ Map charts visualize geographical data with three location types:
 ### Map Types
 
 | Map Type | Description | Location Matching |
-| ---------- | ------------- | ------------------- |
+|----------|-------------|-------------------|
 | `USA` | United States map | State names or codes |
 | `world` | World map | Country names or ISO codes |
 | `europe` | European countries | Country names or ISO codes |
@@ -28,7 +28,6 @@ Map charts visualize geographical data with three location types:
 ### Location Type Settings
 
 **Scatter Maps** require latitude and longitude fields:
-
 ```yaml
 config:
   latitudeFieldId: "stores_latitude"
@@ -39,7 +38,6 @@ config:
 ```
 
 **Area Maps** match region names to GeoJSON:
-
 ```yaml
 config:
   geoJsonPropertyKey: "name"
@@ -49,7 +47,6 @@ config:
 ```
 
 **Heatmaps** show point density:
-
 ```yaml
 config:
   heatmapConfig:
@@ -275,7 +272,7 @@ version: 1
 ## GeoJSON Property Keys
 
 | Map Type | Property Key | Example Values |
-| ---------- | -------------- | ---------------- |
+|----------|--------------|----------------|
 | USA | `name` | "California", "Texas" |
 | World | `name` | "United States", "France" |
 | World | `ISO3166-1-Alpha-3` | "USA", "FRA" |
@@ -285,9 +282,9 @@ version: 1
 ## All Config Properties
 
 | Property | Type | Applies To | Description |
-| ---------- | ------ | ------------ | ------------- |
-| `locationType` | `scatter` \ | `area` \ | `heatmap` | All | How location data is displayed |
-| `mapType` | `USA` \ | `world` \ | `europe` \ | `custom` | All | Predefined map region |
+|----------|------|------------|-------------|
+| `locationType` | `scatter` \| `area` \| `heatmap` | All | How location data is displayed |
+| `mapType` | `USA` \| `world` \| `europe` \| `custom` | All | Predefined map region |
 | `latitudeFieldId` | string | scatter, heatmap | Field with latitude values |
 | `longitudeFieldId` | string | scatter, heatmap | Field with longitude values |
 | `locationFieldId` | string | area | Field matching GeoJSON properties |
@@ -301,7 +298,7 @@ version: 1
 | `colorOverrides` | Record | area | Per-region color overrides |
 | `noDataColor` | string | area | Color for regions without data |
 | `backgroundColor` | string | All | Map background color |
-| `tileBackground` | `none` \ | `openstreetmap` \ | `light` \ | `dark` \ | `satellite` | All | Base map tile layer |
+| `tileBackground` | `none` \| `openstreetmap` \| `light` \| `dark` \| `satellite` | All | Base map tile layer |
 | `dataLayerOpacity` | number | All | Data layer opacity (0-1) |
 | `showLegend` | boolean | All | Show/hide legend |
 | `heatmapConfig.radius` | number | heatmap | Heat point size (1-50) |
@@ -330,13 +327,11 @@ version: 1
 ### Color Guidelines
 
 **Sequential** (low to high): Light to dark of same hue
-
 ```yaml
 colorRange: ["#f0f9ff", "#0284c7"]
 ```
 
 **Diverging** (negative to positive): Two colors through neutral
-
 ```yaml
 colorRange: ["#dc2626", "#f3f4f6", "#22c55e"]
 ```
@@ -344,7 +339,7 @@ colorRange: ["#dc2626", "#f3f4f6", "#22c55e"]
 ## Common Issues
 
 | Issue | Solution |
-| ------- | ---------- |
+|-------|----------|
 | Regions not showing data | Check `geoJsonPropertyKey` matches data exactly (case-sensitive) |
 | Points not appearing | Verify lat/lon are valid (-90 to 90, -180 to 180) |
 | No colors showing | Ensure `valueFieldId` is in your metric query |

@@ -9,30 +9,25 @@ For full schema details, see [chart-as-code-1.0.json](schemas/chart-as-code-1.0.
 Custom visualizations integrate with Vega-Lite, a declarative grammar for creating interactive visualizations. Lightdash automatically provides your query results to the Vega-Lite specification, allowing you to define exactly how the data should be visualized.
 
 **When to use custom visualizations:**
-
 - You need a visualization type not available in Lightdash's built-in charts (bar, line, pie, table, etc.)
 - You need fine-grained control over visual encoding
 - You want to use advanced Vega-Lite features like layered charts, projections, or complex transformations
 
 **Requirements:**
-
 - Familiarity with Vega-Lite specifications (see [Vega-Lite documentation](https://vega.github.io/vega-lite/))
 - Understanding of your data structure and field names
 
 ## Configuration
 
 ### chartConfig.type
-
 Must be set to `"custom"` for custom visualizations.
 
 ### chartConfig.config.spec
-
 Type: `object`
 
 The complete Vega-Lite specification object. This object defines how your data will be visualized.
 
 **Key properties:**
-
 - `$schema`: (Required) Vega-Lite schema URL, typically `https://vega.github.io/schema/vega-lite/v5.json`
 - `mark`: The visual mark type (bar, line, point, area, rect, etc.)
 - `encoding`: Maps data fields to visual properties (x, y, color, size, etc.)
