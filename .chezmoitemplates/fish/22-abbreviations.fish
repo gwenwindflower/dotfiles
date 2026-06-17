@@ -381,6 +381,8 @@ abbr --add glod git logd
 abbr --add wtsw wt switch
 abbr --add wtswc wt switch -c
 abbr --add wtm wt merge
+abbr --add wts wt step
+abbr --add wtls wt list
 abbr --add wtrm wt remove
 abbr --add wtrm! wt remove --force
 abbr --add wtrm!! wt remove --force -D
