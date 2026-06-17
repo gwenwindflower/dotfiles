@@ -249,6 +249,17 @@ abbr --add gotv go test -v
 abbr --add gob go build
 ## rust
 abbr --add ruu rustup up
+abbr --add cg cargo
+abbr --add cgn cargo init
+abbr --add cgi cargo install
+abbr --add cgii cargo bininstall
+abbr --add cga cargo add
+abbr --add cgrm cargo remove
+abbr --add cgx cargo run
+abbr --add cgc cargo rustc
+abbr --add cgch cargo check
+abbr --add cgfm cargo fmt
+abbr --add cgfx cargo fix
 ## typescript
 ### mise
 abbr --add mi mise
