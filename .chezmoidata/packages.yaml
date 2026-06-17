@@ -31,6 +31,7 @@ packages:
           - bat
           - bottom
           - bun
+          - cargo-binstall
           - chafa
           - chezmoi
           - cloudflare-wrangler
