@@ -40,7 +40,7 @@
 
 [core]
   pager = delta
-  excludesfile = ~/.gitignore_global
+  excludesfile = ~/.config/git/global_ignore
 
 [delta]
   line-numbers = true
