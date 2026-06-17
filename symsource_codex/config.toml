@@ -88,16 +88,18 @@ glob_scan_max_depth = 4
 ".local/share/nvim" = "read"
 ".orbstack/bin" = "read"
 # tool state, config, caches
+".cache/**" = "write"
 ".agent-browser" = "write"
 "Library/Caches/dev.biomejs.biome" = "write"
 ".blacksmith" = "write"
-".config" = "read"
+".config/**" = "read"
 ".config/.wrangler" = "write"  # cloudflare
 ".context7" = "write"
 ".critique" = "write"
 ".dbt" = "read"
 ".docker" = "read"
 ".duckdb" = "write"
+".gitconfig" = "write"
 ".local/state/herdr" = "write"
 "Library/Caches/kitty" = "write"
 ".local/share/graveyard" = "write"  # rip
@@ -152,11 +154,12 @@ glob_scan_max_depth = 4
 ".zshrc" = "read"
 ".zprofile" = "read"
 ".zshenv" = "read"
-# secrets and keys
+# denied secrets and keys
+"**/credentials/**" = "deny"
+"**/secrets/**" = "deny"
 ".aws" = "deny"
-".config/gcloud" = "deny"
+# ".config/gcloud" = "deny"
 ".gnupg" = "deny"
-".ssh" = "deny"
 ".env" = "deny"
 ".env.*" = "deny"
 "*.env" = "deny"
@@ -167,14 +170,23 @@ glob_scan_max_depth = 4
 "**/.env" = "deny"
 "**/.env.*" = "deny"
 "**/*.env" = "deny"
-"**/*.key" = "deny"
-"**/*.p12" = "deny"
-"**/*.pem" = "deny"
-"**/*.pfx" = "deny"
-"**/credentials/**" = "deny"
-"**/secrets/**" = "deny"
 "**/id_ed25519" = "deny"
 "**/id_rsa" = "deny"
+# "**/*.key" = "deny"
+# "**/*.p12" = "deny"
+# "**/*.pfx" = "deny"
+
+[permissions.workspace-winnie.filesystem."~/.local/share/chezmoi"]
+# "symsource_amoxide/**" = "write"
+"symsource_aube/**" = "write"
+# "symsource_claude/**" = "write"
+# "symsource_codex/**" = "write"
+# "symsource_herdr/**" = "write"
+"symsource_mise/**" = "write"
+# "symsource_nvim/**" = "write"
+# "symsource_uv/**" = "write"
+"symsource_worktrunk/**" = "write"
+# "symsource_yazi/**" = "write"
 
 # workspace-level secret patterns
 [permissions.workspace-winnie.filesystem.":workspace_roots"]
@@ -191,7 +203,7 @@ glob_scan_max_depth = 4
 "**/*.env" = "deny"
 "**/*.key" = "deny"
 "**/*.p12" = "deny"
-"**/*.pem" = "deny"
+# "**/*.pem" = "deny"
 "**/*.pfx" = "deny"
 "**/credentials/**" = "deny"
 "**/secrets/**" = "deny"
@@ -290,8 +302,8 @@ trusted_hash = "sha256:c2f38a99e16bc21ab2fbdfd0942d961a7293eccfdd26ca8fe11347224
 trusted_hash = "sha256:ae39455d097e32699e48441ade7671d9db5b80b17943aa3cc0901386b714a896"
 
 [marketplaces.worktrunk]
-last_updated = "2026-06-16T04:23:42Z"
-last_revision = "f334794fb65b941dc91b96e3abbde1e7be8b3e1d"
+last_updated = "2026-06-17T02:37:37Z"
+last_revision = "bd84d7479f503f5c6200fdead9fe2592dcc1c904"
 source_type = "git"
 source = "https://github.com/max-sixty/worktrunk.git"
 
@@ -302,7 +314,7 @@ source_type = "git"
 source = "https://github.com/modelcontextprotocol/ext-apps.git"
 
 [marketplaces.openai-bundled]
-last_updated = "2026-06-16T02:31:34Z"
+last_updated = "2026-06-17T02:37:40Z"
 source_type = "local"
 source = "/Users/winnie/.codex/.tmp/bundled-marketplaces/openai-bundled"
 
@@ -351,19 +363,19 @@ enabled = true
 enabled = true
 
 [plugins."documents@openai-primary-runtime"]
-enabled = true
+enabled = false
 
 [plugins."spreadsheets@openai-primary-runtime"]
-enabled = true
+enabled = false
 
 [plugins."presentations@openai-primary-runtime"]
-enabled = true
+enabled = false
 
 [plugins."computer-use@openai-bundled"]
 enabled = false
 
 [plugins."pdf@openai-primary-runtime"]
-enabled = true
+enabled = false
 
 [plugins."browser@openai-bundled"]
 enabled = true
@@ -383,12 +395,12 @@ NODE_REPL_NODE_MODULE_DIRS = "/Applications/Codex.app/Contents/Resources/cua_nod
 NODE_REPL_NODE_PATH = "/Applications/Codex.app/Contents/Resources/cua_node/bin/node"
 NODE_REPL_TRUSTED_CODE_PATHS = "/Users/winnie/.codex"
 CODEX_HOME = "/Users/winnie/.codex"
-NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "89809670b247cbaffbc4f87d9fa9742a9038c0f4a06fb822d7f85ff19bf24215"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "91f532174d8502acc26a6bfc16c4276c2566619a87a8efaea01e4130bf1e7a0c"
 BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
 NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.609.71450"
+BROWSER_USE_CODEX_APP_VERSION = "26.611.61049"
 CODEX_CLI_PATH = "/Applications/Codex.app/Contents/Resources/codex"
 
 [mcp_servers.lightdash]
@@ -489,4 +501,10 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/Users/winnie/Documents/Codex/2026-06-15/what-s-the-most-robust-native"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/_work/queria"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/_supermodel/_clients/indivisible/indi"]
 trust_level = "trusted"
