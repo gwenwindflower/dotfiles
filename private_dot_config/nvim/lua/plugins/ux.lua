@@ -246,6 +246,34 @@ return {
     end,
   },
   {
+    "neovim/nvim-lspconfig",
+    dependencies = {
+      {
+        "hasansujon786/nvim-navbuddy",
+        dependencies = {
+          "SmiteshP/nvim-navic",
+          "MunifTanjim/nui.nvim",
+        },
+        opts = {
+          window = {
+            border = "rounded",
+          },
+          lsp = { auto_attach = true },
+          source_buffer = {
+            follow_node = true,
+            highlight = true,
+          },
+        },
+        cmd = {
+          "Navbuddy",
+        },
+        keys = {
+          { "<leader>cd", mode = { "n" }, "<cmd>Navbuddy<cr>", desc = "Open Navbuddy overlay" },
+        },
+      },
+    },
+  },
+  {
     "sphamba/smear-cursor.nvim",
     opts = {
       never_draw_over_target = true,
