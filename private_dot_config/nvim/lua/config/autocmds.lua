@@ -15,7 +15,7 @@ vim.filetype.add({
     -- in my source dotfiles repo, they get linked out the .<equivalent> name,
     -- but I also want them to behave normally undotted here
     ["gitconfig"] = "gitconfig",
-    ["gitignore_global"] = "gitignore",
+    ["global_ignore"] = "gitignore",
     ["profile"] = "bash",
     ["bashrc"] = "bash",
     ["zprofile"] = "zsh",
