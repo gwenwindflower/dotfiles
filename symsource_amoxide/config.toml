@@ -17,6 +17,7 @@ ssx = "ssh -A {{1}}.exe.xyz"
 use_abbr = true
 
 [logging]
+project_loading = "off"
 project_unloading = "off"
 
 [update]
