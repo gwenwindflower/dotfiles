@@ -4,14 +4,20 @@
 # Workstation-only abbrs (brew, obsidian, lazygit, forgit, meteor, mise,
 # kitten, lsd, procs, bat, etc.) are deliberately omitted.
 
-# shell basics
+# print, copy, paste
 abbr --add p echo
 abbr --add pp bat
 abbr --add pcp fish_clipboard_copy
 abbr --add ppp fish_clipboard_paste
 abbr --add cp. "pwd | fish_clipboard_copy"
+abbr --add jmin "fish_clipboard_paste | jq -c | fish_clipboard_copy"
+
+# shell sessions
 abbr --add r clear
 abbr --add rr "exec $SHELL"
+abbr --add hist history
+
+# shell snippets
 abbr --add --position anywhere -- --help '--help | bat -plhelp'
 abbr --add --position anywhere -- -h '--help | bat -plhelp'
 abbr --add --position anywhere -- -hr '--help | bat -plhelp | rg'
