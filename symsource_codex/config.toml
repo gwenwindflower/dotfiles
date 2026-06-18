@@ -306,19 +306,19 @@ trusted_hash = "sha256:c2f38a99e16bc21ab2fbdfd0942d961a7293eccfdd26ca8fe11347224
 trusted_hash = "sha256:ae39455d097e32699e48441ade7671d9db5b80b17943aa3cc0901386b714a896"
 
 [marketplaces.worktrunk]
-last_updated = "2026-06-17T02:37:37Z"
-last_revision = "bd84d7479f503f5c6200fdead9fe2592dcc1c904"
+last_updated = "2026-06-18T04:50:02Z"
+last_revision = "47180a7035b64d14c8551facd0de3fe083bc8055"
 source_type = "git"
 source = "https://github.com/max-sixty/worktrunk.git"
 
 [marketplaces.mcp-apps]
-last_updated = "2026-06-06T01:31:05Z"
-last_revision = "ca1d29894fabbd1558885a9ec8620dcb01d7457e"
+last_updated = "2026-06-17T18:07:15Z"
+last_revision = "fa1274490873f869c9a084e1abb9cf3031d288c7"
 source_type = "git"
 source = "https://github.com/modelcontextprotocol/ext-apps.git"
 
 [marketplaces.openai-bundled]
-last_updated = "2026-06-17T02:37:40Z"
+last_updated = "2026-06-17T18:07:12Z"
 source_type = "local"
 source = "/Users/winnie/.codex/.tmp/bundled-marketplaces/openai-bundled"
 
@@ -385,32 +385,57 @@ enabled = false
 [plugins."browser@openai-bundled"]
 enabled = true
 
+[plugins."attio@openai-curated"]
+enabled = true
+
+[plugins."pylon@openai-curated"]
+enabled = true
+
+[plugins."build-web-data-visualization@openai-curated"]
+enabled = true
+
+[plugins."cloudflare@openai-curated"]
+enabled = true
+
+[plugins."fal@openai-curated"]
+enabled = true
+
+[plugins."slack@openai-curated"]
+enabled = true
+
+[plugins."linear@openai-curated"]
+enabled = true
+
 [[skills.config]]
 path = "/Users/winnie/.agents/skills/dogfood/SKILL.md"
 enabled = false
 
 [mcp_servers.node_repl]
-args = []
 command = "/Applications/Codex.app/Contents/Resources/cua_node/bin/node_repl"
-startup_timeout_sec = 120
+startup_timeout_sec = 120.0
 
 [mcp_servers.node_repl.env]
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
+BROWSER_USE_CODEX_APP_VERSION = "26.611.62324"
+CODEX_CLI_PATH = "/Applications/Codex.app/Contents/Resources/codex"
+CODEX_HOME = "/Users/winnie/.codex"
+NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
+NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
 NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
 NODE_REPL_NODE_MODULE_DIRS = "/Applications/Codex.app/Contents/Resources/cua_node/lib/node_modules"
 NODE_REPL_NODE_PATH = "/Applications/Codex.app/Contents/Resources/cua_node/bin/node"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "eb55d24cf065cd5311af6f99b16bade2b7a670790ff2db9accf60d012dd55dd1"
 NODE_REPL_TRUSTED_CODE_PATHS = "/Users/winnie/.codex"
-CODEX_HOME = "/Users/winnie/.codex"
-NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "91f532174d8502acc26a6bfc16c4276c2566619a87a8efaea01e4130bf1e7a0c"
-BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
-NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
-NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
-BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.611.61049"
-CODEX_CLI_PATH = "/Applications/Codex.app/Contents/Resources/codex"
 
 [mcp_servers.lightdash]
-enabled = true
 url = "https://analytics.lightdash.cloud/api/v1/mcp"
+
+[mcp_servers.lightdash_docs]
+url = "https://docs.lightdash.com/mcp"
+
+[mcp_servers.linear]
+url = "https://mcp.linear.app/mcp"
 
 [desktop]
 conversationDetailMode = "STEPS_COMMANDS"
@@ -472,12 +497,6 @@ global = "systemDefault"
 [projects."/Users/winnie/.local/share/chezmoi"]
 trust_level = "trusted"
 
-[projects."/Users/winnie/dev/99_work/analytics"]
-trust_level = "trusted"
-
-[projects."/Users/winnie/dev/00_supermodel/reishi"]
-trust_level = "trusted"
-
 [projects."/Users/winnie/Documents/Codex/2026-06-12/what-is-node-gyp"]
 trust_level = "trusted"
 
@@ -487,22 +506,13 @@ trust_level = "trusted"
 [projects."/Users/winnie/dev/winnie-phosphor"]
 trust_level = "trusted"
 
-[projects."/Users/winnie/dev/99_work/queria"]
-trust_level = "trusted"
-
 [projects."/Users/winnie/Documents/Codex/2026-06-14/what-s-the-best-uv-init"]
-trust_level = "trusted"
-
-[projects."/Users/winnie/dev/999_freelance/indivisible/indi"]
 trust_level = "trusted"
 
 [projects."/Users/winnie/Documents/Codex/2026-06-14/what-are-the-various-internal-dbs"]
 trust_level = "trusted"
 
 [projects."/Users/winnie/Documents/Codex/2026-06-14/use-fal-plugin-fal-openai-curated"]
-trust_level = "trusted"
-
-[projects."/Users/winnie/dev/00_supermodel/aloha"]
 trust_level = "trusted"
 
 [projects."/Users/winnie/Documents/Codex/2026-06-15/what-s-the-most-robust-native"]
@@ -512,4 +522,10 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/Users/winnie/dev/_supermodel/_clients/indivisible/indi"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/_work/gtm"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-06-17/research-the-best-way-as-of"]
 trust_level = "trusted"
