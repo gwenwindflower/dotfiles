@@ -87,6 +87,15 @@ glob_scan_max_depth = 3
 
 Set `glob_scan_max_depth` for unbounded deny globs on Linux, WSL, or native Windows, or enumerate bounded depths.
 
+For Git worktrees, prefer a tracked project `.codex/config.toml` over broad global project access. Keep `GIT_OPTIONAL_LOCKS=0` in user config, then grant read access to the primary checkout's Git common dir:
+
+```toml
+[permissions.workspace-winnie.filesystem]
+"/Users/winnie/dev/org/repo/.git" = "read"
+```
+
+Tracked project config is copied into Codex-created worktrees, preserving normal `:workspace_roots` write access while Git can read shared metadata reached through `.git` and `commondir`.
+
 ## Network Rules
 
 Keep `[permissions.<name>.network] enabled = false` unless sandboxed command networking is required. When enabled, prefer domain allowlists over `"*"`.
