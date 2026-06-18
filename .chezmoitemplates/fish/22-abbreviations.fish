@@ -394,3 +394,14 @@ abbr --add spt spotify_player
 abbr --add ytdl yt-dlp
 abbr --add gdl gallery-dl
 abbr --add cap termframe
+# amoxide
+abbr --add ama am add
+abbr --add amrm am remove
+abbr --add amls am ls
+abbr --add amla am la
+## this shadows an admin-level system testing command just fyi
+abbr --add amt am trust
+abbr --add amut am untrust
+abbr --add amx am tui
+abbr --add amu am use
+abbr --add amp am profile
