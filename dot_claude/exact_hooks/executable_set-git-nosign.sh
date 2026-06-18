@@ -18,4 +18,5 @@ export GIT_CONFIG_KEY_1=tag.gpgsign
 export GIT_CONFIG_VALUE_1=false
 export GIT_CONFIG_KEY_2=user.name
 export GIT_CONFIG_VALUE_2='Claude Code (winnie)'
+export GIT_OPTIONAL_LOCKS=0
 EOF
