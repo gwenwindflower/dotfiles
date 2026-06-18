@@ -10,6 +10,7 @@ abbr --add p echo
 abbr --add pp bat
 abbr --add pcp fish_clipboard_copy
 abbr --add ppp fish_clipboard_paste
+abbr --add jmin "fish_clipboard_paste | jq -c | fish_clipboard_copy"
 # shell
 abbr --add r fresh -r
 abbr --add rr fresh
