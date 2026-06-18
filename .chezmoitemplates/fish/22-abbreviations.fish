@@ -18,7 +18,8 @@ abbr --add rrh fresh -g
 abbr --add fun functions
 abbr --add cmd command
 abbr --add wa which -a
-# processes
+abbr --add hist history
+# procs
 abbr --add pps procs
 abbr --add ppsm procs --sortd usagemem
 abbr --add ppsc procs --sortd usagecpu
