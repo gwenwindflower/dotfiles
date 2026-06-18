@@ -90,6 +90,7 @@ glob_scan_max_depth = 4
 ".local/bin" = "read"
 ".local/share/nvim" = "read"
 ".orbstack/bin" = "read"
+"Desktop" = "read"
 # tool state, config, caches
 ".cache/**" = "write"
 ".agent-browser" = "write"
