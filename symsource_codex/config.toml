@@ -1,7 +1,7 @@
 model = "gpt-5.5"
 personality = "pragmatic"
 approval_policy = "on-request"
-approvals_reviewer = "auto_review"
+approvals_reviewer = "user"
 # Legacy sandboxing is disabled while testing beta permission profiles.
 # sandbox_mode = "workspace-write"
 # [sandbox_workspace_write]
@@ -11,6 +11,7 @@ web_search = "cached"
 project_doc_max_bytes = 65536
 sqlite_home = "~/.codex/sqlite"
 model_reasoning_effort = "high"
+suppress_unstable_features_warning = true
 
 notify = [
   "/Users/winnie/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient",
@@ -60,6 +61,8 @@ multi_agent = true
 terminal_resize_reflow = true
 external_migration = true
 prevent_idle_sleep = true
+exec_permission_approvals = true
+request_permissions_tool = true
 js_repl = false
 
 [permissions.workspace-winnie]
@@ -348,6 +351,7 @@ exclude = [
 ]
 
 [shell_environment_policy.set]
+GIT_OPTIONAL_LOCKS = "0"
 GIT_CONFIG_COUNT = "3"
 GIT_CONFIG_KEY_0 = "commit.gpgsign"
 GIT_CONFIG_VALUE_0 = "false"
