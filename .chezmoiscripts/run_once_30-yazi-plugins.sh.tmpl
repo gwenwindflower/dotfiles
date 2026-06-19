@@ -6,7 +6,9 @@
 set -euo pipefail
 
 {{ template "script-log.sh" }}
+{{- if eq .chezmoi.os "darwin" }}
 {{ template "brew-preamble.sh" . }}
+{{- end }}
 
 log_step "Yazi plugins"
 
