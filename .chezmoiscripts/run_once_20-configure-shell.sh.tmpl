@@ -6,11 +6,18 @@
 set -euo pipefail
 
 {{ template "script-log.sh" }}
-{{ template "brew-preamble.sh" . }}
 
 log_step "Configuring default shell"
 
+{{- if eq .chezmoi.os "darwin" }}
+{{ template "brew-preamble.sh" . }}
 FISH_PATH="$(brew --prefix)/bin/fish"
+{{- else if eq .chezmoi.os "linux" }}
+if ! FISH_PATH="$(command -v fish)"; then
+  log_error "Fish not found on PATH; apt package install should have installed it"
+  exit 1
+fi
+{{- end }}
 
 if [ ! -x "$FISH_PATH" ]; then
   log_error "Fish not found at $FISH_PATH"
