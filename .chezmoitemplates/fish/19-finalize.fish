@@ -6,11 +6,13 @@
 # ensures mise -> .local/bin -> Homebrew
 # -> language and tool-specific paths -> OS-specific paths -> nvim mason installs
 
-# Re-add Homebrew and ~/.local/bin with -m here
+# Re-add package-manager bins with -m here
 # which pushes them to the front of PATH
 # so they take precedence over all
 # the language and tool-specific paths set above
+{{ if eq .chezmoi.os "darwin" -}}
 fish_add_path -m $HOMEBREW_PREFIX/bin
+{{ end -}}
 fish_add_path -m $HOME/.local/bin
 set -l _pre_mise_path $PATH
 mise activate fish | source

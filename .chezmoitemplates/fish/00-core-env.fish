@@ -9,7 +9,7 @@ set -e fish_user_paths
 set -gx fish_user_paths $HOME/.local/bin
 
 #  Terminal and Shell
-set -gx SHELL $HOMEBREW_PREFIX/bin/fish
+set -gx SHELL (command --search fish)
 
 #  Editor
 set -gx EDITOR nvim
@@ -35,14 +35,20 @@ set -gx MOOR "\
 --no-linenumbers \
 --style=catppuccin-frappe \
 "
-set -gx PAGER $HOMEBREW_PREFIX/bin/moor
+if command -q moor
+    set -gx PAGER (command --search moor)
+else if command -q bat
+    set -gx PAGER (command --search bat)
+end
 set -gx MANPAGER "sh -c 'col -bx | bat -l man -p'"
 # tldr client config
 set -gx TLRC_CONFIG $XDG_CONFIG_HOME/tlrc/tlrc.toml
 
 #  tmux
 set -gx TMUX_PLUGIN_MANAGER_PATH $XDG_CONFIG_HOME/tmux/plugins
+{{ if eq .chezmoi.os "darwin" -}}
 set -gx TMUX_PLUGIN_MANAGER_INSTALL $HOMEBREW_PREFIX/opt/tpm/share/tpm
+{{ end -}}
 
 #  1Password
 set -gx OP_ACCOUNT my.1password.com

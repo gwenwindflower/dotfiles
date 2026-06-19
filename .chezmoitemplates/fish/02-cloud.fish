@@ -3,8 +3,10 @@
 # =============================================================================
 
 ## Platforms
+{{ if eq .chezmoi.os "darwin" -}}
 set -gx GCLOUD_HOME $HOMEBREW_PREFIX/share/google-cloud-sdk
 fish_add_path $GCLOUD_HOME/bin
+{{ end -}}
 
 ## AI
 ### Claude

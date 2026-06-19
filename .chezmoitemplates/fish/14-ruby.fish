@@ -2,4 +2,6 @@
 # 14 — Ruby
 # =============================================================================
 
+{{ if eq .chezmoi.os "darwin" -}}
 fish_add_path $HOMEBREW_PREFIX/opt/ruby/bin
+{{ end -}}

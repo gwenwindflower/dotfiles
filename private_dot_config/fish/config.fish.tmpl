@@ -8,8 +8,10 @@
 # =============================================================================
 
 # Homebrew (dynamic at chezmoi apply)
+{{ if eq .chezmoi.os "darwin" -}}
 {{ output (joinPath .brewPrefix "bin/brew") "shellenv" "fish" -}}
 set -gx HOMEBREW_NO_ENV_HINTS 1
+{{ end -}}
 
 {{ template "fish/00-core-env.fish" . }}
 
@@ -50,16 +52,24 @@ if status is-interactive
 
   # ─── Dynamic Tool Initializations ──────────────────────────────────────────────────────────────────
 
-  set -gx LS_COLORS "{{ output (joinPath .brewPrefix "bin/vivid") "generate" "catppuccin-frappe" }}"
+  if command -q vivid
+    set -gx LS_COLORS (vivid generate catppuccin-frappe)
+  end
 
   # zoxide
-  {{ output (joinPath .brewPrefix "bin/zoxide") "init" "fish" }}
+  if command -q zoxide
+    zoxide init fish | source
+  end
 
   # starship
-  {{ output (joinPath .brewPrefix "bin/starship") "init" "fish" "--print-full-init" }}
+  if command -q starship
+    starship init fish | source
+  end
 
   # amoxide
-  {{ output (joinPath .brewPrefix "bin/am") "init" "fish" }}
+  if command -q am
+    am init fish | source
+  end
 
   {{ template "fish/24-tools.fish" . }}
 
