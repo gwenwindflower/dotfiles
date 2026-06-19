@@ -92,11 +92,12 @@ glob_scan_max_depth = 4
 ".orbstack/bin" = "read"
 "Desktop" = "read"
 # tool state, config, caches
-".cache/**" = "write"
+".cache" = "write"
 ".agent-browser" = "write"
 "Library/Caches/dev.biomejs.biome" = "write"
 ".blacksmith" = "write"
 ".config/**" = "read"
+".config" = "read"
 ".config/.wrangler" = "write"  # cloudflare
 ".context7" = "write"
 ".critique" = "write"
@@ -306,8 +307,8 @@ trusted_hash = "sha256:c2f38a99e16bc21ab2fbdfd0942d961a7293eccfdd26ca8fe11347224
 trusted_hash = "sha256:ae39455d097e32699e48441ade7671d9db5b80b17943aa3cc0901386b714a896"
 
 [marketplaces.worktrunk]
-last_updated = "2026-06-18T04:50:02Z"
-last_revision = "47180a7035b64d14c8551facd0de3fe083bc8055"
+last_updated = "2026-06-19T19:34:59Z"
+last_revision = "a7e29f79c71defb8a2b2d5290bdb6cbce22aa2f6"
 source_type = "git"
 source = "https://github.com/max-sixty/worktrunk.git"
 
@@ -318,7 +319,7 @@ source_type = "git"
 source = "https://github.com/modelcontextprotocol/ext-apps.git"
 
 [marketplaces.openai-bundled]
-last_updated = "2026-06-17T18:07:12Z"
+last_updated = "2026-06-19T19:34:57Z"
 source_type = "local"
 source = "/Users/winnie/.codex/.tmp/bundled-marketplaces/openai-bundled"
 
@@ -382,9 +383,6 @@ enabled = false
 [plugins."pdf@openai-primary-runtime"]
 enabled = false
 
-[plugins."browser@openai-bundled"]
-enabled = true
-
 [plugins."attio@openai-curated"]
 enabled = true
 
@@ -406,27 +404,31 @@ enabled = true
 [plugins."linear@openai-curated"]
 enabled = true
 
+[plugins."browser@openai-bundled"]
+enabled = true
+
 [[skills.config]]
 path = "/Users/winnie/.agents/skills/dogfood/SKILL.md"
 enabled = false
 
 [mcp_servers.node_repl]
+args = []
 command = "/Applications/Codex.app/Contents/Resources/cua_node/bin/node_repl"
-startup_timeout_sec = 120.0
+startup_timeout_sec = 120
 
 [mcp_servers.node_repl.env]
-BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
-BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.611.62324"
-CODEX_CLI_PATH = "/Applications/Codex.app/Contents/Resources/codex"
-CODEX_HOME = "/Users/winnie/.codex"
-NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
-NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
 NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
 NODE_REPL_NODE_MODULE_DIRS = "/Applications/Codex.app/Contents/Resources/cua_node/lib/node_modules"
 NODE_REPL_NODE_PATH = "/Applications/Codex.app/Contents/Resources/cua_node/bin/node"
-NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "eb55d24cf065cd5311af6f99b16bade2b7a670790ff2db9accf60d012dd55dd1"
 NODE_REPL_TRUSTED_CODE_PATHS = "/Users/winnie/.codex"
+CODEX_HOME = "/Users/winnie/.codex"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "feca4d852d7d18eab5e217b18c8c80099fe667c330e836640fd7a48f362de525"
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
+NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
+BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
+BROWSER_USE_CODEX_APP_VERSION = "26.616.32156"
+CODEX_CLI_PATH = "/Applications/Codex.app/Contents/Resources/codex"
 
 [mcp_servers.lightdash]
 url = "https://analytics.lightdash.cloud/api/v1/mcp"
@@ -436,6 +438,9 @@ url = "https://docs.lightdash.com/mcp"
 
 [mcp_servers.linear]
 url = "https://mcp.linear.app/mcp"
+
+[mcp_servers.bigquery]
+url = "https://bigquery.googleapis.com/mcp"
 
 [desktop]
 conversationDetailMode = "STEPS_COMMANDS"
@@ -528,4 +533,7 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/Users/winnie/Documents/Codex/2026-06-17/research-the-best-way-as-of"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/_work/analytics"]
 trust_level = "trusted"
