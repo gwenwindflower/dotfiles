@@ -1,4 +1,8 @@
+{{ if eq .chezmoi.os "darwin" -}}
 export SHELL="$HOMEBREW_PREFIX/bin/fish"
+{{ else if eq .chezmoi.os "linux" -}}
+export SHELL="$(command -v fish)"
+{{ end -}}
 export TEMP="$TMPDIR"
 {{ if eq .chezmoi.os "darwin" -}}
 # Required on macOS for signing commits via 1Password SSH agent
