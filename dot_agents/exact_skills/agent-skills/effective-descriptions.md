@@ -14,7 +14,8 @@ Constraints:
 - Third person only — never "I can…" or "You can…"
 - Concrete keywords users actually say: file extensions, CLI names, domain terms
 - Slightly directive — Claude under-triggers by default
-- Avoid colons in YAML frontmatter descriptions. Use em dashes, semicolons, or a second sentence so the value can stay unquoted.
+- Never use colons in YAML frontmatter descriptions. Use semicolons, em dashes, or a second sentence instead so the value stays a plain scalar.
+- Avoid long scenario lists. They bloat startup context and usually trigger worse than one clear sentence with concrete keywords.
 
 ## Bad → good
 
@@ -28,9 +29,9 @@ Constraints:
 - ❌ `Always load when working with fish files to get guidance on idiomatic fish syntax and better terminal UX.`
 - ✅ `Idiomatic fish shell scripting — functions, completions, abbreviations, conf.d. Use when editing .fish files or fish config under ~/.config/fish.`
 
-**Step list bloat**
+**Long scenario list**
 
-- ❌ `Use when: (1) Adding shadcn components, (2) Customizing components with variants, (3) Understanding the architecture, (4) Troubleshooting setup.`
+- ❌ `Use when adding shadcn components; customizing variants; understanding architecture; troubleshooting setup; auditing style; checking installation; updating themes.`
 - ✅ `Add, customize, and troubleshoot shadcn/ui components. Use when working with shadcn components, variants, or components.json.`
 
 **Restating without triggers**
@@ -50,15 +51,12 @@ If two skills have overlapping triggers and no clean disambiguator, that's a sig
 
 ## Antipatterns
 
-- Numbered "Use when: (1)… (2)…" lists — wasteful, doesn't improve triggering
+- Numbered scenario lists — wasteful, doesn't improve triggering
+- Colon-separated scenario lists — colons break YAML parsing too easily; write a sentence such as `Use when drafting bugs, specs, or tickets` or split conditions with semicolons.
 - "Always load" / "load for any request" — too aggressive, mistriggers
 - Time-stamped guidance ("after April 2026…")
 - XML tags inside the description — rejected by spec
 - Restating the skill name in the description body
 - Listing every feature instead of the actual triggers users will type
-- Colons in YAML frontmatter descriptions — they force quoting and break too easily during edits
+- Colons in YAML frontmatter descriptions — they break too easily during edits
 - YAML quoting (`"…"`) for descriptions — prefer wording that remains a plain scalar
-
-## Self-check
-
-Before shipping, write 5 prompts that should trigger and 5 that should not. If your description doesn't clearly cover both, tighten it.

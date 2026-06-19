@@ -9,13 +9,13 @@ YAML at the top of SKILL.md. The schema is mostly shared across agents, with a f
 | `name` | yes | kebab-case, matches the skill directory |
 | `description` | yes | what + when, ≤1024 chars — see [effective descriptions](effective-descriptions.md) |
 
-Keep descriptions as plain scalars. Avoid colons and YAML-reserved leading characters so descriptions do not need quotes; use em dashes, semicolons, or a second sentence for separation. Avoid long repetitive lists of variations — clear trigger language beats exhaustive enumeration.
+Keep descriptions as plain scalars. Never use colons or YAML-reserved leading characters; use semicolons, em dashes, or a second sentence for separation. Avoid long repetitive lists of variations — clear trigger language beats exhaustive enumeration.
 
 ## Claude Code
 
 | Field | Notes |
 | --- | --- |
-| `allowed-tools` | List of tool patterns the skill may use without re-prompting (e.g. `Bash(rei *)`, `WebFetch(domain:example.com)`). Honored by Claude only. |
+| `allowed-tools` | List of tool patterns the skill may use without re-prompting (e.g. `WebFetch(domain:example.com)`). Honored by Claude only. |
 | `argument-hint` | Hint shown for slash-command invocation (e.g. `"[orient]"`). |
 | `disable-model-invocation` | `true` → skill only runs via explicit slash command, never auto-triggered. Use for destructive or repo-rewriting skills. |
 | `allowed-tools` block style | Either a YAML list or a single comma-separated string both work; list form is clearer. |
@@ -31,7 +31,7 @@ When extending support to a new agent:
 1. Identify which fields the agent reads (check its skill spec)
 2. Add a section above with the field list and any quirks
 3. Keep the universal fields stable — agent-specific extensions go below
-4. Ensure chezmoi deploys to the new target (add a `symlink_*` or copy entry under `dot_agents/`/`dot_claude/` as needed). **Do not** rely on `rei sync` — reishi is experimental and not used for deployment today.
+4. Ensure chezmoi deploys to the new target with a `symlink_*` or copy entry under `dot_agents/` or `dot_claude/` as needed.
 
 ## Example
 
