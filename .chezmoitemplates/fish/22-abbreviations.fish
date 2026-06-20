@@ -214,6 +214,8 @@ abbr --add dbfrs dbtf run -s
 abbr --add dbfra dbtf run
 abbr --add dbtpe nvim ~/.dbt/profiles.yml
 abbr --add dbtpp bat ~/.dbt/profiles.yml
+alias wizard dbt-wizard
+abbr --add wiz wizard
 # languages
 ## python
 abbr --add py python
