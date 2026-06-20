@@ -39,7 +39,7 @@ next_agent = "ctrl+super+n"
 toggle_sidebar = ["prefix+b", "ctrl+super+["]
 
 [[keys.command]]
-key = "prefix+ctrl+g"
+key = ["prefix+ctrl+g", "prefix+super+g"]
 type = "pane"
 command = "lazygit"
 description = "launch lazygit in a new pane"
