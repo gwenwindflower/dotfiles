@@ -59,7 +59,6 @@ packages:
           - git-cliff
           - git-delta
           - git-secrets
-          - git-town
           - glow
           - gnupg
           - go
