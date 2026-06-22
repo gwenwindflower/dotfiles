@@ -60,6 +60,7 @@ One reference doc per tool — load only what's relevant to the task:
 
 - `docs/fix-md-tables.md` — markdown table spacing fixer
 - `docs/generate-logo.md` — text-to-SVG with per-glyph `<path>` for animation
+- `docs/herdir.md` — additive herdr session preset reconciler
 - `docs/lscolors-to-toml.md` — `$LS_COLORS` → yazi TOML rules
 - `docs/packy.md` — declaratively manage `.chezmoidata/packages.yaml` (formula/cask/tap/uv)
 - `docs/provision-repo.md` — reconcile GitHub labels + Discussion categories for a Supermodel Labs repo

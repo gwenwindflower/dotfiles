@@ -8,6 +8,7 @@
     "@std/path": "jsr:@std/path@^1",
     "@std/toml": "jsr:@std/toml@^1",
     "@std/yaml": "jsr:@std/yaml@^1",
+    "@cliffy/command": "jsr:@cliffy/command@^1.0.0-rc.7",
     "text-to-svg": "npm:text-to-svg@^3.1.5"
   },
   "nodeModulesDir": "auto",
@@ -22,12 +23,14 @@
     "twinsies:check": "deno run --allow-read twinsies.ts --check",
     "twinsies:preview": "deno run --allow-read twinsies.ts --dry-run",
     "packy": "deno run --allow-read --allow-write --allow-env --allow-run=chezmoi,brew,pnpm,uv packy.ts",
+    "herdir": "deno run --allow-read --allow-write=assets/herdir-snapshots --allow-env=HOME --allow-run=herdr herdir.ts",
     "test": "deno run --allow-read --allow-run=deno scripts/test.ts",
     "test:tables": "deno test --allow-read fix-md-tables_test.ts",
     "test:logo": "deno test --allow-read --allow-env generate-logo_test.ts",
     "test:lscolors": "deno test lscolors_to_toml_test.ts",
     "test:stars": "deno test --allow-read scrape-github-stars_test.ts",
     "test:twinsies": "deno test --allow-read --allow-write twinsies_test.ts",
-    "test:packy": "deno test packy_test.ts"
+    "test:packy": "deno test packy_test.ts",
+    "test:herdir": "deno test --allow-read --allow-write herdir_test.ts"
   }
 }

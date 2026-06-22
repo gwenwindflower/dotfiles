@@ -65,6 +65,10 @@ abbr --add hrds herdr session
 abbr --add hrdsa herdr session attach
 abbr --add hrdsrm herdr session delete
 abbr --add hrdsls herdr session ls
+## herdr sessions
+abbr --add hrdld herdr session attach lightdash
+abbr --add hrdsm herdr session attach supermodel
+abbr --add hrddf herdr session attach dotfiles
 # shell snippets
 abbr --add --position anywhere -- --help '--help | bat -plhelp'
 abbr --add --position anywhere -- -h '--help | bat -plhelp'
