@@ -176,7 +176,6 @@ packages:
           - font-source-serif-4
           - font-symbols-only-nerd-font
           - gcloud-cli
-          - google-chrome
           - ia-presenter
           - karabiner-elements
           - kitty
@@ -192,8 +191,6 @@ packages:
           - orion
           - postico
           - raycast
-          - slack
-          - superwhisper
           - zoom
         personal:
           - anytype
@@ -204,8 +201,11 @@ packages:
           - tailscale-app
         work:
           - chatgpt
+          - google-chrome
           - linear
           - loom
+          - slack
+          - superwhisper
     uv:
       core:
         - databow
