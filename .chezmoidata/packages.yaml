@@ -19,7 +19,8 @@ packages:
           - supermodellabs/tap
           - yakitrak/yakitrak
         personal: []
-        work: []
+        work:
+          - withgraphite/tap
       formulae:
         core:
           - age
@@ -142,6 +143,7 @@ packages:
           - snitch
           - yt-dlp
         work:
+          - graphite
           - llama.cpp
       casks:
         core:
