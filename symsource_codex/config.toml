@@ -307,24 +307,24 @@ trusted_hash = "sha256:c2f38a99e16bc21ab2fbdfd0942d961a7293eccfdd26ca8fe11347224
 trusted_hash = "sha256:ae39455d097e32699e48441ade7671d9db5b80b17943aa3cc0901386b714a896"
 
 [marketplaces.worktrunk]
-last_updated = "2026-06-19T19:34:59Z"
-last_revision = "a7e29f79c71defb8a2b2d5290bdb6cbce22aa2f6"
+last_updated = "2026-06-21T01:23:22Z"
+last_revision = "9147c0e46d58ddd4dfa99cad1b967ff5f00f0c7a"
 source_type = "git"
 source = "https://github.com/max-sixty/worktrunk.git"
 
 [marketplaces.mcp-apps]
-last_updated = "2026-06-17T18:07:15Z"
+last_updated = "2026-06-21T01:23:13Z"
 last_revision = "fa1274490873f869c9a084e1abb9cf3031d288c7"
 source_type = "git"
 source = "https://github.com/modelcontextprotocol/ext-apps.git"
 
 [marketplaces.openai-bundled]
-last_updated = "2026-06-19T19:34:57Z"
+last_updated = "2026-06-21T01:22:57Z"
 source_type = "local"
 source = "/Users/winnie/.codex/.tmp/bundled-marketplaces/openai-bundled"
 
 [marketplaces.openai-primary-runtime]
-last_updated = "2026-06-15T00:53:44Z"
+last_updated = "2026-06-21T01:21:31Z"
 source_type = "local"
 source = "/Users/winnie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
 
@@ -369,19 +369,19 @@ enabled = true
 enabled = true
 
 [plugins."documents@openai-primary-runtime"]
-enabled = false
+enabled = true
 
 [plugins."spreadsheets@openai-primary-runtime"]
-enabled = false
+enabled = true
 
 [plugins."presentations@openai-primary-runtime"]
-enabled = false
+enabled = true
 
 [plugins."computer-use@openai-bundled"]
 enabled = false
 
 [plugins."pdf@openai-primary-runtime"]
-enabled = false
+enabled = true
 
 [plugins."attio@openai-curated"]
 enabled = true
@@ -422,12 +422,12 @@ NODE_REPL_NODE_MODULE_DIRS = "/Applications/Codex.app/Contents/Resources/cua_nod
 NODE_REPL_NODE_PATH = "/Applications/Codex.app/Contents/Resources/cua_node/bin/node"
 NODE_REPL_TRUSTED_CODE_PATHS = "/Users/winnie/.codex"
 CODEX_HOME = "/Users/winnie/.codex"
-NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "feca4d852d7d18eab5e217b18c8c80099fe667c330e836640fd7a48f362de525"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "2c20141b13bec5a64cd2874d8e2df011430d5b1a70e4f5425aa10d01743311a8"
 BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
 NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.616.32156"
+BROWSER_USE_CODEX_APP_VERSION = "26.616.51431"
 CODEX_CLI_PATH = "/Applications/Codex.app/Contents/Resources/codex"
 
 [mcp_servers.lightdash]
@@ -444,7 +444,7 @@ url = "https://bigquery.googleapis.com/mcp"
 
 [desktop]
 conversationDetailMode = "STEPS_COMMANDS"
-ambient-suggestions-enabled = true
+ambient-suggestions-enabled = false
 appearanceLightCodeThemeId = "rose-pine"
 appearanceDarkCodeThemeId = "catppuccin"
 codeFontSize = 12
