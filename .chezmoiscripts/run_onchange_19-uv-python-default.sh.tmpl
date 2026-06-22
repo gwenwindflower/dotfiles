@@ -3,7 +3,7 @@
 # Install the globally-pinned uv-managed Python and alias `python`/`python3` to it.
 # Re-runs whenever ~/.config/uv/.python-version changes.
 #
-# python-version hash: {{ include "symsource_uv/.python-version" | sha256sum }}
+# python-version hash: {{ include "symsources/uv/.python-version" | sha256sum }}
 
 set -euo pipefail
 

@@ -1,9 +1,9 @@
 #!/bin/bash
-# Materialize tools listed in the arch-specific symsource_mise config — node,
+# Materialize tools listed in the arch-specific symsources/mise config — node,
 # the npm-backend package manager (aube on arm64, pnpm via Homebrew on amd64),
 # and the npm-backend CLI globals. Re-runs whenever the active mise config changes.
 #
-# Mise config hash: {{ include (printf "symsource_mise/config-%s.toml" .chezmoi.arch) | sha256sum }}
+# Mise config hash: {{ include (printf "symsources/mise/config-%s.toml" .chezmoi.arch) | sha256sum }}
 
 set -euo pipefail
 

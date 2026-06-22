@@ -13,12 +13,12 @@ Edit chezmoi source, not deployed targets:
 
 | Purpose | Source |
 | --- | --- |
-| User config | `symsource_codex/config.toml` |
+| User config | `symsources/codex/config.toml` |
 | Hooks | `dot_codex/hooks.json`, `dot_codex/executable_herdr-agent-state.sh` |
 | Guidance | `.chezmoitemplates/agents/AGENTS.md`, `.chezmoitemplates/agents/rules/*.md` |
 | Shared skills | `dot_agents/exact_skills/<skill>/` |
 
-`symsource_codex/config.toml` is symlinked because Codex writes trust, hook state, plugin, marketplace, and skill-enable state. Do not prune generated tables such as `[projects]`, `[hooks.state]`, `[marketplaces]`, `[plugins]`, or `[[skills.config]]` unless cleanup is the task.
+`symsources/codex/config.toml` is symlinked because Codex writes trust, hook state, plugin, marketplace, and skill-enable state. Do not prune generated tables such as `[projects]`, `[hooks.state]`, `[marketplaces]`, `[plugins]`, or `[[skills.config]]` unless cleanup is the task.
 
 ## Layers
 
@@ -29,7 +29,7 @@ Use the smallest surface that matches the request:
 | One run | CLI flags like `--model` or `-c key=value` |
 | Repo-specific behavior | Trusted project `.codex/config.toml` |
 | Named local mode | `~/.codex/<profile>.config.toml` with `--profile` |
-| Personal defaults | `symsource_codex/config.toml` |
+| Personal defaults | `symsources/codex/config.toml` |
 | Organization policy | Managed config or `requirements.toml` |
 | Behavioral instructions | `AGENTS.md`, rules, or a skill |
 | External tools/data | MCP server or plugin config |
@@ -48,7 +48,7 @@ Keep provider auth, credential redirection, notifications, telemetry, profiles, 
 5. Validate parse and deployment shape:
 
 ```bash
-python3 -c 'import sys,tomllib; tomllib.load(open(sys.argv[1], "rb"))' symsource_codex/config.toml
+python3 -c 'import sys,tomllib; tomllib.load(open(sys.argv[1], "rb"))' symsources/codex/config.toml
 chezmoi --dry-run --no-pager diff
 ```
 

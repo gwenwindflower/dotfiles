@@ -1,0 +1,28 @@
+[[profiles]]
+name = "aube"
+
+[profiles.aliases]
+
+[[profiles]]
+name = "bun"
+
+[profiles.aliases]
+tsb = "bun build"
+tsd = "bun dev"
+
+[[profiles]]
+name = "deno"
+
+[profiles.aliases]
+
+[[profiles]]
+name = "npm"
+
+[profiles.aliases]
+
+[[profiles]]
+name = "pnpm"
+
+[profiles.aliases]
+tsb = "pnpm build"
+tsd = "pnpm dev"

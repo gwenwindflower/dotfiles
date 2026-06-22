@@ -92,7 +92,7 @@ function et -d "Create, bootstrap, clone, and shell into an exe.dev VM"
 
     # ── Build first-boot setup script (piped via stdin to dodge quoting) ───
     # CHEZMOI_ONESHOT=1 is required so the post-apply script materializes
-    # symsource_* symlinks into real files before chezmoi purges the source.
+    # symsources/* symlinks into real files before chezmoi purges the source.
     # See AGENTS.md → "--one-shot and ephemeral installs".
     set -l setup_lines \
         '#!/usr/bin/env sh' \

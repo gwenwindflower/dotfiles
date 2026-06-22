@@ -13,7 +13,7 @@ OSes supported:
 ## Repo Structure
 
 ```text
-.chezmoidata/packages.yaml        # Packages: darwin (homebrew + uv), linux (apt). JS/TS globals live in symsource_mise/config-<arch>.toml.
+.chezmoidata/packages.yaml        # Packages: darwin (homebrew + uv), linux (apt). JS/TS globals live in symsources/mise/config-<arch>.toml.
 .chezmoiscripts/                  # Lifecycle scripts (bootstrap, taps, packages, global tools, mise install, shell, yazi plugins, bat cache, ephemeral symlink materialization)
 .chezmoiignore                    # Excludes dev files + OS-conditional dirs
 .chezmoitemplates/fish/           # Fish config fragment templates (assembled into config.fish)
@@ -21,7 +21,7 @@ OSes supported:
 
 private_dot_config/               # → ~/.config/
   fish/                           #   config.fish.tmpl + exact_functions/ + exact_completions/ + exact_conf.d/
-  nvim/                           #   LazyVim: lua/, snippets/; lockfile + spellfile symlinks back to symsource_nvim/
+  nvim/                           #   LazyVim: lua/, snippets/; lockfile + spellfile symlinks back to symsources/nvim/
   kitty/                          #   Darwin-only (excluded on linux via .chezmoiignore)
   karabiner/                      #   Darwin-only
   tmux/                           #   tmux.conf + statusline + pane-icon script
@@ -41,7 +41,7 @@ private_dot_config/               # → ~/.config/
 dot_claude/                       # → ~/.claude/
   keybindings.json, statusline.toml  # Copied normally
   exact_hooks/, exact_agents/     # Pruned-on-apply collections
-  symlink_settings.json.tmpl      #   → symsource_claude/settings.json
+  symlink_settings.json.tmpl      #   → symsources/claude/settings.json
   symlink_skills.tmpl             #   → ~/.agents/skills (post-apply target)
 
 dot_agents/                       # → ~/.agents/ (shared agent hub)
@@ -49,22 +49,24 @@ dot_agents/                       # → ~/.agents/ (shared agent hub)
   exact_rules/                    #   → ~/.agents/rules/ generated from .chezmoitemplates/agents/rules/
   exact_skills/                   # Pruned-on-apply skill collection
 
-symlink_dot_gitconfig.tmpl        # → symsource_git/gitconfig (externally writable; native git [include]s pull fragments from ~/.config/git/)
+symlink_dot_gitconfig.tmpl        # → symsources/git/gitconfig (externally writable; native git [include]s pull fragments from ~/.config/git/)
 dot_gitignore_global              # → ~/.gitignore_global
 dot_bashrc, dot_zshrc             # Minimal configs (worktrunk init, starship, zoxide)
 dot_profile.tmpl, dot_zprofile.tmpl  # Login shells (SHELL export, darwin SSH agent)
 private_dot_ssh/                  # → ~/.ssh/ (allowed_signers)
 
-# Symlink source dirs (in .chezmoiignore as `symsource_*/`, not deployed as ~/*)
-symsource_nvim/                   # lazy-lock.json, lazyvim.json, spell/en.utf-8.add{,.spl}
-symsource_claude/                 # settings.json
-symsource_yazi/                   # package.toml
-symsource_mise/                   # config-arm64.toml (aube), config-amd64.toml (pnpm) — symlink picks by .chezmoi.arch
-symsource_uv/                     # .python-version
-symsource_aube/                   # config.toml
-symsource_amoxide/                # config.toml, profiles.toml
-symsource_worktrunk/              # config.toml
-symsource_git/                    # gitconfig (root config; [include]s ~/.config/git/*.gitconfig fragments)
+# Symlink sources (ignored as `symsources/`, not deployed as ~/symsources)
+symsources/nvim/                  # lazy-lock.json, lazyvim.json, spell/en.utf-8.add{,.spl}
+symsources/claude/                # settings.json
+symsources/codex/                 # config.toml
+symsources/yazi/                  # package.toml
+symsources/mise/                  # config-arm64.toml (aube), config-amd64.toml (pnpm) — symlink picks by .chezmoi.arch
+symsources/uv/                    # .python-version
+symsources/aube/                  # config.toml
+symsources/amoxide/               # config.toml, profiles.toml
+symsources/herdr/                 # config.toml
+symsources/worktrunk/             # config.toml
+symsources/git/                   # gitconfig (root config; [include]s pull fragments from ~/.config/git/)
 ```
 
 ## Key Patterns
@@ -85,30 +87,32 @@ chezmoi copies by default, which is the right call for almost everything — it 
 
 | Symlinked file | Why | Source dir |
 | --- | --- | --- |
-| `~/.config/nvim/lazy-lock.json` | `:Lazy sync` updates it | `symsource_nvim/` |
-| `~/.config/nvim/lazyvim.json` | LazyVim framework updates it | `symsource_nvim/` |
-| `~/.config/nvim/spell/en.utf-8.add` | nvim writes new words via `zg` | `symsource_nvim/` |
-| `~/.config/nvim/spell/en.utf-8.add.spl` | nvim regenerates the compiled spellfile | `symsource_nvim/` |
-| `~/.claude/settings.json` | Claude Code edits its own settings | `symsource_claude/` |
-| `~/.config/yazi/package.toml` | `ya pkg add` edits it | `symsource_yazi/` |
-| `~/.config/mise/config.toml` | `mise use` edits it | `symsource_mise/config-{arm64,amd64}.toml` |
-| `~/.config/uv/.python-version` | `uv python pin --global` writes it | `symsource_uv/` |
-| `~/.config/aube/config.toml` | `aube config` edits it | `symsource_aube/` |
-| `~/.config/amoxide/config.toml` | `amoxide` CLI edits aliases | `symsource_amoxide/` |
-| `~/.config/amoxide/profiles.toml` | `amoxide` CLI edits profiles | `symsource_amoxide/` |
-| `~/.config/worktrunk/config.toml` | `wt` CLI edits its own config | `symsource_worktrunk/` |
-| `~/.gitconfig` | `git config --global` writes through to source | `symsource_git/` |
+| `~/.config/nvim/lazy-lock.json` | `:Lazy sync` updates it | `symsources/nvim/` |
+| `~/.config/nvim/lazyvim.json` | LazyVim framework updates it | `symsources/nvim/` |
+| `~/.config/nvim/spell/en.utf-8.add` | nvim writes new words via `zg` | `symsources/nvim/` |
+| `~/.config/nvim/spell/en.utf-8.add.spl` | nvim regenerates the compiled spellfile | `symsources/nvim/` |
+| `~/.claude/settings.json` | Claude Code edits its own settings | `symsources/claude/` |
+| `~/.codex/config.toml` | Codex writes trust, hooks, plugins, and skill state | `symsources/codex/` |
+| `~/.config/yazi/package.toml` | `ya pkg add` edits it | `symsources/yazi/` |
+| `~/.config/mise/config.toml` | `mise use` edits it | `symsources/mise/config-{arm64,amd64}.toml` |
+| `~/.config/uv/.python-version` | `uv python pin --global` writes it | `symsources/uv/` |
+| `~/.config/aube/config.toml` | `aube config` edits it | `symsources/aube/` |
+| `~/.config/amoxide/config.toml` | `amoxide` CLI edits aliases | `symsources/amoxide/` |
+| `~/.config/amoxide/profiles.toml` | `amoxide` CLI edits profiles | `symsources/amoxide/` |
+| `~/.config/herdr/config.toml` | `herdr` writes its own config | `symsources/herdr/` |
+| `~/.config/worktrunk/config.toml` | `wt` CLI edits its own config | `symsources/worktrunk/` |
+| `~/.gitconfig` | `git config --global` writes through to source | `symsources/git/` |
 
-Source files live in `symsource_*/` dirs at repo root, excluded by `.chezmoiignore` so chezmoi won't deploy them as top-level home dirs. Each symlink is a `symlink_*.tmpl` file containing `{{ .chezmoi.sourceDir }}/symsource_*/path/to/source`.
+Source files live in `symsources/<tool>/`, excluded by `.chezmoiignore` so chezmoi won't deploy them as `~/symsources`. Each symlink is a `symlink_*.tmpl` file containing `{{ .chezmoi.sourceDir }}/symsources/<tool>/path/to/source`.
 
 > [!NOTE]
-> `symsource_` is a **repo-local naming convention**, not a chezmoi prefix — chezmoi has no built-in behavior tied to it. We use it purely so a single `symsource_*/` glob in `.chezmoiignore` excludes all symlink-target source dirs at once, and so these dirs are visually distinct from the chezmoi-meaningful `symlink_*` prefix used on actual managed files. Glance at a dir name and you immediately know which side of the symlink relationship it's on.
+> `symsources/` is a **repo-local naming convention**, not a chezmoi feature. It keeps externally-written symlink targets out of the root tree while `symlink_*` files stay at their managed target paths.
 
 **When in doubt, copy.** Symlinks add complexity — they bypass template processing, require ignore entries, and create a second thing to reason about. Only reach for them when you'd otherwise lose data (tool writes to the file and chezmoi would overwrite it on next apply).
 
 #### `--one-shot` and ephemeral installs
 
-`chezmoi init --one-shot` purges the source dir after applying, which would dangle every `symsource_*` symlink. Bootstrappers for ephemeral targets (Fly Sprites, exe.dev VMs, Docker images) **must** export `CHEZMOI_ONESHOT=1` before invoking init. The `run_after_99-materialize-symsource-symlinks.sh.tmpl` script picks up the flag and replaces each symlink with a copy of its target before purge fires. Drift back to source is moot in ephemeral envs, so copies are the right shape.
+`chezmoi init --one-shot` purges the source dir after applying, which would dangle every symlink into `symsources/`. Bootstrappers for ephemeral targets (Fly Sprites, exe.dev VMs, Docker images) **must** export `CHEZMOI_ONESHOT=1` before invoking init. The `run_after_99-materialize-symsource-symlinks.sh.tmpl` script picks up the flag and replaces each symlink with a copy of its target before purge fires. Drift back to source is moot in ephemeral envs, so copies are the right shape.
 
 The env var is the only knob — no config-file flag, no template detection. Set it on the parent process; it propagates to chezmoi and to the apply-phase scripts.
 
@@ -182,9 +186,9 @@ Scripts are a surface to minimize. Each is an imperative action that can fail. I
 
 **Linux package philosophy:** apt only, manually curated in `packages.yaml` under `linux.apt.packages`. Linuxbrew is intentionally not used — too heavy for the small-VM Linux use case. Tools not in standard apt repos (yazi, mise, rm-improved, vivid, lsd, zoxide, starship, sd, forgit, lazygit, neovim) are installed via mise or direct binary download. The apt install script checks `dpkg -s` for each package and only fetches what's missing — fast on Sprites/exe machines that arrive pre-loaded. `packy` does **not** manage apt — apt entries are hand-edited in `packages.yaml`.
 
-**JS/TS tooling (mise + arch-specific npm backend):** Node and the four global npm CLIs (`@agentclientprotocol/claude-agent-acp`, `@aredotna/cli`, `@readwise/cli`, `mintlify`) are installed and pinned by mise. The mise config is split by arch — `~/.config/mise/config.toml` is a symlink whose template picks `symsource_mise/config-{{ .chezmoi.arch }}.toml`.
+**JS/TS tooling (mise + arch-specific npm backend):** Node and the four global npm CLIs (`@agentclientprotocol/claude-agent-acp`, `@aredotna/cli`, `@readwise/cli`, `mintlify`) are installed and pinned by mise. The mise config is split by arch — `~/.config/mise/config.toml` is a symlink whose template picks `symsources/mise/config-{{ .chezmoi.arch }}.toml`.
 
-- **arm64 (Apple Silicon):** `aube` is the npm backend ([jdx/aube](https://github.com/jdx/aube)). Installed via mise, set as `npm.package_manager = "aube"` so mise's npm-backend tool installs route through it. Aube reads/writes `pnpm-lock.yaml` in place, so projects with a pnpm lockfile (including ones that pin pnpm via `packageManager`) keep working without pnpm on PATH. The two low-traffic CLIs (`@aredotna/cli`, `@readwise/cli`) are exempted from aube's low-download supply-chain gate in `symsource_aube/config.toml` via `allowedUnpopularPackages`.
+- **arm64 (Apple Silicon):** `aube` is the npm backend ([jdx/aube](https://github.com/jdx/aube)). Installed via mise, set as `npm.package_manager = "aube"` so mise's npm-backend tool installs route through it. Aube reads/writes `pnpm-lock.yaml` in place, so projects with a pnpm lockfile (including ones that pin pnpm via `packageManager`) keep working without pnpm on PATH. The two low-traffic CLIs (`@aredotna/cli`, `@readwise/cli`) are exempted from aube's low-download supply-chain gate in `symsources/aube/config.toml` via `allowedUnpopularPackages`.
 - **amd64 (Intel):** Aube doesn't ship a darwin-amd64 binary yet, so this config drops `aube` and uses `npm.package_manager = "pnpm"`. pnpm comes from Homebrew (already in `packages.yaml`).
 
 Both configs are materialized on a fresh machine by `run_onchange_18-mise-install.sh.tmpl`, which hashes the arch-specific file and re-runs when it changes. Bun and Deno are unchanged — still Homebrew, still owning their own dirs.

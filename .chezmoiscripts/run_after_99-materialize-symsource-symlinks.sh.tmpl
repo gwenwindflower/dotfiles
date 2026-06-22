@@ -1,9 +1,9 @@
 {{ if eq .chezmoi.os "darwin" "linux" -}}
 #!/bin/bash
-# Materialize symsource_* symlinks for ephemeral one-shot installs.
+# Materialize symsource symlinks for ephemeral one-shot installs.
 #
 # `chezmoi init --one-shot` runs apply then purges the source dir. Any
-# symlink that pointed into ~/.local/share/chezmoi/symsource_*/ would
+# symlink that pointed into ~/.local/share/chezmoi/symsources/** would
 # dangle the moment purge fires. When CHEZMOI_ONESHOT=1 is set by the
 # bootstrapper (Fly Sprites, exe.dev VMs, Docker images, etc.), this
 # script replaces those symlinks with copies of their target content
@@ -23,7 +23,7 @@ fi
 
 log_step "Materializing symsource symlinks (CHEZMOI_ONESHOT=1)"
 
-source_prefix={{ printf "%s/symsource_" .chezmoi.sourceDir | quote }}
+source_prefix={{ printf "%s/symsources" .chezmoi.sourceDir | quote }}
 
 # Bound the scan to dirs that actually receive symsource symlinks.
 roots=("$HOME/.claude" "$HOME/.config")

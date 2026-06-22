@@ -182,16 +182,16 @@ glob_scan_max_depth = 4
 # "**/*.pfx" = "deny"
 
 [permissions.workspace-winnie.filesystem."~/.local/share/chezmoi"]
-# "symsource_amoxide/**" = "write"
-"symsource_aube/**" = "write"
-# "symsource_claude/**" = "write"
-# "symsource_codex/**" = "write"
-# "symsource_herdr/**" = "write"
-"symsource_mise/**" = "write"
-# "symsource_nvim/**" = "write"
-# "symsource_uv/**" = "write"
-"symsource_worktrunk/**" = "write"
-# "symsource_yazi/**" = "write"
+# "symsources/amoxide/**" = "write"
+"symsources/aube/**" = "write"
+# "symsources/claude/**" = "write"
+# "symsources/codex/**" = "write"
+# "symsources/herdr/**" = "write"
+"symsources/mise/**" = "write"
+# "symsources/nvim/**" = "write"
+# "symsources/uv/**" = "write"
+"symsources/worktrunk/**" = "write"
+# "symsources/yazi/**" = "write"
 
 # workspace-level secret patterns
 [permissions.workspace-winnie.filesystem.":workspace_roots"]
@@ -307,8 +307,8 @@ trusted_hash = "sha256:c2f38a99e16bc21ab2fbdfd0942d961a7293eccfdd26ca8fe11347224
 trusted_hash = "sha256:ae39455d097e32699e48441ade7671d9db5b80b17943aa3cc0901386b714a896"
 
 [marketplaces.worktrunk]
-last_updated = "2026-06-21T01:23:22Z"
-last_revision = "9147c0e46d58ddd4dfa99cad1b967ff5f00f0c7a"
+last_updated = "2026-06-22T01:22:43Z"
+last_revision = "c5c2742058d77e55308c011ca6719aaf0e3047fa"
 source_type = "git"
 source = "https://github.com/max-sixty/worktrunk.git"
 

@@ -79,5 +79,5 @@
   "vim-tmux-navigator": { "branch": "master", "commit": "e41c431a0c7b7388ae7ba341f01a0d217eb3a432" },
   "which-key.nvim": { "branch": "main", "commit": "3aab2147e74890957785941f0c1ad87d0a44c15a" },
   "yanky.nvim": { "branch": "main", "commit": "020c22d0cfa60358569e49d1d7b91630f175aef0" },
-  "yazi.nvim": { "branch": "main", "commit": "3c7229b0b86fe7a6fadcb89d66ea57423cc21904" }
+  "yazi.nvim": { "branch": "main", "commit": "a6e1397726624f0fb0f3a8f28fe09b36705bca6f" }
 }

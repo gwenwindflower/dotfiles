@@ -233,7 +233,7 @@ Every allowed custom profile must be defined in a loaded config or requirements 
 
 ## Checklist
 
-1. Choose the target layer: `symsource_codex/config.toml`, trusted `.codex/config.toml`, selected `~/.codex/<profile>.config.toml`, or managed `requirements.toml`.
+1. Choose the target layer: `symsources/codex/config.toml`, trusted `.codex/config.toml`, selected `~/.codex/<profile>.config.toml`, or managed `requirements.toml`.
 2. Search loaded layers for `sandbox_mode`, `[sandbox_workspace_write]`, selected `--profile` files, and `--sandbox` usage.
 3. Use a built-in profile for simple cases; define custom profiles only for reusable filesystem/network carveouts.
 4. Translate filesystem access first: workspace writes, temp access, cache/tool access, credential denies.
@@ -242,7 +242,7 @@ Every allowed custom profile must be defined in a loaded config or requirements 
 7. Parse TOML and dry-run chezmoi:
 
 ```bash
-python3 -c 'import sys,tomllib; tomllib.load(open(sys.argv[1], "rb"))' symsource_codex/config.toml
+python3 -c 'import sys,tomllib; tomllib.load(open(sys.argv[1], "rb"))' symsources/codex/config.toml
 chezmoi --dry-run --no-pager diff
 ```
 

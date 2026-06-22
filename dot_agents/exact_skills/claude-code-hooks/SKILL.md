@@ -10,7 +10,7 @@ Hooks fire on tool events (PreToolUse, PostToolUse, SubagentStart, TaskCompleted
 ## Authoring a hook
 
 1. Drop the script in `~/.claude/hooks/` (source: `dot_claude/exact_hooks/`). Prefix `executable_` if it's invoked directly.
-2. Wire it into `~/.claude/settings.json` (source: `symsource_claude/settings.json`) under the matching event.
+2. Wire it into `~/.claude/settings.json` (source: `symsources/claude/settings.json`) under the matching event.
 3. Trigger the event in a session and confirm behavior.
 
 Reference: [hooks guide](https://code.claude.com/docs/en/hooks-guide), [hooks config](https://code.claude.com/docs/en/hooks).
