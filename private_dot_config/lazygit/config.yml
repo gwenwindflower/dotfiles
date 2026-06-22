@@ -91,7 +91,7 @@ customCommands:
             value: "revert"
             key: "z"
           - name: "🤖 ai agents"
-            value: "agent"
+            value: "agents"
             key: "a"
       - type: "input"
         title: "Scope (optional):"
