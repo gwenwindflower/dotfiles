@@ -1,5 +1,8 @@
 .DS_Store
-.env*
+.env
+.env.local
+.env.*.local
+.env.dev*
 *.env
 *.pem
 *.id_rsa
