@@ -1,0 +1,23 @@
+{
+	"trustedtaps": [
+		"charmbracelet/tap",
+		"columnar-tech/tap",
+		"databricks/tap",
+		"dbcli/tap",
+		"jesseduffield/lazydocker",
+		"lightdash/lightdash",
+		"mutagen-io/mutagen",
+		"oven-sh/bun",
+		"pulumi/tap",
+		"redpanda-data/tap",
+		"sassman/tap",
+		"supermodellabs/tap"
+	],
+	"trustedformulae": [
+		"bro3886/tap/rem-cli",
+		"denisotree/tuitab/tuitab",
+		"huseyinbabal/tap/taws",
+		"withgraphite/tap/graphite",
+		"yakitrak/yakitrak/notesmd-cli"
+	]
+}
