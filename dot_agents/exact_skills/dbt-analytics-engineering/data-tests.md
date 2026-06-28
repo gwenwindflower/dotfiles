@@ -1,14 +1,14 @@
 # Data Tests
 
-High-value tests that catch real issues without burning credits on low-signal checks. SKILL.md has the 4-tier priority summary; this expands on placement, discovery mapping, cost control.
+Add tests where the risk originates. Do not duplicate tests for pass-through columns.
 
-> **v2/Fusion:** generic test arguments must nest under `arguments:` (see [cli-commands-reference.md](cli-commands-reference.md)). Examples below use the current syntax.
+> v2/Fusion generic test arguments must nest under `arguments:`. Examples use current syntax.
 
-## Placement by layer
+## Placement
 
-Test where risk originates — don't duplicate for pass-through columns.
+### Staging
 
-### Staging — structural integrity, source hygiene
+Structural integrity and source hygiene:
 
 ```yaml
 models:
@@ -32,7 +32,9 @@ models:
                 values: ['pending', 'completed', 'cancelled']
 ```
 
-### Intermediate — only when grain changes
+### Intermediate
+
+Test only when grain changes. If an internal CTE changes grain and needs tests, extract it as a model.
 
 ```yaml
 models:
@@ -45,9 +47,9 @@ models:
           - not_null
 ```
 
-If a CTE inside a model changes grain, pull it out as its own model so it's independently testable.
+### Marts
 
-### Marts — business expectations
+Test business expectations:
 
 ```yaml
 models:
@@ -58,19 +60,19 @@ models:
             expression: "total_amount >= 0 or is_refund = true"
 ```
 
-## Mapping discovery to tests
+## Discovery to Tests
 
-Use `dbt show` findings, never guess.
+Use `dbt show` findings; do not guess.
 
 | Discovery finding | Test |
 | --- | --- |
 | Verified unique, no nulls | `unique` + `not_null` |
-| X% orphan records | `relationships` with `severity: warn` if >1% |
+| Foreign-key orphans matter | `relationships`; use `severity: warn` only with intent |
 | Small known value set | `accepted_values` |
-| Y% null rate | **Skip** `not_null` — nulls are expected |
-| Creation date always in past | `dbt_utils.accepted_range` |
+| Meaningful nullable field | Skip `not_null`; document null meaning |
+| Date or amount bounded by business rule | `dbt_utils.accepted_range` |
 
-## Cost-conscious testing
+## Cost Control
 
 Scope expensive tests with `where`:
 
@@ -83,11 +85,7 @@ Scope expensive tests with `where`:
       where: "created_at >= current_date - interval '7 days'"
 ```
 
-Combine with `target.name` dev limits (SKILL.md) to keep iteration fast.
-
-## Documenting debug paths
-
-Non-obvious tests need a first step on failure:
+Non-obvious tests should include a first debug step:
 
 ```yaml
 - dbt_utils.expression_is_true:
@@ -95,13 +93,13 @@ Non-obvious tests need a first step on failure:
       expression: "total_amount >= 0 or is_refund = true"
     description: |
       Negative totals indicate calculation errors.
-      Debug: 1. Query failed rows  2. Check line_items in staging  3. Verify discount logic
+      Debug: query failed rows, then inspect line item discounts and refunds.
 ```
 
-## Common mistakes
+## Avoid
 
-- **Over-testing business logic with data tests.** Data tests check data; unit tests check logic.
-- **Guessing at `accepted_values`.** Always verify via `dbt show` during discovery.
-- **Stacking `expression_is_true` on one model.** Pick the one critical invariant.
-- **`not_null` on every column.** Low signal, high cost. Only when discovery confirms 0% nulls and regression would matter.
-- **`unique` on non-PK columns.** Almost always wrong.
+- Guessing at `accepted_values`.
+- Using data tests for SQL logic that needs unit tests.
+- Stacking many `expression_is_true` tests on one model.
+- Blanket `not_null` on nullable business fields.
+- `unique` on non-key columns.

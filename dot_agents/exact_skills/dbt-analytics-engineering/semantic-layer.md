@@ -1,110 +1,96 @@
 # Semantic Layer
 
-Routing + concepts for semantic models, entities, dimensions, metrics. Pick a spec, use the matching reference.
+Route semantic-model work to the right YAML spec, then build from business question -> model grain -> entities/dimensions -> metrics.
 
-## Components
+## Concepts
 
-- **Semantic model** — metadata mapping a dbt model to a business concept.
-- **Entities** — keys defining grain and enabling joins.
-- **Dimensions** — attributes for filter/group (`categorical` or `time`).
-- **Metrics** — business calculations on top of semantic models.
+| Component | Purpose |
+| --- | --- |
+| Semantic model | Maps a dbt model to a business concept |
+| Entity | Key that defines grain and enables joins |
+| Dimension | Attribute used for filters or group-bys |
+| Metric | Business calculation on top of semantic models |
 
-## Two specs
+## Pick One Spec
 
 | Spec | Supported by | Shape |
 | --- | --- | --- |
-| **Current** | v2, Fusion, Core 1.12+ | `semantic_model:` nested under `models:`; simple metrics replace measures |
-| **Legacy** | Core 1.11 (last Python release) | Top-level `semantic_models:`; measures as building blocks; `type_params` wrappers |
+| Current | v2, Fusion, Core 1.12+ | `semantic_model:` nested under `models:` |
+| Legacy | Core 1.11 | Top-level `semantic_models:` with measures and `type_params` |
 
-Detect spec by shape:
+Detection:
 
-- Top-level `semantic_models:` key → **legacy** ([semantic-layer-legacy-spec.md](semantic-layer-legacy-spec.md))
-- `semantic_model:` nested under a model → **current** ([semantic-layer-latest-spec.md](semantic-layer-latest-spec.md))
+- Top-level `semantic_models:` -> [Legacy Semantic Spec](semantic-layer-legacy-spec.md)
+- `semantic_model:` under a model -> [Current Semantic Spec](semantic-layer-latest-spec.md)
 
-### Routing
+Routing:
 
 | Situation | Action |
 | --- | --- |
-| Legacy syntax on 1.11 | Use legacy spec. Offer upgrade to current via `uvx dbt-autofix deprecations --semantic-layer`. |
-| Legacy syntax on v2/Fusion/1.12+ | Compatible for backward compat, but new work goes in current spec. Recommend migration. |
-| Current syntax on 1.12+ / v2 / Fusion | Use current spec. |
-| Current syntax on 1.11 | Incompatible — help upgrade to 1.12+ first. |
-| No semantic layer yet | Use current spec. |
+| Legacy syntax on 1.11 | Use legacy; offer `uvx dbt-autofix deprecations --semantic-layer` |
+| Legacy syntax on 1.12+/v2/Fusion | Compatible, but new work should migrate to current |
+| Current syntax on 1.12+/v2/Fusion | Use current |
+| Current syntax on 1.11 | Upgrade dbt first |
+| No semantic layer | Use current |
 
-Mixing specs in one project is forbidden — pick one.
+Do not mix specs in one project.
 
-## Best practices baked in
+## Defaults
 
-- **One semantic model per mart.** Keep marts narrower (normalized) when adopting the Semantic Layer — MetricFlow joins, so wide marts duplicate work.
-- **One primary entity per semantic model.** Singular naming (`order` not `order_id`) with `expr:` pointing at the actual `_id` column.
-- **At least one primary time dimension** when metrics exist; declare the default via `agg_time_dimension`.
-- **Define small reusable measures**, not aggregations baked into a single metric — required for ratio/derived flexibility.
-- **Components in order:** entities → dimensions → metrics. Reads like a build script and matches the spec layout.
-- **Prefer normalization**; let MetricFlow denormalize at query time for end users.
-- **Compute in metrics, not rollups.** No frozen pre-aggregations.
-- **Build simple metrics first**, then advance to ratio / derived / cumulative / conversion.
+- One semantic model per mart.
+- One primary entity per semantic model; use singular names (`order`) and `expr:` for `_id` columns.
+- Every metrics-bearing semantic model needs a primary time dimension and `agg_time_dimension`.
+- Keep marts narrower for semantic-layer projects; MetricFlow joins at query time.
+- Define simple metrics first, then ratio, derived, cumulative, or conversion metrics.
+- Compute in metrics, not pre-aggregated rollups.
+- Order components entities -> dimensions -> metrics.
 
-## Entry points
+## Entry Points
 
-- **Business question first.** User describes a need ("track CLV by segment"). Search models by name, description, columns. Confirm model, then entities → dimensions → metrics.
-- **Model first.** User specifies a model. Read SQL + YAML, identify grain, suggest dimensions from column types, ask what to measure.
-- **Open-ended.** User asks to "build the semantic layer". Identify high-importance marts, propose metrics + dimensions, confirm.
+| User starts with | Agent flow |
+| --- | --- |
+| Business question | Search models by name/description/columns, confirm model, then define entities, dimensions, metrics |
+| Specific model | Read SQL/YAML, identify grain, suggest dimensions, ask what to measure |
+| "Build the semantic layer" | Identify important marts, propose metrics/dimensions, confirm |
 
-## Metric types (both specs)
+## Metric Types
 
-| Type | Purpose | Notes |
+| Type | Purpose | Note |
 | --- | --- | --- |
-| **Simple** | Aggregate a single column | Most common. Building block for everything else. |
-| **Ratio** | Numerator / denominator | Both can have filters. |
-| **Derived** | Combine metrics with math | Profit (`revenue - cost`), growth (`offset_window`). |
-| **Cumulative** | Running totals / windowed aggs | Requires a [time spine](time-spine.md). `window` (trailing) **OR** `grain_to_date` (MTD/YTD) — not both. |
-| **Conversion** | Funnel A → B | Matches entities within a time window. `constant_properties` for cross-event dimension matching. |
+| Simple | Aggregate a single expression | Building block for other metrics |
+| Ratio | Numerator / denominator | Inputs can have filters |
+| Derived | Metric math | Supports aliases and offsets |
+| Cumulative | Running totals or windows | Requires [Time Spine](time-spine.md); `window` xor `grain_to_date` |
+| Conversion | Funnel A -> B | Matches entities within a time window |
 
-## Filtering
+## Filters
 
-Filters reference declared dimensions/entities, never raw columns:
+Filters reference declared dimensions, entities, or metrics, not raw columns:
 
 ```text
-filter: |
-  {{ Dimension('primary_entity__dimension_name') }} > 100
-
-filter: |
-  {{ TimeDimension('time_dimension', 'granularity') }} > '2026-01-01'
-
-filter: |
-  {{ Entity('entity_name') }} = 'value'
-
-filter: |
-  {{ Metric('metric_name', group_by=['entity_name']) }} > 100
+{{ Dimension('primary_entity__dimension_name') }} > 100
+{{ TimeDimension('time_dimension', 'granularity') }} > '2026-01-01'
+{{ Entity('entity_name') }} = 'value'
+{{ Metric('metric_name', group_by=['entity_name']) }} > 100
 ```
 
-## Validation
-
-Two stages — both must pass:
-
-1. **`dbt parse`** — confirms YAML syntax and refs.
-2. **`dbt sl validate`** — semantic manifest validity.
-
-`dbt sl` is the unified CLI for both engines (replaces standalone `mf` from older setups). Re-run `dbt parse` after YAML edits before `dbt sl validate` — it reads the compiled manifest.
-
-## Development workflow
+## Validate
 
 ```bash
-dbt parse                                                       # Refresh manifest
-dbt sl list dimensions --metrics <metric_name>                  # Inspect
-dbt sl query --metrics <metric_name> --group-by <dimension>     # Test query
-dbt sl validate                                                 # Final check
+dbt parse
+dbt sl validate
+dbt sl query --metrics <metric_name> --group-by <dimension>
 ```
 
-## Common pitfalls
+`dbt sl` is the unified CLI for both engines. Re-run `dbt parse` after YAML edits because `dbt sl validate` reads the compiled manifest.
+
+## Pitfalls
 
 | Pitfall | Fix |
 | --- | --- |
-| Missing time dimension | Every semantic model with metrics needs one |
-| `window` + `grain_to_date` together | Cumulative metrics support only one |
-| Mixing spec syntax | Don't put `type_params` in current spec or direct keys in legacy |
-| Filtering on a raw column | Only declared dimensions / entities work |
-| Stale `dbt sl validate` | Re-run `dbt parse` first |
-| Pre-computing rollups | Define as metrics |
-| Mixing specs in one project | Pick one |
-| Wide marts feeding semantic layer | Normalize marts when adopting the Semantic Layer |
+| Missing time dimension | Add one before defining time-based metrics |
+| `window` + `grain_to_date` together | Pick one |
+| Filtering on raw columns | Declare a dimension/entity first |
+| Stale semantic validation | Re-run `dbt parse` |
+| Precomputed rollups | Define metrics instead |
+| Wide marts feeding MetricFlow | Normalize marts |

@@ -1,68 +1,62 @@
 # Debugging dbt Errors
 
-## Logs and artifacts
+Start with the cheapest command that can reproduce the failure, then inspect the artifact closest to the error.
 
-| Artifact | Contains |
+## Artifacts
+
+| Artifact | Use |
 | --- | --- |
-| `logs/dbt.log` | All queries, error context. Most recent at the bottom. |
-| `target/run_results.json` | Status of each model in the last invocation |
+| `logs/dbt.log` | Full SQL and adapter error context; newest entries at bottom |
+| `target/run_results.json` | Node status, timing, compiled SQL references |
 | `target/compiled/` | Rendered model SQL as SELECTs |
-| `target/run/` | Rendered SQL inside DDL (`CREATE TABLE AS SELECT`) |
+| `target/run/` | Rendered DDL or materialization SQL |
 
 ```bash
 jq '.results[] | select(.status != "success")' target/run_results.json
 ```
 
-## Error classes
+## Error Classes
 
 ### Project / YAML
 
 ```text
 error: dbt1013: YAML error: did not find expected key at line 14 column 7
-  --> models/anchor_tests.yml:14:7
 ```
 
-Fix the YAML. Many YAML errors under v2/Fusion come from deprecated shapes — see the deprecation tables in [cli-commands-reference.md](cli-commands-reference.md), then try `uvx dbt-autofix deprecations`.
+Fix YAML first. If the project is on v2/Fusion or preparing for it, check deprecated config shapes in [CLI Reference](cli-commands-reference.md) and consider `uvx dbt-autofix deprecations`.
 
-### Model code / SQL
+### Model Code / SQL
 
 ```text
 error: dbt0101: mismatched input 'orders' expecting one of 'SELECT', 'TABLE', '('
-  --> models/marts/customers.sql:9:1 (target/compiled/models/marts/customers.sql:9:1)
 ```
 
-Check `target/compiled/` for the rendered SQL — that's the actual error context. Fusion's SQL comprehension catches more than Python Core; if a column or function ref is wrong, Fusion will say so at compile time.
+Open the rendered SQL under `target/compiled/`; debug that SQL, not the unrendered model. Fusion catches more SQL issues at compile time than Python Core.
 
-### Unit test failures
+### Unit Test Failures
 
 ```text
 actual differs from expected:
-
-@@,location_id,location_name,opened_date
-  ,1          ,Vice City    ,2016-09-01 00:00:00
-->,2          ,San Andreas  ,2079-10-27 00:00:00->2079-10-27 23:59:59.999900
+->,2,San Andreas,2079-10-27 00:00:00->2079-10-27 23:59:59.999900
 ```
 
-Either the test is wrong or the model has a bug. Review both.
+Compare the expected fixture to the intended logic. Either the test expectation is wrong or the model is.
 
-### Data test failures
+### Data Test Failures
 
 ```text
 Failure in test accepted_values_customers_customer_type__new__returning
   Got 1 result, configured to fail if != 0
-  compiled code at target/compiled/.../accepted_values_...sql
 ```
 
-Resolve by transforming data in staging. **Do not remove or weaken a test without explicit permission.**
+Query the compiled failed-test SQL. Fix the data transformation where the bad value originates. Do not remove or weaken a test without explicit permission.
 
-## Verification ladder
+## Verification Ladder
 
-Cheapest first:
-
-| Command | Cost | Use when |
+| Command | Cost | Catches |
 | --- | --- | --- |
-| `dbt parse` | Free | YAML / project config |
-| `dbt compile --select model` | Low | SQL syntax (Fusion catches far more) |
-| `dbt build --select model` | Medium | Logic + tests |
+| `dbt parse` | Free | YAML and project config |
+| `dbt compile --select model` | Low | Jinja and SQL syntax |
+| `dbt build --select model` | Medium | Run behavior and tests |
 
-Always `--select` for warehouse commands.
+Always scope warehouse commands with `--select`.
