@@ -121,7 +121,7 @@ abbr --add brx brewdo
 abbr --add bri "brew update; brew install"
 abbr --add brrm brew uninstall
 abbr --add brup brew upgrade
-abbr --add brcup "brew update; brew upgrade; brew cleanup"
+abbr --add brcup "brew update; brew upgrade --no-ask; brew cleanup"
 abbr --add brs brew search
 abbr --add brc brew cleanup
 abbr --add brcl brew cleanup
