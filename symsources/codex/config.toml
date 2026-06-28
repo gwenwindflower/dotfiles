@@ -1,3 +1,6 @@
+#:schema https://developers.openai.com/codex/config-schema.json
+#:tombi schema.strict = false
+
 model = "gpt-5.5"
 personality = "pragmatic"
 approval_policy = "on-request"
