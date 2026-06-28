@@ -38,7 +38,8 @@ status_line = [
   "branch-changes",
   "five-hour-limit",
   "weekly-limit",
-  "task-progress"
+  "task-progress",
+  "context-used"
 ]
 status_line_use_colors = true
 
