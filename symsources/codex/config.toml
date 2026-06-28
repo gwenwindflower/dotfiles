@@ -435,12 +435,12 @@ NODE_REPL_NODE_MODULE_DIRS = "/Applications/Codex.app/Contents/Resources/cua_nod
 NODE_REPL_NODE_PATH = "/Applications/Codex.app/Contents/Resources/cua_node/bin/node"
 NODE_REPL_TRUSTED_CODE_PATHS = "/Users/winnie/.codex"
 CODEX_HOME = "/Users/winnie/.codex"
-NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "2c20141b13bec5a64cd2874d8e2df011430d5b1a70e4f5425aa10d01743311a8"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "5504c0782b5c86b7dd08314045b9843e973a230e1be8f7e2e0ba3716fc63c55e"
 BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
 NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.616.51431"
+BROWSER_USE_CODEX_APP_VERSION = "26.616.81150"
 CODEX_CLI_PATH = "/Applications/Codex.app/Contents/Resources/codex"
 
 [mcp_servers.indi]
@@ -566,3 +566,42 @@ trust_level = "trusted"
 
 [projects."/Users/winnie/dev/_work/analytics"]
 trust_level = "trusted"
+
+[projects."/Users/winnie/dev/herdir"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/_work/prompts"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/_work/lightdash"]
+trust_level = "trusted"
+
+[apps._default]
+enabled = false
+
+[apps.asdk_app_69d88b99c5c481918e8da9225737e1e9]
+enabled = false
+
+[apps.connector_openai_botmail]
+enabled = false
+
+[apps.asdk_app_6981f663d5cc8191ae0d5717a05ccc89]
+enabled = false
+
+[apps.asdk_app_6a19d5012d308191a00a48780f7dcdcc]
+enabled = false
+
+[apps.asdk_app_6981220f09208191afc299c6cb7a4979]
+enabled = false
+
+[apps.asdk_app_69c18c28f1188191bf5b8445c4ab0a2e]
+enabled = false
+
+[apps.asdk_app_69a1d78e929881919bba0dbda1f6436d]
+enabled = false
+
+[apps.asdk_app_69a089a326dc8191b32a3f2553f5be2c]
+enabled = true
+
+[apps.connector_76869538009648d5b282a4bb21c3d157]
+enabled = true
