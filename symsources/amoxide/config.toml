@@ -10,6 +10,7 @@ ghsldw = 'gh search code --web "{{1}} repo:lightdash/lightdash"'
 gri = "git rebase -i --autosquash HEAD~{{1}}"
 ltd = "lsd --tree --depth={{1}}"
 pport = "lsof -i :{{1}}"
+ski = "aubx skills add {{1}}"
 spc = "sprite console -s {{1}}"
 spd = "sprite destroy"
 spls = "sprite list"
