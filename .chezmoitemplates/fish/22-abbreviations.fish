@@ -153,8 +153,6 @@ abbr --add cl! claude --allow-dangerously-skip-permissions
 abbr --add clc! claude -c --allow-dangerously-skip-permissions
 abbr --add clcf "ee $HOME/.claude"
 abbr --add ccu bunx ccusage@latest
-## skills
-abbr --add sku skillutil
 # obsiidian and notes
 abbr --add notes "ee ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents"
 abbr --add ob notesmd-cli
