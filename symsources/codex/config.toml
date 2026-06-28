@@ -324,8 +324,8 @@ trusted_hash = "sha256:c2f38a99e16bc21ab2fbdfd0942d961a7293eccfdd26ca8fe11347224
 trusted_hash = "sha256:ae39455d097e32699e48441ade7671d9db5b80b17943aa3cc0901386b714a896"
 
 [marketplaces.worktrunk]
-last_updated = "2026-06-22T01:22:43Z"
-last_revision = "c5c2742058d77e55308c011ca6719aaf0e3047fa"
+last_updated = "2026-06-27T02:48:52Z"
+last_revision = "6fc6b37b6b5b8a4f68b94835e6086ee7122d79cc"
 source_type = "git"
 source = "https://github.com/max-sixty/worktrunk.git"
 
@@ -336,12 +336,12 @@ source_type = "git"
 source = "https://github.com/modelcontextprotocol/ext-apps.git"
 
 [marketplaces.openai-bundled]
-last_updated = "2026-06-21T01:22:57Z"
+last_updated = "2026-06-25T08:56:11Z"
 source_type = "local"
 source = "/Users/winnie/.codex/.tmp/bundled-marketplaces/openai-bundled"
 
 [marketplaces.openai-primary-runtime]
-last_updated = "2026-06-21T01:21:31Z"
+last_updated = "2026-06-24T06:04:28Z"
 source_type = "local"
 source = "/Users/winnie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
 
@@ -380,25 +380,25 @@ GIT_CONFIG_KEY_2 = "user.name"
 GIT_CONFIG_VALUE_2 = "Codex (winnie)"
 
 [plugins."mcp-apps@mcp-apps"]
-enabled = true
+enabled = false
 
 [plugins."worktrunk@worktrunk"]
 enabled = true
 
 [plugins."documents@openai-primary-runtime"]
-enabled = true
+enabled = false
 
 [plugins."spreadsheets@openai-primary-runtime"]
-enabled = true
+enabled = false
 
 [plugins."presentations@openai-primary-runtime"]
-enabled = true
+enabled = false
 
 [plugins."computer-use@openai-bundled"]
 enabled = false
 
 [plugins."pdf@openai-primary-runtime"]
-enabled = true
+enabled = false
 
 [plugins."attio@openai-curated"]
 enabled = true
@@ -407,9 +407,6 @@ enabled = true
 enabled = true
 
 [plugins."build-web-data-visualization@openai-curated"]
-enabled = true
-
-[plugins."cloudflare@openai-curated"]
 enabled = true
 
 [plugins."fal@openai-curated"]
@@ -424,8 +421,7 @@ enabled = true
 [plugins."browser@openai-bundled"]
 enabled = true
 
-[[skills.config]]
-path = "/Users/winnie/.agents/skills/dogfood/SKILL.md"
+[plugins."template-creator@openai-primary-runtime"]
 enabled = false
 
 [mcp_servers.node_repl]
@@ -447,17 +443,33 @@ BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
 BROWSER_USE_CODEX_APP_VERSION = "26.616.51431"
 CODEX_CLI_PATH = "/Applications/Codex.app/Contents/Resources/codex"
 
-[mcp_servers.lightdash]
-url = "https://analytics.lightdash.cloud/api/v1/mcp"
+[mcp_servers.indi]
+enabled = true
+command = "indi"
+args = ["mcp", "serve"]
 
-[mcp_servers.lightdash_docs]
-url = "https://docs.lightdash.com/mcp"
+[mcp_servers.indi.env]
+INDI_SEARCH__ENABLED_MODES = '["fts", "vector", "rrf"]'
+INDI_INDEX__PATH = "/Users/winnie/dev/_supermodel/_clients/indivisible/indi/.lancedb"
+INDI_SEARCH__DEFAULT_MODE = "rrf"
+INDI_GRAPH__ROOT = "/Users/winnie/dev/_supermodel/_clients/indivisible/indi/ctx"
+INDI_EMBEDDING__MODEL_PATH = "/Users/winnie/dev/_supermodel/_clients/indivisible/indi/models/embedding/nomic-embed-text-v1.5.f16.gguf"
+INDI_INDEX__BACKEND = "lancedb"
+INDI_WAREHOUSE__BACKEND = "bigquery"
+INDI_WAREHOUSE__LOCATION = "US"
+INDI_WAREHOUSE__CREDENTIALS_PATH = "/Users/winnie/dev/_supermodel/_clients/indivisible/indi/.secrets/bq_service_account_keyfile.json"
+INDI_COST__MAX_BYTES_BILLED = "1_500_000_000"
+INDI_WAREHOUSE__PROJECT = "proj-tmc-mem-in"
+INDI_WAREHOUSE__DEFAULT_DATASET = "dbt"
 
-[mcp_servers.linear]
-url = "https://mcp.linear.app/mcp"
-
-[mcp_servers.bigquery]
-url = "https://bigquery.googleapis.com/mcp"
+# [mcp_servers.lightdash]
+# url = "https://analytics.lightdash.cloud/api/v1/mcp"
+#
+# [mcp_servers.lightdash_docs]
+# url = "https://docs.lightdash.com/mcp"
+#
+# [mcp_servers.bigquery]
+# url = "https://bigquery.googleapis.com/mcp"
 
 [desktop]
 conversationDetailMode = "STEPS_COMMANDS"
