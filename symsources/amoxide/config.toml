@@ -16,6 +16,7 @@ spd = "sprite destroy"
 spls = "sprite list"
 spx = "sprite exec -s {{1}} {{2}}"
 ssx = "ssh -A {{1}}.exe.xyz"
+uvlt = "uv pip tree --depth {{1}}"
 
 [shell.fish]
 use_abbr = true
