@@ -2,7 +2,7 @@
 
 import { Command } from "@cliffy/command";
 import { bold, brightGreen, cyan, red, yellow } from "@std/fmt/colors";
-import { dirname, fromFileUrl, join, normalize } from "@std/path";
+import { basename, dirname, fromFileUrl, join, normalize } from "@std/path";
 import { parse as parseYaml, stringify as stringifyYaml } from "@std/yaml";
 
 export type SplitDirection = "right" | "down";
@@ -205,6 +205,10 @@ function namesMatch(wanted: string | undefined, actual?: string | null) {
   return wanted === undefined || wanted === (actual ?? undefined);
 }
 
+function pathsMatch(wanted: string, actual?: string): boolean {
+  return Boolean(actual && normalize(actual) === wanted);
+}
+
 function panePaths(tab: StoredTab): string[] {
   return Object.values(tab.panes ?? {})
     .map((pane) => pane.cwd)
@@ -216,8 +220,7 @@ export function findStoredWorkspace(
   preset: WorkspacePreset,
 ): StoredWorkspace | undefined {
   return config?.workspaces?.find((workspace) =>
-    normalize(workspace.identity_cwd ?? "") === preset.path &&
-    namesMatch(preset.name, workspace.custom_name)
+    pathsMatch(preset.path, workspace.identity_cwd)
   );
 }
 
@@ -225,10 +228,10 @@ export function findStoredTab(
   workspace: StoredWorkspace | undefined,
   preset: TabPreset,
 ): StoredTab | undefined {
-  return workspace?.tabs?.find((tab) =>
-    namesMatch(preset.name, tab.custom_name) &&
-    panePaths(tab).some((path) => normalize(path) === preset.path)
-  );
+  return workspace?.tabs?.find((tab) => {
+    if (preset.name) return namesMatch(preset.name, tab.custom_name);
+    return panePaths(tab).some((path) => normalize(path) === preset.path);
+  });
 }
 
 export function hasStoredPane(
@@ -564,6 +567,14 @@ function tabId(tab: unknown): string | undefined {
   return textField(tab, ["tab_id", "id"]);
 }
 
+function paneId(pane: unknown): string | undefined {
+  return textField(pane, ["pane_id", "id"]);
+}
+
+function paneTabId(pane: unknown): string | undefined {
+  return textField(pane, ["tab_id"]);
+}
+
 function rootPaneId(tab: unknown): string | undefined {
   if (!isRecord(tab)) return undefined;
   const direct = textField(tab, ["root_pane", "root_pane_id", "pane_id"]);
@@ -598,15 +609,28 @@ function itemName(item: unknown): string | undefined {
   return textField(item, ["label", "name", "custom_name"]);
 }
 
-function matchesPathAndName(
-  item: unknown,
-  path: string | undefined,
-  name: string | undefined,
-): boolean {
+function matchesLiveWorkspace(item: unknown, workspace: WorkspacePreset) {
   const actualPath = itemPath(item);
   const actualName = itemName(item);
-  return (!path || Boolean(actualPath && normalize(actualPath) === path)) &&
-    (!name || actualName === name);
+  const wantedName = workspace.name ?? basename(workspace.path);
+  return pathsMatch(workspace.path, actualPath) || actualName === wantedName;
+}
+
+function matchesLiveTab(item: unknown, tab: TabPreset) {
+  const actualPath = itemPath(item);
+  const actualName = itemName(item);
+  if (tab.name) return actualName === tab.name;
+  return pathsMatch(tab.path, actualPath) || actualName === basename(tab.path);
+}
+
+function livePanePaths(panes: unknown[]): string[] {
+  return panes
+    .map((pane) => itemPath(pane))
+    .filter((path): path is string => typeof path === "string");
+}
+
+function hasLivePanePath(panePathsValue: string[], path: string): boolean {
+  return panePathsValue.some((panePath) => normalize(panePath) === path);
 }
 
 class HerdrCli implements HerdrRunner {
@@ -642,7 +666,7 @@ async function findLiveWorkspaceId(
   const payload = await runSessionJson(runner, session, ["workspace", "list"]);
   const workspaces = jsonArray(payload, ["workspaces"]);
   const match = workspaces.find((item) =>
-    matchesPathAndName(item, workspace.path, workspace.name)
+    matchesLiveWorkspace(item, workspace)
   );
   return workspaceId(match);
 }
@@ -652,7 +676,7 @@ async function findLiveTab(
   session: string,
   workspaceIdValue: string,
   tab: TabPreset,
-): Promise<{ tabId?: string; rootPaneId?: string }> {
+): Promise<{ tabId?: string; rootPaneId?: string; panePaths: string[] }> {
   const payload = await runSessionJson(runner, session, [
     "tab",
     "list",
@@ -660,17 +684,37 @@ async function findLiveTab(
     workspaceIdValue,
   ]);
   const tabs = jsonArray(payload, ["tabs"]);
-  const match = tabs.find((item) =>
-    matchesPathAndName(item, tab.path, tab.name)
-  );
-  return { tabId: tabId(match), rootPaneId: rootPaneId(match) };
+  const match = tabs.find((item) => matchesLiveTab(item, tab));
+  const matchedTabId = tabId(match);
+  if (!matchedTabId) return { panePaths: [] };
+
+  const panesPayload = await runSessionJson(runner, session, [
+    "pane",
+    "list",
+    "--workspace",
+    workspaceIdValue,
+  ]);
+  const tabPanes = jsonArray(panesPayload, ["panes"])
+    .filter((pane) => paneTabId(pane) === matchedTabId);
+  const rootPane =
+    tabPanes.find((pane) => pathsMatch(tab.path, itemPath(pane))) ??
+      tabPanes[0];
+
+  return {
+    tabId: matchedTabId,
+    rootPaneId: paneId(rootPane) ?? rootPaneId(match),
+    panePaths: livePanePaths(tabPanes),
+  };
 }
 
 async function ensureWorkspace(
   runner: HerdrRunner,
   session: string,
   workspace: WorkspacePreset,
+  storedWorkspace?: StoredWorkspace,
 ): Promise<string> {
+  if (storedWorkspace?.id) return storedWorkspace.id;
+
   const existingId = await findLiveWorkspaceId(runner, session, workspace);
   if (existingId) return existingId;
 
@@ -695,9 +739,14 @@ async function ensureTab(
   session: string,
   workspaceIdValue: string,
   tab: TabPreset,
-): Promise<{ tabId?: string; rootPaneId: string }> {
+): Promise<{ tabId?: string; rootPaneId: string; panePaths: string[] }> {
   const existing = await findLiveTab(runner, session, workspaceIdValue, tab);
-  if (existing.rootPaneId) {
+  if (existing.tabId) {
+    if (!existing.rootPaneId) {
+      throw new Error(
+        `herdr did not return panes for existing tab ${existing.tabId}`,
+      );
+    }
     return { ...existing, rootPaneId: existing.rootPaneId };
   }
 
@@ -716,7 +765,11 @@ async function ensureTab(
   if (!created.rootPaneId) {
     throw new Error(`herdr did not return a root pane id for ${session}`);
   }
-  return { tabId: created.tabId, rootPaneId: created.rootPaneId };
+  return {
+    tabId: created.tabId,
+    rootPaneId: created.rootPaneId,
+    panePaths: [tab.path],
+  };
 }
 
 async function splitPane(
@@ -750,6 +803,7 @@ export async function ensureManifest(
     sessionsDir: string;
     runner: HerdrRunner;
     dryRun?: boolean;
+    onMissingSession?: (session: string) => void;
   },
 ): Promise<EnsureStep[]> {
   const sessionNames = manifest.sessions.map((session) => session.name);
@@ -759,16 +813,20 @@ export async function ensureManifest(
 
   for (const session of manifest.sessions) {
     const config = stored.get(session.name);
+    if (!config) {
+      options.onMissingSession?.(session.name);
+      continue;
+    }
     for (const workspace of session.workspaces) {
       const storedWorkspace = findStoredWorkspace(config, workspace);
       const workspaceIdValue = await ensureWorkspace(
         options.runner,
         session.name,
         workspace,
+        storedWorkspace,
       );
 
       for (const tab of workspace.tabs) {
-        const storedTab = findStoredTab(storedWorkspace, tab);
         const liveTab = await ensureTab(
           options.runner,
           session.name,
@@ -777,10 +835,7 @@ export async function ensureManifest(
         );
 
         for (const pane of tab.panes) {
-          if (
-            !paneCoveredByCreatedTab(storedTab, tab, pane) &&
-            !hasStoredPane(storedTab, pane)
-          ) {
+          if (!hasLivePanePath(liveTab.panePaths, pane.path)) {
             await splitPane(
               options.runner,
               session.name,
@@ -806,6 +861,27 @@ function defaultSessionsDir(home: string): string {
   return join(home, ".config", "herdr", "sessions");
 }
 
+function stepPart(name: string | undefined, path: string | undefined): string {
+  return name ?? path ?? "?";
+}
+
+export function formatEnsureStep(step: EnsureStep): string {
+  const workspace = stepPart(step.workspaceName, step.workspacePath);
+  const tab = stepPart(step.tabName, step.tabPath);
+  const pane = stepPart(step.paneName, step.panePath);
+
+  switch (step.type) {
+    case "session":
+      return `create session ${step.session}`;
+    case "workspace":
+      return `create workspace ${step.session}:${workspace}`;
+    case "tab":
+      return `create tab ${step.session}:${workspace}:${tab}`;
+    case "pane":
+      return `split ${step.split} pane ${step.session}:${workspace}:${tab}:${pane}`;
+  }
+}
+
 function printPlan(plan: EnsureStep[]) {
   if (plan.length === 0) {
     log.success("All requested herdr base layouts already exist");
@@ -813,30 +889,7 @@ function printPlan(plan: EnsureStep[]) {
   }
 
   for (const step of plan) {
-    switch (step.type) {
-      case "session":
-        log.info(`create session ${step.session}`);
-        break;
-      case "workspace":
-        log.info(
-          `create workspace ${step.session}:${
-            step.workspaceName ?? step.workspacePath
-          }`,
-        );
-        break;
-      case "tab":
-        log.info(
-          `create tab ${step.session}:${step.tabName ?? step.tabPath}`,
-        );
-        break;
-      case "pane":
-        log.info(
-          `split ${step.split} pane ${step.session}:${
-            step.paneName ?? step.panePath
-          }`,
-        );
-        break;
-    }
+    log.info(formatEnsureStep(step));
   }
 }
 
@@ -864,17 +917,27 @@ export async function main(args: string[] = Deno.args): Promise<number> {
           home,
         );
         const sessionsDir = normalizePresetPath(options.sessionsDir, home);
+        const missingSessions = new Set<string>();
         const plan = await ensureManifest(manifest, {
           sessionsDir,
           runner: new HerdrCli(),
           dryRun: options.dryRun,
+          onMissingSession: (session) => missingSessions.add(session),
         });
+        const appliedSteps = plan.filter((step) =>
+          !missingSessions.has(step.session)
+        );
 
         printPlan(plan);
         if (options.dryRun) {
           log.warn("dry-run only; no herdr commands were run");
-        } else if (plan.length > 0) {
-          log.success(`Applied ${plan.length} additive change(s)`);
+        } else if (appliedSteps.length > 0) {
+          log.success(`Applied ${appliedSteps.length} additive change(s)`);
+        }
+        for (const session of missingSessions) {
+          log.warn(
+            `Skipped missing session ${session}; open or attach it with herdr before rerunning herdir`,
+          );
         }
       } catch (err) {
         log.error(err instanceof Error ? err.message : String(err));

@@ -1,0 +1,117 @@
+sessions:
+  - name: dotfiles
+    workspaces:
+      - name: chezmoi
+        path: ~/.local/share/chezmoi
+        tabs:
+          - name: nvim
+            path: ~/.local/share/chezmoi
+          - name: codex
+            path: ~/.local/share/chezmoi
+      - name: utils
+        path: ~/.local/share/chezmoi/.utils
+        tabs:
+          - name: nvim
+            path: ~/.local/share/chezmoi/.utils
+          - name: codex
+            path: ~/.local/share/chezmoi/.utils
+
+  - name: lightdash
+    workspaces:
+      - name: analytics
+        path: ~/dev/_work/analytics
+        tabs:
+          - name: nvim
+            path: ~/dev/_work/analytics
+          - name: codex
+            path: ~/dev/_work/analytics
+          - name: files
+            path: ~/dev/_work/analytics
+          - name: term
+            path: ~/dev/_work/analytics
+      - name: lq
+        path: ~/dev/_work/analytics/utils/lq
+        tabs:
+          - name: nvim
+            path: ~/dev/_work/analytics/utils/lq
+          - name: codex
+            path: ~/dev/_work/analytics/utils/lq
+          - name: files
+            path: ~/dev/_work/analytics/utils/lq
+          - name: term
+            path: ~/dev/_work/analytics/utils/lq
+      - name: docs
+        path: ~/dev/_work/mintlify-docs
+        tabs:
+          - name: nvim
+            path: ~/dev/_work/mintlify-docs
+          - name: term
+            path: ~/dev/_work/mintlify-docs
+      - name: cloudy
+        path: ~/dev/_work/lightdash-cloud-announcer
+        tabs:
+          - name: term
+            path: ~/dev/_work/lightdash-cloud-announcer
+
+  - name: queria
+    workspaces:
+      - name: queria
+        path: ~/dev/_work/queria
+        tabs:
+          - name: nvim
+            path: ~/dev/_work/queria
+          - name: codex
+            path: ~/dev/_work/queria
+          - name: files
+            path: ~/dev/_work/queria
+          - name: term
+            path: ~/dev/_work/queria
+      - name: rowing-machine
+        path: ~/dev/rowing-machine
+        tabs:
+          - name: nvim
+            path: ~/dev/rowing-machine
+          - name: codex
+            path: ~/dev/rowing-machine
+          - name: files
+            path: ~/dev/rowing-machine
+          - name: term
+            path: ~/dev/rowing-machine
+
+  - name: indi
+    workspaces:
+      - name: indi
+        path: ~/dev/_supermodel/_clients/indivisible/indi
+        tabs:
+          - name: nvim
+            path: ~/dev/_supermodel/_clients/indivisible/indi
+          - name: codex
+            path: ~/dev/_supermodel/_clients/indivisible/indi
+          - name: files
+            path: ~/dev/_supermodel/_clients/indivisible/indi
+          - name: term
+            path: ~/dev/_supermodel/_clients/indivisible/indi
+
+  - name: supermodel
+    workspaces:
+      - name: aloha
+        path: ~/dev/_supermodel/aloha
+        tabs:
+          - name: nvim
+            path: ~/dev/_supermodel/aloha
+          - name: term
+            path: ~/dev/_supermodel/aloha
+      - name: reishi
+        path: ~/dev/_supermodel/reishi
+        tabs:
+          - name: nvim
+            path: ~/dev/_supermodel/reishi
+          - name: term
+            path: ~/dev/_supermodel/reishi
+      - name: rematter
+        path: ~/dev/_supermodel/rematter
+        tabs:
+          - name: nvim
+            path: ~/dev/_supermodel/rematter
+          - name: term
+            path: ~/dev/_supermodel/rematter
