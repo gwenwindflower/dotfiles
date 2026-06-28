@@ -281,16 +281,16 @@ abbr --add micl mise config list
 abbr --add mics mise config set
 abbr --add mipth $HOME/.local/share/mise/installs/
 ### aube
-abbr --add an aube
-abbr --add anx aubx
-abbr --add ani aube install
-abbr --add ana aube add
-abbr --add anrm aube remove
-abbr --add anu aube update
-abbr --add and aubr dev
-abbr --add anb aubr build
-abbr --add anls aube ls
-abbr --add anlsg aube ls -g
+abbr --add au aube
+abbr --add aux aubx
+abbr --add aui aube install
+abbr --add aua aube add
+abbr --add aurm aube remove
+abbr --add auu aube update
+abbr --add aud aubr dev
+abbr --add aub aubr build
+abbr --add auls aube ls
+abbr --add aulsg aube ls -g
 ### node
 abbr --add np npm
 abbr --add npi npm install
