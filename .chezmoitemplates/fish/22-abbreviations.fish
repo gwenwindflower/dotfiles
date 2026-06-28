@@ -346,6 +346,10 @@ abbr --add ghrcd gh repo create --push --private --source .
 abbr --add ghrcl gh repo clone
 abbr --add ghd gh dash
 abbr --add ghdo opo gh dash
+abbr --add ghs gh search
+abbr --add ghsc gh search code
+abbr --add ghscld "gh search code --repo lightdash/lightdash -- "
+abbr --add ghscldw "gh search code --web --repo lightdash/lightdash -- "
 ## critique
 abbr --add gdpp critique
 ## degit
