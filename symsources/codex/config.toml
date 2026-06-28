@@ -1,12 +1,14 @@
 model = "gpt-5.5"
 personality = "pragmatic"
 approval_policy = "on-request"
-approvals_reviewer = "user"
-# Legacy sandboxing is disabled while testing beta permission profiles.
-# sandbox_mode = "workspace-write"
-# [sandbox_workspace_write]
-# network_access = true
-default_permissions = "workspace-winnie"
+approvals_reviewer = "auto_review"
+sandbox_mode = "workspace-write"
+# Waiting for the beta Permissions system to be fully baked
+# It's been a huge pain in the ass the past week or two
+# This is the profile when ready
+# leaving the configs for it in place
+# as they don't hurt anything if the profile is not active
+# default_permissions = "workspace-winnie"
 web_search = "cached"
 project_doc_max_bytes = 65536
 sqlite_home = "~/.codex/sqlite"
@@ -18,6 +20,9 @@ notify = [
   "turn-ended"
 ]
 service_tier = "default"
+
+[sandbox_workspace_write]
+network_access = true
 
 [tui]
 pet = "disabled"
@@ -64,6 +69,7 @@ prevent_idle_sleep = true
 exec_permission_approvals = true
 request_permissions_tool = true
 js_repl = false
+apps = true
 
 [permissions.workspace-winnie]
 extends = ":workspace"
@@ -225,7 +231,10 @@ allow_local_binding = true
 "127.0.0.1" = "allow"
 "agentskills.io" = "allow"
 "amoxide.rs" = "allow"
+"api.attio.com" = "allow"
 "api.github.com" = "allow"
+"api.linear.app" = "allow"
+"api.lightdash.com" = "allow"
 "backend.blacksmith.sh" = "allow"
 "blacksmith.sh" = "allow"
 "bun.com" = "allow"
@@ -242,11 +251,14 @@ allow_local_binding = true
 "developers.openai.com" = "allow"
 "dl.deno.land" = "allow"
 "docs.astral.sh" = "allow"
+"docs.attio.com" = "allow"
 "docs.blacksmith.sh" = "allow"
 "docs.brew.sh" = "allow"
 "docs.deno.com" = "allow"
 "docs.github.com" = "allow"
+"docs.lightdash.com" = "allow"
 "exe.dev" = "allow"
+"files.pythonhosted.org" = "allow"
 "fishshell.com" = "allow"
 "git-cliff.org" = "allow"
 "github.com" = "allow"
@@ -255,6 +267,7 @@ allow_local_binding = true
 "jsr.io" = "allow"
 "lazy.folke.io" = "allow"
 "lazyvim.org" = "allow"
+"linear.app" = "allow"
 "localhost" = "allow"
 "lunarmodules.github.io" = "allow"
 "neovim.io" = "allow"
