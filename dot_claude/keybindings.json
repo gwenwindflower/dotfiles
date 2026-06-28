@@ -5,7 +5,11 @@
 		{
 			"context": "Chat",
 			"bindings": {
-				"alt+e": "chat:externalEditor"
+				"alt+e": "chat:externalEditor",
+				"enter": "chat:newline",
+				"ctrl+enter": "chat:submit",
+				"super+enter": "chat:submit",
+				"alt+enter": "chat:submit"
 			}
 		},
 		{
