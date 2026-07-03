@@ -10,6 +10,8 @@ Loop:
 4. Implement the smallest passing change.
 5. Repeat for the next in-scope edge case.
 
-Match the existing suite's framework, layout, naming, and style. Test only current requirements; do not add speculative fixtures or parameters.
+Match the existing suite's framework, layout, naming, and style. Test the project's goals, specs, and expressed end state; do not add speculative fixtures or parameters.
+
+Tests should prove substantive behavior. Avoid tests that only assert project meta-conditions, implementation plumbing, mocked call counts, file existence, generated boilerplate, or code paths outside the core logic. If a test would still pass while the user-visible requirement is broken, it is noise.
 
 If you find a major unrelated coverage gap, report it before filling it. Use descriptive test names that state condition and expected behavior.

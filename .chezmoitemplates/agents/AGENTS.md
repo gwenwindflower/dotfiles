@@ -12,6 +12,10 @@ Shared user rules for all agent platforms.
 
 {{ template "agents/rules/naming.md" . }}
 
+{{ template "agents/rules/current-state.md" . }}
+
+{{ template "agents/rules/task-restraint.md" . }}
+
 ## Workflow
 
 {{ template "agents/rules/use-tdd.md" . }}
