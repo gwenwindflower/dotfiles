@@ -423,3 +423,5 @@ abbr --add amut am untrust
 abbr --add amx am tui
 abbr --add amu am use
 abbr --add amp am profile
+# mintlify
+abbr --add mint mintlify
