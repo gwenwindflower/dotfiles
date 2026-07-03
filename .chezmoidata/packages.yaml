@@ -67,6 +67,7 @@ packages:
           - gum
           - hcloud
           - herdr
+          - hunk
           - hyperfine
           - imagemagick
           - jq
