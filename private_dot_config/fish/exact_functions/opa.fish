@@ -2,18 +2,31 @@ function opa -d "Switch the active 1Password account (OP_ACCOUNT) for the curren
     argparse h/help s/show -- $argv
     or return
 
-    set -l personal_domain my.1password.com
-    set -l domains_file $OP_ENV_DIR/domains
+    set -l default_domain my.1password.com
+    set -l profiles_file "$OP_ENV_DIR/profiles.toml"
 
-    set -l domains $personal_domain
-    if test -f $domains_file
-        for line in (cat $domains_file)
-            set -l trimmed (string trim -- $line)
-            if test -z "$trimmed"; or test "$trimmed" = "$personal_domain"
-                continue
-            end
-            set -a domains $trimmed
+    set -l profiles default
+    set -l domains $default_domain
+    set -l profile_rows (__op.profile_rows)
+    set -l profile_status $status
+    if test $profile_status -eq 127
+        logirl error "yq not found in PATH"
+        logirl info "Install with: brew install yq"
+        return 127
+    else if test $profile_status -ne 0
+        logirl error "Could not read 1Password profiles from $profiles_file"
+        return 1
+    end
+
+    for row in $profile_rows
+        set -l parts (string split -m 1 \t -- $row)
+        set -l profile $parts[1]
+        set -l domain $parts[2]
+        if test -z "$profile"; or test -z "$domain"; or test "$domain" = "$default_domain"
+            continue
         end
+        set -a profiles $profile
+        set -a domains $domain
     end
 
     if set -q _flag_help
@@ -23,24 +36,26 @@ function opa -d "Switch the active 1Password account (OP_ACCOUNT) for the curren
         logirl help_flag h/help "Show this help"
         logirl help_flag s/show "Print the active account and exit"
         logirl help_header Accounts
-        for d in $domains
-            if test "$d" = "$personal_domain"
-                printf "  %s  (personal)\n" $d
-            else
-                printf "  %s\n" $d
-            end
+        for i in (seq (count $domains))
+            printf "  %s  (%s)\n" $domains[$i] $profiles[$i]
         end
-        logirl help_header "Extra accounts"
-        printf "  Add one domain per line to %s\n" $domains_file
+        logirl help_header "Profile config"
+        printf "  Add profiles to %s:\n" $profiles_file
+        printf "  [work]\n"
+        printf "  domain = \"example.1password.com\"\n"
         return 0
     end
 
     if set -q _flag_show
         if test -z "$OP_ACCOUNT"
             echo "(unset)"
-        else if test "$OP_ACCOUNT" = "$personal_domain"
-            echo "$OP_ACCOUNT (personal)"
         else
+            for i in (seq (count $domains))
+                if test "$OP_ACCOUNT" = "$domains[$i]"
+                    echo "$OP_ACCOUNT ($profiles[$i])"
+                    return 0
+                end
+            end
             echo "$OP_ACCOUNT"
         end
         return 0
@@ -54,15 +69,13 @@ function opa -d "Switch the active 1Password account (OP_ACCOUNT) for the curren
 
     set -l rows
     set -l selected_row
-    for d in $domains
+    for i in (seq (count $domains))
+        set -l d $domains[$i]
         set -l marker ○
         if test "$d" = "$OP_ACCOUNT"
             set marker ●
         end
-        set -l label $d
-        if test "$d" = "$personal_domain"
-            set label "$d  (personal)"
-        end
+        set -l label "$d  ($profiles[$i])"
         set -l row "$marker $label"
         set -a rows $row
         if test "$d" = "$OP_ACCOUNT"
