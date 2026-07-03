@@ -149,6 +149,7 @@ abbr --add cxc codex resume --last
 abbr --add oc opencode
 abbr --add occf "ee $HOME/.config/opencode"
 abbr --add cl claude
+abbr --add clr claude --resume
 abbr --add clc claude -c
 abbr --add cl! claude --allow-dangerously-skip-permissions
 abbr --add clc! claude -c --allow-dangerously-skip-permissions
