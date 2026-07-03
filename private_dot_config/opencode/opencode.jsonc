@@ -1,5 +1,11 @@
 {
 	"$schema": "https://opencode.ai/config.json",
+	"lsp": {
+		"python": {
+			"command": ["ruff", "server"],
+			"extensions": [".py"]
+		}
+	},
 	"permission": {
 		"bash": {
 			"*": "ask",
