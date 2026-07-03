@@ -239,6 +239,7 @@ abbr --add uvpyup uv python upgrade
 abbr --add uvt uv tool
 abbr --add uvti uv tool install
 abbr --add uvtid uv tool install . --reinstall
+abbr --add uvti. uv tool install . --reinstall
 abbr --add uvtu uv tool upgrade
 abbr --add uvr uv run
 abbr --add uvrt uv run pytest
