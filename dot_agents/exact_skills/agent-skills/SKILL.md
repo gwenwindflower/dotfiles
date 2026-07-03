@@ -14,7 +14,9 @@ allowed-tools:
 
 Skills are modular packages that extend agents with specialized workflows, domain knowledge, and bundled resources.
 
-**Be ruthless about terseness.** Every line in SKILL.md is loaded on every trigger. If a sentence doesn't change agent behavior, cut it. Push depth into colocated reference docs.
+**Be ruthless about terseness.** Every line in SKILL.md is loaded on every trigger. If a sentence doesn't change agent behavior, cut it. Push depth into colocated reference docs. Examples are often better than prose. Use links to reference docs for details, not inline explanations.
+
+Load the `agent-context-engineering` skill first if present, it will give you the foundational structure and language for creating agent context of all kinds.
 
 ## Loading model
 
