@@ -26,6 +26,7 @@ abbr --add ppsc procs --sortd usagecpu
 abbr --add pps procs
 # dir and file management
 abbr --add cp. "pwd | fish_clipboard_copy"
+abbr --add cpwd "pwd | fish_clipboard_copy"
 abbr --add mkd mkdir -p
 abbr --add rmd rmdir
 abbr --add mkt mktemp
