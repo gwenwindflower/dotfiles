@@ -5,6 +5,7 @@ node = ["lts", "latest"]
 "npm:@aredotna/cli" = "latest"
 "npm:@readwise/cli" = "latest"
 "npm:mintlify" = "latest"
+"npm:supabase" = "latest"
 
 [settings]
 npm.package_manager = "pnpm"
