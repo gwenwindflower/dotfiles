@@ -6,6 +6,8 @@ aube = "latest"
 "npm:@aredotna/cli" = "latest"
 "npm:@readwise/cli" = "latest"
 "npm:mintlify" = "latest"
+"npm:supabase" = "latest"
+"npm:sfw" = "latest"
 
 [settings]
 npm.package_manager = "aube"
