@@ -192,10 +192,13 @@ abbr --add sqli sqlite3
 abbr --add ld lightdash
 abbr --add ldc lightdash compile
 abbr --add ldcf lightdash config
-abbr --add ldd lightdash deploy
 abbr --add ldp lightdash preview
 abbr --add ldv lightdash validate
 abbr --add ldg lightdash generate
+abbr --add ldup lightdash upload
+abbr --add lddl lightdash download
+abbr --add ldd lightdash deploy
+abbr --add ldl "lightdash deploy; and lightdash upload"
 abbr --add lddb lightdash dbt
 abbr --add lddbbs lightdash dbt build -s
 abbr --add lddbba lightdash dbt build
