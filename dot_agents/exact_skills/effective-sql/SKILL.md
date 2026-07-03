@@ -68,6 +68,19 @@ Pipeline rules:
 - Use positional `group by 1, 2` or `group by all` only when idiomatic for the warehouse and stable for the select list.
 - Prefer the efficient warehouse-specific pattern, not merely valid SQL.
 
+## Review Checks
+
+- For each window function, check partition grain, deterministic ordering, and scan/shuffle cost. Pre-aggregate when it meaningfully reduces windowed data.
+- Prefer `qualify` for window filters; if unsupported, filter in the next CTE rather than nesting.
+- Prefer named CTEs over nested subqueries when they expose grain, filters, or reuse.
+- Avoid correlated subqueries unless the warehouse plan proves they are faster and the intent stays clear.
+- Use warehouse-native syntax when it reads better: `iff`/`if` for simple branches, `qualify` for window filters, `except`/`replace` for projection shaping, and null-safe comparison helpers where available.
+- Avoid short aliases like `orders as o` or `customer_payments as cp`; keep the relation name, or use a semantic role alias for self-joins. In inherited SQL, rewrite when in scope; otherwise flag the style drift.
+- Treat `distinct` as a last resort after checking whether grouping, join grain, window ranking, or a tighter CTE boundary removes duplicates at the source.
+- Tighten `select *` in import and transformation CTEs once the final column list is known. The final `select * from final` is the debugging-friendly exception.
+- Preserve pruning by filtering partition and timestamp columns with range predicates instead of wrapping them in functions; confirm the query plan once performance matters.
+- Make casts and timezone choices explicit at the boundary where data enters the model.
+
 ## Select Lists
 
 Order wide select lists consistently:
