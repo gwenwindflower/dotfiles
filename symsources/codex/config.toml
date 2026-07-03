@@ -44,10 +44,7 @@ status_line = [
 status_line_use_colors = true
 
 [tui.keymap.composer]
-submit = [
-  "ctrl-return",
-  "alt-return",
-]
+submit = ["ctrl-return", "alt-return"]
 queue = "alt-tab"
 
 [tui.keymap.editor]
@@ -324,8 +321,8 @@ trusted_hash = "sha256:c2f38a99e16bc21ab2fbdfd0942d961a7293eccfdd26ca8fe11347224
 trusted_hash = "sha256:ae39455d097e32699e48441ade7671d9db5b80b17943aa3cc0901386b714a896"
 
 [marketplaces.worktrunk]
-last_updated = "2026-06-27T02:48:52Z"
-last_revision = "6fc6b37b6b5b8a4f68b94835e6086ee7122d79cc"
+last_updated = "2026-07-03T22:05:49Z"
+last_revision = "552cc1be6c9e10200bb6108be7da06498367cdd3"
 source_type = "git"
 source = "https://github.com/max-sixty/worktrunk.git"
 
