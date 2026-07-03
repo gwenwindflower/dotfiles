@@ -356,6 +356,8 @@ abbr --add ghs gh search
 abbr --add ghsc gh search code
 abbr --add ghscld "gh search code --repo lightdash/lightdash -- "
 abbr --add ghscldw "gh search code --web --repo lightdash/lightdash -- "
+## shortening my git aliases
+abbr --add gmain git main
 ## critique
 abbr --add gdpp critique
 ## degit
