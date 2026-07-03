@@ -4,6 +4,7 @@ onboarding = false
 agent_panel_scope = "all"
 show_agent_labels_on_pane_borders = true
 
+agent_panel_sort = "priority"
 [ui.toast]
 delivery = "terminal"
 
@@ -16,18 +17,17 @@ accent = "#ca9ee6"
 [keys]
 prefix = "ctrl+space"
 reload_config = ["prefix+alt+r", "prefix+super+r"]
-focus_pane_left = "prefix+h"
-focus_pane_down = "prefix+j"
-focus_pane_up = "prefix+k"
-focus_pane_right = "prefix+l"
+focus_pane_left = ["prefix+h", "shift+alt+h"]
+focus_pane_down = ["prefix+j", "shift+alt+j"]
+focus_pane_up = ["prefix+k", "shift+alt+k"]
+focus_pane_right = ["prefix+l", "shift+alt+l"]
 close_pane = ["prefix+x", "prefix+d"]
-split_vertical = "prefix+|"
+split_vertical = "prefix+\\"
+split_horizontal = "prefix+-"
 new_tab = "prefix+c"
 rename_tab = ["prefix+shift+c", "prefix+ctrl+c"]
 previous_tab = "ctrl+alt+h"
 next_tab = "ctrl+alt+l"
-focus_tab_left = "shift+alt+h"
-focus_tab_right = "shift+alt+l"
 close_tab = ["prefix+shift+x", "prefix+shift+d"]
 new_workspace = "prefix+n"
 rename_workspace = ["prefix+shift+n", "prefix+ctrl+n"]
