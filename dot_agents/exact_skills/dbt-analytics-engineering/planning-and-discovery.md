@@ -1,55 +1,28 @@
 # Planning and Discovery
 
-Plan from the desired output backward, then verify the data before writing production SQL.
+When a user is unclear on the model shape, plan from the desired output backward. Then, verify the data before writing production SQL.
 
 ## Planning Workflow
 
-1. Mock the final output: grain, primary key, columns, sample rows, materialization.
-2. Sketch the SQL shape in pseudocode.
-3. Identify unknowns: date fields, aggregation rules, edge cases, required joins.
-4. Mock the upstream models or sources your SQL needs.
-5. Check existing models before adding new ones.
-6. Write failing unit tests for behavior-heavy logic.
-7. Implement the smallest passing SQL, then verify with `dbt show`.
+1. Mock the final output with the user; nail down grain, primary key, columns, sample rows, and materialization.
+2. Identify unknowns — date fields, aggregation rules, edge cases, required joins — and settle on solutions.
+3. Understand mutability and solidify your approach to it. Look for soft deletes and status columns (`deleted_at`, `is_active`, `user_status`, `order_state`). You may need to build an SCD from an append-only source, or melt append-only logs into a current-state status table. Be clear on both your sources and your output goal. This matters most with incremental models, which add another layer of transformation around these fields.
+4. Identify gaps in upstream dependencies. If new sources or models are needed, apply this same process recursively up the chain, then loop back to the original model.
+5. Write tests to prove the model meets requirements and to guard against regressions; data can change underneath a model without the code changing. Always test primary keys, add relationship tests for foreign keys, and add unit tests for complex column transformations.
 
 Existing-model priority:
 
 | Priority | Scenario | Action |
 | --- | --- | --- |
-| 1 | Exact match exists | Use it |
-| 2 | Partial match | Extend it, then replan if needed |
-| 3 | No match | Add a model with a clear grain |
+| 1 | Model with needed fields exists | Use it |
+| 2 | Model with right grain but missing columns | Extend it and adjust plan, repeat as needed |
+| 3 | No match for needed grain | Add a model with a clear grain |
 
-### Placeholder Columns
-
-Lock the interface early when the final shape is known before the logic:
-
-```sql
-select
-    transaction_date,
-    product_id,
-    cast(null as integer) as quantity_on_hand
-from {{ ref('stg_inventory_transactions') }}
-```
-
-### Planning Note
-
-```markdown
-## Goal
-Daily inventory levels per product.
-
-## Grain
-One row per product per day.
-
-## Transformations
-1. Combine transaction types.
-2. Calculate cumulative quantity.
-3. Keep end-of-day balance.
-```
+The crucial point is to avoid model sprawl. Churning out new models is easy; it's much *better* to be intentional and build flexible models that can be reused across contexts.
 
 ## Data Discovery
 
-Discover every table you build on. Scope first when there are many candidates.
+Get clear on sources when there are many candidates.
 
 ### 1. Inventory Candidate Resources
 
@@ -58,60 +31,24 @@ dbt ls --select "source:ecom.*" --output json
 dbt ls --select "my_model another_model" --output json
 ```
 
-Read existing YAML at `original_file_path`.
+Read related YAML and SQL to understand what exists.
 
 ### 2. Sample and Profile
 
 ```bash
-dbt show --inline "select * from {{ source('source_name', 'table_name') }}" --limit 50 --output json
+dbt show --inline "select * from {{ source('source_name', 'table_name') }}" --limit 10 --output json
 ```
 
-Record column types, identifiers vs. attributes, null rates, and low-cardinality values.
+`--limit` caps returned rows, not necessarily scanned data; use warehouse-supported sampling for large sources when scan cost matters.
 
-### 3. Standard Checks
+Profile what you find:
 
-For each table:
+- Note column types, primary and foreign keys, null rates, and low-cardinality values.
+- Identify columns that need casting, renaming, or dropping in a clean version of the model. When a column is almost what you need, prefer a simple transformation over a new model.
+- Note the relationships you'll need to test and enforce.
+- Validate date and numeric ranges. Filtering out data you don't need (e.g. older than two years) is high-impact — note it.
+- For large tables, consider partitioning at a coarseness that lands individual partitions between 2GB and 50GB; warehouse metadata helps size this.
 
-- Identify the grain.
-- Check duplicate and null primary keys.
-- Validate date and numeric ranges.
-- Profile key columns: distinct count, null rate, min/max.
-- Check foreign-key relationships and orphan rates.
-- Look for soft deletes (`deleted_at`, `is_active`, `status`).
+### 3. Build
 
-## Discovery Report
-
-```markdown
-## Source: {source_name}.{table_name}
-
-- Row count: X
-- Grain: one row per ...
-- Primary key: column_name (verified unique)
-
-| Column | Type | Nulls | Notes |
-| --- | --- | --- | --- |
-| id | integer | 0% | Primary key |
-| status | string | 2% | Values: active, inactive, pending |
-
-## Data Quality
-
-- `status` has 15 rows of "unknown" - clarify mapping.
-- `amount` has negatives - confirm whether refunds create them.
-
-## Relationships
-
-- `user_id` -> `users.id` (5 orphans)
-- `product_id` -> `products.id` (clean)
-
-## Recommended Staging Changes
-
-1. Map or preserve `status = 'unknown'`.
-2. Cast `created_at` to the project timestamp standard.
-```
-
-## Pitfalls
-
-- Column names lie; verify that IDs identify what they claim.
-- Discovery without documentation is wasted context.
-- Relationship tests on samples miss off-sample orphans.
-- Soft deletes change grain and validity; check them early.
+Now both you and the user should have a clear understanding of the model shape, and you can build, fix, or extend the models you need in the most performant and maintainable way possible. The fundamental key is working backward from desired output to available sources, making the minimum necessary changes — not bouncing around the DAG or building new verticals on already-modeled sources when it can be avoided.

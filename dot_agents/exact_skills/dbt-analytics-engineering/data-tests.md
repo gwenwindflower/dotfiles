@@ -96,6 +96,46 @@ Non-obvious tests should include a first debug step:
       Debug: query failed rows, then inspect line item discounts and refunds.
 ```
 
+## Constraints
+
+Constraints are table metadata and, on some adapters, warehouse-enforced checks. They complement data tests; they do not replace tests unless the adapter enforces the exact invariant.
+
+Use constraints when a table or incremental model has a clear contract:
+
+```yaml
+models:
+  - name: customers
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: customer_id
+        data_type: integer
+        constraints:
+          - type: not_null
+          - type: primary_key
+        data_tests:
+          - unique
+          - not_null
+      - name: account_id
+        data_type: integer
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('accounts')
+                field: account_id
+```
+
+Rules:
+
+- Constraints apply to `table` and `incremental` models, not `view` or `ephemeral`.
+- Enforced contracts require `data_type` on every column.
+- `not_null` is the most commonly enforced analytical-warehouse constraint.
+- Primary key, foreign key, unique, and check constraints are often metadata-only; keep data tests for behavior dbt must verify.
+- Foreign-key constraints need adapter-specific care; prefer `relationships` data tests unless the project already uses warehouse FK metadata.
+- Add informational constraints when they improve catalog, lineage, ERD, or optimizer metadata and are cheap to maintain.
+- Use `warn_unenforced: false` or `warn_unsupported: false` only when the metadata value is intentional.
+
 ## Avoid
 
 - Guessing at `accepted_values`.

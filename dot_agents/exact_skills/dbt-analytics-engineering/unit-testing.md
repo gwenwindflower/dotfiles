@@ -65,7 +65,7 @@ given:
 
 ### Incremental Models
 
-Override `is_incremental` and test both full-refresh and incremental paths. For incremental mode, `input: this` is the existing table state; expected rows are what dbt merges or inserts, not the final table.
+Override `is_incremental` and test both full-refresh and incremental paths. For incremental mode, `input: this` is the existing table state; expected rows are what dbt merges or inserts, not the final table. Load [Incremental Models](incremental-models.md) when test expectations depend on incremental state or materialization behavior.
 
 ```yaml
 unit_tests:

@@ -23,7 +23,7 @@ resource-type:unit_test
 dbt build --exclude resource_type:seed
 ```
 
-Valid types include `model`, `test`, `unit_test`, `snapshot`, `seed`, `source`, `exposure`, `metric`, `semantic_model`, `saved_query`, `analysis`, and `function` (v1.11+ UDFs).
+Valid types include `model`, `test`, `unit_test`, `snapshot`, `seed`, `source`, `exposure`, `analysis`, and `function` (v1.11+ UDFs).
 
 `--models` / `-m` are removed under v2/Fusion. Use `--select` / `-s`.
 
@@ -55,22 +55,23 @@ dbt list --select my_model+
 dbt list --select my_model --output json --output-keys unique_id name resource_type config
 ```
 
-Useful JSON keys: `unique_id`, `name`, `resource_type`, `original_file_path`, `path`, `description`, `columns`, `config`, `depends_on`, `relation_name`, `raw_code`, `compiled_code`, `fqn`, `refs`, `sources`, `metrics`.
+Useful JSON keys: `unique_id`, `name`, `resource_type`, `original_file_path`, `path`, `description`, `columns`, `config`, `depends_on`, `relation_name`, `raw_code`, `compiled_code`, `fqn`, `refs`, and `sources`.
 
 ## dbt Show
 
-Use `--limit` for the final row cap. Put SQL `limit` only inside an early CTE when you need to reduce scan cost before later logic.
+Use `--limit` for the final row cap. `limit` often does not reduce table scans; use adapter-supported sampling when the goal is warehouse cost savings.
 
 ```bash
 dbt show --select my_model --limit 10
 dbt show --inline "select * from {{ ref('orders') }}" --limit 5
 ```
 
-Push expensive exploration limits into early CTEs:
+For cheap exploration, sample where the adapter supports it:
 
 ```sql
 with orders as (
-    select * from {{ source('ecom', 'orders') }} limit 100
+    select * from {{ source('ecom', 'orders') }}
+    {{ limit_in_dev() }}
 )
 select * from orders
 ```
@@ -114,10 +115,8 @@ Other useful paths: `logs/dbt.log`, `target/compiled/`, `target/run/`.
 
 | Command | Status | Use |
 | --- | --- | --- |
-| `dbt login` | GA | Browser OAuth; CI uses `DBT_CLOUD_*` env vars |
 | `dbt lint` | Beta | SQLFluff-compatible linting |
-| `dbt sl <subcommand>` | GA | Semantic layer: `list`, `query`, `validate`, `export` |
-| `dbt run --select "resource_type:function"` | v1.11+ | Build UDFs declared in `functions/` |
+| `dbt build --select "resource_type:function"` | v1.11+ | Build UDFs declared in `functions/` |
 | `--use-v2-parser` | Beta | Rust parser in Core 1.12 |
 | `--manage-state` / `--no-manage-state` | 1.12 | Toggle dbt state management |
 | `dbt run-operation --sql "..."` | Beta | Ad-hoc SQL through Jinja |
@@ -158,5 +157,4 @@ Set these to `true` on 1.11 before upgrading:
 - `require_valid_schema_from_generate_schema_name`
 - `require_sql_header_in_test_configs`
 - `require_corrected_analysis_fqns`
-- `require_source_and_semantic_model_names_without_spaces`
 - `require_generic_test_arguments_property`
