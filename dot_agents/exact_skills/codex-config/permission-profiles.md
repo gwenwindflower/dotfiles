@@ -1,6 +1,6 @@
 # Codex Permission Profiles
 
-Use this reference when changing `default_permissions`, `[permissions.<name>]`, filesystem/network rules, or Claude-style sandbox mappings. Permission profiles are beta; refresh official Codex permissions and managed-configuration docs before editing real config.
+Use this reference when changing Codex sandbox access, approval behavior, or managed permission policy. Permission profiles are beta; refresh official Codex permissions and managed-configuration docs before editing real config.
 
 Source references:
 
