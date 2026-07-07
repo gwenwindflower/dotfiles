@@ -115,8 +115,7 @@ abbr --add s z
 abbr --add dots "ee -e $DOTFILES"
 abbr --add de "ee -e $DOTFILES"
 abbr --add conf "ee $XDG_CONFIG_HOME"
-abbr --add proj "ee $PROJECTS"
-abbr --add keeb "ee -e $PROJECTS/05_utils/tinybabykeeb"
+abbr --add keeb "ee -e $HOME/dev/tinybabykeeb"
 # brew
 abbr --add brx brewdo
 abbr --add bri "brew update; brew install"
