@@ -281,7 +281,7 @@
 		"ask": [],
 		"defaultMode": "auto"
 	},
-	"model": "opus[1m]",
+	"model": "opus",
 	"hooks": {
 		"PreToolUse": [
 			{
@@ -389,6 +389,7 @@
 		"enabled": true,
 		"autoAllowBashIfSandboxed": true,
 		"allowUnsandboxedCommands": true,
+		"enableWeakerNetworkIsolation": true,
 		"network": {
 			"allowedDomains": [
 				"api.attio.com",
