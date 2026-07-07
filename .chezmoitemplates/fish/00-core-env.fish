@@ -48,14 +48,22 @@ set -gx TLRC_CONFIG $XDG_CONFIG_HOME/tlrc/tlrc.toml
 set -gx TMUX_PLUGIN_MANAGER_PATH $XDG_CONFIG_HOME/tmux/plugins
 {{ if eq .chezmoi.os "darwin" -}}
 set -gx TMUX_PLUGIN_MANAGER_INSTALL $HOMEBREW_PREFIX/opt/tpm/share/tpm
-{{ end -}}
+
+#  SQLite
+## Use the Homebrew install on macOS
+fish_add_path $HOMEBREW_PREFIX/opt/sqlite/bin
+
+#  PostgreSQL
+## Helper env var so I can script and config
+## for the latest version of PostgreSQL
+## without hardcoding it in multiple places
+## since Homebrew makes it easy to manage multiple versions
+set -gx PG_LATEST "18"
 
 #  1Password
 set -gx OP_ACCOUNT my.1password.com
 set -gx OP_ENV_DIR $XDG_CONFIG_HOME/op/environments
-
-#  Project Bookmarks
-set -gx PROJECTS $HOME/dev
+{{ end -}}
 
 #  Fish configs
 set -gx fish_greeting
