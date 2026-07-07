@@ -321,8 +321,8 @@ trusted_hash = "sha256:c2f38a99e16bc21ab2fbdfd0942d961a7293eccfdd26ca8fe11347224
 trusted_hash = "sha256:ae39455d097e32699e48441ade7671d9db5b80b17943aa3cc0901386b714a896"
 
 [marketplaces.worktrunk]
-last_updated = "2026-07-03T22:05:49Z"
-last_revision = "552cc1be6c9e10200bb6108be7da06498367cdd3"
+last_updated = "2026-07-07T03:25:53Z"
+last_revision = "d90d148e73229bc1fa462225fa2337e9e2cc9620"
 source_type = "git"
 source = "https://github.com/max-sixty/worktrunk.git"
 
