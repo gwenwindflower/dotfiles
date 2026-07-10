@@ -1,5 +1,6 @@
 {
   "trustedtaps": [
+    "anthropics/tap",
     "charmbracelet/tap",
     "columnar-tech/tap",
     "databricks/tap",
@@ -19,5 +20,8 @@
     "huseyinbabal/tap/taws",
     "withgraphite/tap/graphite",
     "yakitrak/yakitrak/notesmd-cli"
+  ],
+  "trustedcasks": [
+    "anthropics/tap/ant"
   ]
 }
