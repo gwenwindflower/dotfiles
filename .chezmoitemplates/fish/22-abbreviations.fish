@@ -64,6 +64,8 @@ abbr --add hrdxx herdr server stop
 abbr --add hrdii herdr integration install
 abbr --add hrds herdr session
 abbr --add hrdsa herdr session attach
+abbr --add hrdld herdr session attach lightdash
+abbr --add hrddf herdr session attach dotfiles
 abbr --add hrdsrm herdr session delete
 abbr --add hrdsls herdr session ls
 ## herdr sessions
@@ -83,6 +85,7 @@ abbr --add cme chezmoi edit
 abbr --add cmee ee -e ~/.local/share/chezmoi
 abbr --add cma chezmoi add
 abbr --add cmaa chezmoi re-add
+abbr --add cmra chezmoi re-add
 abbr --add cmaf chezmoi add --follow
 abbr --add cmx chezmoi apply
 abbr --add cmxx chezmoi apply ~/.config/
@@ -425,5 +428,3 @@ abbr --add amut am untrust
 abbr --add amx am tui
 abbr --add amu am use
 abbr --add amp am profile
-# mintlify
-abbr --add mint mintlify
