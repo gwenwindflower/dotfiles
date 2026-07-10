@@ -5,9 +5,9 @@ aube = "latest"
 "npm:@agentclientprotocol/claude-agent-acp" = "latest"
 "npm:@aredotna/cli" = "latest"
 "npm:@readwise/cli" = "latest"
-"npm:mintlify" = "latest"
 "npm:supabase" = "latest"
 "npm:sfw" = "latest"
+"npm:mint" = "latest"
 
 [settings]
 npm.package_manager = "aube"
