@@ -1,7 +1,7 @@
 #:schema https://developers.openai.com/codex/config-schema.json
 #:tombi schema.strict = false
 
-model = "gpt-5.5"
+model = "gpt-5.6-terra"
 personality = "pragmatic"
 approval_policy = "on-request"
 approvals_reviewer = "auto_review"
@@ -26,6 +26,51 @@ service_tier = "default"
 
 [sandbox_workspace_write]
 network_access = true
+writable_roots = [
+  # tool state and caches
+  "~/.cache",
+  "~/.agent-browser",
+  "~/.blacksmith",
+  "~/.config/.wrangler",
+  "~/.context7",
+  "~/.critique",
+  "~/.duckdb",
+  "~/.gitconfig",
+  "~/.local/state/herdr",
+  "~/.local/share/graveyard",
+  "~/Library/Caches/dev.biomejs.biome",
+  "~/Library/Caches/kitty",
+  # Codex state
+  "~/.codex/tmp",
+  "~/.codex/.tmp",
+  "~/.codex/sqlite",
+  "~/.codex/cache",
+  "~/.codex/memories",
+  "~/.codex/plugins",
+  "~/.codex/skills",
+  # runtimes and package managers
+  "~/Library/Caches/Homebrew",
+  "~/.bun/install",
+  "~/.deno/bin",
+  "~/Library/Caches/deno",
+  "~/.local/share/aube",
+  "~/.local/share/mise",
+  "~/.local/state/mise",
+  "~/Library/Caches/mise",
+  "~/.npm",
+  "~/Library/Caches/node-gyp",
+  "~/.local/share/pnpm",
+  "~/.go/pkg/mod",
+  "~/Library/Caches/go-build",
+  "~/.cargo/registry",
+  "~/.cargo/git",
+  "~/.local/share/uv",
+  "~/Library/Caches/pip",
+  # selected chezmoi-managed tool sources
+  "~/.local/share/chezmoi/symsources/aube",
+  "~/.local/share/chezmoi/symsources/mise",
+  "~/.local/share/chezmoi/symsources/worktrunk",
+]
 
 [tui]
 pet = "disabled"
@@ -333,12 +378,12 @@ source_type = "git"
 source = "https://github.com/modelcontextprotocol/ext-apps.git"
 
 [marketplaces.openai-bundled]
-last_updated = "2026-06-25T08:56:11Z"
+last_updated = "2026-07-11T19:26:53Z"
 source_type = "local"
 source = "/Users/winnie/.codex/.tmp/bundled-marketplaces/openai-bundled"
 
 [marketplaces.openai-primary-runtime]
-last_updated = "2026-06-24T06:04:28Z"
+last_updated = "2026-07-10T03:02:47Z"
 source_type = "local"
 source = "/Users/winnie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
 
@@ -382,19 +427,7 @@ enabled = false
 [plugins."worktrunk@worktrunk"]
 enabled = true
 
-[plugins."documents@openai-primary-runtime"]
-enabled = false
-
-[plugins."spreadsheets@openai-primary-runtime"]
-enabled = false
-
-[plugins."presentations@openai-primary-runtime"]
-enabled = false
-
 [plugins."computer-use@openai-bundled"]
-enabled = false
-
-[plugins."pdf@openai-primary-runtime"]
 enabled = false
 
 [plugins."attio@openai-curated"]
@@ -415,30 +448,34 @@ enabled = true
 [plugins."linear@openai-curated"]
 enabled = true
 
+[plugins."visualize@openai-bundled"]
+enabled = true
+
+[plugins."sites@openai-bundled"]
+enabled = true
+
 [plugins."browser@openai-bundled"]
 enabled = true
 
-[plugins."template-creator@openai-primary-runtime"]
-enabled = false
-
 [mcp_servers.node_repl]
 args = []
-command = "/Applications/Codex.app/Contents/Resources/cua_node/bin/node_repl"
+command = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl"
 startup_timeout_sec = 120
 
 [mcp_servers.node_repl.env]
 NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
-NODE_REPL_NODE_MODULE_DIRS = "/Applications/Codex.app/Contents/Resources/cua_node/lib/node_modules"
-NODE_REPL_NODE_PATH = "/Applications/Codex.app/Contents/Resources/cua_node/bin/node"
+NODE_REPL_NODE_MODULE_DIRS = "/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
+NODE_REPL_NODE_PATH = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node"
 NODE_REPL_TRUSTED_CODE_PATHS = "/Users/winnie/.codex"
 CODEX_HOME = "/Users/winnie/.codex"
-NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "5504c0782b5c86b7dd08314045b9843e973a230e1be8f7e2e0ba3716fc63c55e"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "1491199f46178eb038259aaea144492b8a8ade32bba5d2b4843c94936be551bb,6d25aa7656feac858f3a3bdaea5bcbab0dbfd426c9de8e6931ce90c399ee8e4f"
 BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
 NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
+NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = "Control desktop apps on macOS through Computer Use."
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.616.81150"
-CODEX_CLI_PATH = "/Applications/Codex.app/Contents/Resources/codex"
+BROWSER_USE_CODEX_APP_VERSION = "26.707.41301"
+CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
 
 [mcp_servers.indi]
 enabled = true
@@ -458,6 +495,12 @@ INDI_WAREHOUSE__CREDENTIALS_PATH = "/Users/winnie/dev/_supermodel/_clients/indiv
 INDI_COST__MAX_BYTES_BILLED = "1_500_000_000"
 INDI_WAREHOUSE__PROJECT = "proj-tmc-mem-in"
 INDI_WAREHOUSE__DEFAULT_DATASET = "dbt"
+
+[mcp_servers.computer-use]
+command = "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient"
+args = ["mcp"]
+cwd = "."
+enabled = false
 
 # [mcp_servers.lightdash]
 # url = "https://analytics.lightdash.cloud/api/v1/mcp"
@@ -488,6 +531,8 @@ git-branch-prefix = "winnie-cdx/"
 appearanceTheme = "system"
 selected-avatar-id = "custom:kero"
 hotkey-window-projectless-default-enabled = true
+avatar-overlay-mascot-width-px = 99
+dock-icon-preference = "codex-system"
 
 [desktop.appearanceLightChromeTheme]
 accent = "#56949f"
@@ -573,6 +618,21 @@ trust_level = "trusted"
 [projects."/Users/winnie/dev/_work/lightdash"]
 trust_level = "trusted"
 
+[projects."/Users/winnie/dev/_work/lightdash-cloud-announcer"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/_work/lightops"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-07-10/hatch-pet-users-winnie-codex-skills"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-07-10/hatch-pet-users-winnie-codex-skills-2"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/_work/dlt-pro"]
+trust_level = "trusted"
+
 [apps._default]
 enabled = false
 
@@ -602,3 +662,75 @@ enabled = true
 
 [apps.connector_76869538009648d5b282a4bb21c3d157]
 enabled = true
+
+[[skills.config]]
+name = "openai-templates:artifact-template-legal-memorandum"
+enabled = false
+
+[[skills.config]]
+name = "openai-templates:artifact-template-investment-committee-memo"
+enabled = false
+
+[[skills.config]]
+name = "openai-templates:artifact-template-business-review"
+enabled = false
+
+[[skills.config]]
+name = "openai-templates:artifact-template-analytics-dashboard"
+enabled = false
+
+[[skills.config]]
+name = "openai-templates:artifact-template-design-report"
+enabled = false
+
+[[skills.config]]
+name = "openai-templates:artifact-template-experiment-analysis"
+enabled = false
+
+[[skills.config]]
+name = "openai-templates:artifact-template-financial-budget"
+enabled = false
+
+[[skills.config]]
+name = "openai-templates:artifact-template-operating-calendar"
+enabled = false
+
+[[skills.config]]
+name = "openai-templates:artifact-template-operating-review"
+enabled = false
+
+[[skills.config]]
+name = "openai-templates:artifact-template-project-kickoff"
+enabled = false
+
+[[skills.config]]
+name = "openai-templates:artifact-template-project-tracker"
+enabled = false
+
+[[skills.config]]
+name = "openai-templates:artifact-template-sales-pipeline"
+enabled = false
+
+[[skills.config]]
+name = "openai-templates:artifact-template-simple-dark-mode"
+enabled = false
+
+[[skills.config]]
+name = "openai-templates:artifact-template-simple-light-mode"
+enabled = false
+
+[[skills.config]]
+name = "openai-templates:artifact-template-strategy-memorandum"
+enabled = false
+
+[[skills.config]]
+name = "openai-templates:artifact-template-system-design"
+enabled = false
+
+[[skills.config]]
+name = "openai-templates:artifact-template-team-alignment"
+enabled = false
+
+[[skills.config]]
+name = "openai-templates:artifact-template-three-statement-forecast"
+enabled = false
