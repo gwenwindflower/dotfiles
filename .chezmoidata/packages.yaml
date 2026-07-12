@@ -195,8 +195,6 @@ packages:
           - tailscale-app
           - zoom
         personal:
-          - anytype
-          - copilot-money
           - mitmproxy
           - shortcat
           - signal
