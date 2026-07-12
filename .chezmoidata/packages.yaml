@@ -178,6 +178,7 @@ packages:
           - font-source-serif-4
           - font-symbols-only-nerd-font
           - gcloud-cli
+          - homerow
           - ia-presenter
           - karabiner-elements
           - kitty
@@ -196,7 +197,6 @@ packages:
           - zoom
         personal:
           - mitmproxy
-          - shortcat
           - signal
         work:
           - google-chrome
