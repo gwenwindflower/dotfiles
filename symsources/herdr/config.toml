@@ -3,10 +3,13 @@ onboarding = false
 [ui]
 agent_panel_scope = "all"
 show_agent_labels_on_pane_borders = true
-
 agent_panel_sort = "priority"
+
 [ui.toast]
 delivery = "terminal"
+
+[ui.sound]
+enabled = true
 
 [theme]
 name = "terminal"
@@ -22,24 +25,37 @@ focus_pane_down = ["prefix+j", "shift+alt+j"]
 focus_pane_up = ["prefix+k", "shift+alt+k"]
 focus_pane_right = ["prefix+l", "shift+alt+l"]
 close_pane = ["prefix+x", "prefix+d"]
-split_vertical = "prefix+\\"
-split_horizontal = "prefix+-"
-new_tab = "prefix+c"
-rename_tab = ["prefix+shift+c", "prefix+ctrl+c"]
+last_pane = ["prefix+`", "alt+shift+p"]
+split_vertical = ["prefix+|", "prefix+ctrl+v"]
+split_horizontal = ["prefix+-", "prefix+ctrl+s"]
+new_tab = ["prefix+c", "ctrl+t"]
+rename_tab = "prefix+shift+c"
 previous_tab = "ctrl+alt+h"
 next_tab = "ctrl+alt+l"
 close_tab = ["prefix+shift+x", "prefix+shift+d"]
 new_workspace = "prefix+n"
-rename_workspace = ["prefix+shift+n", "prefix+ctrl+n"]
+rename_workspace = "prefix+shift+n"
 previous_workspace = "ctrl+super+k"
 next_workspace = "ctrl+super+j"
-close_workspace = ["prefix+ctrl+x", "prefix+ctrl+d"]
+close_workspace = ["prefix+ctrl+x", "prefix+alt+d", "prefix+super+d"]
 previous_agent = "ctrl+super+p"
 next_agent = "ctrl+super+n"
 toggle_sidebar = ["prefix+b", "ctrl+super+["]
 
 [[keys.command]]
-key = ["prefix+ctrl+g", "prefix+super+g"]
+key = "prefix+ctrl+g"
+type = "plugin_action"
+command = "worktrunk.open"
+description = "switch worktree"
+
+[[keys.command]]
+key = "prefix+ctrl+d"
+type = "plugin_action"
+command = "worktrunk.remove"
+description = "remove worktree"
+
+[[keys.command]]
+key = ["prefix+alt+g", "prefix+super+g"]
 type = "pane"
 command = "lazygit"
 description = "launch lazygit in a new pane"
