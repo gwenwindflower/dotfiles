@@ -155,7 +155,6 @@ packages:
           - claude
           - claude-code
           - codex
-          - codex-app
           - dbc
           - font-charter
           - font-cormorant
@@ -202,7 +201,6 @@ packages:
           - shortcat
           - signal
         work:
-          - chatgpt
           - google-chrome
           - linear
           - loom
