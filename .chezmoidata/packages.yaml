@@ -149,6 +149,7 @@ packages:
         core:
           - 1password
           - 1password-cli
+          - anthropics/tap/ant
           - arc
           - cap
           - claude
