@@ -114,6 +114,7 @@ packages:
           - spotify_player
           - starship
           - stripe-cli
+          - tailscale
           - tailspin
           - taws
           - termframe
@@ -191,6 +192,7 @@ packages:
           - orion
           - postico
           - raycast
+          - tailscale-app
           - zoom
         personal:
           - anytype
@@ -198,7 +200,6 @@ packages:
           - mitmproxy
           - shortcat
           - signal
-          - tailscale-app
         work:
           - chatgpt
           - google-chrome
