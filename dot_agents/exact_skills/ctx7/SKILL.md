@@ -17,8 +17,8 @@ ctx7 --help
 # if not available try brew first
 brew install ctx7
 # if on a system without brew, you're likely on a Linux dev sandbox
-# skip global install and use pnpx
-pnpx ctx7@latest <library | docs>
+# skip global install and use aubx, pnpx, or bunx in that order
+aubx ctx7@latest <library | docs>
 ```
 
 > [!IMPORTANT]
@@ -28,8 +28,8 @@ pnpx ctx7@latest <library | docs>
 
 ```bash
 # Documentation
-ctx7 library <name> <query>           # Step 1: resolve library ID
-ctx7 docs <libraryId> <query>         # Step 2: fetch docs
+ctx7 library "<name>" "<query>"           # Step 1: resolve library ID
+ctx7 docs <libraryId> "<query>"           # Step 2: fetch docs
 ```
 
 ## Common Mistakes
