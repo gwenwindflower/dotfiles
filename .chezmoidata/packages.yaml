@@ -28,6 +28,7 @@ packages:
           - amoxide
           - amoxide-tui
           - asciinema
+          - ast-grep
           - awscli
           - bat
           - bottom
