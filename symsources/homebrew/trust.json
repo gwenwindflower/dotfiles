@@ -15,6 +15,7 @@
     "supermodellabs/tap"
   ],
   "trustedformulae": [
+    "agavra/tap/tuicr",
     "bro3886/tap/rem-cli",
     "denisotree/tuitab/tuitab",
     "huseyinbabal/tap/taws",
