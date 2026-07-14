@@ -203,6 +203,7 @@ packages:
           - google-chrome
           - linear
           - loom
+          - microsoft-teams
           - slack
           - superwhisper
     uv:
