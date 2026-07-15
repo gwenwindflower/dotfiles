@@ -4,7 +4,7 @@
 
 1. Clarify with the user — jobs-to-be-done, examples, what existing context is missing
 2. Create the skill directory manually in the right source tree:
-   - User-level skills: `~/.local/share/chezmoi/dot_agents/exact_skills/<skill-name>/`
+   - User-level skills: `~/.local/share/chezmoi/dot_agents/exact_skills/exact_<skill-name>/` — the `exact_` prefix is required on the skill dir itself and on every subdirectory inside it (`assets/`, `scripts/`, etc. become `exact_assets/`, `exact_scripts/`), since chezmoi's `exact_` reconciliation doesn't recurse
    - Project skills: the project's own skill directory, if the user explicitly wants project-local scope
 3. Add `SKILL.md` manually with frontmatter `name` and `description`, then a short Markdown title
 4. Write SKILL.md tight; offload depth into modular `<topic>.md` files alongside it only when needed
@@ -16,12 +16,12 @@
 A real skill (`github-actions-workflows`) bundling templates, modular docs, and a script:
 
 ```text
-github-actions-workflows/
-├── assets/
+exact_github-actions-workflows/
+├── exact_assets/
 │   ├── ci.yml.template
 │   ├── release-build.yml.template
 │   └── release.yml.template
-├── scripts/
+├── exact_scripts/
 │   └── install-workflow.sh
 ├── ci.md
 ├── release-build.md

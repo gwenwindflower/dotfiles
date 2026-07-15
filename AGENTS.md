@@ -143,6 +143,8 @@ The `exact_` directory prefix opts a dir into full reconciliation: on `chezmoi a
 
 The prefix is stripped on deploy, so `dot_agents/exact_skills/` still produces `~/.agents/skills/` — no other refs need to change when adding it.
 
+`exact_` does not recurse: each directory level reconciles only its own immediate entries, so a subdirectory needs its own `exact_` prefix to have its stale files cleaned up too. `dot_agents/exact_skills/` carries `exact_` on every nested directory (each skill folder and any `references/`/`templates/`/etc. inside it) so drifted or renamed skill files never linger in the deployed target.
+
 ### Nerd Font icons
 
 Several files contain Nerd Font glyphs (starship.toml, yazi theme.toml, tmux statusline.conf, pane-icon.sh, nvim dashboard-art.lua, kitty.conf). **Do not Edit these files** — the Edit tool corrupts icon bytes. Use `cp` or Write from a full file read instead. For targeted edits you can give the user a snippet to manually edit themselves.
@@ -240,5 +242,5 @@ chezmoi apply -n --verbose                        # Dry run with detailed output
 
 ## Related Docs
 
-- `~/.agents/skills/chezmoi/` (source: `dot_agents/exact_skills/chezmoi/`) — Full chezmoi skill with deep reference docs on attributes, templates, scripts, hooks
+- `~/.agents/skills/chezmoi/` (source: `dot_agents/exact_skills/exact_chezmoi/`) — Full chezmoi skill with deep reference docs on attributes, templates, scripts, hooks
 - [chezmoi documentation](https://www.chezmoi.io) — Official docs, comprehensive reference for all features
