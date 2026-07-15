@@ -1,6 +1,6 @@
 # Decision records (ADRs)
 
-Planner work, optional. ADRs are SPOT's **release valve** for amending decisions that have already shipped to main — they let us change direction on a committed requirement without rewriting history, while keeping records like `DONE.md` mostly immutable.
+Planning work, optional. ADRs are SPOT's **release valve** for amending decisions that have already shipped to main — they let us change direction on a committed requirement without rewriting history, while keeping records like `DONE.md` mostly immutable.
 
 Use them sparingly. Most situations don't need one.
 
@@ -55,11 +55,11 @@ Once accepted, an ADR is itself append-only. Edits beyond typo fixes mean supers
 
 The common case — ADR drives spec changes that land in a Phase:
 
-1. Planner writes the ADR with `status: proposed` and the new spec edits in the same Phase scope. The Phase's `**Requirements**:` line covers the changed IDs.
-2. The Phase that lands the spec edits also lands the ADR file. The Phase-close commit flips `status: accepted`.
+1. Write the ADR with `status: proposed` alongside the new spec edits, in the same Phase scope. The Phase's `**Requirements**:` line covers the changed IDs.
+2. The Phase that lands the spec edits also lands the ADR file; flip `status: accepted` in the commit that ships the change.
 3. The Phase's `DONE.md` block mentions the ADR by filename so future readers can trace it from either direction (requirement → ADR, or ADR → shipping Phase).
 
-Purely retrospective ADRs — recording a decision that already shipped without one — stand alone as a `chore(adr)` commit. That's a legitimate spec-only commit case (see [running-phases](running-phases.md#spec-only-commits--when-they-earn-their-keep)).
+Purely retrospective ADRs — recording a decision that already shipped without one — stand alone as a `chore(adr)` commit. That's deliberate planning work, not bookkeeping (use `SPOT_PLAN_COMMIT=1` if the commit also touches spec files).
 
 ## Don't over-use them
 

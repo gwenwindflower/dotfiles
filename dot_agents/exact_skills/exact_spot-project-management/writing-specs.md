@@ -1,6 +1,6 @@
 # Writing Specs
 
-Planner work. The whole burden of clarity sits in the spec — there are no separate constraints sections or acceptance criteria. Requirements get stable IDs (see below) so Phases can target them by reference.
+Planning work. The whole burden of clarity sits in the spec — there are no separate constraints sections or acceptance criteria. Requirements get stable IDs (see below) so Phases can target them by reference.
 
 ## Shape
 
@@ -55,7 +55,7 @@ Every requirement gets a stable, soft-immutable ID:
 - **Format.** `<dom>-R<NNN>` for domain-scoped (e.g. `sk-R001`, `dc-R014`); `R<NNN>` for project-scoped in SPEC.md. Three-digit zero-padded, sequential within scope.
 - **Domain prefixes.** Two letters by convention (`sk`, `dc`, `cf`). One reserved 3-letter exception: `dev-` for development-meta domains — tooling, test infrastructure, build/release plumbing, CI, internal-only requirements that aren't user-visible. Lives in one or more `specs/dev-*.md` files (e.g. `specs/dev-testing.md`, `specs/dev-release.md`) and ships as normal Phases. Keep new domains 2-letter unless they're development-meta.
 - **Append-only — once the project has shipped.** Never reuse a retired ID. Never renumber. Gaps are cheap; broken external references (tests, TODO, DONE, commits) are not. Before first ship there are no such references — see [Greenfield mode](#greenfield-mode--edit-ruthlessly-before-ship) — edit freely until then.
-- **Granularity: one ID per testable check.** Each `If <bad cond>, then...` edge case is its own ID. Heuristic: *can I write a single test for exactly this?* Bundling lets a Manager mark "done" while only covering one of several checks.
+- **Granularity: one ID per testable check.** Each `If <bad cond>, then...` edge case is its own ID. Heuristic: *can I write a single test for exactly this?* Bundling lets a session mark "done" while only covering one of several checks.
 - **Splits.** Original ID stays for whichever half kept the spirit; the new piece gets the next available ID. Note the split in DONE.
 - **Edits in place.** Clarification, edge case added, wording sharpened — same ID, content changes. Git is the version history.
 - **Retirement.** When a requirement is removed, mark it `~~retired~~` in place (or remove the line entirely if the spec is too long); never reuse the number.
@@ -87,7 +87,7 @@ Rules of thumb:
 
 ## Harden the requirement
 
-Four checks. Run each one on every requirement before it lands. **The moment one flags, push back on the user — don't draft around it.** A vague phrase or a quiet conflict caught here costs a wording edit; the same problem caught at Objective close costs a rollback; caught after ship, a follow-up Phase. The whole burden of clarity sits in the spec, so this is where the work gets done.
+Four checks. Run each one on every requirement before it lands. **The moment one flags, push back on the user — don't draft around it.** A vague phrase or a quiet conflict caught here costs a wording edit; the same problem caught at review costs a redo; caught after ship, a follow-up Phase. The whole burden of clarity sits in the spec, so this is where the work gets done.
 
 | Check | Ask | Weak | Strong |
 | --- | --- | --- | --- |
@@ -144,16 +144,16 @@ Format rules:
 - **Dependencies line** (optional): `**Dependencies**: <N>, <N>, ...`. Bare Phase numbers — type is implicit; deps can only be other Phases. Omit the line entirely when there are none. A Phase is unblocked once every listed dependency is in DONE.
 - **Requirements line:** directly under the header (or under Dependencies if present) — `**Requirements**: <id>, <id>, ...`. Bare IDs only; wording lives in the spec, not TODO.
 - **Objectives** are `### <description>` — declarative, not imperative. "Provider integration", not "Integrate the provider".
-- **Tasks** are `- [ ] <imperative step>` under their Objective. Sequential within an Objective; Objectives parallel within a Phase.
+- **Tasks** are `- [ ] <imperative step>` under their Objective. Sequential within an Objective; Objectives run in whatever order execution warrants and each lands as one commit.
 
-Phase titles and Objective wording are the labels the Manager and every subagent work from. Don't carry casual user phrasing — "the OAuth thing", "auth stuff" — into either. Propose a real name that reads cleanly out of context, confirm with the user, then build on it. See [naming](../../rules/naming.md).
+Phase titles and Objective wording are the labels the executing session and its helpers work from. Don't carry casual user phrasing — "the OAuth thing", "auth stuff" — into either. Propose a real name that reads cleanly out of context, confirm with the user, then build on it. See [naming](../../rules/naming.md).
 
 ## Phase dependencies
 
 Phases run in parallel by default. The `**Dependencies**:` line is how the Planner declares that one Phase must wait for another.
 
 - **What it means.** "Phase 5 depends on Phase 2" → Phase 5 cannot start until Phase 2 is in DONE. Not "started," not "merged to a branch" — fully promoted.
-- **Independence is the goal.** Two Phases that touch different surfaces — different routes, different commands, separate subsystems — are usually independent and can run in parallel across worktrees or agent teams. Don't add a dependency unless you genuinely have one.
+- **Independence is the goal.** Two Phases that touch different surfaces — different routes, different commands, separate subsystems — are usually independent and can run as parallel sessions. Don't add a dependency unless you genuinely have one.
 - **Coupling judgment.** Sometimes nominally-independent Phases share enough churn — both rewriting the same Vite config, both touching a core schema — that branch-switching costs more than serializing. That's a real reason to declare a dependency. Per-project judgment call; lean toward independence when the surfaces are clean.
 - **Follow-ups.** When a Phase emerges as a follow-up to one currently in flight, declare the dependency at scoping time so a Manager doesn't pick it up early.
 - **Cycles are bugs.** If two Phases mutually depend, they're really one Phase — merge them or split the work differently.
@@ -162,19 +162,19 @@ Update the line in place when reality changes (a dependency dissolves, a new one
 
 Heuristics:
 
-- A Phase is a chunk one agent team can take to DONE in a single context window. Phases are context boundaries — pace them so a Manager can pick one up cold from `SPEC.md` + the Phase's requirement IDs. Too big and the team loses the thread; too small and the team-assembly overhead outweighs the work.
-- An Objective is a chunk a single subagent can own end-to-end. If two Objectives must serialize, they're really one Objective with two Tasks.
-- Tasks should be specific enough that a subagent doesn't need a separate huddle to start. "Wire up the OAuth client library" is fine; "Do the OAuth stuff" isn't.
+- A Phase is a chunk one session can take to DONE in a single context window. Phases are context boundaries — pace them so a fresh session can pick one up cold from `SPEC.md` + the Phase's requirement IDs. Too big and the session loses the thread; too small and the overhead outweighs the work.
+- An Objective is one reviewable unit of work — it lands as a single well-named commit. If no one commit subject covers an Objective, split it; if two Objectives only ever describe one change, merge them.
+- Tasks should be specific enough that the session doesn't need a separate huddle to start. "Wire up the OAuth client library" is fine; "Do the OAuth stuff" isn't.
 - Don't restate requirements in Tasks — the requirement IDs are the contract. Tasks are *how*, requirements are *what*.
 
 ## Scoping a Phase
 
-When a Planner sets up a new Phase in `TODO.md`, the job is to give the Manager a tight, focused list of requirement IDs to satisfy. Workflow:
+When planning sets up a new Phase in `TODO.md`, the job is to give the executing session a tight, focused list of requirement IDs to satisfy. Workflow:
 
 1. **Identify the work.** From a user request, a Backlog item, a follow-up from a prior Phase, or a learning that surfaced in DONE — figure out *what* the Phase is doing.
 2. **Scan the durable specs for matching requirements.** Open the relevant domain spec(s) and `SPEC.md`. List the requirement IDs whose satisfaction would mean this Phase is done.
-3. **Fill any gaps in the durable spec first.** If the Phase needs to deliver something no existing requirement covers, write the new requirement(s) into the right domain spec with new appended IDs. Walk edge cases (one ID per testable check). Run new *and* existing IDs touched by this Phase through the four hardening checks — surface any ambiguity, conflict, gap, or unverifiability to the user *now*, not at Objective close. Don't write requirements directly into TODO — they live in the durable spec; TODO only references them.
-4. **Confirm test-ability.** Each listed ID must be checkable or testable. If something is genuinely squishy, mark it in the spec ("squishy: judgment call in DONE") so the Manager doesn't get stuck looking for a test.
+3. **Fill any gaps in the durable spec first.** If the Phase needs to deliver something no existing requirement covers, write the new requirement(s) into the right domain spec with new appended IDs. Walk edge cases (one ID per testable check). Run new *and* existing IDs touched by this Phase through the four hardening checks — surface any ambiguity, conflict, gap, or unverifiability to the user *now*, not at review time. Don't write requirements directly into TODO — they live in the durable spec; TODO only references them.
+4. **Confirm test-ability.** Each listed ID must be checkable or testable. If something is genuinely squishy, mark it in the spec ("squishy: judgment call in DONE") so execution doesn't get stuck looking for a test.
 5. **Decide dependencies.** Look at active and unstarted Phases — does this one truly need to wait for another, or share enough churn with one that serializing avoids worse pain? If yes, list the blocker Phase numbers on a `**Dependencies**:` line directly under the header. Otherwise — the more common case — omit the line. See "Phase dependencies" above.
 6. **List the IDs in the Phase.** Add a `**Requirements**:` line directly below the header (or under Dependencies if present). Only IDs — the wording lives in the spec.
 7. **Sanity-check coverage.** Read the Phase Tasks against the listed requirements: does every Task contribute to satisfying at least one ID, and does every ID have at least one Task that drives it? Mismatches mean the Tasks or the ID list need fixing before the Phase starts.
@@ -199,7 +199,7 @@ If a Phase ships and the user is unhappy with the result, the fix usually goes i
 
 When implementation reveals a wrong, impossible, or incomplete requirement, update the durable spec *first* (edit in place under the same ID, or append a new ID), then adjust the active Phase's TODO ID list if affected. The behavior commit also touches the spec.
 
-If a spec or TODO change is needed mid-Phase, stop work, make the change, resume. Never edit while subagents are running.
+If a spec or TODO change is needed mid-Phase, stop work, make the change, resume. Never edit while helpers are mid-task.
 
 For substantive reversals on requirements **already shipped to main** — wording changes that alter behavior, retirements, behavior pivots — write an [ADR](adrs.md) alongside the spec edit so the change of direction is publicized and the rationale preserved. Edits to in-flight or never-shipped requirements don't need one. And before *any* Phase has shipped, [Greenfield mode](#greenfield-mode--edit-ruthlessly-before-ship) applies — restructure freely without ADRs, retirement markers, or preservation overhead.
 

@@ -10,7 +10,6 @@ type(scope): imperative subject
 optional body bullets
 
 Closes #123
-Closes Phase <n>
 
 Co-Authored-By: <Agent Name> <agent email>
 ```
@@ -25,10 +24,6 @@ Bodies are usually unnecessary. If needed, use 3-5 `*` bullets, one sentence eac
 
 Aim for clean, linear history that tells the story of the work. Rebase and fixup/squash with `push --force-with-lease` to tidy local branches before merging; never force-push to main or shared branches. **Never** merge with a merge commit. Fast-forward rebase on top of main when pulling. Default to trunk-based development unless the project says otherwise.
 
-###### SPOT project nuances
-
-Don't make commits that only touch `TODO.md` or `DONE.md` — fold them into related work. When a separate close commit is warranted, Manager DONE.md updates use `chore(plan)`, spec-only edits use `chore(specs)`, and edits to `AGENTS.md`, `README.md`, or `docs/` use unscoped `docs`.
-
 ##### Trailer rules
 
-Order: GitHub closing keywords (`Closes #12`), SPOT updates (`Closes Phase <n>`, `Completes <Objective> Objective for Phase <n>`), then attribution (`Co-Authored-By: <collaborator>`). Agent-authored or assisted commits always end with the running agent's identity.
+Order: GitHub closing keywords (`Closes #12`), then attribution (`Co-Authored-By: <collaborator>`). Agent-authored or assisted commits always end with the running agent's identity.

@@ -25,34 +25,29 @@ Reference: [hooks guide](https://code.claude.com/docs/en/hooks-guide), [hooks co
 | `SessionStart` | — | `set-git-nosign.sh` | | Disable SSH commit signing inside the sandbox |
 | `UserPromptSubmit` | `*` | `herdr-agent-state.sh working` | x | Mark agent working in the herdr state daemon |
 | `PreToolUse` | `*` | `herdr-agent-state.sh working` | x | Same — keep state fresh as tools fire |
-| `PreToolUse` | `Write\|Edit\|NotebookEdit` | `worktree-guardrails.sh` | | Block Dev writes to absolute paths outside its worktree |
-| `PreToolUse` | `Bash` | `block-cross-worktree-bash.sh` | | Block Dev `git commit/add/rm/mv` targeting another repo |
+| `PreToolUse` | `Bash` | `block-teammate-git-writes.sh` | | Block teammates from git/wt write operations — the session lead commits |
+| `PreToolUse` | `Bash` | `block-bookkeeping-commits.sh` | | In SPOT repos, block commits that only touch plan/spec files |
 | `PermissionRequest` | `*` | `herdr-agent-state.sh blocked` | x | Mark agent blocked on permission prompt |
 | `Stop` | `*` | `herdr-agent-state.sh idle` | x | Mark agent idle |
 | `SessionEnd` | `*` | `herdr-agent-state.sh release` | x | Release agent slot in herdr |
-| `SubagentStart` | `dev` | `dev-worktree-anchor.sh` | | Inject worktree anchor + commit contract into Dev context |
-| `TaskCompleted` | — | `require-teammate-commit.sh` | | Block task completion until the worktree is committed clean |
 
-## Shared helpers (`lib/dev-hook-common.sh`)
+## Shared helpers (`lib/hook-common.sh`)
 
-Source from any hook that gates on teammate or worktree context:
+Source from any hook that reads event input or gates on teammate context:
 
 ```bash
-source "$(dirname "$0")/lib/dev-hook-common.sh"
+source "$(dirname "$0")/lib/hook-common.sh"
 ```
 
 | Function | Purpose |
 | --- | --- |
 | `hook_read_input` | Slurp stdin once into `$HOOK_INPUT` (call before any extractor) |
 | `hook_field <jq-path>` | Echo a field from `$HOOK_INPUT`. Empty if missing. e.g. `hook_field '.cwd'` |
-| `gate_teammate` | Exit 0 if `.teammate_name` is unset (not in a subagent context) |
-| `worktree_root_for <cwd>` | Echo worktree root if `<cwd>` is inside a non-main linked worktree; return 1 otherwise. Use as `root="$(worktree_root_for "$cwd")" \|\| exit 0` |
-| `is_git_mutation <command>` | Return 0 if command contains `git commit\|add\|rm\|mv`. Use as `is_git_mutation "$cmd" \|\| exit 0` |
-| `effective_dir_for_command <cmd> <fallback>` | Parse `cd <dir>` and `git -C <dir>` from a bash command; echo the effective working dir, or `<fallback>` if neither pattern matched |
+| `gate_teammate` | Exit 0 if `.teammate_name` is unset (not in a teammate context) |
 
 ## Conventions
 
-- **Gate early.** Hooks fire on every matching tool call — return fast when irrelevant. The standard prologue is `hook_read_input` → `gate_teammate` → resolve cwd/worktree → tool-specific logic.
+- **Gate early.** Hooks fire on every matching tool call — return fast when irrelevant. The standard prologue is `hook_read_input` → gates (`gate_teammate`, repo checks) → tool-specific logic.
 - **Exit 2 to block.** stderr becomes feedback to Claude. Use it for genuine policy violations the agent should see and correct.
 - **Exit 0 to pass.** Any "this doesn't apply to me" path returns 0. Never block on missing context (no `teammate_name`, no `cwd`, etc.) — that's how non-team sessions get poisoned.
 - **PostToolUseFailure does not fire when a PreToolUse hook blocks.** If the tool never executed, there's no failure to post-process. Don't try to chain block-then-explain across the two events.

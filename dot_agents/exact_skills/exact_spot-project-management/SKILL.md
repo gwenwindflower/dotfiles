@@ -1,22 +1,26 @@
 ---
 name: spot-project-management
-description: Manage SPOT-system projects (Spec, Phases, Objectives, Tasks) — write SPEC.md and durable domain specs, structure TODO.md plan, — execute work as a Director, Manager, Planner, Reviewer, or Medic. Skip when only completing tasks and/or operating in the Dev role (the basic session instruction on SPOT projects covers that already).
+description: Manage SPOT-system projects (Spec, Phases, Objectives, Tasks) — write SPEC.md and durable domain specs, structure the TODO.md plan, run a Phase in a session, or split truly unrelated Phases across parallel sessions. Skip when only completing tasks inside an already-briefed Phase (the always-on projects rule covers that).
 ---
 
 # SPOT Project Management
 
-Loads on top of the always-on `projects` rule. Assume that rule's vocabulary, file table, role names, TODO hierarchy, and execution mechanics. This skill covers the Planner, Manager, and Director surfaces: spec authoring, requirement IDs, Phase scoping, commit hygiene, decision records, queue coordination, handoff.
+Loads on top of the always-on `projects` rule. Assume that rule's file table, TODO shape, and execution invariants. This skill covers spec authoring, requirement IDs, Phase scoping, running a Phase, parallel sessions, and decision records.
 
 When asked, build SPOT files from scratch by interviewing the user or converting existing planning notes. Monorepo conventions (per-subdir specs, shared specs) are project-specific and live in project guidance.
 
 ## SPOT is a living system
 
-SPOT is actively developed. Adhere to it strictly while you're working — the rules and shapes are load-bearing for clean handoffs across agents — *and* propose improvements when the system fights the work. This is a collaborative human/agent tool that will keep evolving. If a rule rubs the wrong way, surface it: an explicit "I'd suggest adjusting X because Y" beats silently working around it. Feedback flows back into the skill.
+SPOT is actively developed. Follow it while you work — the shapes are load-bearing for clean handoffs across agents — *and* propose improvements when the system fights the work. An explicit "I'd suggest adjusting X because Y" beats silently working around it. Feedback flows back into the skill.
+
+## The loop
+
+specs → tests → plan → action → linear history. Everything in SPOT serves that loop — whether one session works alone or several run in parallel. Parallelism is a means to run the loop faster when there's a clear pathway, never something to eke out of every task.
 
 ## Two spec layers
 
 - **`SPEC.md`** — project contract. Vibe, goals, non-goals, vocabulary, design principles, an `@`-import index of domain specs, plus project-scope requirements that don't belong to any one domain.
-- **`specs/<dom>-<slug>.md`** — durable per-domain spec. Two-letter prefix for user-visible domains (`sk-skills.md`, `dc-docs.md`, `cf-config.md`) — CLI command groups, subsystems, product surfaces. One reserved 3-letter prefix, `dev-`, for development-meta domains (`dev-testing.md`, `dev-release.md`) covering tooling, harness, build/release, CI — internal-only requirements that ship as normal Phases. Long-lived; evolves with the system.
+- **`specs/<dom>-<slug>.md`** — durable per-domain spec. Two-letter prefix for user-visible domains (`sk-skills.md`, `dc-docs.md`, `cf-config.md`); one reserved 3-letter prefix, `dev-`, for development-meta domains (`dev-testing.md`, `dev-release.md`) covering tooling, harness, build/release, CI. Long-lived; evolves with the system.
 
 Index domain specs from `SPEC.md`:
 
@@ -29,17 +33,16 @@ Index domain specs from `SPEC.md`:
 
 Most requirements live in domain specs. `SPEC.md` stays high-signal.
 
-## Role nuances
+## Sessions, not roles
 
-The rule defines Planner / Manager / Director / Subagent. On top of that:
+SPOT has no execution hierarchy. The terms are relational:
 
-- **Director = main-thread coordinator.** Director is not a subagent type. A user invokes it by asking the primary session to operate as Director for a scope: one Phase, a range/set, or everything currently possible. If scope is unclear, Director clarifies before starting ([directing-sessions.md](directing-sessions.md)).
-- **Phase = Manager = Session.** One Phase is one Manager's worth of work, run in one agent session. Don't reuse a Manager session across Phases — the Phase boundary is a context boundary, so each Phase starts fresh ([running-phases](running-phases.md#phases-are-teams-objectives-are-agents)). One step up, Director coordinates one or more Managers.
-- **Manager start shape is identical user-initiated vs Director-coordinated.** Most Manager sessions are launched directly by a user; some are coordinated by Director. The Manager brief is the same in either case ("Finish this Phase, with a team if the Objectives warrant one"). Manager does not branch behavior on its starting source.
-- **Manager refines wording, not requirements.** Sharpen Task and Objective phrasing for execution; real requirement gaps go back to Planner.
-- **Planner never operates on a Phase mid-flight.** Pause work, make the change, resume — see [writing-specs](writing-specs.md).
-- **Manager hands off the Phase trunk; it never merges to main itself.** Under Director coordination, a Reviewer can gate the merge (propose changes → new Manager session; or accept and merge). Under a user-initiated session, the User runs `wt merge --no-squash` themselves once the Manager reports done — optionally invoking Reviewer first.
-- Some tools encode roles as named agent types with scoped permissions. Otherwise one agent plays several.
+- **Root session** — the prime session the user is talking to.
+- **Parent session** — any session that spawned another.
+- The session that takes on a Phase is that Phase's **owner**: it loads context, executes (solo or with helpers), commits, and closes.
+- **Helpers** — teammates or subagents an owner spawns for big Tasks. They work in the owner's worktree and never commit; they report done, the owner reviews and commits or sends back.
+
+Two specialist agents persist because their jobs are genuinely distinct: **planner** (spec authorship, requirement IDs, Phase scoping, research synthesis) and **medic** (git recovery). Everything else is a session with a brief.
 
 ## Requirement IDs at a glance
 
@@ -47,25 +50,15 @@ Stable, soft-immutable IDs let Phases reference requirements without restating t
 
 ## Commits
 
-Follow [git-commits](../../rules/git-commits.md) for format, signing, linear history, and trailer order. SPOT-specific nuances on top:
+Follow [git-commits](../../rules/git-commits.md) for format, signing, linear history, and trailers. SPOT adds three invariants:
 
-- **Per-Objective commit.** One squash-merge of the Subagent's branch into the Phase trunk with a single conventional subject (e.g. `feat(<scope>): …`), folding in any TODO checkoff for that Objective.
-- **Phase-close commit (optional).** One commit covering the TODO→DONE move plus spec/doc edits. Choose type and scope by what dominates the diff: `chore(plan)` for `DONE.md`, `chore(specs)` for durable spec edits, unscoped `docs` for `AGENTS.md`/`README.md`/`docs/`.
-- **No bookkeeping-only commits.** Pure `TODO.md` checkoffs and standalone `DONE.md` edits ride inside the Objective squash or the Phase-close commit — they never earn their own line. If one lands by accident on the Phase trunk, drop it via interactive rebase before handoff.
-- **Spec-only commits are rare.** Land them only when a future log reader would learn something the surrounding behavior commits don't already convey: a sharpened requirement after a Phase, a multi-Phase plan scoped in `TODO.md` ahead of code, a retrospective ADR.
-- **SPOT trailers.** Use `Closes Phase <n>` on the Phase-close commit and `Completes <Objective> Objective for Phase <n>` on each per-Objective squash. Both sit above the agent attribution line, after any GitHub closing keywords.
-
-Spec changes that alter intent are authored by Planner; Manager commits them on Planner's behalf when needed.
+- **One commit per Objective**, named for the work (`feat(auth): add GCP oauth`), with that Objective's TODO checkoff folded in.
+- **No bookkeeping-only commits.** The close's TODO→DONE move amends into the Phase's last commit (`git commit --amend`). A hook blocks commits that only touch plan/spec files; deliberate planning-only commits (scoping a multi-Phase plan, a retrospective ADR) re-run with `SPOT_PLAN_COMMIT=1`.
+- **SPOT stays out of git surfaces.** Branch names, subjects, and trailers describe the work, never the protocol — no `phase-9` branches, no "Closes Phase" trailers. `DONE.md` is the ledger that maps shipped work to Phases.
 
 ## Jobs to be done
 
-- [Writing specs](writing-specs.md) — Planner work: spec shape, requirement IDs, phrasing patterns, the four hardening checks (unambiguous / consistent / complete / verifiable), edge cases, anti-patterns, scoping a Phase, Backlog, the `dev-` domain.
-- [Running phases](running-phases.md) — Cross-platform Manager conceptual flow: the three Manager jobs (sequencing, linear history, quality at Objective close), Subagent teams as the SPOT default, per-Phase workflow, when spec-only commits earn their keep, TDD carve-outs, Subagent drift, parallel Phases across Manager sessions, handoff to Planner. Pair with the platform doc for spawn + merge mechanics.
-- [Decision records](adrs.md) — optional, Planner-driven: lightweight ADRs as a release valve for amending requirements already shipped to main. File shape, frontmatter, status lifecycle, when to write one (and when not to). Skip for new requirements and in-flight branches; `DONE.md` still owns rationale for newly shipped work.
-- [Using worktrunk](using-worktrunk.md) — `wt` as the **cross-session** worktree-and-merge layer: User/Director run `wt switch --create` for Phase trunk worktrees and `wt merge --no-squash` to land them on main. Also the Manager-internal layer on platforms without native worktree primitives (OpenCode, etc.). The **Phase trunk branch + Objective feature branch** model, surveying with `wt list`, recommended `.config/wt.toml` for SPOT (pre-commit / pre-merge with `{{ target }}` conditional, `copy-ignored`), and the short list of operations that stay raw git.
-- [Directing sessions](directing-sessions.md) — cross-platform Director flow: determine requested Phase scope, coordinate one or more Manager sessions, and decide whether to review, merge, continue, or ask the user at Phase boundaries. Load when the user invokes Director or asks the primary session to tackle multiple planned Phases.
-
-Platform-specific runbooks live in `platforms/`. Load the platform doc as your working doctrine alongside the cross-platform Manager flow — Subagent spawn syntax and Objective merge mechanics vary by platform:
-
-- [platforms/claude-code.md](platforms/claude-code.md) — Canonical Claude Code runbook. Native worktree primitives via `Agent { subagent_type: "dev" }`, `WorktreeCreate`/`WorktreeRemove` hooks, raw `git` for Objective merges. Manager **does not invoke `wt`** — User/Director own Phase trunk creation and Phase→main merge.
-- [platforms/opencode.md](platforms/opencode.md) — Partial integration in progress; Manager uses `wt switch --create` directly for Objective worktrees and `wt merge` for Objective merges.
+- [Writing specs](writing-specs.md) — planning work: spec shape, requirement IDs, phrasing patterns, the four hardening checks, edge cases, anti-patterns, Phase scoping and dependencies, Backlog, the `dev-` domain.
+- [Running phases](running-phases.md) — executing one Phase in one session: context load, Objective-as-commit cadence, helpers and the review gate, TDD, the close.
+- [Parallel sessions](parallel-sessions.md) — when to split work across worktrees, worktree readiness, the worktrunk + herdr handoff, monitoring, folding back.
+- [Decision records](adrs.md) — optional: lightweight ADRs as a release valve for amending requirements already shipped to main. Skip for new requirements and in-flight branches.

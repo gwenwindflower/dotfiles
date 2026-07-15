@@ -10,42 +10,30 @@ SPOT applies when a repo has both `SPEC.md` and `TODO.md`.
 | `DONE.md` | Shipped work and rationale |
 | `docs/` | How the system works now |
 
-Load the `spot-project-management` skill before spec authoring, Phase management, or Planner/Manager handoff.
+Load the `spot-project-management` skill before authoring specs, planning Phases, or when briefed to run a Phase.
 
-#### Roles
-
-- Planner owns what: specs and TODO.
-- Manager owns execution: one Phase through DONE.
-- Director owns coordination across requested Phase scope.
-- Subagent owns one Objective: commits, never rebases.
-
-Roles are responsibilities, not threads.
-
-#### TODO Shape
+#### Shape
 
 | Level | Markdown | Meaning |
 | --- | --- | --- |
-| Phase | `## Phase N: Description` | Checkpoint/context boundary |
-| Objective | `### Description` | Parallel work lane |
+| Phase | `## Phase N: Description` | One branch's worth of work; a context boundary |
+| Objective | `### Description` | One reviewable unit; lands as one conventional commit |
 | Task | `- [ ] description` | Sequential step |
 
-Phase headers may include, in order:
-
-- `**Dependencies**: <N>, <N>` for Phase numbers that must already be in DONE.
-- `**Requirements**: <id>, <id>` for `SPEC.md` or domain requirement IDs.
-
-Phase numbers are stable IDs, not ordering. Dependencies define order. When TODO and specs disagree, specs win; flag the mismatch.
+Phases are independent unless a `**Dependencies**: <N>` line says otherwise; dependencies chain. Phase numbers are stable IDs, not ordering. `**Requirements**: <id>` lines tie a Phase to spec IDs. When TODO and specs disagree, specs win — flag the mismatch.
 
 #### Execution
 
-- Pacing: "phase by phase" stops after each Phase; "move freely" continues through unblocked Phases. Managers still stop at their Phase boundary unless told otherwise.
-- Complete a Task by removing it unchanged from TODO and adding it checked to DONE under the same Objective. Add terse sub-bullets only for durable gotchas, decisions, or links.
-- A Phase is complete only when every Task is done, every listed requirement is met, DONE is updated, and the Phase is committed.
-- Linear history is the deliverable. Before starting another Phase, leave a clean tree and a committed Phase. Subagents commit; Managers squash/fix up bookkeeping into substantive commits.
+- A session runs a Phase on one branch in one worktree. Helpers (teammates, subagents) work in that same tree and never run `git add` or `git commit` — they report done; the owning session reviews, then commits or sends back.
+- An Objective closes as one well-named conventional commit, its TODO checkoff folded in. Branch names and commit subjects describe the work (`feat/oauth`, `feat(auth): add GCP oauth`) — SPOT stays out of git surfaces.
+- No bookkeeping-only commits. Amend the final TODO→DONE move into the Phase's last commit.
+- Requirement changes are planning work: pause, edit the spec deliberately, resume. Don't bend requirements to match output mid-Phase.
+- A Phase is complete when every Task is done, listed requirements are met, DONE.md is updated, and the branch is clean.
+- Truly unrelated Phases can run as parallel sessions on worktrees (worktrunk + herdr); the parent session creates, briefs, and folds them. Load the skill before splitting.
 
 #### Stops
 
-- `#user` means human credentials, judgment, installs, deployments, or directory moves are required. Stop when blocked.
-- Ambiguous wording, risky approaches, low-value tasks, and requirement concerns get surfaced before execution.
-- Names are cross-agent contracts; sharpen vague Phase, Objective, requirement, file, and function names before building on them.
-- Use TDD by default; SPOT-specific exceptions live in the skill.
+- `#user` marks Tasks needing human credentials, judgment, installs, or deployments. Stop when blocked.
+- Surface ambiguous wording, risky approaches, and requirement concerns before building.
+- Names are cross-agent contracts; sharpen vague ones before building on them.
+- TDD by default; SPOT-specific exceptions live in the skill.

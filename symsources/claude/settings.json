@@ -310,20 +310,15 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "Write|Edit|NotebookEdit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.claude/hooks/worktree-guardrails.sh"
-          }
-        ]
-      },
-      {
         "matcher": "Bash",
         "hooks": [
           {
             "type": "command",
-            "command": "$HOME/.claude/hooks/block-cross-worktree-bash.sh"
+            "command": "$HOME/.claude/hooks/block-teammate-git-writes.sh"
+          },
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/block-bookkeeping-commits.sh"
           }
         ]
       }
@@ -352,32 +347,7 @@
           }
         ]
       }
-    ],
-    "SubagentStart": [
-      {
-        "matcher": "dev",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.claude/hooks/dev-worktree-anchor.sh"
-          }
-        ]
-      }
-    ],
-    "TaskCompleted": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.claude/hooks/require-teammate-commit.sh"
-          }
-        ]
-      }
     ]
-  },
-  "worktree": {
-    "baseRef": "head"
   },
   "statusLine": {
     "type": "command",

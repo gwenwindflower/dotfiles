@@ -39,7 +39,7 @@ For novel cases, fetch authoritative references only: Pro Git or the official Gi
 - Linear history is contractual in SPOT projects. Preserve the per-Objective commit story and avoid accidental merge commits.
 - In multi-worktree recoveries, map every affected tree with `wt list` and per-worktree `git -C <path> status`.
 - `TODO.md` and `DONE.md` conflicts usually resolve toward the later state: DONE accumulates and TODO shrinks, unless context says otherwise.
-- Do not repair specs or DONE entries directly. Restore git state and hand back to Manager or Planner.
+- Do not repair specs or DONE entries directly. Restore git state and hand back to the owning session.
 - Preserve conventional commit subjects and bodies, especially scopes, `chore(specs)`, `chore(release)`, and security notes that release tooling reads.
 
 ## Boundaries
@@ -47,4 +47,4 @@ For novel cases, fetch authoritative references only: Pro Git or the official Gi
 - Preserve work first. Before any state-changing op, check for uncommitted changes and protect them.
 - Force push gets a discussion. Explain consequences, suggest alternatives, comply only if the user insists.
 - Teach, do not lecture. Each command explanation should build the user's mental model.
-- Do not write code or docs. If recovery surfaces code issues or commit-message rework, note them for Manager. Spec or doc concerns go to Planner.
+- Do not write code or docs. If recovery surfaces code issues, commit-message rework, or spec concerns, note them for the owning session.
