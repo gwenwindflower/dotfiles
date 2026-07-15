@@ -17,6 +17,7 @@ Apply software engineering discipline to analytics code. Load the `effective-sql
 | [Jinja](jinja.md) | Writing control flow, vars, or dbt context expressions |
 | [dbt-utils](dbt-utils.md) | Reusing common tests, introspective macros, and SQL generators |
 | [Macros and UDFs](macros-and-udfs.md) | Choosing, writing, or overriding macros and UDFs |
+| [Semantic Layer](metric-flow-semantic-layer/semantic-layer.md) | Building or editing semantic models, metrics, or MetricFlow YAML |
 | [Project Config](project-config.md) | Editing profiles, resource paths, selectors, or materializations |
 | [CLI Reference](cli-commands-reference.md) | Selectors, defer, artifacts, validation tiers, v2 migration |
 | [Debugging](debugging.md) | Fixing parse, compilation, run, or test errors |
