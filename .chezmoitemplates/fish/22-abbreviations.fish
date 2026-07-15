@@ -47,6 +47,8 @@ abbr --add gauth "gcloud auth application-default login"
 abbr --add sshk kitten ssh -A
 abbr --add ssha ssh -A
 abbr --add exe ssh exe.dev
+# kitty
+abbr --add herdcats kitty --session ~/.config/kitty/sessions/herdr.kitty-session
 # tmux
 abbr --add tm tmux
 abbr --add tm? tstat
