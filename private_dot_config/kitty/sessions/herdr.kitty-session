@@ -1,0 +1,13 @@
+new_tab 🏰dotfiles
+launch herdr --session dotfiles
+
+new_tab 🌩️lightdash
+launch herdr --session lightdash
+
+new_tab 🌀supermodel
+launch herdr --session supermodel
+
+new_tab  spotify
+launch spotify_player
+
+focus_tab 0
