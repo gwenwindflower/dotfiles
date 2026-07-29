@@ -31,6 +31,7 @@ packages:
           - ast-grep
           - awscli
           - bat
+          - blueutil
           - bottom
           - bun
           - cargo-binstall
