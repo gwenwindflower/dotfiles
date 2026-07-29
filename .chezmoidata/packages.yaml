@@ -201,6 +201,7 @@ packages:
           - mitmproxy
           - signal
         work:
+          - fathom
           - google-chrome
           - linear
           - loom
