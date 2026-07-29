@@ -1,1 +1,8 @@
 {{ template "agents/AGENTS.md" . }}
+
+## Keybindings
+
+`~/.claude/keybindings.json` binds actions per context, and contexts stack by priority: `Autocomplete > Chat > Footer`. A context only intercepts keys it binds — unbound keys fall through to the next context down. `enter` is newline and `ctrl`/`cmd`/`alt`+`enter` submit, both held in Chat, so:
+
+- **Win above Chat** by binding the key in the higher context — Autocomplete binds `enter` → `autocomplete:accept` so list selection beats newline.
+- **Reach below Chat** with a key Chat doesn't claim — Footer opens a subagent thread on `o` → `footer:openSelected`, because Chat eats `enter` and mod+`enter` first.
