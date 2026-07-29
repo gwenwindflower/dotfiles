@@ -1,7 +1,6 @@
 onboarding = false
 
 [ui]
-agent_panel_scope = "all"
 show_agent_labels_on_pane_borders = true
 agent_panel_sort = "priority"
 
@@ -37,10 +36,10 @@ new_workspace = "prefix+n"
 rename_workspace = "prefix+shift+n"
 previous_workspace = "ctrl+super+k"
 next_workspace = "ctrl+super+j"
-close_workspace = ["prefix+ctrl+x", "prefix+alt+d", "prefix+super+d"]
+close_workspace = ["prefix+alt+d", "prefix+super+d"]
 previous_agent = "ctrl+super+p"
 next_agent = "ctrl+super+n"
-toggle_sidebar = ["prefix+b", "ctrl+super+["]
+toggle_sidebar = ["prefix+b", "ctrl+alt+[", "ctrl+super+["]
 
 [[keys.command]]
 key = "prefix+ctrl+g"
