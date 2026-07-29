@@ -2,7 +2,7 @@
 #:tombi schema.strict = false
 
 model = "gpt-5.6-sol"
-personality = "pragmatic"
+personality = "friendly"
 approval_policy = "on-request"
 approvals_reviewer = "auto_review"
 sandbox_mode = "workspace-write"
@@ -15,7 +15,7 @@ sandbox_mode = "workspace-write"
 web_search = "cached"
 project_doc_max_bytes = 65536
 sqlite_home = "~/.codex/sqlite"
-model_reasoning_effort = "medium"
+model_reasoning_effort = "high"
 suppress_unstable_features_warning = true
 
 notify = [
@@ -376,19 +376,19 @@ enabled = true
 trusted_hash = "sha256:e2ffec558188fd0988ad51768594f675801fd2a1ba2895b5df2aca2650d70c2a"
 
 [marketplaces.worktrunk]
-last_updated = "2026-07-14T00:49:20Z"
-last_revision = "a6972e4be04f9921e75c53e45d4ca4a6cfdf7d36"
+last_updated = "2026-07-29T01:59:33Z"
+last_revision = "946e360447b87ce17f486376fdd615edf154f7b1"
 source_type = "git"
 source = "https://github.com/max-sixty/worktrunk.git"
 
 [marketplaces.mcp-apps]
-last_updated = "2026-07-13T13:02:33Z"
-last_revision = "cf87f2a2c2581b2bc45ff4848aac9fa7e106a576"
+last_updated = "2026-07-18T16:31:00Z"
+last_revision = "2ca6a59d2f493b227a83a2e3ce0396db4705621a"
 source_type = "git"
 source = "https://github.com/modelcontextprotocol/ext-apps.git"
 
 [marketplaces.openai-bundled]
-last_updated = "2026-07-11T19:26:53Z"
+last_updated = "2026-07-16T01:33:43Z"
 source_type = "local"
 source = "/Users/winnie/.codex/.tmp/bundled-marketplaces/openai-bundled"
 
@@ -478,13 +478,13 @@ NODE_REPL_NODE_MODULE_DIRS = "/Applications/ChatGPT.app/Contents/Resources/cua_n
 NODE_REPL_NODE_PATH = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node"
 NODE_REPL_TRUSTED_CODE_PATHS = "/Users/winnie/.codex"
 CODEX_HOME = "/Users/winnie/.codex"
-NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "1491199f46178eb038259aaea144492b8a8ade32bba5d2b4843c94936be551bb,6d25aa7656feac858f3a3bdaea5bcbab0dbfd426c9de8e6931ce90c399ee8e4f"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "6d25aa7656feac858f3a3bdaea5bcbab0dbfd426c9de8e6931ce90c399ee8e4f,cf732b4a285497bfd7e75a2ac14879bce9ae644eb4e1babeb17bb6a840dfc9bd"
 BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
 NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
 NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = "Control desktop apps on macOS through Computer Use."
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.707.41301"
+BROWSER_USE_CODEX_APP_VERSION = "26.707.72221"
 CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
 
 [mcp_servers.indi]
@@ -641,6 +641,12 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/Users/winnie/dev/_work/dlt-pro"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/_work/lightdash-bootcamp"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/rowing-machine"]
 trust_level = "trusted"
 
 [apps._default]
