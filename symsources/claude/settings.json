@@ -277,36 +277,18 @@
       "Read(~/.aws/**)",
       "Read(~/.config/gcloud/**)",
       "Read(~/.gnupg/**)",
-      "Read(~/.ssh/**)",
-      "Write(**/*.env)",
-      "Write(**/.env)",
-      "Write(**/.env.*)",
-      "Write(**/credentials/**)",
-      "Write(**/secrets/**)",
-      "Write(*.env)",
-      "Write(*.key)",
-      "Write(*.p12)",
-      "Write(*.pem)",
-      "Write(*.pfx)",
-      "Write(.env)",
-      "Write(.env.*)",
-      "Write(id_ed25519)",
-      "Write(id_rsa)",
-      "Write(~/.aws/**)",
-      "Write(~/.config/gcloud/**)",
-      "Write(~/.gnupg/**)",
-      "Write(~/.ssh/**)"
+      "Read(~/.ssh/**)"
     ],
     "ask": [
-      "Write(/.claude/**)",
-      "Write(~/.agents/**)",
-      "Write(~/.blacksmith/**)",
-      "Write(~/.claude/**)",
-      "Write(~/.config/.wrangler/**)"
+      "Edit(/.claude/**)",
+      "Edit(~/.agents/**)",
+      "Edit(~/.blacksmith/**)",
+      "Edit(~/.claude/**)",
+      "Edit(~/.config/.wrangler/**)"
     ],
     "defaultMode": "auto"
   },
-  "model": "fable",
+  "model": "opus",
   "hooks": {
     "PreToolUse": [
       {
@@ -489,7 +471,7 @@
     ]
   },
   "syntaxHighlightingDisabled": false,
-  "effortLevel": "high",
+  "effortLevel": "xhigh",
   "awaySummaryEnabled": false,
   "tui": "fullscreen",
   "voice": {
@@ -502,6 +484,7 @@
   "editorMode": "vim",
   "preferredNotifChannel": "kitty",
   "teammateMode": "in-process",
+  "inputNeededNotifEnabled": true,
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
   "useAutoModeDuringPlan": true,
