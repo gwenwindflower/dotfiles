@@ -158,6 +158,8 @@ abbr --add clr claude --resume
 abbr --add clc claude -c
 abbr --add cl! claude --allow-dangerously-skip-permissions
 abbr --add clc! claude -c --allow-dangerously-skip-permissions
+abbr --add clld env ENABLE_CLAUDEAI_MCP_SERVERS=true claude
+abbr --add clmd ln -s AGENTS.md CLAUDE.md
 abbr --add clcf "ee $HOME/.claude"
 abbr --add ccu bunx ccusage@latest
 # obsiidian and notes
