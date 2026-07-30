@@ -3,7 +3,7 @@
 ## Global Functions
 
 | Function | Signature | Description |
-| ---------- | ----------- | ------------- |
+|----------|-----------|-------------|
 | `date()` | `date(string): date` | Parse string to date. Format: `YYYY-MM-DD HH:mm:ss` |
 | `duration()` | `duration(string): duration` | Parse duration string |
 | `now()` | `now(): date` | Current date and time |
@@ -23,7 +23,7 @@
 ## Any Type Functions
 
 | Function | Signature | Description |
-| ---------- | ----------- | ------------- |
+|----------|-----------|-------------|
 | `isTruthy()` | `any.isTruthy(): boolean` | Coerce to boolean |
 | `isType()` | `any.isType(type): boolean` | Check type |
 | `toString()` | `any.toString(): string` | Convert to string |
@@ -33,7 +33,7 @@
 **Fields:** `date.year`, `date.month`, `date.day`, `date.hour`, `date.minute`, `date.second`, `date.millisecond`
 
 | Function | Signature | Description |
-| ---------- | ----------- | ------------- |
+|----------|-----------|-------------|
 | `date()` | `date.date(): date` | Remove time portion |
 | `format()` | `date.format(string): string` | Format with Moment.js pattern |
 | `time()` | `date.time(): string` | Get time as string |
@@ -45,9 +45,8 @@
 When subtracting two dates, the result is a **Duration** type (not a number). Duration has its own properties and methods.
 
 **Duration Fields:**
-
 | Field | Type | Description |
-| ------- | ------ | ------------- |
+|-------|------|-------------|
 | `duration.days` | Number | Total days in duration |
 | `duration.hours` | Number | Total hours in duration |
 | `duration.minutes` | Number | Total minutes in duration |
@@ -95,7 +94,7 @@ When subtracting two dates, the result is a **Duration** type (not a number). Du
 **Field:** `string.length`
 
 | Function | Signature | Description |
-| ---------- | ----------- | ------------- |
+|----------|-----------|-------------|
 | `contains()` | `string.contains(value): boolean` | Check substring |
 | `containsAll()` | `string.containsAll(...values): boolean` | All substrings present |
 | `containsAny()` | `string.containsAny(...values): boolean` | Any substring present |
@@ -114,7 +113,7 @@ When subtracting two dates, the result is a **Duration** type (not a number). Du
 ## Number Functions
 
 | Function | Signature | Description |
-| ---------- | ----------- | ------------- |
+|----------|-----------|-------------|
 | `abs()` | `number.abs(): number` | Absolute value |
 | `ceil()` | `number.ceil(): number` | Round up |
 | `floor()` | `number.floor(): number` | Round down |
@@ -127,7 +126,7 @@ When subtracting two dates, the result is a **Duration** type (not a number). Du
 **Field:** `list.length`
 
 | Function | Signature | Description |
-| ---------- | ----------- | ------------- |
+|----------|-----------|-------------|
 | `contains()` | `list.contains(value): boolean` | Element exists |
 | `containsAll()` | `list.containsAll(...values): boolean` | All elements exist |
 | `containsAny()` | `list.containsAny(...values): boolean` | Any element exists |
@@ -145,7 +144,7 @@ When subtracting two dates, the result is a **Duration** type (not a number). Du
 ## File Functions
 
 | Function | Signature | Description |
-| ---------- | ----------- | ------------- |
+|----------|-----------|-------------|
 | `asLink()` | `file.asLink(display?): Link` | Convert to link |
 | `hasLink()` | `file.hasLink(otherFile): boolean` | Has link to file |
 | `hasTag()` | `file.hasTag(...tags): boolean` | Has any of the tags |
@@ -155,14 +154,14 @@ When subtracting two dates, the result is a **Duration** type (not a number). Du
 ## Link Functions
 
 | Function | Signature | Description |
-| ---------- | ----------- | ------------- |
+|----------|-----------|-------------|
 | `asFile()` | `link.asFile(): file` | Get file object |
 | `linksTo()` | `link.linksTo(file): boolean` | Links to file |
 
 ## Object Functions
 
 | Function | Signature | Description |
-| ---------- | ----------- | ------------- |
+|----------|-----------|-------------|
 | `isEmpty()` | `object.isEmpty(): boolean` | No properties |
 | `keys()` | `object.keys(): list` | List of keys |
 | `values()` | `object.values(): list` | List of values |
@@ -170,5 +169,5 @@ When subtracting two dates, the result is a **Duration** type (not a number). Du
 ## Regular Expression Functions
 
 | Function | Signature | Description |
-| ---------- | ----------- | ------------- |
+|----------|-----------|-------------|
 | `matches()` | `regexp.matches(string): boolean` | Test if matches |

@@ -1,6 +1,6 @@
 ---
 name: obsidian-cli
-description: Script Obsidian vaults via the Obsidian CLI for notes, tasks, properties, and search, plus plugin/theme dev (reload plugins, run JS, capture errors, screenshots, DOM inspect). Use when driving an Obsidian vault from the terminal or debugging an Obsidian plugin/theme. Skip for static markdown editing (use obsidian-markdown).
+description: Interact with Obsidian vaults using the Obsidian CLI to read, create, search, and manage notes, tasks, properties, and more. Also supports plugin and theme development with commands to reload plugins, run JavaScript, capture errors, take screenshots, and inspect the DOM. Use when the user asks to interact with their Obsidian vault, manage notes, search vault content, perform vault operations from the command line, or develop and debug Obsidian plugins and themes.
 ---
 
 # Obsidian CLI
@@ -9,7 +9,7 @@ Use the `obsidian` CLI to interact with a running Obsidian instance. Requires Ob
 
 ## Command reference
 
-Run `obsidian help` to see all available commands. This is always up to date. Full docs: <https://help.obsidian.md/cli>
+Run `obsidian help` to see all available commands. This is always up to date. Full docs: https://help.obsidian.md/cli
 
 ## Syntax
 
@@ -66,26 +66,19 @@ Use `--copy` on any command to copy output to clipboard. Use `silent` to prevent
 After making code changes to a plugin or theme, follow this workflow:
 
 1. **Reload** the plugin to pick up changes:
-
    ```bash
    obsidian plugin:reload id=my-plugin
    ```
-
 2. **Check for errors** — if errors appear, fix and repeat from step 1:
-
    ```bash
    obsidian dev:errors
    ```
-
 3. **Verify visually** with a screenshot or DOM inspection:
-
    ```bash
    obsidian dev:screenshot path=screenshot.png
    obsidian dev:dom selector=".workspace-leaf" text
    ```
-
 4. **Check console output** for warnings or unexpected logs:
-
    ```bash
    obsidian dev:console level=error
    ```

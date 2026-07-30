@@ -24,7 +24,7 @@ due: 2024-02-01T14:30:00
 ## Property Types
 
 | Type | Example |
-| ------ | --------- |
+|------|---------|
 | Text | `title: My Title` |
 | Number | `rating: 4.5` |
 | Checkbox | `completed: true` |

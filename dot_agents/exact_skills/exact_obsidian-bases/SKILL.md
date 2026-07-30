@@ -1,6 +1,6 @@
 ---
 name: obsidian-bases
-description: Create and edit Obsidian Bases (.base files) with views, filters, formulas, and summaries. Use when editing .base files or building database-style views in an Obsidian vault.
+description: Create and edit Obsidian Bases (.base files) with views, filters, formulas, and summaries. Use when working with .base files, creating database-like views of notes, or when the user mentions Bases, table views, card views, filters, or formulas in Obsidian.
 ---
 
 # Obsidian Bases Skill
@@ -22,10 +22,11 @@ Base files use the `.base` extension and contain valid YAML.
 # Global filters apply to ALL views in the base
 filters:
   # Can be a single filter string
-  # OR a recursive filter object with and/or/not
-  and: []
-  or: []
-  not: []
+  # OR a recursive filter object with exactly ONE key: and, or, or not
+  and:
+    - 'status == "active"'
+    - not:
+        - 'file.hasTag("archived")'
 
 # Define formula properties that can be used across all views
 formulas:
@@ -52,8 +53,9 @@ views:
     groupBy:                     # Optional: group results
       property: property_name
       direction: ASC | DESC
-    filters:                     # View-specific filters
-      and: []
+    filters:                     # View-specific filters follow the same rules
+      and:
+        - 'status == "active"'
     order:                       # Properties to display in order
       - file.name
       - property_name
@@ -104,7 +106,7 @@ filters:
 ### Filter Operators
 
 | Operator | Description |
-| ---------- | ------------- |
+|----------|-------------|
 | `==` | equals |
 | `!=` | not equal |
 | `>` | greater than |
@@ -113,7 +115,7 @@ filters:
 | `<=` | less than or equal |
 | `&&` | logical and |
 | `\|\|` | logical or |
-| `!` | logical not |
+| <code>!</code> | logical not |
 
 ## Properties
 
@@ -126,7 +128,7 @@ filters:
 ### File Properties Reference
 
 | Property | Type | Description |
-| ---------- | ------ | ------------- |
+|----------|------|-------------|
 | `file.name` | String | File name |
 | `file.basename` | String | File name without extension |
 | `file.path` | String | Full path to file |
@@ -177,7 +179,7 @@ formulas:
 Most commonly used functions. For the complete reference of all types (Date, String, Number, List, File, Link, Object, RegExp), see [FUNCTIONS_REFERENCE.md](references/FUNCTIONS_REFERENCE.md).
 
 | Function | Signature | Description |
-| ---------- | ----------- | ------------- |
+|----------|-----------|-------------|
 | `date()` | `date(string): date` | Parse string to date (`YYYY-MM-DD HH:mm:ss`) |
 | `now()` | `now(): date` | Current date and time |
 | `today()` | `today(): date` | Current date (time = 00:00:00) |
@@ -269,7 +271,7 @@ views:
 ## Default Summary Formulas
 
 | Name | Input Type | Description |
-| ------ | ------------ | ------------- |
+|------|------------|-------------|
 | `Average` | Number | Mathematical mean |
 | `Min` | Number | Smallest number |
 | `Max` | Number | Largest number |
