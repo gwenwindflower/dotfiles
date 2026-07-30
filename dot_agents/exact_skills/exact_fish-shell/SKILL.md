@@ -11,11 +11,13 @@ Fish is not bash. Different syntax (`test` over `[[ ]]`, `(cmd)` over `$(cmd)`),
 - `functions/<name>.fish` — autoloaded on first use; filename must match function name
 - `conf.d/*.fish` — sourced at startup; abbreviations, keybindings, env tweaks
 - `completions/<cmd>.fish` — completion definitions
-- `config.fish` — assembled from `.chezmoitemplates/fish/*.fish` fragments at chezmoi apply time. See [chezmoi skill](../chezmoi/SKILL.md) for the assembly model.
+- `config.fish` — assembled from `.chezmoitemplates/fish/*.fish` fragments at chezmoi apply time. If you're editing specifically how the templates are assembled, you should load the chezmoi skill, otherwise you won't need that depth.
 
 ## Testing in this environment
 
 You're in bash. Run fish via subshell: `fish -c "<commands>"`. New `.fish` files are picked up automatically by each new subshell after `chezmoi apply` — no reload needed. Shell side effects can be destructive, so prefer asking the user to test interactive features rather than self-validating.
+
+Add tests only for Fish functions with substantial branching, parsing, state handling, or external integration. Co-locate them as `functions/<name>_test.fish`, define the matching `<name>_test` function, and run it in a fresh Fish subshell.
 
 ## Jobs to be done
 
