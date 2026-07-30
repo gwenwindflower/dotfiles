@@ -51,7 +51,7 @@ abbr --add exe ssh exe.dev
 abbr --add herdcats kitty --session ~/.config/kitty/sessions/herdr.kitty-session
 # tmux
 abbr --add tm tmux
-abbr --add tm? tstat
+abbr --add tmst tstat
 abbr --add tmls tmux list-sessions
 abbr --add tmn tmux new-session
 abbr --add tma tmux attach-session
@@ -135,7 +135,6 @@ abbr --add brls brew list
 abbr --add brlsi brew list --installed-on-request
 abbr --add brlsc brew list --cask
 abbr --add brlsf "brew list --installed-on-request | fzf --multi --prompt='Filter brew packages: ' --preview='brew info {1}'"
-abbr --add br? brew info
 abbr --add brin brew info
 abbr --add brd brew deps
 abbr --add brdt brew deps --tree
@@ -174,7 +173,7 @@ abbr --add oba notesmd-cli create
 abbr --add obrm notesmd-cli delete
 abbr --add obday notesmd-cli daily
 abbr --add obfm notesmd-cli frontmatter
-abbr --add ob? notesmd-cli help
+abbr --add obh notesmd-cli help
 abbr --add obls notesmd-cli list
 abbr --add oblsv notesmd-cli list-vaults
 abbr --add obmv notesmd-cli move
@@ -188,7 +187,7 @@ abbr --add opi "op run --no-masking -- "
 abbr --add opr "op run -- "
 abbr --add openv ee $OP_ENV_DIR
 abbr --add keys security
-abbr -a 'prx?' prx status
+abbr -a prxst prx status
 abbr -a mp mitmproxy
 # data
 abbr --add dbx databricks
@@ -196,8 +195,10 @@ abbr --add ddb duckdb --cmd \'.read ~/dev/02_spellbook/pastel_duck_theme.sql\'
 abbr --add pg pgcli
 abbr --add sqlite sqlite3
 abbr --add sqli sqlite3
-abbr --add psql psql-$PG_LATEST
-abbr --add postgres postgres-$PG_LATEST
+if set -q PG_LATEST
+    abbr --add psql psql-$PG_LATEST
+    abbr --add postgres postgres-$PG_LATEST
+end
 ## lightdash
 abbr --add ld lightdash
 abbr --add ldc lightdash compile
