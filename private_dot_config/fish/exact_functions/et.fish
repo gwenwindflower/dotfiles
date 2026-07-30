@@ -1,5 +1,5 @@
 function et -d "Create, bootstrap, clone, and shell into an exe.dev VM"
-    argparse h/help c/cpu= m/memory= -- $argv
+    argparse h/help c/cpu= m/memory= p/profile= -- $argv
     or return
 
     if set -q _flag_help
@@ -15,10 +15,11 @@ function et -d "Create, bootstrap, clone, and shell into an exe.dev VM"
         logirl help_flag h/help "Show this help message"
         logirl help_flag c/cpu=N "CPUs to allocate (exe default: 2)"
         logirl help_flag m/memory=N "Memory in GB (exe default: 8)"
+        logirl help_flag p/profile=PROFILE "chezmoi machine profile: personal or work (default: work)"
         logirl help_header Examples
         printf "  et cool-project\n"
         printf "  et winnie-site gwenwindflower/winnie.sh\n"
-        printf "  et beefy --cpu 4 --memory 16 gwenwindflower/dotfiles\n"
+        printf "  et side-project --profile personal gwenwindflower/dotfiles\n"
         return 0
     end
 
@@ -26,6 +27,9 @@ function et -d "Create, bootstrap, clone, and shell into an exe.dev VM"
         logirl error "ssh not found in PATH"
         return 127
     end
+
+    set -l machine_profile (_et_resolve_machine_profile $_flag_profile)
+    or return
 
     set -l argc (count $argv)
     if test $argc -lt 1 -o $argc -gt 2
@@ -46,8 +50,6 @@ function et -d "Create, bootstrap, clone, and shell into an exe.dev VM"
     end
 
     set -l repo ""
-    set -l owner ""
-    set -l repo_basename ""
     set -l slug ""
     if test $argc -eq 2
         set repo $argv[2]
@@ -56,56 +58,15 @@ function et -d "Create, bootstrap, clone, and shell into an exe.dev VM"
             return 1
         end
         set -l parts (string split -- / $repo)
-        set owner $parts[1]
-        set repo_basename $parts[2]
-        # Integration slug: repo basename, lowercased, with . and _ → -
-        # So gwenwindflower/winnie.sh → integration name "winnie-sh".
-        set slug (string lower -- $repo_basename | string replace -ra '[._]' -)
+        set slug (string lower -- $parts[2] | string replace -ra '[._]' -)
     end
 
-    # ── Ensure GitHub integration exists for the repo ──────────────────────
     if test -n "$repo"
-        if not type -q jq
-            logirl error "jq not found in PATH (needed to look up exe.dev integrations)"
-            return 127
-        end
-
-        logirl special "Checking exe.dev integration for $repo"
-        set -l int_json (ssh exe.dev integrations list --json)
-        or begin
-            logirl error "failed to list exe.dev integrations"
-            return 1
-        end
-
-        set -l existing (printf '%s' $int_json | jq -r --arg n $slug '.[] | select(.name == $n) | .name')
-        if test -z "$existing"
-            logirl info "  no integration named '$slug' — creating one"
-            ssh exe.dev integrations add github --name=$slug --repository=$repo
-            or begin
-                logirl error "failed to create integration '$slug'"
-                return 1
-            end
-        else
-            logirl info "  using existing integration '$slug'"
-        end
+        _et_ensure_repository_integration $repo $slug
+        or return
     end
 
-    # ── Build first-boot setup script (piped via stdin to dodge quoting) ───
-    # CHEZMOI_ONESHOT=1 is required so the post-apply script materializes
-    # symsources/* symlinks into real files before chezmoi purges the source.
-    # See AGENTS.md → "--one-shot and ephemeral installs".
-    set -l setup_lines \
-        '#!/usr/bin/env sh' \
-        'set -e' \
-        'export CHEZMOI_ONESHOT=1' \
-        'sh -c "$(curl -fsLS get.chezmoi.io)" -- init --one-shot gwenwindflower'
-    if test -n "$repo"
-        set -a setup_lines "git clone https://$slug.int.exe.xyz/$owner/$repo_basename.git ~/$repo_basename"
-    end
-    set -a setup_lines 'touch ~/.et-bootstrap-done'
-    set -l setup_script (string join \n $setup_lines)
-
-    set -l new_args --name=$name --setup-script=/dev/stdin
+    set -l new_args --name=$name
     if set -q _flag_cpu
         set -a new_args --cpu=$_flag_cpu
     end
@@ -120,29 +81,138 @@ function et -d "Create, bootstrap, clone, and shell into an exe.dev VM"
     if test -n "$repo"
         logirl info "  with repo: $repo"
     end
-    printf '%s\n' $setup_script | ssh exe.dev new $new_args
+    ssh exe.dev new $new_args
     or return 1
 
     set -l vm_host $name.exe.xyz
     printf 'Host %s %s\n  HostName %s\n\n' $name $vm_host $vm_host >>~/.ssh/exe-hosts
 
-    # `--setup-script` may run async; poll for the sentinel before opening an
-    # interactive shell so we don't land in a half-bootstrapped VM. ~2min cap.
-    logirl special "Waiting for bootstrap to finish"
-    set -l done 0
-    # ignore _ iterator var
-    # @fish-lsp-disable-next-line
-    for _ in (seq 1 60)
-        if ssh -o ConnectTimeout=3 -o StrictHostKeyChecking=accept-new $vm_host 'test -f ~/.et-bootstrap-done' 2>/dev/null
-            set done 1
-            break
-        end
-        sleep 2
+    _et_wait_for_vm $vm_host
+    or return
+
+    if test -n "$repo"
+        _et_test_repository_access $vm_host $repo
+        or return
     end
-    if test $done -eq 0
-        logirl warning "bootstrap sentinel not found after ~2min — VM may still be setting up"
+
+    _et_bootstrap_chezmoi $vm_host $machine_profile
+    or return
+
+    if test -n "$repo"
+        _et_clone_repository $vm_host $repo
+        or return
     end
 
     logirl success "exe VM '$name' ready — opening shell"
     ssh -A $vm_host
+end
+
+function _et_resolve_machine_profile -d "Resolve and validate the chezmoi machine profile" --argument-names requested_profile
+    set -l machine_profile work
+    if test -n "$requested_profile"
+        set machine_profile $requested_profile
+    end
+
+    if not contains -- $machine_profile personal work
+        logirl error "profile must be personal or work (got '$machine_profile')"
+        return 2
+    end
+
+    printf "%s\n" $machine_profile
+end
+
+function _et_ensure_repository_integration -d "Ensure an exe.dev GitHub integration targets a repository" --argument-names repo integration_name
+    if not type -q jq
+        logirl error "jq not found in PATH (needed to look up exe.dev integrations)"
+        return 127
+    end
+
+    logirl special "Checking exe.dev integration for $repo"
+    set -l integrations_json (ssh exe.dev integrations list --json)
+    set -l list_status $status
+    if test $list_status -ne 0
+        logirl error "failed to list exe.dev integrations"
+        return $list_status
+    end
+
+    set -l integration_state (
+        printf '%s' $integrations_json |
+            jq -r --arg name $integration_name --arg repo $repo '
+                [.[] | select(.name == $name)][0] as $integration
+                | if $integration == null then
+                    "missing"
+                  elif $integration.type == "github"
+                    and any($integration.config.repositories[]?; . == $repo) then
+                    "matching"
+                  else
+                    "conflicting"
+                  end
+            '
+    )
+    set -l query_status $pipestatus[2]
+    if test $query_status -ne 0
+        logirl error "failed to read exe.dev integration metadata"
+        return $query_status
+    end
+
+    switch $integration_state
+        case matching
+            logirl info "  using existing integration '$integration_name'"
+        case missing
+            logirl info "  no integration named '$integration_name' — creating one"
+            ssh exe.dev integrations add github --name=$integration_name --repository=$repo
+            or begin
+                logirl error "failed to create integration '$integration_name'"
+                return 1
+            end
+        case conflicting
+            logirl error "integration '$integration_name' does not target $repo"
+            return 1
+        case '*'
+            logirl error "unexpected integration state for '$integration_name': $integration_state"
+            return 1
+    end
+end
+
+function _et_test_repository_access -d "Test repository access from an exe.dev VM" --argument-names vm_host repo
+    logirl special "Testing repository access for $repo"
+    ssh $vm_host "git ls-remote https://github.int.exe.xyz/$repo.git HEAD" >/dev/null
+    or begin
+        logirl error "cannot access $repo from $vm_host"
+        return 1
+    end
+end
+
+function _et_bootstrap_chezmoi -d "Bootstrap chezmoi on an exe.dev VM" --argument-names vm_host machine_profile
+    # One-shot installs must materialize source-backed symlinks before chezmoi purges its source directory.
+    logirl special "Bootstrapping chezmoi on $vm_host"
+    set -l bootstrap_command 'export CHEZMOI_ONESHOT=1; sh -c "$(curl -fsLS get.chezmoi.io)" -- init --one-shot --promptChoice "Machine profile=PROFILE" gwenwindflower'
+    set bootstrap_command (string replace PROFILE $machine_profile -- $bootstrap_command)
+    ssh $vm_host $bootstrap_command
+    or begin
+        logirl error "chezmoi bootstrap failed on $vm_host"
+        return 1
+    end
+end
+
+function _et_clone_repository -d "Clone a GitHub repository onto an exe.dev VM" --argument-names vm_host repo
+    logirl special "Cloning $repo"
+    ssh $vm_host "git clone https://github.int.exe.xyz/$repo.git"
+    or begin
+        logirl error "failed to clone $repo on $vm_host"
+        return 1
+    end
+end
+
+function _et_wait_for_vm -d "Wait for a new exe.dev VM to accept SSH connections" --argument-names vm_host
+    logirl special "Waiting for $vm_host"
+    for attempt in (seq 1 60)
+        if ssh -o ConnectTimeout=3 -o StrictHostKeyChecking=accept-new $vm_host true 2>/dev/null
+            return 0
+        end
+        sleep 2
+    end
+
+    logirl error "$vm_host did not accept SSH connections after ~2min"
+    return 1
 end
