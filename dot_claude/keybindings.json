@@ -16,7 +16,14 @@
 			"context": "Autocomplete",
 			"bindings": {
 				"ctrl+k": "autocomplete:previous",
-				"ctrl+j": "autocomplete:next"
+				"ctrl+j": "autocomplete:next",
+				"enter": "autocomplete:accept"
+			}
+		},
+		{
+			"context": "Footer",
+			"bindings": {
+				"o": "footer:openSelected"
 			}
 		}
 	]
