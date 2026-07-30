@@ -8,7 +8,7 @@
 				"alt+e": "chat:externalEditor",
 				"enter": "chat:newline",
 				"ctrl+enter": "chat:submit",
-				"super+enter": "chat:submit",
+				"cmd+enter": "chat:submit",
 				"alt+enter": "chat:submit"
 			}
 		},
