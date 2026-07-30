@@ -231,3 +231,8 @@ packages:
           - ripgrep
           - tmux
           - yq
+    cargo:
+      core:
+        - yazi-fm
+      personal: []
+      work: []

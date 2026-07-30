@@ -1,7 +1,6 @@
-{{ if eq .chezmoi.os "darwin" -}}
+{{ if eq .chezmoi.os "darwin" "linux" -}}
 #!/bin/bash
-# Install Rust via rustup (darwin only)
-# Linux dev boxes currently arrive with popular runtimes pre-installed.
+# Install Rust via rustup.
 
 set -euo pipefail
 
