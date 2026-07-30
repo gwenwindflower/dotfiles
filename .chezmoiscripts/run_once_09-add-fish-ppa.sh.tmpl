@@ -1,0 +1,50 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/bash
+# Install Fish 4 from the official Ubuntu PPA.
+
+set -euo pipefail
+
+{{ template "script-log.sh" }}
+
+log_step "Fish 4 package source"
+
+if [ ! -r /etc/os-release ]; then
+  log_error "/etc/os-release not found; cannot verify Ubuntu for the Fish PPA"
+  exit 1
+fi
+
+# shellcheck source=/dev/null
+. /etc/os-release
+if [ "${ID:-}" != "ubuntu" ]; then
+  log_error "The Fish 4 PPA requires Ubuntu (found ${ID:-unknown})"
+  exit 1
+fi
+
+if grep -Rqs "ppa.launchpadcontent.net/fish-shell/release-4/ubuntu" \
+  /etc/apt/sources.list /etc/apt/sources.list.d 2>/dev/null; then
+  log_info "Fish 4 PPA already configured"
+else
+  if ! command -v add-apt-repository >/dev/null 2>&1; then
+    log_info "Installing software-properties-common..."
+    sudo apt-get update
+    DEBIAN_FRONTEND=noninteractive sudo apt-get install -y software-properties-common
+  fi
+
+  log_info "Adding ppa:fish-shell/release-4..."
+  sudo add-apt-repository --yes ppa:fish-shell/release-4
+fi
+
+log_info "Installing Fish 4..."
+sudo apt-get update
+DEBIAN_FRONTEND=noninteractive sudo apt-get install -y fish
+
+fish_version="$(fish --version)"
+fish_version="${fish_version##* }"
+fish_major="${fish_version%%.*}"
+if ! [[ "$fish_major" =~ ^[0-9]+$ ]] || [ "$fish_major" -lt 4 ]; then
+  log_error "Fish 4 installation failed; found ${fish_version:-unknown}"
+  exit 1
+fi
+
+log_success "Fish $fish_version installed"
+{{ end -}}
