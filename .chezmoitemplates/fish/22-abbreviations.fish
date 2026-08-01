@@ -407,6 +407,7 @@ abbr --add glod git logd
 ## worktrunk
 abbr --add wtsw wt switch
 abbr --add wtswc wt switch -c
+abbr --add wtswd wt switch-dirty
 abbr --add wtm wt merge
 abbr --add wts wt step
 abbr --add wtls wt list
