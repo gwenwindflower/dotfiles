@@ -1,65 +1,46 @@
 ---
 name: effective-linear-issues
-description: Use Linear effectively, not dogmatically. Unless project-local guidance overrides this global skill, use this for any work creating, managing, linking, or shipping work on Linear projects and issues.
+description: Creates and maintains clear, appropriately scoped Linear issues and projects. Use when reading, drafting, triaging, linking, or updating Linear work; defer to project-local workflow conventions.
 ---
 
-# Managing Linear Issues Effectively
+# Effective Linear Work
 
-Using Linear well means responding to *context*. It's easy to follow a template, but for agents this ends up generating a lot of bloat and noise. Instead, tailor your response to the larger company, project, and issue context. A clear bug may want a well-templated, detailed bug report, while a small feature request being assigned directly to a teammate may only need a short description with a screenshot. This skill helps you calibrate this.
+## Work From Context
 
-## Always
+- Inspect the team, recent similar work, and relevant projects, docs, comments, labels, statuses, and cycles before deciding structure or fields.
+- Search for duplicates before creating anything. Enrich or link existing work when it already represents the outcome.
+- Follow explicit user direction first, then established local conventions. Ask only when an unresolved choice would materially change the result.
+- Treat an explicit create or update request as write approval. Otherwise, present the proposed structure and obtain approval before using Linear write tools.
+- Keep customer and other private context in private Linear workspaces. Never copy private Slack links or screenshots into public GitHub issues or docs; generalize private context before syncing work publicly.
 
-- Read existing issues, docs, comments, labels, statuses, and projects before changing anything. Use the Linear MCP to search thoroughly for context before creating new issues.
-- Prefer enriching or linking existing issues over creating duplicates.
-- If creating multiple issues, keep issues independently actionable; use a Project or a linked doc for shared context, rationale, and workflow vision.
-- Preserve team conventions for titles, labels, statuses, priority, project, cycle, and ownership. These can vary within a company, project, or issue type. If conventions are unclear, look for similar issues to base your decisions on.
-- Make relationships explicit with issue links and Related relations (actual property not just body links) when a set should be read together.
-- Use Linear write tools only after the intended structure is coherent and draft(s) are approved.
+## Use the Lightest Structure
 
-## Creation Defaults
+- **Issue**: one concrete, independently deliverable outcome.
+- **Multi-issue proposal**: a speculative direction that needs a short narrative anchor and several independently actionable issues. Follow [Multi-Issue Proposals](multi-issue-proposals.md).
+- **Project**: coordinated work with a shared outcome, ownership, roadmap reporting, or release needs.
+- **Milestone**: a meaningful checkpoint within a substantial project, usually grouping about five or more issues. Never use milestones as status, priority, or sequence labels.
+- **Cycle**: the team's time-boxed execution cadence.
+- **Initiative**: a strategic group of projects.
 
-- **Labels**: don't apply labels unless the user asks for them.
-- **Status**: confirm the status for new issues — Backlog, Triage, or Todo are the usual candidates; don't assume the default.
-- **Assignment**: confirm whether the user wants new issues self-assigned; often a whole created batch should be assigned to them.
-- **Milestones**: never number or prefix them — ordering is implicit. Be judicious: most projects don't need milestones at all; they earn their place in beefier multi-part projects, and only when each groups roughly five or more issues. A milestone wrapping 1–3 issues adds overhead, not clarity. And milestones mark checkpoints in the project's own arc — never repurpose them as status or sequencing metadata ("Backlog", "Next steps", "Fast follow"); statuses, priorities, and relations already carry that.
-- **Titles**: a direct, scannable statement of the outcome. Never numbering or phase prefixes (ordering lives in Linear's structures, not in text), and never implementation details — "Execute restructure based on move map", not "Phase 1: skeleton migration (one mechanical PR)". The how belongs in the description.
-- **Blocking relations**: only when truly load-bearing — one issue's output is another's input, or out-of-order execution breaks something (e.g. auditing a migration after it runs). A likely execution order is not coupling; chaining blocks through a sequence adds metadata ceremony and makes replanning harder. Note launch/timing intent in the description instead.
+Start with issues and promote the work only when coordination warrants it. Stage projects that cannot ship incrementally.
 
-## Structure
+Use Related relations for cohesive sibling work. Use blocking relations only when one issue's output is another's required input or executing out of order would break the work; likely sequence alone is not a dependency.
 
-Don't over-adhere to a rigid structure. Don't add duplicative or padded information for ceremony's sake if it adds no new information.
+## Draft Issues
 
-DRY prose is as crucial as code. DO NOT restate the same ideas or conditions in multiple parts of an issue or across related issues.
+- Write a direct, scannable title that names the outcome. Omit numbering, phase prefixes, and implementation details.
+- Keep the description minimal but sufficient to act without reading every sibling issue or the parent document. Put shared rationale and product or UX debate in the project or anchor doc, then link it.
+- Apply explicitly requested fields. Otherwise infer only clear local conventions; do not add labels or priority merely to fill fields.
+- For bugs, capture environment, version, reproduction steps, expected and actual behavior, and useful evidence. Do not guess at causes, files, or solutions.
+- For features, describe the desired state, rationale, and impact. Separate the requested outcome from proposed solutions, and mark unvalidated ideas as proposals or open questions rather than requirements.
+- When filing on someone else's behalf, frame the problem as an ask and leave solution ownership with the assignee. Preserve exact user wording when it is safe and useful.
+- Keep prose DRY within an issue and across related work.
 
-### General Types Guidance
+## Review Before Writing
 
-Some general flexible principles:
-
-- Bugs usually require more technical detail: version, environment, steps to reproduce, expected vs actual behavior, and logs or screenshots. Focus on those over trying to guess the issue, point out likely files, or offer solutions unless you've actually tested your solution.
-- Feature requests should focus on desired state, rationale, and business impact. A clear vision of what the new feature enables, how you see it working, and why it matters is more useful than a pseudo implementation plan. Wireframes, mockups, and screenshots are far more useful than long text descriptions.
-  - Properly frame feature ideas as speculative, not requirements. The tone should be suggestive not demanding (could, should, would NOT need, must).
-
-## Linear Method Essentials
-
-Distilled from Linear's own Method (linear.app/method); background that should shape how work gets filed:
-
-- Write issues, not user stories: state a concrete, deliverable outcome (code, design, doc, decision) — story templates are ceremony ("a cargo cult ritual").
-- Filing on someone else's behalf (bug reports, requests): frame the problem as an ask and let the assignee own the solution.
-- Titles direct and scannable; descriptions minimal but contextual; quote user feedback verbatim rather than summarizing it.
-- Product/UX debate belongs at the project or roadmap level, never embedded in issue descriptions.
-- Ship incrementally — stage any project that can't shrink rather than building the whole thing before releasing.
-- Start by creating issues; add projects/initiatives only as work scales — don't over-plan structure up front.
-- When prioritizing, separate blockers (friction stopping product use) from enablers (nice-to-haves); blockers first.
-- Plain terminology: "don't invent terms if possible — projects should be called projects."
-- "Say no to busy work": process shouldn't need its own upkeep; remove or automate work-around-work.
-- The structural model: issues are the unit of work · projects group issues toward one coordinated outcome · milestones subdivide a single project · cycles are the team's time-boxed cadence · initiatives group projects strategically. Use each as intended rather than improvising sequencing in text.
-
-## Review Checks
-
-Always do a pass to check for and fix the following when preparing to finalize:
-
-- If working in an open source SaaS project, with both paying customers and public repos, always do a pass to make sure customer information is *only* in Linear and not synced to public repos or docs. Do not link private Slack threads or share screenshots to public systems like GitHub.
-
-## References
-
-- [Multi-Issue Proposals](multi-issue-proposals.md) — anchor a small connected issue set with a one-pager when it is bigger than one issue but not yet a project.
+- The issue or project has one clear outcome and the lightest useful structure.
+- Titles, fields, ownership, and status match the request or established team conventions.
+- Dependencies and sibling relationships use Linear relations, not body text alone.
+- Each issue is locally actionable; shared context is linked rather than copied.
+- Speculation is visibly distinct from requirements.
+- Customer or private information cannot leak into public systems.
