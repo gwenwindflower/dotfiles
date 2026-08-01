@@ -103,5 +103,10 @@ key = "ctrl+right"
 type = "plugin_action"
 command = "herdr-splits.resize-right"
 
+[[keys.command]]
+key = "prefix+alt+c"
+type = "plugin_action"
+command = "livery.reset"
+
 [experimental]
 kitty_graphics = true
