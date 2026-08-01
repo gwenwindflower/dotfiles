@@ -2,7 +2,20 @@ onboarding = false
 
 [ui]
 show_agent_labels_on_pane_borders = true
-agent_panel_sort = "priority"
+agent_panel_sort = "spaces"
+prompt_new_tab_name = false
+
+[ui.sidebar.spaces]
+rows = [
+  ["state_icon", { token = "$jump", dim = true }, "workspace"],
+  ["branch", "git_status"],
+]
+
+[ui.sidebar.agents]
+rows = [
+  ["state_icon", "$space", { token = "$worktree", dim = true }],
+  ["agent"],
+]
 
 [ui.toast]
 delivery = "terminal"
