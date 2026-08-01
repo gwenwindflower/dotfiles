@@ -28,6 +28,76 @@ return {
       },
     },
   },
+  -- herdr splits integration
+  {
+    "lmilojevicc/herdr-splits.nvim",
+    -- For local development, swap the repo line for `dir = '/path/to/herdr-splits/local/plugin'`
+    cond = vim.env.HERDR_ENV == "1",
+    event = "VeryLazy",
+    build = ":lua require('herdr-splits').sync_herdr()",
+    opts = {
+      resize_keys = { left = "<C-left>", down = "<C-down>", up = "<C-up>", right = "<C-right>" },
+      auto_sync_herdr = true,
+    },
+    keys = {
+      {
+        "<C-h>",
+        function()
+          require("herdr-splits").move_cursor_left()
+        end,
+        desc = "Navigate left",
+      },
+      {
+        "<C-j>",
+        function()
+          require("herdr-splits").move_cursor_down()
+        end,
+        desc = "Navigate down",
+      },
+      {
+        "<C-k>",
+        function()
+          require("herdr-splits").move_cursor_up()
+        end,
+        desc = "Navigate up",
+      },
+      {
+        "<C-l>",
+        function()
+          require("herdr-splits").move_cursor_right()
+        end,
+        desc = "Navigate right",
+      },
+      {
+        "<C-left>",
+        function()
+          require("herdr-splits").resize_left()
+        end,
+        desc = "Resize left",
+      },
+      {
+        "<C-down>",
+        function()
+          require("herdr-splits").resize_down()
+        end,
+        desc = "Resize down",
+      },
+      {
+        "<C-up>",
+        function()
+          require("herdr-splits").resize_up()
+        end,
+        desc = "Resize up",
+      },
+      {
+        "<C-right>",
+        function()
+          require("herdr-splits").resize_right()
+        end,
+        desc = "Resize right",
+      },
+    },
+  },
   -- Yazi integration
   {
     "mikavilpas/yazi.nvim",
@@ -173,24 +243,6 @@ return {
         end,
         desc = "Treesitter Incremental Selection",
       },
-    },
-  },
-  {
-    "christoomey/vim-tmux-navigator",
-    cmd = {
-      "TmuxNavigateLeft",
-      "TmuxNavigateDown",
-      "TmuxNavigateUp",
-      "TmuxNavigateRight",
-      "TmuxNavigatePrevious",
-      "TmuxNavigatorProcessList",
-    },
-    keys = {
-      { "<c-h>", "<cmd><C-U>TmuxNavigateLeft<cr>" },
-      { "<c-j>", "<cmd><C-U>TmuxNavigateDown<cr>" },
-      { "<c-k>", "<cmd><C-U>TmuxNavigateUp<cr>" },
-      { "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
-      { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
     },
   },
   -- Snacks picker, I try as much as possible to standardize all picker/search previews

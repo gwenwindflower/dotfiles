@@ -18,46 +18,77 @@ accent = "#ca9ee6"
 
 [keys]
 prefix = "ctrl+space"
+settings = "prefix+."
 reload_config = ["prefix+alt+r", "prefix+super+r"]
-focus_pane_left = ["prefix+h", "shift+alt+h"]
-focus_pane_down = ["prefix+j", "shift+alt+j"]
-focus_pane_up = ["prefix+k", "shift+alt+k"]
-focus_pane_right = ["prefix+l", "shift+alt+l"]
+toggle_sidebar = ["prefix+b", "ctrl+super+["]
+goto = "prefix+w"
+# focus_pane_* = handled by herdr-splits plugin
 close_pane = ["prefix+x", "prefix+d"]
 last_pane = ["prefix+`", "alt+shift+p"]
 split_vertical = ["prefix+|", "prefix+ctrl+v"]
 split_horizontal = ["prefix+-", "prefix+ctrl+s"]
 new_tab = ["prefix+c", "ctrl+t"]
 rename_tab = "prefix+shift+c"
-previous_tab = "ctrl+alt+h"
-next_tab = "ctrl+alt+l"
-close_tab = ["prefix+shift+x", "prefix+shift+d"]
+previous_tab = "shift+super+h"
+next_tab = "shift+super+l"
+close_tab = ["prefix+shift+x", "prefix+ctrl+d"]
+switch_tab = "prefix+ctrl+1..9"
 new_workspace = "prefix+n"
 rename_workspace = "prefix+shift+n"
-previous_workspace = "ctrl+super+k"
-next_workspace = "ctrl+super+j"
+previous_workspace = "shift+super+k"
+next_workspace = "shift+super+j"
+switch_workspace = "prefix+1..9"
 close_workspace = ["prefix+alt+d", "prefix+super+d"]
-previous_agent = "ctrl+super+p"
-next_agent = "ctrl+super+n"
-toggle_sidebar = ["prefix+b", "ctrl+alt+[", "ctrl+super+["]
+new_worktree = "prefix+g"
+open_worktree = "prefix+ctrl+g"
+next_agent = "shift+super+n"
+previous_agent = "shift+super+p"
 
 [[keys.command]]
-key = "prefix+ctrl+g"
-type = "plugin_action"
-command = "worktrunk.open"
-description = "switch worktree"
-
-[[keys.command]]
-key = "prefix+ctrl+d"
-type = "plugin_action"
-command = "worktrunk.remove"
-description = "remove worktree"
-
-[[keys.command]]
-key = ["prefix+alt+g", "prefix+super+g"]
+key = ["prefix+super+g"]
 type = "pane"
 command = "lazygit"
 description = "launch lazygit in a new pane"
+
+[[keys.command]]
+key = "ctrl+h"
+type = "plugin_action"
+command = "herdr-splits.nav-left"
+
+[[keys.command]]
+key = "ctrl+j"
+type = "plugin_action"
+command = "herdr-splits.nav-down"
+
+[[keys.command]]
+key = "ctrl+k"
+type = "plugin_action"
+command = "herdr-splits.nav-up"
+
+[[keys.command]]
+key = "ctrl+l"
+type = "plugin_action"
+command = "herdr-splits.nav-right"
+
+[[keys.command]]
+key = "ctrl+left"
+type = "plugin_action"
+command = "herdr-splits.resize-left"
+
+[[keys.command]]
+key = "ctrl+down"
+type = "plugin_action"
+command = "herdr-splits.resize-down"
+
+[[keys.command]]
+key = "ctrl+up"
+type = "plugin_action"
+command = "herdr-splits.resize-up"
+
+[[keys.command]]
+key = "ctrl+right"
+type = "plugin_action"
+command = "herdr-splits.resize-right"
 
 [experimental]
 kitty_graphics = true

@@ -3,18 +3,20 @@
 # =============================================================================
 fish_vi_key_bindings
 
-# bracket nav <-{ }->
-# { = backward-kill-word, or prevd on empty cmdline
-# } = forward-word (accepts autosuggestion at line end), or nextd on empty cmdline
-bind --user -M insert 'alt-{' supernav-prev
-bind --user -M insert 'alt-}' supernav-next
-bind --user 'alt-{' supernav-prev
-bind --user 'alt-}' supernav-next
-bind --user -M insert 'super-{' supernav-prev
-bind --user -M insert 'super-}' supernav-next
-bind --user 'super-{' supernav-prev
-bind --user 'super-}' supernav-next
-
+# 'supernav'
+# p = backward-kill-word, or prevd on empty cmdline
+# n = forward-word (accepts autosuggestion at line end), or nextd on empty cmdline
+# via supernav-prev.fish and supernav-next.fish
+# cohesive with standard ctrl-n to accept full autosuggestion
+# and alt-f/b token navigation
+bind --user -M insert ctrl-alt-b supernav-prev
+bind --user -M insert ctrl-alt-f supernav-next
+bind --user ctrl-alt-b supernav-prev
+bind --user ctrl-alt-f supernav-next
+bind --user -M insert ctrl-super-b supernav-prev
+bind --user -M insert ctrl-super-f supernav-next
+bind --user ctrl-super-b supernav-prev
+bind --user ctrl-super-f supernav-next
 # launch yazi file explorer
 bind --user -M insert super-f "ff; commandline -f repaint"
 bind --user super-f "ff; commandline -f repaint"
