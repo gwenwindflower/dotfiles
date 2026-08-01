@@ -19,6 +19,7 @@ symsources/
 # Referenced in Claude settings via absolute path into this repo
 # Located here for convenience for now
 .custom-claude-plugins/
+MISE_MIGRATION.md
 
 {{ if ne .chezmoi.os "darwin" }}
 # Darwin-only configs (excluded on Linux)
