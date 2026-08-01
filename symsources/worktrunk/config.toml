@@ -16,3 +16,13 @@ template-append = """
 
 [list]
 summary = true
+
+[aliases]
+switch-dirty = '''
+if git diff --quiet HEAD && test -z "$(git ls-files --others --exclude-standard)"; then
+  wt switch --create {{ to }} --execute="{{ args }}"
+else
+  git stash push --include-untracked --quiet
+  wt switch --create {{ to }} --execute fish -- -c "git stash pop --index; {{ args }}"
+fi
+'''
