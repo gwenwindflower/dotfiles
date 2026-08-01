@@ -194,7 +194,6 @@ packages:
           - orbstack
           - orion
           - postico
-          - raycast
           - tailscale-app
           - zoom
         personal:
