@@ -1,18 +1,20 @@
-# Source Dialect
+# Markdown Dialect
 
-One source file, top to bottom: frontmatter → page heading + lede → optional Callout → optional Legend → sections. The build fails with a source line number on any structural violation.
+Write one source in this order: frontmatter → page heading and lede → optional Callout → optional Tiers → sections. Both Callout and Tiers may be omitted. The compiler reports source line numbers for invalid Markdown structure.
 
 ## Frontmatter
 
 ```yaml
 ---
-title: Q3 Data Platform Onboarding    # browser tab title; also derives the localStorage key
-eyebrow: September 2026               # kicker above the h1; repeated right-side in the footer
-footer: Acme × DataCo — onboarding    # left side of the footer
+title: Platform Work Queue
+eyebrow: Q3 Planning
+footer: Acme — platform operations
 ---
 ```
 
-All three keys are required. Content is markdown-only — styling never goes in frontmatter.
+All three keys are required. `title` sets the browser title and localStorage key, `eyebrow` appears above the page heading and in the footer, and `footer` sets the footer's left side.
+
+Frontmatter accepts one-line `key: value` entries, not general YAML. Do not quote values, add inline comments, or use multiline scalars.
 
 ## Constructs
 
@@ -30,16 +32,19 @@ At most one. Renders a dashed callout box (hidden in print). Paragraphs become t
 
 Every task needs a stable `{#id}` — it keys the checkbox state in localStorage (`mid-tasks-<slugged title>`), so reworded tasks keep their state and duplicate ids fail the build.
 
-### Legend — `## Legend: <title>`
+### Tiers — `## Tiers: <system>`
 
-At most one; the title is structural only (not rendered). 1–3 numbered entries:
+Optional; at most one. The system name labels the filter control and describes what the tiers measure, such as Priority, Urgency, Complexity, or Confidence. Define 1–3 entries numbered consecutively from 1:
 
 ```markdown
-1. **Core** — Required for everyone; taught live.
-2. **Useful** — Shown live, linked resources afterwards.
+## Tiers: Urgency
+
+1. **Immediate** — Resolve before other work.
+2. **Soon** — Complete in the current cycle.
+3. **Backlog** — Revisit when capacity permits.
 ```
 
-Renders badge cards, and — if any item uses a `[tN]` tag — a "Focus on" filter chip row that dims non-matching rows. Entry order defines badge styles: t1 accent fill, t2 accent tint, t3 neutral fill. More than 3 kinds means extending the template first.
+Each entry renders as a tier card. If any item uses `[tN]`, the system name and tier labels also render as filter chips that dim non-matching rows. Entry order maps to `[t1]`, `[t2]`, and `[t3]`; items may remain un-tiered. Without a Tiers section, no tier cards or filters render.
 
 ### Sections — `## Kicker — Title` or `## Title`
 
@@ -47,25 +52,40 @@ Text before the first ` — ` is the kicker (small accent line above the h2); om
 
 ### Blocks — `### Title — Chip` or `### Title`
 
-A ruled heading inside a section; text after ` — ` becomes a small filled chip (audience, status, owner…). Items live inside blocks.
+A ruled heading inside a section; text after ` — ` becomes a small filled chip (owner, status, audience…). Items live inside blocks.
 
 ### Items — `#### Label — Title [tags]`
 
-The collapsible rows. Text before the first ` — ` is the label, rendered in a fixed-width mono column (time range, ID, date); omit the dash for no label. Because ` — ` splits label from title, keep spaced em dashes out of row titles — use commas or colons.
+The collapsible rows. Text before the first ` — ` is the label, rendered in a fixed-width mono column (ID, date, time range); omit the dash for no label. Because ` — ` splits label from title, keep spaced em dashes out of row titles — use commas or colons.
 
 Trailing `[tag]`s, in any order:
 
 | Tag | Effect |
 | --- | --- |
-| `[t1]`…`[t3]` | badge from the legend entry of that number |
-| `[flat]` | non-collapsible divider row (breaks, lunch, separators) |
-| anything else | filled flag chip in the summary row (`[Led by Will]`, `[Beta]`) |
+| `[t1]`…`[t3]` | tier defined by the Tiers entry of that number |
+| `[flat]` | non-collapsible divider row (milestones, maintenance windows, separators) |
+| anything else | filled flag chip in the summary row (`[Owner: API]`, `[Beta]`) |
 
-Item bodies: paragraphs render as detail text; bullet lists render in a washed panel where a fully-bold item (`- **Group name**`) becomes an uppercase group header; tables and fenced code blocks render styled.
+Item bodies support paragraphs, lists, H5 groups, tables, and fenced code blocks.
+
+### Item groups — `##### Heading`
+
+An H5 creates a titled group inside the current item. Its paragraphs, lists, tables, and code remain inside the group until the next H5 or higher heading. Groups render as washed panels with a real `<h5>`.
+
+Headings must use heading syntax. Never fake a group heading with a bold-only list item such as `- **Work with dashboards**`; markdownlint flags that structure and the compiler rejects it. Use:
+
+```markdown
+##### Work with dashboards
+
+- Open a dashboard and understand what you are looking at.
+- Navigate existing dashboards, charts, and search.
+```
+
+Markdown structure is the source of truth. If content does not fit the supported elements, revise the document model and its renderer instead of encoding layout with emphasis or list tricks.
 
 ### Tables and code
 
-GFM tables (header, `| --- |` separator, body) and fenced code blocks work at section, block, and item-body level. Wide tables scroll inside their own container.
+Pipe tables and fenced code blocks work at section, block, and item-body level. Each table row must start with `|` and include a header, `| --- |` separator, and body; escaped pipes inside cells are not supported. Wide tables scroll inside their own container. Code fence language labels are accepted but not rendered.
 
 ### Inline
 
@@ -76,46 +96,66 @@ GFM tables (header, `| --- |` separator, body) and fenced code blocks work at se
 | `[text](url)` | small arrow link, opens in new tab |
 | `[Chip]` | outlined chip in body text (roles, statuses); on `####` headings it's a filled flag instead |
 
+### Internal content — `#internal`
+
+Append `#internal` to content that belongs in the editable source but not the built HTML:
+
+- On a paragraph or bullet, it removes only that element.
+- On a heading, it removes the heading and everything structurally beneath it through the next heading of the same or higher level. For example, an internal H2 ends at the next H2 or H1; an internal H5 group ends at the next H5 or higher heading.
+- Inside a fenced code block, `#internal` remains literal code.
+
+Internal content is removed during the build, not hidden with CSS, so it does not ship in the output.
+
 ## Example
 
 ```markdown
 ---
-title: Q3 Data Platform Onboarding
-eyebrow: September 2026
-footer: Acme × DataCo — onboarding plan
+title: Platform Work Queue
+eyebrow: Q3 Planning
+footer: Acme — platform operations
 ---
 
-# Data platform onboarding
+# Platform work queue
 
-Three weeks from access request to first shipped dashboard.
+Planned work grouped by urgency and service area.
 
-## Callout: Before kickoff
+## Callout: Before prioritization
 
-- [ ] Provision workspace access for the full cohort {#access}
+Confirm ownership and dependencies before committing the cycle.
 
-## Legend: Priorities
+- [ ] Confirm service owners {#owners}
 
-1. **Core** — Required for everyone; taught live with Q&A.
-2. **Useful** — Shown live, linked resources afterwards.
+## Tiers: Urgency
 
-## Week 1 — Orientation
+1. **Immediate** — Resolve before other work.
+2. **Soon** — Complete in the current cycle.
+3. **Backlog** — Revisit when capacity permits.
 
-Get oriented, get access, meet the data.
+## Reliability — Active work
 
-### Morning — Everyone
+Changes that improve service health and incident response.
 
-#### 9:30–10:45 — Find and read dashboards [t1]
+### API — Platform
 
-The consumption loop end to end.
+#### OPS-142 — Restore request tracing [t1] [Owner: API]
 
-- **Navigate**
-- Search, spaces, and favorites [Viewer] [Docs](https://example.com/docs/nav)
-- **Go deeper**
-- Drill into underlying records
+Trace requests across service boundaries.
 
-#### 10:45–11:00 — Break [flat]
+##### Scope
 
-#### 11:00–12:00 — First queries [t2] [Bring a laptop]
+- Propagate trace context through the gateway and workers.
+
+##### Done when
+
+- Incident dashboards link every request to a complete trace.
+
+#### OPS-207 — Rotate integration credentials [t2]
+
+Move remaining integrations onto managed credentials.
+
+#### Maintenance window — Change freeze [flat]
+
+#### OPS-311 — Consolidate retry dashboards [t3]
 ```
 
 ## Template contract
@@ -124,12 +164,13 @@ The consumption loop end to end.
 
 | Hook | Used by |
 | --- | --- |
-| `details.item[data-badge]`, `.item-title`, `.item-body`, `.item-list`, `li.group`, `.label`, `.chev` | collapsible rows, expand/collapse |
+| `details.item[data-tier]`, `.item-title`, `.item-body`, `.item-list`, `.label`, `.chev` | collapsible rows, expand/collapse |
+| `.item-group`, `.item-group h5` | structured H5 groups inside item bodies |
 | `.flat-row`, `.flat-label` | divider rows |
-| `.chip[data-badge]`, `#expand-all`, `#collapse-all`, `.controls` | filter + expand JS, print hiding |
-| `:root[data-badge="N"]` dim rules | filtering |
+| `.chip[data-tier]`, `#expand-all`, `#collapse-all`, `.controls` | filter + expand JS, print hiding |
+| `:root[data-tier="N"]` dim rules | filtering |
 | `.callout`, `.task[data-task]`, `.t-label`, `.box` | persisted checkboxes, print hiding |
-| `.badge.t1/.t2/.t3`, `.badge-card`, `.legend` | legend + item badges |
+| `.tier-badge.t1/.t2/.t3`, `.tier-card`, `.tiers` | tier definitions and item tiers |
 | `.eyebrow`, `.lede`, `.sec-head`, `.kicker`, `.block-head`, `.head-chip` | header/section chrome |
 | `.tag`, `.flag`, `.mlink`, `pre.code`, `.table-wrap` | inline chips, links, code, tables |
 | `prefers-color-scheme` tokens + `:root[data-theme]` overrides | light/dark, host theme toggles |

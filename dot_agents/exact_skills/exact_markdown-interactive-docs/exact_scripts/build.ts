@@ -9,21 +9,22 @@
 
 type Piece =
   | { kind: "p"; html: string }
-  | { kind: "list"; items: { group: boolean; html: string }[] }
+  | { kind: "list"; items: { html: string }[] }
   | { kind: "table"; head: string[]; rows: string[][] }
-  | { kind: "code"; text: string };
+  | { kind: "code"; text: string }
+  | { kind: "group"; title: string; pieces: Piece[] };
 interface Task {
   id: string;
   label: string;
 }
-interface LegendEntry {
+interface Tier {
   name: string;
   desc: string;
 }
 interface Item {
   label: string;
   title: string;
-  badge: number;
+  tier: number | null;
   flags: string[];
   flat: boolean;
   pieces: Piece[];
@@ -53,7 +54,9 @@ function escapeHtml(s: string): string {
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
-    .replace(/[^\x00-\x7F]/gu, (c) => `&#${c.codePointAt(0)};`);
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;")
+    .replace(/\P{ASCII}/gu, (c) => `&#${c.codePointAt(0)};`);
 }
 
 // Inline dialect: `code`, **bold**, [text](url) links, [Tag] chips.
@@ -70,10 +73,14 @@ function renderInline(raw: string, chipClass = "tag"): string {
     } else if (m[2]) {
       const link = m[2].match(/^\[([^\]]+)\]\(([^)]+)\)$/)!;
       out = out.trimEnd();
-      out += ` <a class="mlink" href="${escapeHtml(link[2])}" target="_blank" rel="noopener">${escapeHtml(link[1])}</a>`;
+      out += ` <a class="mlink" href="${
+        escapeHtml(link[2])
+      }" target="_blank" rel="noopener">${escapeHtml(link[1])}</a>`;
     } else if (m[3]) {
       out = out.trimEnd();
-      out += `<span class="${chipClass}">${escapeHtml(m[3].slice(1, -1))}</span>`;
+      out += `<span class="${chipClass}">${
+        escapeHtml(m[3].slice(1, -1))
+      }</span>`;
     } else {
       out += `<strong>${escapeHtml(m[4].slice(2, -2))}</strong>`;
     }
@@ -94,12 +101,43 @@ while (argv.length) {
   else if (!srcPath) srcPath = a;
   else fail(`unexpected argument "${a}"`);
 }
-if (!srcPath) fail("usage: build.ts <source.md> [-t template.html] [-o out.html]");
+if (!srcPath) {
+  fail("usage: build.ts <source.md> [-t template.html] [-o out.html]");
+}
 
 // ---- parse -----------------------------------------------------------------
 
 const md = await Deno.readTextFile(srcPath);
-const lines = md.split("\n");
+const lines = excludeInternalContent(md.split("\n"));
+
+function excludeInternalContent(sourceLines: string[]): string[] {
+  let inFrontmatter = sourceLines[0] === "---";
+  let inCodeFence = false;
+  let hiddenHeadingLevel: number | null = null;
+
+  return sourceLines.map((line, index) => {
+    if (inFrontmatter) {
+      if (index > 0 && line === "---") inFrontmatter = false;
+      return line;
+    }
+
+    if (line.startsWith("```")) {
+      inCodeFence = !inCodeFence;
+      return hiddenHeadingLevel === null ? line : "";
+    }
+    if (inCodeFence) return hiddenHeadingLevel === null ? line : "";
+
+    const heading = line.match(/^(#{1,6})\s+.+$/);
+    if (hiddenHeadingLevel !== null) {
+      if (!heading || heading[1].length > hiddenHeadingLevel) return "";
+      hiddenHeadingLevel = null;
+    }
+
+    if (!/\s+#internal\s*$/.test(line)) return line;
+    if (heading) hiddenHeadingLevel = heading[1].length;
+    return "";
+  });
+}
 
 const meta: Record<string, string> = {};
 let i = 0;
@@ -119,18 +157,22 @@ const lede: Piece[] = [];
 let calloutTitle = "";
 const calloutPieces: Piece[] = [];
 const tasks: Task[] = [];
-const legend: LegendEntry[] = [];
+let tierSystemName = "";
+let tierSystemLine = 0;
+const tiers: Tier[] = [];
 const sections: Section[] = [];
 
-type Zone = "head" | "callout" | "legend" | "section";
+type Zone = "head" | "callout" | "tiers" | "section";
 let zone: Zone = "head";
 let item: Item | null = null;
+let itemGroup: Extract<Piece, { kind: "group" }> | null = null;
 
 function target(): Piece[] {
+  if (itemGroup) return itemGroup.pieces;
   if (item) return item.pieces;
   if (zone === "head") return lede;
   if (zone === "callout") return calloutPieces;
-  if (zone === "legend") return []; // discarded; legend allows entries only
+  if (zone === "tiers") return [];
   const sec = sections.at(-1)!;
   const block = sec.blocks.at(-1);
   return block ? block.pieces : sec.pieces;
@@ -146,18 +188,25 @@ for (; i < lines.length; i++) {
   if (line.startsWith("```")) {
     const start = n;
     const buf: string[] = [];
-    for (i++; i < lines.length && !lines[i].startsWith("```"); i++) buf.push(lines[i]);
+    for (i++; i < lines.length && !lines[i].startsWith("```"); i++) {
+      buf.push(lines[i]);
+    }
     if (i >= lines.length) fail("unclosed code fence", start);
     target().push({ kind: "code", text: buf.join("\n") });
   } else if (line.startsWith("|")) {
     const rows: string[][] = [];
     const start = n;
     for (; i < lines.length && lines[i].startsWith("|"); i++) {
-      rows.push(lines[i].replace(/^\||\|\s*$/g, "").split("|").map((c) => c.trim()));
+      rows.push(
+        lines[i].replace(/^\||\|\s*$/g, "").split("|").map((c) => c.trim()),
+      );
     }
     i--;
     if (rows.length < 3 || !rows[1].every((c) => /^:?-+:?$/.test(c))) {
-      fail("table needs a header row, a |---| separator row, and at least one body row", start);
+      fail(
+        "table needs a header row, a |---| separator row, and at least one body row",
+        start,
+      );
     }
     target().push({
       kind: "table",
@@ -166,30 +215,40 @@ for (; i < lines.length; i++) {
     });
   } else if ((m = line.match(/^# (.+)$/))) {
     if (h1) fail("more than one `# page heading`", n);
+    itemGroup = null;
     h1 = m[1];
   } else if ((m = line.match(/^## Callout: (.+)$/))) {
     if (calloutTitle) fail("more than one Callout section", n);
     zone = "callout";
     item = null;
+    itemGroup = null;
     calloutTitle = m[1];
-  } else if ((m = line.match(/^## Legend: .+$/))) {
-    if (legend.length) fail("more than one Legend section", n);
-    zone = "legend";
+  } else if ((m = line.match(/^## Tiers: (.+)$/))) {
+    if (tierSystemName) fail("more than one Tiers section", n);
+    zone = "tiers";
     item = null;
+    itemGroup = null;
+    tierSystemName = m[1];
+    tierSystemLine = n;
   } else if ((m = line.match(/^## (.+)$/))) {
     zone = "section";
     item = null;
+    itemGroup = null;
     const parts = m[1].split(/\s+—\s+/);
-    const [kicker, title] = parts.length > 1 ? [parts[0], parts.slice(1).join(" — ")] : ["", parts[0]];
+    const [kicker, title] = parts.length > 1
+      ? [parts[0], parts.slice(1).join(" — ")]
+      : ["", parts[0]];
     sections.push({ kicker, title, pieces: [], blocks: [] });
   } else if ((m = line.match(/^### (.+)$/))) {
     if (zone !== "section") fail(`block "### ${m[1]}" outside a section`, n);
     item = null;
+    itemGroup = null;
     const [title, chip = ""] = m[1].split(/\s+—\s+/);
     sections.at(-1)!.blocks.push({ title, chip, pieces: [], items: [] });
   } else if ((m = line.match(/^#### (.+)$/))) {
     const block = sections.at(-1)?.blocks.at(-1);
     if (!block) fail(`item "#### ${m[1]}" outside a "###" block`, n);
+    itemGroup = null;
     let rest = m[1];
     const sep = rest.indexOf(" — ");
     let label = "";
@@ -199,50 +258,92 @@ for (; i < lines.length; i++) {
     }
     let title = rest;
     const flags: string[] = [];
-    let badge = 0;
+    let tier: number | null = null;
     let flat = false;
     let tag: RegExpMatchArray | null;
     while ((tag = title.match(/\s*\[([^\]]+)\]\s*$/))) {
       title = title.slice(0, tag.index).trimEnd();
-      if (/^t\d$/.test(tag[1])) badge = Number(tag[1].slice(1));
+      if (/^t\d+$/.test(tag[1])) tier = Number(tag[1].slice(1));
       else if (tag[1] === "flat") flat = true;
       else flags.unshift(tag[1]);
     }
-    item = { label, title, badge, flags, flat, pieces: [], line: n };
+    item = { label, title, tier, flags, flat, pieces: [], line: n };
     block.items.push(item);
-  } else if ((m = line.match(/^- \[[ x]\] (.+?)(?:\s*\{#([\w-]+)\})?$/)) && zone === "callout" && !item) {
-    const id = m[2] ?? fail(`callout task is missing a stable {#id}: "${m[1]}"`, n);
+  } else if ((m = line.match(/^##### (.+)$/))) {
+    if (!item || item.flat) {
+      fail(`group "##### ${m[1]}" outside a collapsible item`, n);
+    }
+    itemGroup = { kind: "group", title: renderInline(m[1]), pieces: [] };
+    item.pieces.push(itemGroup);
+  } else if (
+    (m = line.match(/^- \[[ x]\] (.+?)(?:\s*\{#([\w-]+)\})?$/)) &&
+    zone === "callout" && !item
+  ) {
+    const id = m[2] ??
+      fail(`callout task is missing a stable {#id}: "${m[1]}"`, n);
     if (tasks.some((t) => t.id === id)) fail(`duplicate task id "${id}"`, n);
     tasks.push({ id, label: renderInline(m[1]) });
-  } else if ((m = line.match(/^\d+\. (.+)$/)) && zone === "legend") {
-    const entry = m[1].match(/^\*\*(.+?)\*\*\s+—\s+(.+)$/);
-    if (!entry) fail(`legend entries must be numbered "**Name** — description": "${line}"`, n);
-    legend.push({ name: entry[1], desc: renderInline(entry[2]) });
+  } else if ((m = line.match(/^(\d+)\. (.+)$/)) && zone === "tiers") {
+    const expectedNumber = tiers.length + 1;
+    if (Number(m[1]) !== expectedNumber) {
+      fail(
+        `tier entries must be numbered consecutively from 1; expected ${expectedNumber}`,
+        n,
+      );
+    }
+    const entry = m[2].match(/^\*\*(.+?)\*\*\s+—\s+(.+)$/);
+    if (!entry) {
+      fail(
+        `tier entries must use "N. **Name** — description": "${line}"`,
+        n,
+      );
+    }
+    tiers.push({ name: entry[1], desc: renderInline(entry[2]) });
   } else if ((m = line.match(/^- (.+)$/))) {
     const t = target();
     const prev = t.at(-1);
-    const list = prev?.kind === "list" ? prev : ({ kind: "list", items: [] } as Piece & { kind: "list" });
+    const list = prev?.kind === "list"
+      ? prev
+      : ({ kind: "list", items: [] } as Piece & { kind: "list" });
     if (list !== prev) t.push(list);
     const bold = m[1].match(/^\*\*(.+)\*\*$/);
-    list.items.push(
-      bold
-        ? { group: true, html: escapeHtml(bold[1]) }
-        : { group: false, html: renderInline(m[1]) },
+    if (bold) {
+      fail(
+        `list headers must use \`##### Heading\`, not \`- **${bold[1]}**\``,
+        n,
+      );
+    }
+    list.items.push({ html: renderInline(m[1]) });
+  } else if (zone === "tiers") {
+    fail(
+      `only numbered tier entries are allowed in a Tiers section: "${line}"`,
+      n,
     );
-  } else if (zone === "legend") {
-    fail(`only numbered legend entries are allowed in a Legend section: "${line}"`, n);
   } else {
     target().push({ kind: "p", html: renderInline(line.trim()) });
   }
 }
 
 if (!h1) fail("no `# page heading` found");
-if (legend.length > 3) fail(`legend has ${legend.length} entries; the default template styles at most 3 badge kinds`);
+if (tierSystemName && tiers.length === 0) {
+  fail("Tiers needs at least one entry", tierSystemLine);
+}
+if (tiers.length > 3) {
+  fail(
+    `Tiers has ${tiers.length} entries; the default template supports at most 3`,
+    tierSystemLine,
+  );
+}
 
 const allItems = sections.flatMap((s) => s.blocks.flatMap((b) => b.items));
 for (const it of allItems) {
-  if (it.badge > legend.length) {
-    fail(`item "${it.title}" uses [t${it.badge}] but the legend has ${legend.length || "no"} entries`, it.line);
+  if (it.tier !== null && (it.tier < 1 || it.tier > tiers.length)) {
+    fail(
+      `item "${it.title}" uses [t${it.tier}] but Tiers has ${
+        tiers.length || "no"
+      } entries`,
+      it.line,
+    );
   }
 }
 
@@ -257,20 +358,29 @@ function renderPieces(pieces: Piece[], pClass: string, indent: string): string {
   return pieces
     .map((p) => {
       if (p.kind === "p") return `${indent}<p class="${pClass}">${p.html}</p>`;
-      if (p.kind === "code") return `${indent}<pre class="code"><code>${escapeHtml(p.text)}</code></pre>`;
+      if (p.kind === "code") {
+        return `${indent}<pre class="code"><code>${
+          escapeHtml(p.text)
+        }</code></pre>`;
+      }
+      if (p.kind === "group") {
+        const contents = renderPieces(p.pieces, pClass, `${indent}  `);
+        return `${indent}<section class="item-group">
+${indent}  <h5>${p.title}</h5>
+${contents}
+${indent}</section>`;
+      }
       if (p.kind === "table") {
         const head = p.head.map((c) => `<th>${c}</th>`).join("");
         const body = p.rows
-          .map((r) => `${indent}    <tr>${r.map((c) => `<td>${c}</td>`).join("")}</tr>`)
+          .map((r) =>
+            `${indent}    <tr>${r.map((c) => `<td>${c}</td>`).join("")}</tr>`
+          )
           .join("\n");
         return `${indent}<div class="table-wrap"><table>\n${indent}  <thead><tr>${head}</tr></thead>\n${indent}  <tbody>\n${body}\n${indent}  </tbody>\n${indent}</table></div>`;
       }
       const lis = p.items
-        .map((li) =>
-          li.group
-            ? `${indent}  <li class="group">${li.html}</li>`
-            : `${indent}  <li>${li.html}</li>`
-        )
+        .map((li) => `${indent}  <li>${li.html}</li>`)
         .join("\n");
       return `${indent}<ul class="item-list">\n${lis}\n${indent}</ul>`;
     })
@@ -278,18 +388,30 @@ function renderPieces(pieces: Piece[], pClass: string, indent: string): string {
 }
 
 function renderItem(it: Item): string {
-  const label = it.label ? `<span class="label">${renderInline(it.label)}</span>` : "";
-  if (it.flat) {
-    return `        <div class="flat-row">${label}<span class="flat-label">${escapeHtml(it.title)}</span><span class="rule"></span></div>`;
-  }
-  const flags = it.flags.map((f) => `\n            <span class="flag">${escapeHtml(f)}</span>`).join("");
-  const badge = it.badge
-    ? `\n            <span class="badge t${it.badge}"><span class="n">${it.badge}</span>${escapeHtml(legend[it.badge - 1].name)}</span>`
+  const label = it.label
+    ? `<span class="label">${renderInline(it.label)}</span>`
     : "";
-  const body = it.pieces.length ? `\n${renderPieces(it.pieces, "detail", "            ")}` : "";
-  return `        <details class="item" data-badge="${it.badge}">
+  if (it.flat) {
+    return `        <div class="flat-row">${label}<span class="flat-label">${
+      escapeHtml(it.title)
+    }</span><span class="rule"></span></div>`;
+  }
+  const flags = it.flags.map((f) =>
+    `\n            <span class="flag">${escapeHtml(f)}</span>`
+  ).join("");
+  const tierBadge = it.tier
+    ? `\n            <span class="tier-badge t${it.tier}"><span class="n">${it.tier}</span>${
+      escapeHtml(tiers[it.tier - 1].name)
+    }</span>`
+    : "";
+  const body = it.pieces.length
+    ? `\n${renderPieces(it.pieces, "detail", "            ")}`
+    : "";
+  return `        <details class="item" data-tier="${it.tier ?? 0}">
           <summary>
-            ${label ? label + "\n            " : ""}<span class="item-title">${renderInline(it.title)}</span>${flags}${badge}
+            ${label ? label + "\n            " : ""}<span class="item-title">${
+    renderInline(it.title)
+  }</span>${flags}${tierBadge}
             ${CHEVRON}
           </summary>
           <div class="item-body">${body}
@@ -298,18 +420,28 @@ function renderItem(it: Item): string {
 }
 
 function renderBlock(b: Block): string {
-  const chip = b.chip ? `<span class="head-chip">${escapeHtml(b.chip)}</span>` : "";
-  const pieces = b.pieces.length ? `\n${renderPieces(b.pieces, "sub", "        ")}\n` : "";
+  const chip = b.chip
+    ? `<span class="head-chip">${escapeHtml(b.chip)}</span>`
+    : "";
+  const pieces = b.pieces.length
+    ? `\n${renderPieces(b.pieces, "sub", "        ")}\n`
+    : "";
   return `      <div class="block">
-        <div class="block-head"><span class="t">${escapeHtml(b.title)}</span>${chip}<span class="rule"></span></div>
+        <div class="block-head"><span class="t">${
+    escapeHtml(b.title)
+  }</span>${chip}<span class="rule"></span></div>
 ${pieces}
 ${b.items.map(renderItem).join("\n\n")}
       </div>`;
 }
 
 function renderSection(s: Section): string {
-  const kicker = s.kicker ? `\n        <span class="kicker">${escapeHtml(s.kicker)}</span>` : "";
-  const pieces = s.pieces.length ? `\n${renderPieces(s.pieces, "sub", "        ")}` : "";
+  const kicker = s.kicker
+    ? `\n        <span class="kicker">${escapeHtml(s.kicker)}</span>`
+    : "";
+  const pieces = s.pieces.length
+    ? `\n${renderPieces(s.pieces, "sub", "        ")}`
+    : "";
   return `    <section class="sec">
       <div class="sec-head">${kicker}
         <h2>${escapeHtml(s.title)}</h2>${pieces}
@@ -325,44 +457,62 @@ const calloutHtml = calloutTitle
       <div class="callout">
         <span class="c-title">${escapeHtml(calloutTitle)}</span>
 ${renderPieces(calloutPieces, "c-note", "        ")}
-${tasks.length
-    ? `        <div class="tasks">
-${tasks
-      .map(
-        (t) => `          <div class="task" data-task="${t.id}" role="checkbox" aria-checked="false" tabindex="0">
+${
+    tasks.length
+      ? `        <div class="tasks">
+${
+        tasks
+          .map(
+            (t) =>
+              `          <div class="task" data-task="${t.id}" role="checkbox" aria-checked="false" tabindex="0">
             ${CHECKMARK}
             <span class="t-label">${t.label}</span>
           </div>`,
-      )
-      .join("\n")}
+          )
+          .join("\n")
+      }
         </div>`
-    : ""}
+      : ""
+  }
       </div>`
   : "";
 
-const legendHtml = legend.length
+const tiersHtml = tiers.length
   ? `
-      <div class="legend">
-${legend
-    .map(
-      (t, k) => `        <div class="badge-card">
-          <span class="badge t${k + 1}"><span class="n">${k + 1}</span>${escapeHtml(t.name)}</span>
+      <div class="tiers">
+${
+    tiers
+      .map(
+        (t, k) =>
+          `        <div class="tier-card">
+          <span class="tier-badge t${k + 1}"><span class="n">${k + 1}</span>${
+            escapeHtml(t.name)
+          }</span>
           <p>${t.desc}</p>
         </div>`,
-    )
-    .join("\n")}
+      )
+      .join("\n")
+  }
       </div>`
   : "";
 
-const badgesUsed = allItems.some((it) => it.badge > 0);
+const tiersUsed = allItems.some((it) => it.tier !== null);
 const collapsibles = allItems.some((it) => !it.flat);
-const filterHtml = legend.length && badgesUsed
-  ? `        <span class="lbl">Focus on</span>
-        <div class="chips" role="group" aria-label="Filter by badge">
-          <button class="chip" data-badge="all" aria-pressed="true">All</button>
-${legend
-    .map((t, k) => `          <button class="chip" data-badge="${k + 1}" aria-pressed="false">${escapeHtml(t.name)}</button>`)
-    .join("\n")}
+const filterHtml = tiers.length && tiersUsed
+  ? `        <span class="lbl">${escapeHtml(tierSystemName)}</span>
+        <div class="chips" role="group" aria-label="Filter by ${
+    escapeHtml(tierSystemName)
+  }">
+          <button class="chip" data-tier="all" aria-pressed="true">All</button>
+${
+    tiers
+      .map((t, k) =>
+        `          <button class="chip" data-tier="${
+          k + 1
+        }" aria-pressed="false">${escapeHtml(t.name)}</button>`
+      )
+      .join("\n")
+  }
         </div>
         <span class="spacer"></span>
 `
@@ -383,7 +533,7 @@ ${filterHtml}${expandHtml}
 const header = `    <header class="doc">
       <div class="eyebrow">${escapeHtml(meta.eyebrow)}</div>
       <h1>${escapeHtml(h1)}</h1>
-${renderPieces(lede, "lede", "      ")}${calloutHtml}${legendHtml}${controlsHtml}
+${renderPieces(lede, "lede", "      ")}${calloutHtml}${tiersHtml}${controlsHtml}
     </header>`;
 
 const footer = `    <footer class="doc">
@@ -400,7 +550,9 @@ const tplUrl = tplPath
   : new URL("../assets/template.html", import.meta.url);
 const template = await Deno.readTextFile(tplUrl);
 for (const slot of ["__TITLE__", "__CONTENT__", "__TASKKEY__"]) {
-  if (!template.includes(slot)) fail(`template ${tplUrl.pathname} is missing the ${slot} slot`);
+  if (!template.includes(slot)) {
+    fail(`template ${tplUrl.pathname} is missing the ${slot} slot`);
+  }
 }
 
 const taskKey = "mid-tasks-" +
@@ -420,6 +572,10 @@ await Deno.writeTextFile(outPath, html);
 
 for (const s of sections) {
   const its = s.blocks.flatMap((b) => b.items);
-  console.log(`${s.kicker ? s.kicker + " — " : ""}${s.title}: ${its.filter((x) => !x.flat).length} items, ${its.filter((x) => x.flat).length} flat rows`);
+  console.log(
+    `${s.kicker ? s.kicker + " — " : ""}${s.title}: ${
+      its.filter((x) => !x.flat).length
+    } items, ${its.filter((x) => x.flat).length} flat rows`,
+  );
 }
 console.log(`wrote ${outPath} (${(html.length / 1024).toFixed(0)} KB)`);
