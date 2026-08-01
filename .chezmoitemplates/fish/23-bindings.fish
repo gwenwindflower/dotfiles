@@ -54,7 +54,9 @@ bind --user super-p "commandline -r 'lsd -lAg .'; commandline -f execute"
 bind --user -M insert super-P _wrap_echo
 bind --user super-P _wrap_echo
 # 1Password env wrapper
-bind --user -M insert ctrl-o "_wrap_op_interactive -a"
-bind --user ctrl-o "_wrap_op_interactive -a"
-bind --user -M insert ctrl-alt-o _wrap_op_interactive
-bind --user ctrl-alt-o _wrap_op_interactive
+bind --user -M insert ctrl-o _wrap_op_interactive
+bind --user ctrl-o _wrap_op_interactive
+bind --user -M insert ctrl-super-o "_wrap_op_interactive -a"
+bind --user ctrl-super-o "_wrap_op_interactive -a"
+bind --user -M insert ctrl-alt-o "_wrap_op_interactive -a"
+bind --user ctrl-alt-o "_wrap_op_interactive -a"
