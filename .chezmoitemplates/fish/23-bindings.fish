@@ -38,13 +38,6 @@ bind --user -M insert super-r "fresh -r"
 bind --user super-r "fresh -r"
 bind --user -M insert alt-r "fresh -r"
 bind --user alt-r "fresh -r"
-bind --user -M insert super-e "fresh -c"
-bind --user super-e "fresh -c"
-# alt-e defaults to edit commandline in $EDITOR
-# but thankfully has an alt binding as alt-v ($VISUAL)
-# which is what I would remap it to
-bind --user -M insert alt-e "fresh -c"
-bind --user alt-e "fresh -c"
 bind --user -M insert super-R "fresh; commandline -f repaint"
 bind --user super-R "fresh; commandline -f repaint"
 bind --user -M insert alt-R "fresh; commandline -f repaint"
