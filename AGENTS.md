@@ -36,6 +36,7 @@ private_dot_config/               # → ~/.config/
   k9s/, lazydocker/, lazygit/     #   Container/cluster/git TUI tools
   lsd/, macchina/                 #   ls replacement, system info
   marimo/, spotify-player/        #   Python notebooks, Spotify TUI
+  herdr/                          #   Herdr config (symlinked), plugins are not included in chezmoi as they can be installed idempotently via herdr
   worktrunk/                      #   Worktrunk config
 
 dot_claude/                       # → ~/.claude/
