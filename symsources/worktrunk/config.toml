@@ -11,7 +11,7 @@ template-append = """
 - Trailers, in this order, separated from body by a blank line:
   - `Closes #N` / `Fixes #N` / `Resolves #N` when the diff, branch name, or recent commits reference a GitHub issue or PR this commit closes — so GitHub auto-closes on merge.
   - `Closes Phase <n>` when the commit closes a SPOT Phase.
-  - `Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>` always as the final line.
+  - `Co-Authored-By: Claude Sonnet {current version} <noreply@anthropic.com>` always as the final line (e.g. `Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>`)
 """
 
 [list]
