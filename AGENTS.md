@@ -148,7 +148,7 @@ The prefix is stripped on deploy, so `dot_agents/exact_skills/` still produces `
 
 ### Nerd Font icons
 
-Several files contain Nerd Font glyphs (starship.toml, yazi theme.toml, tmux statusline.conf, pane-icon.sh, nvim dashboard-art.lua, kitty.conf). **Do not Edit these files** — the Edit tool corrupts icon bytes. Use `cp` or Write from a full file read instead. For targeted edits you can give the user a snippet to manually edit themselves.
+Several files contain Nerd Font glyphs (starship.toml, yazi theme.toml, tmux statusline.conf, pane-icon.sh, nvim dashboard-art.lua, kitty.conf, herdr's livery plugin icon conf). **Do not Edit these files without taking precautions** — the Edit tool corrupts icon bytes; BMP private-use glyphs (U+E000 range) are also stripped from agent-authored Write content. Livery reads icons from its `icons.conf` manifest, which is hand-edited only — an agent needing to change it must move existing glyph bytes programmatically (script/sed), never type them; in code (e.g. livery's Rust tests) spell glyphs as escapes (`\u{e62b}`), never literals. Use `cp` or Write from a full file read instead. For targeted edits you can give the user a snippet to manually edit themselves.
 
 ### Fish config assembly
 
