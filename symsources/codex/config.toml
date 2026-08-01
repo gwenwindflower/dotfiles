@@ -375,15 +375,19 @@ enabled = true
 [hooks.state."worktrunk@worktrunk:plugin.json#hooks[0]:user_prompt_submit:0:0"]
 trusted_hash = "sha256:e2ffec558188fd0988ad51768594f675801fd2a1ba2895b5df2aca2650d70c2a"
 
+[hooks.state."worktrunk@worktrunk:plugin.json#hooks[0]:session_end:0:0"]
+trusted_hash = "sha256:09b9fff83447c926af5f61010bc3dd3c8f2e6194c7c06b08f8acbf808a51710d"
+enabled = true
+
 [marketplaces.worktrunk]
-last_updated = "2026-07-29T01:59:33Z"
-last_revision = "946e360447b87ce17f486376fdd615edf154f7b1"
+last_updated = "2026-07-31T17:40:43Z"
+last_revision = "6387923b0f0b6a375c8f4ad379a0ffbdc6ce68e9"
 source_type = "git"
 source = "https://github.com/max-sixty/worktrunk.git"
 
 [marketplaces.mcp-apps]
-last_updated = "2026-07-18T16:31:00Z"
-last_revision = "2ca6a59d2f493b227a83a2e3ce0396db4705621a"
+last_updated = "2026-07-29T13:26:18Z"
+last_revision = "92f46a574568a3ddac7600343b7d3c4c4ed7b588"
 source_type = "git"
 source = "https://github.com/modelcontextprotocol/ext-apps.git"
 
@@ -647,6 +651,12 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/Users/winnie/dev/rowing-machine"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/_work/mintlify-docs"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/herdr/livery"]
 trust_level = "trusted"
 
 [apps._default]
