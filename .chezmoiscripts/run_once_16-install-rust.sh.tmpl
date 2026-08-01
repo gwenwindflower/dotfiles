@@ -14,6 +14,8 @@ if command -v rustup >/dev/null 2>&1; then
   log_info "Installing or updating stable Rust toolchain..."
   rustup toolchain install stable --profile default
   rustup default stable
+  log_info "Adding rust-analyzer component..."
+  rustup component add rust-analyzer
   log_success "Rust updated"
   exit 0
 fi
@@ -29,6 +31,10 @@ curl --proto '=https' --tlsv1.2 -fsSL https://sh.rustup.rs | sh -s -- \
   --default-toolchain stable \
   --profile default \
   --no-modify-path
+
+source "$HOME/.cargo/env"
+log_info "Adding rust-analyzer component..."
+rustup component add rust-analyzer
 
 log_success "Rust installed"
 {{ end -}}
