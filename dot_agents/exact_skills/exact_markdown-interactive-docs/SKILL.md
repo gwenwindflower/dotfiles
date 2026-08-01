@@ -1,53 +1,38 @@
 ---
 name: markdown-interactive-docs
-description: Turn a rigid, hand-editable markdown source into a polished single-file interactive HTML doc — collapsible rows, legend-driven filter chips, persisted checkboxes, print-ready — via a bundled Deno build script. Use when shipping a schedule, program, plan, runbook, or checklist as a styled web page, or when editing a project that pairs a markdown source with a template.html built on this pattern. Skip for ordinary markdown that never renders to a page.
+description: Build self-contained interactive HTML from structured Markdown and a customizable template with a bundled Deno compiler. Use when a schedule, runbook, or checklist needs collapsible rows, filters, persisted tasks, or print styling; also when editing a project that uses this skill's template.html and build.ts pattern. Skip ordinary Markdown with no HTML output.
 ---
 
 # Markdown Interactive Docs
 
-Three parts, one-way flow: **content** lives in a markdown source written in a rigid dialect, **styling and interaction** live in `template.html`, and the bundled `build.ts` compiles one into the other with line-numbered validation. Never hand-edit build output, put styling in the markdown, or put content in the template.
+Use a one-way build: content lives in a structured Markdown source, presentation and interaction live in `template.html`, and `build.ts` compiles them into one HTML file. Treat `dist/` as generated output.
 
-## Quickstart
+## Workflow
+
+1. Read [dialect](dialect.md) before authoring or editing a source file.
+2. Keep content in Markdown and presentation in the template.
+3. Copy the template when the project owns its visual design; otherwise use the bundled default.
+4. Build after every source, template, or compiler edit and fix validation errors at the reported source lines.
+5. Inspect the HTML in a browser and print preview before delivery.
 
 ```bash
-SKILL=~/.agents/skills/markdown-interactive-docs
-
-# New project: copy the template next to the source so styling is project-owned
-cp "$SKILL/assets/template.html" ./template.html
-
-# Author the source (dialect below), then build
-deno run --allow-read --allow-write "$SKILL/scripts/build.ts" doc.md -t template.html
+SKILL_DIR=~/.agents/skills/markdown-interactive-docs
+cp "$SKILL_DIR/assets/template.html" ./template.html
+deno run --allow-read="$SKILL_DIR,$PWD" --allow-write="$PWD" \
+  "$SKILL_DIR/scripts/build.ts" doc.md -t template.html
 ```
 
-Output lands at `dist/<stem>.html` (override with `-o`): one self-contained file — no external requests, light/dark aware, print-ready (printing auto-expands every row and hides the controls). Omit `-t` to build with the skill's default template.
+Output lands at `dist/<stem>.html`; override it with `-o`. Omit the copy step and `-t` to use the default template.
 
-## The dialect
+## Extension boundaries
 
-Structure is fixed; only styling flexes. Full spec, rules, and a complete example: [dialect](dialect.md).
-
-| Syntax | Renders as |
-| --- | --- |
-| frontmatter `title` / `eyebrow` / `footer` | tab title, kicker line, footer |
-| `# Heading` + paragraphs | page heading + lede |
-| `## Callout: Title` with `- [ ] task {#id}` | dashed callout box, checkboxes persisted in localStorage |
-| `## Legend: Title` with `1. **Name** — desc` | badge legend cards + auto-generated filter chips |
-| `## Kicker — Title` + paragraph | major section with kicker and subtitle |
-| `### Title — Chip` | ruled block heading with chip |
-| `#### Label — Title [t1] [Flag]` | collapsible row; `[tN]` badge from legend, other tags are flag chips, `[flat]` makes a non-collapsible divider |
-| `- item` / `- **Group**` | washed bullet list / group header inside it |
-| GFM table / fenced code | styled table / code block |
-| `` `code` ``, `**bold**`, `[text](url)`, `[Chip]` | inline code, strong, arrow link, outlined chip |
-
-## Styling
-
-The copied `template.html` is the project's to restyle — tokens, fonts, spacing, whole aesthetic. Keep the contract intact: the `__TITLE__` / `__CONTENT__` / `__TASKKEY__` slots, and the class names + JS hooks listed in [dialect](dialect.md). For docs that must stay self-contained (PDFs, artifacts), embed brand fonts as base64 `data:` URIs in `@font-face` rather than linking a CDN.
-
-## Extending the build
-
-For domain validation, copy `build.ts` into the project and add checks after the parse — e.g. a training schedule failing the build when time-slot labels leave gaps in the day. Keep the parser and renderer intact so sources stay portable.
+- Restyle a project-owned template freely, but preserve the `__TITLE__`, `__CONTENT__`, and `__TASKKEY__` slots plus the hooks in [dialect](dialect.md).
+- Keep deliverables self-contained. Embed fonts and images with `data:` URIs instead of external requests.
+- For project-specific validation, copy `build.ts` into the project and add checks after parsing. Change the bundled compiler and dialect together only when the reusable format itself needs another construct.
+- Never hand-edit built HTML; edit the source, template, or compiler and rebuild.
 
 ## Delivery
 
-The built file is plain HTML — host it anywhere. Agent-specific publish flows live in modular docs next to this file; add `<agent>.md` for a new platform:
+The result is a self-contained HTML file that can be opened locally, hosted as a static file, or printed to PDF.
 
 - [claude-code](claude-code.md) — publish as a Claude Artifact
