@@ -35,4 +35,5 @@ Output lands at `dist/<stem>.html`; override it with `-o`. Omit the copy step an
 
 The result is a self-contained HTML file that can be opened locally, hosted as a static file, or printed to PDF.
 
-- [claude-code](claude-code.md) — publish as a Claude Artifact
+- [Claude Artifact delivery](claude-code.md)
+- [Codex Sites delivery](codex.md)
