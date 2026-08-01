@@ -1,5 +1,3 @@
 # open Mac Finder
-bind --user -M insert super-F "open ."
-bind --user super-F "open ."
-bind --user -M insert alt-F "open ."
-bind --user alt-F "open ."
+bind --user -M insert alt-super-f "open ."
+bind --user alt-super-f "open ."
