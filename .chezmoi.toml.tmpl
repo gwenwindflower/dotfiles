@@ -7,6 +7,12 @@
   {{- end -}}
 {{- end -}}
 {{- $profile := promptChoiceOnce . "profile" "Machine profile" (list "personal" "work") "personal" -}}
+ encryption = "age"
+
+[age]
+identity = "~/.config/chezmoi/chezmoi-age-id.txt"
+recipient = "age1293j6au59668ur8uaajjnh9st2xduveuzgnq8msydcmjlegsayvq7musx0"
+
 [data]
 brewPrefix = {{ $brewPrefix | quote }}
 profile = {{ $profile | quote }}

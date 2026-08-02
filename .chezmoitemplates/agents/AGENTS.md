@@ -4,7 +4,7 @@ Shared user rules for all agent platforms.
 
 ## Foundations
 
-{{ template "agents/rules/primary-user.md" . }}
+{{ joinPath .chezmoi.sourceDir ".chezmoitemplates/agents/rules/primary-user.md.age" | include | decrypt }}
 
 {{ template "agents/rules/communication-style.md" . }}
 
