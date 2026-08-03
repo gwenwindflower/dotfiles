@@ -16,6 +16,10 @@ local markdownlint_config_names = {
 }
 local default_markdownlint_config = vim.fs.normalize("~/.markdownlint.yaml")
 local markdownlint_config_by_dir = {}
+local marksman_link_diagnostic_codes = {
+  ["1"] = true,
+  ["2"] = true,
+}
 
 local function markdownlint_config(dirname)
   local config = markdownlint_config_by_dir[dirname]
@@ -33,6 +37,29 @@ end
 
 local function current_markdownlint_config()
   return markdownlint_config(vim.fs.dirname(vim.api.nvim_buf_get_name(0)))
+end
+
+local function is_chezmoi_source_root(root)
+  if not root then
+    return false
+  end
+
+  return vim.uv.fs_stat(vim.fs.joinpath(root, ".chezmoi.toml.tmpl")) ~= nil
+    and vim.uv.fs_stat(vim.fs.joinpath(root, ".chezmoiignore")) ~= nil
+end
+
+local function filter_chezmoi_marksman_diagnostics(next_handler)
+  return function(error, result, context, config)
+    local client = vim.lsp.get_client_by_id(context.client_id)
+    if result and is_chezmoi_source_root(client and client.root_dir) then
+      result = vim.deepcopy(result)
+      result.diagnostics = vim.tbl_filter(function(diagnostic)
+        return not marksman_link_diagnostic_codes[tostring(diagnostic.code)]
+      end, result.diagnostics or {})
+    end
+
+    return next_handler(error, result, context, config)
+  end
 end
 
 return {
@@ -53,6 +80,19 @@ return {
       opts.linters = opts.linters or {}
       opts.linters["markdownlint-cli2"] = opts.linters["markdownlint-cli2"] or {}
       opts.linters["markdownlint-cli2"].args = { "--config", current_markdownlint_config, "-" }
+      return opts
+    end,
+  },
+  {
+    "neovim/nvim-lspconfig",
+    opts = function(_, opts)
+      opts.servers = opts.servers or {}
+      opts.servers.marksman = opts.servers.marksman or {}
+      opts.servers.marksman.handlers = opts.servers.marksman.handlers or {}
+
+      local method = "textDocument/publishDiagnostics"
+      local handler = opts.servers.marksman.handlers[method] or vim.lsp.handlers[method]
+      opts.servers.marksman.handlers[method] = filter_chezmoi_marksman_diagnostics(handler)
       return opts
     end,
   },
