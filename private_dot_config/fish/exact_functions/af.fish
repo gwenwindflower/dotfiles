@@ -116,8 +116,8 @@ end
     set -l delimiter (printf '\t')
     set -l fzf_args \
         "--delimiter=$delimiter" \
-        --with-nth=1..4 \
-        --header='type  name  scope  state' \
+        --with-nth=1..5 \
+        --header='type  name  scope  state  content' \
         --preview="$preview" \
         --preview-window=right,60%,wrap
 

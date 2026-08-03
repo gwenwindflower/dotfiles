@@ -1,5 +1,6 @@
 function af_test
     abbr --add native_abbr "echo native"
+    abbr --add dbbs "uv run dbt build -s"
     abbr --add am_active "echo duplicate"
     alias native_alias "echo aliased"
 
@@ -24,8 +25,10 @@ function af_test
     function fzf
         set -l amoxide_record
         set -l function_record
+        set -l input
 
         while read -l line
+            set -a input $line
             printf '%s\n' $line
             string match -rq '^amoxide\twork_alias\t' -- $line; and set amoxide_record $line
             string match -rq '^function\tnative_function\t' -- $line; and set function_record $line
@@ -43,6 +46,18 @@ function af_test
         string replace -- '{}' (string escape -- $amoxide_record) $preview | source
         printf '\n__function_preview__\n'
         string replace -- '{}' (string escape -- $function_record) $preview | source
+
+        set -l search_args
+        for option in $argv
+            if string match -q -- '--delimiter=*' $option; or string match -q -- '--with-nth=*' $option
+                set -a search_args $option
+            end
+        end
+
+        if printf '%s\n' $input | command fzf $search_args --filter='dbt build' | string match -q '*dbbs*'
+            printf '\n__content_match__\n'
+        end
+
         printf '\n__fzf_args__\t%s\n' (string join \t -- $argv)
     end
 
@@ -64,6 +79,7 @@ function af_test
     end
 
     assert_match '^abbr\tnative_abbr\tfish\t\t' "lists Fish abbreviations"
+    assert_match '^__content_match__$' "searches Fish abbreviation expansions"
     assert_match '^alias\tnative_alias\tfish\t\t' "lists Fish aliases"
     assert_match '^function\tnative_function\t[^\t]+\t\t' "lists Fish functions"
     assert_no_match '^function\tnative_alias\t' "does not duplicate aliases as functions"
