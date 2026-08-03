@@ -380,8 +380,8 @@ trusted_hash = "sha256:09b9fff83447c926af5f61010bc3dd3c8f2e6194c7c06b08f8acbf808
 enabled = true
 
 [marketplaces.worktrunk]
-last_updated = "2026-07-31T17:40:43Z"
-last_revision = "6387923b0f0b6a375c8f4ad379a0ffbdc6ce68e9"
+last_updated = "2026-08-02T22:48:32Z"
+last_revision = "305f8fcd19eb1187d9ce4a1992bc2df4add17e3c"
 source_type = "git"
 source = "https://github.com/max-sixty/worktrunk.git"
 
@@ -657,6 +657,9 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/Users/winnie/dev/herdr/livery"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/herdr/wtherdr"]
 trust_level = "trusted"
 
 [apps._default]
