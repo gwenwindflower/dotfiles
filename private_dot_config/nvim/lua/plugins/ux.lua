@@ -136,6 +136,10 @@ return {
         picker_add_copy_relative_path_action = "snacks.picker",
         resolve_relative_path_application = "realpath",
       },
+      resolve_relative_path_application = "grealpath",
+      keymaps = {
+        show_help = "<c-`>",
+      },
     },
   },
   -- Noice
