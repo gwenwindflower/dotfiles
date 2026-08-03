@@ -108,5 +108,17 @@ key = "prefix+alt+c"
 type = "plugin_action"
 command = "livery.reset"
 
+[[keys.command]]
+key = ["prefix+o", "shift+super+o"]
+type = "plugin_action"
+command = "herdr-navigator.open"
+description = "jump with navigator"
+
+[[keys.command]]
+key = "prefix+shift+O"
+type = "plugin_action"
+command = "herdr-navigator.open-side"
+description = "navigator side pane"
+
 [experimental]
 kitty_graphics = true

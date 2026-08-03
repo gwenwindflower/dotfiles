@@ -1,210 +1,127 @@
 [
-  {
-    "plugin_id": "herdr-splits",
-    "name": "Herdr Splits",
-    "version": "0.5.1",
-    "min_herdr_version": "0.7.0",
-    "description": "Seamless navigation and resizing between Herdr panes and Neovim splits",
-    "manifest_path": "/Users/winnie/.config/herdr/plugins/github/herdr-splits-d880c4924f2b/herdr-plugin.toml",
-    "plugin_root": "/Users/winnie/.config/herdr/plugins/github/herdr-splits-d880c4924f2b",
-    "enabled": true,
-    "platforms": [
-      "linux",
-      "macos"
-    ],
-    "actions": [
-      {
-        "id": "nav-down",
-        "title": "Navigate down (Neovim/Herder)",
-        "contexts": [
-          "global"
-        ],
-        "command": [
-          "bash",
-          "scripts/herdr-nav.sh",
-          "down"
-        ]
-      },
-      {
-        "id": "nav-left",
-        "title": "Navigate left (Neovim/Herder)",
-        "contexts": [
-          "global"
-        ],
-        "command": [
-          "bash",
-          "scripts/herdr-nav.sh",
-          "left"
-        ]
-      },
-      {
-        "id": "nav-right",
-        "title": "Navigate right (Neovim/Herder)",
-        "contexts": [
-          "global"
-        ],
-        "command": [
-          "bash",
-          "scripts/herdr-nav.sh",
-          "right"
-        ]
-      },
-      {
-        "id": "nav-up",
-        "title": "Navigate up (Neovim/Herder)",
-        "contexts": [
-          "global"
-        ],
-        "command": [
-          "bash",
-          "scripts/herdr-nav.sh",
-          "up"
-        ]
-      },
-      {
-        "id": "resize-down",
-        "title": "Resize down (Neovim/Herder)",
-        "contexts": [
-          "global"
-        ],
-        "command": [
-          "bash",
-          "scripts/herdr-resize.sh",
-          "down"
-        ]
-      },
-      {
-        "id": "resize-left",
-        "title": "Resize left (Neovim/Herder)",
-        "contexts": [
-          "global"
-        ],
-        "command": [
-          "bash",
-          "scripts/herdr-resize.sh",
-          "left"
-        ]
-      },
-      {
-        "id": "resize-right",
-        "title": "Resize right (Neovim/Herder)",
-        "contexts": [
-          "global"
-        ],
-        "command": [
-          "bash",
-          "scripts/herdr-resize.sh",
-          "right"
-        ]
-      },
-      {
-        "id": "resize-up",
-        "title": "Resize up (Neovim/Herder)",
-        "contexts": [
-          "global"
-        ],
-        "command": [
-          "bash",
-          "scripts/herdr-resize.sh",
-          "up"
-        ]
-      }
-    ],
-    "source": {
-      "kind": "github",
-      "owner": "lmilojevicc",
-      "repo": "herdr-splits.nvim",
-      "resolved_commit": "107273e004e4f7ef07f13c83164d2cb2c51df65d",
-      "managed_path": "/Users/winnie/.config/herdr/plugins/github/herdr-splits-d880c4924f2b",
-      "installed_unix_ms": 1785469109302
-    }
-  },
-  {
-    "plugin_id": "livery",
-    "name": "Livery",
-    "version": "0.4.0",
-    "min_herdr_version": "0.7.5",
-    "description": "Dress herdr tabs as [N] <icon> <program> and feed sidebar rows composable tokens: $jump (workspace jump number) plus $space/$worktree (repo + nested worktree names for agent rows). Labels stay bare for the agents panel and navigator; manual renames win. Icons come from the hand-edited icons.conf manifest.",
-    "manifest_path": "/Users/winnie/dev/herdr/livery/herdr-plugin.toml",
-    "plugin_root": "/Users/winnie/dev/herdr/livery",
-    "enabled": true,
-    "platforms": [
-      "linux",
-      "macos"
-    ],
-    "build": [
-      {
-        "command": [
-          "cargo",
-          "build",
-          "--locked",
-          "--release"
-        ]
-      }
-    ],
-    "actions": [
-      {
-        "id": "clear",
-        "title": "Livery: strip all chrome",
-        "contexts": [
-          "global"
-        ],
-        "command": [
-          "target/release/livery",
-          "clear"
-        ]
-      },
-      {
-        "id": "reset",
-        "title": "Livery: reset tab to automatic naming",
-        "contexts": [
-          "global"
-        ],
-        "command": [
-          "target/release/livery",
-          "reset"
-        ]
-      }
-    ],
-    "events": [
-      {
-        "on": "pane.agent_detected",
-        "command": [
-          "target/release/livery",
-          "kick"
-        ]
-      },
-      {
-        "on": "pane.focused",
-        "command": [
-          "target/release/livery",
-          "kick"
-        ]
-      },
-      {
-        "on": "tab.created",
-        "command": [
-          "target/release/livery",
-          "kick"
-        ]
-      },
-      {
-        "on": "tab.focused",
-        "command": [
-          "target/release/livery",
-          "kick"
-        ]
-      },
-      {
-        "on": "workspace.created",
-        "command": [
-          "target/release/livery",
-          "kick"
-        ]
-      }
-    ],
-    "source": {
-      "kind": "local"
-    }
-  }
+	{
+		"plugin_id": "herdr-splits",
+		"name": "Herdr Splits",
+		"version": "0.5.2",
+		"min_herdr_version": "0.7.0",
+		"description": "Seamless navigation and resizing between Herdr panes and Neovim splits",
+		"manifest_path": "/Users/winnie/.config/herdr/plugins/github/herdr-splits-d880c4924f2b/herdr-plugin.toml",
+		"plugin_root": "/Users/winnie/.config/herdr/plugins/github/herdr-splits-d880c4924f2b",
+		"enabled": true,
+		"platforms": ["linux", "macos"],
+		"actions": [
+			{
+				"id": "nav-down",
+				"title": "Navigate down (Neovim/Herder)",
+				"contexts": ["global"],
+				"command": ["bash", "scripts/herdr-nav.sh", "down"]
+			},
+			{
+				"id": "nav-left",
+				"title": "Navigate left (Neovim/Herder)",
+				"contexts": ["global"],
+				"command": ["bash", "scripts/herdr-nav.sh", "left"]
+			},
+			{
+				"id": "nav-right",
+				"title": "Navigate right (Neovim/Herder)",
+				"contexts": ["global"],
+				"command": ["bash", "scripts/herdr-nav.sh", "right"]
+			},
+			{
+				"id": "nav-up",
+				"title": "Navigate up (Neovim/Herder)",
+				"contexts": ["global"],
+				"command": ["bash", "scripts/herdr-nav.sh", "up"]
+			},
+			{
+				"id": "resize-down",
+				"title": "Resize down (Neovim/Herder)",
+				"contexts": ["global"],
+				"command": ["bash", "scripts/herdr-resize.sh", "down"]
+			},
+			{
+				"id": "resize-left",
+				"title": "Resize left (Neovim/Herder)",
+				"contexts": ["global"],
+				"command": ["bash", "scripts/herdr-resize.sh", "left"]
+			},
+			{
+				"id": "resize-right",
+				"title": "Resize right (Neovim/Herder)",
+				"contexts": ["global"],
+				"command": ["bash", "scripts/herdr-resize.sh", "right"]
+			},
+			{
+				"id": "resize-up",
+				"title": "Resize up (Neovim/Herder)",
+				"contexts": ["global"],
+				"command": ["bash", "scripts/herdr-resize.sh", "up"]
+			}
+		],
+		"source": {
+			"kind": "github",
+			"owner": "lmilojevicc",
+			"repo": "herdr-splits.nvim",
+			"requested_ref": "c58bfdf01520845583e0033c11c56fc9d21a5424",
+			"resolved_commit": "c58bfdf01520845583e0033c11c56fc9d21a5424",
+			"managed_path": "/Users/winnie/.config/herdr/plugins/github/herdr-splits-d880c4924f2b",
+			"installed_unix_ms": 1785717185514
+		}
+	},
+	{
+		"plugin_id": "livery",
+		"name": "Livery",
+		"version": "0.4.0",
+		"min_herdr_version": "0.7.5",
+		"description": "Dress herdr tabs as [N] <icon> <program> and feed sidebar rows composable tokens: $jump (workspace jump number) plus $space/$worktree (repo + nested worktree names for agent rows). Labels stay bare for the agents panel and navigator; manual renames win. Icons come from the hand-edited icons.conf manifest.",
+		"manifest_path": "/Users/winnie/dev/herdr/livery/herdr-plugin.toml",
+		"plugin_root": "/Users/winnie/dev/herdr/livery",
+		"enabled": true,
+		"platforms": ["linux", "macos"],
+		"build": [
+			{
+				"command": ["cargo", "build", "--locked", "--release"]
+			}
+		],
+		"actions": [
+			{
+				"id": "clear",
+				"title": "Livery: strip all chrome",
+				"contexts": ["global"],
+				"command": ["target/release/livery", "clear"]
+			},
+			{
+				"id": "reset",
+				"title": "Livery: reset tab to automatic naming",
+				"contexts": ["global"],
+				"command": ["target/release/livery", "reset"]
+			}
+		],
+		"events": [
+			{
+				"on": "pane.agent_detected",
+				"command": ["target/release/livery", "kick"]
+			},
+			{
+				"on": "pane.focused",
+				"command": ["target/release/livery", "kick"]
+			},
+			{
+				"on": "tab.created",
+				"command": ["target/release/livery", "kick"]
+			},
+			{
+				"on": "tab.focused",
+				"command": ["target/release/livery", "kick"]
+			},
+			{
+				"on": "workspace.created",
+				"command": ["target/release/livery", "kick"]
+			}
+		],
+		"source": {
+			"kind": "local"
+		}
+	}
 ]
