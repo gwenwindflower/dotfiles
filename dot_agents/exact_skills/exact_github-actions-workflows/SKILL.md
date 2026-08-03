@@ -5,7 +5,7 @@ description: Author, audit, and scaffold GitHub Actions workflows. Use when edit
 
 # GitHub Actions Workflows
 
-Guidance for writing solid GitHub Actions workflows, plus templates and a scaffold script specifically for Supermodel Labs projects. Two non-negotiable rules apply before writing or editing any workflow YAML.
+Guidance for writing solid GitHub Actions workflows, plus templates and a scaffold script specifically for Supermodel Labs projects. Three non-negotiable rules apply before writing or editing any workflow YAML.
 
 ## Rule 1: Verify the runner image
 
@@ -31,11 +31,25 @@ Search the marketplace with WebFetch:
 https://github.com/marketplace?query={QUERY+TERMS}&type=actions
 ```
 
-Then fetch the action's repo `releases` or `tags` page to confirm the current version and read release notes for breaking changes. Pin to a major (`@v6`) for first-party `actions/*`; for third-party actions consider pinning to a full SHA when supply-chain risk matters.
+Then fetch the action's repo `releases` or `tags` page to confirm the current version and read release notes for breaking changes. Pin to a major (`@v6`) for first-party `actions/*`; hash-pin third-party actions to a full commit SHA (Rule 3 automates this).
 
 **Confirm the major-only tag actually exists.** Many actions only publish full semver tags (`v2.0.4`) and never cut a floating `v2`. Examples seen in the wild: `denoland/setup-deno`, `astral-sh/setup-uv`. Using `@v2` against these silently fails with "unable to resolve action" at run time. Check the repo's `git/refs/tags` API or tags page — if there's no major-only ref, pin to the full `vX.Y.Z`.
 
 When multiple actions do the same thing, prefer: official `actions/*` > vendor-maintained > popular community action with recent commits. Note "last published" dates — abandoned actions are a liability.
+
+## Rule 3: Audit with zizmor, pin with pinact
+
+Run both after writing and while auditing workflows:
+
+- **[zizmor](https://docs.zizmor.sh)** statically audits workflows for security issues — template injection, excessive permissions, `pull_request_target` misuse, unpinned actions. `zizmor .` from the repo root finds workflows itself.
+- **[pinact](https://github.com/suzuki-shunsuke/pinact)** rewrites `uses:` refs to full commit SHAs with a version comment (`uses: owner/action@<sha> # v2.0.4`) and verifies existing pins. `pinact run` edits in place; `pinact run -check` only reports; `pinact run -update` also bumps to latest.
+
+Pinning policy: hash-pin third-party actions; ref-pinning to a tag is acceptable only for trusted owners (`actions/*`, `astral-sh/*`). The bundled sample configs encode this policy:
+
+- [`assets/zizmor.yml`](assets/zizmor.yml) — `unpinned-uses` policies: hash-pin everything, ref-pin allowed for the trusted owners. Copy to `.github/zizmor.yml`.
+- [`assets/pinact.yml`](assets/pinact.yml) — 7-day `min_age` cooldown on new versions (supply-chain protection), waived for the trusted owners; ignores the SLSA generator reusable workflow, which must stay referenced by semver tag. Copy to `.github/pinact.yml`.
+
+Configs live in `.github/` alongside the workflows. Only if the repo already has a config at another discovered path (root `zizmor.yml`, `.pinact.yaml`, etc.) should you edit that file in place instead of adding a second one.
 
 ## Authoring basics
 
@@ -82,7 +96,7 @@ References:
 
 ### Audit existing workflows
 
-When asked to audit `.github/workflows/`: read each file, then check against the rules and pitfalls above. Common audit findings: stale runner pins, outdated action versions, missing `permissions:` (defaults to overly broad), missing `concurrency:`, secrets passed at job level, deprecated `::set-output`, no `fail-fast: false` on matrices that should keep running. For a release pipeline, compare against [`ci.md`](ci.md) / [`release.md`](release.md) / [`release-build.md`](release-build.md).
+When asked to audit `.github/workflows/`: read each file, then check against the rules and pitfalls above. Run `zizmor .` and `pinact run -check` (Rule 3) and fold their findings in. Common audit findings: stale runner pins, outdated action versions, missing `permissions:` (defaults to overly broad), missing `concurrency:`, secrets passed at job level, deprecated `::set-output`, no `fail-fast: false` on matrices that should keep running. For a release pipeline, compare against [`ci.md`](ci.md) / [`release.md`](release.md) / [`release-build.md`](release-build.md).
 
 ### Scaffold a workflow into a project
 
