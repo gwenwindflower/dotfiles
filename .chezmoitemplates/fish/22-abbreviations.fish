@@ -279,6 +279,7 @@ abbr --add cg cargo
 abbr --add cgn cargo init
 abbr --add cgi cargo install
 abbr --add cgii cargo bininstall
+abbr --add cgls cargo install --list
 abbr --add cga cargo add
 abbr --add cgrm cargo remove
 abbr --add cgx cargo run
