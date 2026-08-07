@@ -26,6 +26,8 @@ Shared user rules for all agent platforms.
 
 {{ template "agents/rules/modern-tools.md" . }}
 
+{{ template "agents/rules/fish-variables.md" . }}
+
 ### Failures
 
 {{ template "agents/rules/sandbox-failures.md" . }}
