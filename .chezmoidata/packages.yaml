@@ -17,6 +17,7 @@ packages:
           - redpanda-data/tap
           - sassman/tap
           - supermodellabs/tap
+          - superradcompany/tap
           - yakitrak/yakitrak
         personal: []
         work:
@@ -117,6 +118,7 @@ packages:
           - spotify_player
           - starship
           - stripe-cli
+          - superradcompany/tap/microsandbox
           - tailscale
           - tailspin
           - taws
