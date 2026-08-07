@@ -1,6 +1,6 @@
-{{ if eq .chezmoi.os "linux" -}}
+{{ if or (eq .chezmoi.os "darwin") (eq .chezmoi.os "linux") -}}
 #!/bin/bash
-# Install Linux CLI tools with cargo-binstall.
+# Install prebuilt Rust CLI tools with cargo-binstall.
 
 set -euo pipefail
 
@@ -27,7 +27,8 @@ if ! command -v cargo-binstall >/dev/null 2>&1; then
   exit 1
 fi
 
-{{ $packages := concat .packages.linux.cargo.core (index .packages.linux.cargo .profile | default (list)) -}}
+{{ $cargo := index (index .packages .chezmoi.os) "cargo" -}}
+{{ $packages := concat $cargo.core (index $cargo .profile | default (list)) -}}
 packages=(
 {{ range $packages -}}
   {{ . | quote }}

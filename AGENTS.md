@@ -180,7 +180,7 @@ Plugin file extraction matches Fisher's: top-level files in `functions/`, `compl
   run_once_10-install-apt-packages.sh.tmpl       # linux: apt install (dpkg-s presence check + upgrade)
   run_once_15-install-global-tools.sh.tmpl       # uv tools (darwin-only)
   run_once_16-install-rust.sh.tmpl                # install stable Rust via rustup
-  run_onchange_17-install-cargo-tools.sh.tmpl     # linux: install prebuilt Rust CLI tools with cargo-binstall
+  run_onchange_17-install-cargo-tools.sh.tmpl     # install OS/profile Cargo tools with cargo-binstall
   run_onchange_18-mise-install.sh.tmpl            # `mise install` to materialize node + npm-backend package manager + CLI globals; re-runs on active arch's mise config change
   run_once_20-configure-shell.sh.tmpl            # Fish → /etc/shells, chsh
   run_once_30-yazi-plugins.sh.tmpl               # ya pkg install (yazi plugin sync)
@@ -190,7 +190,9 @@ Plugin file extraction matches Fisher's: top-level files in `functions/`, `compl
 
 Scripts are a surface to minimize. Each is an imperative action that can fail. If something can be a file, make it a file. `run_once_` runs once per content hash — on a fresh machine all fire on first apply. `run_onchange_` re-runs when rendered content changes (also fires on first apply since no previous hash → new hash = change).
 
-**Linux package philosophy:** Linuxbrew is intentionally not used — too heavy for the small-VM Linux use case. System packages are manually curated in `packages.yaml` under `linux.apt.packages`; Fish comes from its official Ubuntu PPA so every supported Linux target runs Fish 4. Every package under `linux.cargo` is installed with `cargo binstall`, while mise and direct binary installers cover tools outside apt and Cargo. The apt install script checks `dpkg -s` for each package and only fetches what's missing — fast on Sprites/exe machines with preloaded packages. `packy` does **not** manage apt — apt entries are hand-edited in `packages.yaml`.
+**Cargo packages:** Every package under the active OS's `cargo` section is installed with `cargo binstall`. Core packages are combined with the active profile's packages.
+
+**Linux package philosophy:** Linuxbrew is intentionally not used — too heavy for the small-VM Linux use case. System packages are manually curated in `packages.yaml` under `linux.apt.packages`; Fish comes from its official Ubuntu PPA so every supported Linux target runs Fish 4. Mise and direct binary installers cover tools outside apt and Cargo. The apt install script checks `dpkg -s` for each package and only fetches what's missing — fast on Sprites/exe machines with preloaded packages. `packy` does **not** manage apt — apt entries are hand-edited in `packages.yaml`.
 
 **JS/TS tooling (mise + arch-specific npm backend):** Node and the four global npm CLIs (`@agentclientprotocol/claude-agent-acp`, `@aredotna/cli`, `@readwise/cli`, `mintlify`) are installed and pinned by mise. The mise config is split by arch — `~/.config/mise/config.toml` is a symlink whose template picks `symsources/mise/config-{{ .chezmoi.arch }}.toml`.
 

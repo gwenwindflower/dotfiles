@@ -210,6 +210,12 @@ packages:
           - microsoft-teams
           - slack
           - superwhisper
+    cargo:
+      core:
+        - linear-cli
+        - nightlight
+      personal: []
+      work: []
     uv:
       core:
         - databow
