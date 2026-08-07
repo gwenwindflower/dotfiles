@@ -103,6 +103,9 @@ abbr --add mk make
 # 'lazy' TUIs
 abbr --add lgt lazygit
 abbr --add ldr lazydocker
+# linear cli
+abbr --add lin linear-cli
+abbr --add linear linear-cli
 # file search/view/explore
 abbr --add f fzf
 abbr --add fw "fzf --preview= --preview-window=hidden --bind 'enter:accept'"
