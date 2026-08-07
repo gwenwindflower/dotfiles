@@ -67,6 +67,7 @@ packages:
           - gnupg
           - go
           - go-task
+          - googleworkspace-cli
           - gpg-tui
           - gum
           - hcloud
