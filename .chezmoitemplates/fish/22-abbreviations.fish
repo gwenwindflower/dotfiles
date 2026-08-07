@@ -86,6 +86,8 @@ abbr --add cmaa chezmoi re-add
 abbr --add cmra chezmoi re-add
 abbr --add cmaf chezmoi add --follow
 abbr --add cmaasr chezmoi add --recursive --exact ~/.agents/skills/
+abbr --add skimoi chezmoi add --recursive --exact ~/.agents/skills/
+abbr --add cmaahp chezmoi re-add ~/.config/herdr/plugins.json
 abbr --add cmx chezmoi apply
 abbr --add cmxx chezmoi apply ~/.config/
 abbr --add cmxf chezmoi apply ~/.config/fish/
