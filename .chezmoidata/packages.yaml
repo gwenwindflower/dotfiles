@@ -79,6 +79,8 @@ packages:
           - lazycut
           - lazydocker
           - lazygit
+          - lazyrsync
+          - lfk
           - lightdash
           - lsd
           - lua
