@@ -75,6 +75,7 @@ packages:
           - hyperfine
           - imagemagick
           - jq
+          - k3sup
           - k9s
           - lazycut
           - lazydocker
