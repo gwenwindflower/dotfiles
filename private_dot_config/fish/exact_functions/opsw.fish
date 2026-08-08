@@ -1,4 +1,4 @@
-function opa -d "Switch the active 1Password account (OP_ACCOUNT) for the current shell"
+function opsw -d "Switch the active 1Password account (OP_ACCOUNT) for the current shell"
     argparse h/help s/show -- $argv
     or return
 
