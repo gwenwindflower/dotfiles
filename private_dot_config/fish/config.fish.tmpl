@@ -58,7 +58,9 @@ if status is-interactive
 
   # zoxide
   if command -q zoxide
-    zoxide init fish | source
+    set -gx _ZO_FZF_OPTS '--no-multi --bind=enter:accept --layout=reverse --height=90%'
+    zoxide init fish --no-cmd | source
+    alias z=__zoxide_z
   end
 
   # starship

@@ -6,12 +6,6 @@
 set -gx FZF_DEFAULT_OPTS (string join ' ' < ~/.config/fzf/fzf.conf)
 # fd as the default source for bare fzf — including dirs and dot dirs
 set -gx FZF_DEFAULT_COMMAND "fd --color=always --hidden"
-# fzf opts for interactive zoxide history search
-set -gx _ZO_FZF_OPTS $FZF_DEFAULT_OPTS"\
---layout=reverse \
---height=90% \
---preview-window=wrap\
-"
 # fzf.fish plugin config
 set -gx fzf_fd_opts --hidden
 set -gx fzf_preview_file_cmd bat --style=numbers,changes --color always
@@ -37,6 +31,9 @@ set -gx fzf_directory_opts --bind 'enter:become($EDITOR {} &>/dev/tty)'
 # strip git_log binding as forgit's it's nicer, so it uses the above pattern
 # with g as binding - ctrl-alt-g
 fzf_configure_bindings --variables='ctrl-alt-v' --git_log=
+
+# yazi built-in fzf and zoxide
+set -gx YAZI_ZOXIDE_OPTS '--bind=enter:accept'
 
 # ripgrep
 set -gx RIPGREP_CONFIG_PATH "$HOME/.config/ripgrep/ripgrep.conf"
