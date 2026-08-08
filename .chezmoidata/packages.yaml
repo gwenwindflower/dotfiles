@@ -103,6 +103,7 @@ packages:
           - pandoc
           - pgcli
           - pinact
+          - pnpm
           - postgresql@18
           - potrace
           - prek
