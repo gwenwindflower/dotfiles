@@ -211,7 +211,7 @@ abbr -a prxst prx status
 abbr -a mp mitmproxy
 # data
 abbr --add dbx databricks
-abbr --add ddb duckdb --cmd \'.read ~/dev/02_spellbook/pastel_duck_theme.sql\'
+abbr --add ddb duckdb
 abbr --add pg pgcli
 abbr --add sqlite sqlite3
 abbr --add sqli sqlite3
