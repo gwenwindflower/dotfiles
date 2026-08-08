@@ -57,10 +57,33 @@ previous_workspace = "shift+super+k"
 next_workspace = "shift+super+j"
 switch_workspace = "prefix+1..9"
 close_workspace = ["prefix+alt+d", "prefix+super+d"]
-new_worktree = "prefix+g"
-open_worktree = "prefix+ctrl+g"
 next_agent = "shift+super+n"
 previous_agent = "shift+super+p"
+
+# git
+[[keys.command]]
+key = "prefix+g"
+type = "plugin_action"
+command = "wtherdr.switch"
+description = "wt switch worktree"
+
+[[keys.command]]
+key = "prefix+ctrl+g"
+type = "plugin_action"
+command = "wtherdr.merge"
+description = "wt merge worktree"
+
+[[keys.command]]
+key = "prefix+alt+g"
+type = "plugin_action"
+command = "wtherdr.remove"
+description = "wt remove worktree"
+
+[[keys.command]]
+key = "prefix+shift+g"
+type = "plugin_action"
+command = "wtherdr.create"
+description = "wt create worktree"
 
 [[keys.command]]
 key = ["prefix+super+g"]
