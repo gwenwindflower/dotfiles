@@ -379,25 +379,13 @@ trusted_hash = "sha256:e2ffec558188fd0988ad51768594f675801fd2a1ba2895b5df2aca265
 trusted_hash = "sha256:09b9fff83447c926af5f61010bc3dd3c8f2e6194c7c06b08f8acbf808a51710d"
 enabled = true
 
-[marketplaces.worktrunk]
-last_updated = "2026-08-02T22:48:32Z"
-last_revision = "305f8fcd19eb1187d9ce4a1992bc2df4add17e3c"
-source_type = "git"
-source = "https://github.com/max-sixty/worktrunk.git"
-
-[marketplaces.mcp-apps]
-last_updated = "2026-07-29T13:26:18Z"
-last_revision = "92f46a574568a3ddac7600343b7d3c4c4ed7b588"
-source_type = "git"
-source = "https://github.com/modelcontextprotocol/ext-apps.git"
-
 [marketplaces.openai-bundled]
-last_updated = "2026-07-16T01:33:43Z"
+last_updated = "2026-08-07T23:51:46Z"
 source_type = "local"
 source = "/Users/winnie/.codex/.tmp/bundled-marketplaces/openai-bundled"
 
 [marketplaces.openai-primary-runtime]
-last_updated = "2026-07-10T03:02:47Z"
+last_updated = "2026-08-06T23:11:41Z"
 source_type = "local"
 source = "/Users/winnie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
 
@@ -434,12 +422,9 @@ GIT_CONFIG_KEY_1 = "tag.gpgsign"
 GIT_CONFIG_VALUE_1 = "false"
 GIT_CONFIG_KEY_2 = "user.name"
 GIT_CONFIG_VALUE_2 = "Codex (winnie)"
-
-[plugins."mcp-apps@mcp-apps"]
-enabled = false
-
-[plugins."worktrunk@worktrunk"]
-enabled = true
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "323bc3e687e17d7e377238d9f4c69111c4d0e6219103b6316d8c52082489533b"
+NODE_REPL_TRUSTED_CODE_PATHS = "/Users/winnie/.codex:/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
 
 [plugins."computer-use@openai-bundled"]
 enabled = false
@@ -471,6 +456,21 @@ enabled = true
 [plugins."browser@openai-bundled"]
 enabled = true
 
+[plugins."documents@openai-primary-runtime"]
+enabled = true
+
+[plugins."pdf@openai-primary-runtime"]
+enabled = true
+
+[plugins."spreadsheets@openai-primary-runtime"]
+enabled = true
+
+[plugins."presentations@openai-primary-runtime"]
+enabled = true
+
+[plugins."template-creator@openai-primary-runtime"]
+enabled = true
+
 [mcp_servers.node_repl]
 args = []
 command = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl"
@@ -480,19 +480,19 @@ startup_timeout_sec = 120
 NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
 NODE_REPL_NODE_MODULE_DIRS = "/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
 NODE_REPL_NODE_PATH = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node"
-NODE_REPL_TRUSTED_CODE_PATHS = "/Users/winnie/.codex"
+NODE_REPL_TRUSTED_CODE_PATHS = "/Users/winnie/.codex:/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
 CODEX_HOME = "/Users/winnie/.codex"
-NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "6d25aa7656feac858f3a3bdaea5bcbab0dbfd426c9de8e6931ce90c399ee8e4f,cf732b4a285497bfd7e75a2ac14879bce9ae644eb4e1babeb17bb6a840dfc9bd"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "323bc3e687e17d7e377238d9f4c69111c4d0e6219103b6316d8c52082489533b"
 BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
 NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
 NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = "Control desktop apps on macOS through Computer Use."
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.707.72221"
+BROWSER_USE_CODEX_APP_VERSION = "26.803.41515"
 CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
 
 [mcp_servers.indi]
-enabled = true
+enabled = false
 command = "indi"
 args = ["mcp", "serve"]
 
@@ -535,7 +535,7 @@ appearanceDiffMarkerStyle = "color"
 mac-menu-bar-enabled = false
 preventSleepWhileRunning = true
 reviewDelivery = "inline"
-composerEnterBehavior = "cmdIfMultiline"
+composerEnterBehavior = "cmdAlways"
 followUpQueueMode = "steer"
 show-context-window-usage = true
 git-pull-request-merge-method = "squash"
@@ -547,6 +547,7 @@ selected-avatar-id = "custom:kero"
 hotkey-window-projectless-default-enabled = true
 avatar-overlay-mascot-width-px = 99
 dock-icon-preference = "codex-system"
+realtimeVoiceScreenContextEnabled = true
 
 [desktop.appearanceLightChromeTheme]
 accent = "#56949f"
@@ -660,6 +661,12 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/Users/winnie/dev/herdr/wtherdr"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-08-06/realtime-voice-chat"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/_yazi/searchjump.yazi"]
 trust_level = "trusted"
 
 [apps._default]
