@@ -5,6 +5,7 @@
     "columnar-tech/tap",
     "databricks/tap",
     "dbcli/tap",
+    "dbt-labs/dbt",
     "jesseduffield/lazydocker",
     "lightdash/lightdash",
     "mutagen-io/mutagen",
@@ -17,8 +18,11 @@
   "trustedformulae": [
     "agavra/tap/tuicr",
     "bro3886/tap/rem-cli",
+    "dbt-labs/dbt/dbt",
     "denisotree/tuitab/tuitab",
     "huseyinbabal/tap/taws",
+    "supermodellabs/tap/winline",
+    "superradcompany/tap/microsandbox",
     "withgraphite/tap/graphite",
     "yakitrak/yakitrak/notesmd-cli"
   ],
