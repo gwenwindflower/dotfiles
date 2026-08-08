@@ -28,9 +28,10 @@ gui:
     "*": "#babbf1"
   nerdFontsVersion: "3"
 git:
-  pagers:
-    - pager: 'delta --paging=never --features=catppuccin-frappe --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"'
-    - externalDiffCommand: difft --color=always
+  diffRenderers:
+    - command: 'delta --paging=never --features=catppuccin-frappe --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"'
+    - command: difft --color=always
+      type: extDiff
   parseEmoji: true
   overrideGpg: true
 os:
