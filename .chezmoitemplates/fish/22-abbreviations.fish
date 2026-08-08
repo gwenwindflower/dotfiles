@@ -150,21 +150,37 @@ abbr --add brsrv brew services
 abbr --add dk docker
 abbr --add dkcu docker compose up
 # agents
+## codex
 abbr --add cx codex
 abbr --add cxcf "ee $HOME/.codex"
 abbr --add cxr codex resume
 abbr --add cxc codex resume --last
+## opencode
 abbr --add oc opencode
+abbr --add ocv opencode2
 abbr --add occf "ee $HOME/.config/opencode"
+## claude
 abbr --add cl claude
 abbr --add clr claude --resume
 abbr --add clc claude -c
 abbr --add cl! claude --allow-dangerously-skip-permissions
 abbr --add clc! claude -c --allow-dangerously-skip-permissions
+abbr --add clmcp "claude --settings '{\"env\": {\"ENABLE_CLAUDEAI_MCP_SERVERS\": \"true\"}}'"
 abbr --add clld env ENABLE_CLAUDEAI_MCP_SERVERS=true claude
 abbr --add clmd ln -s AGENTS.md CLAUDE.md
 abbr --add clcf "ee $HOME/.claude"
+## agent tools
+### usage
 abbr --add ccu bunx ccusage@latest
+### ck
+abbr --add cki ck --index .
+abbr --add cks ck --sem
+abbr --add ckl ck --lex
+abbr --add ckh ck --hybrid
+### llama.cpp
+abbr --add llup 'llama-server -hf Qwen/Qwen3-Embedding-0.6B-GGUF:Q8_0 --embedding --pooling last -b 2048 -ub 2048 --host 127.0.0.1 --port 8383 &'
+### agent-browser
+abbr --add abrow agent-browser
 # obsiidian and notes
 abbr --add notes "ee ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents"
 abbr --add ob notesmd-cli
