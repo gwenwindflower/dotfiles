@@ -88,6 +88,7 @@
 			"grep *": "allow",
 			"herdr *": "allow",
 			"jq *": "allow",
+			"linear-cli *": "allow",
 			"ls *": "allow",
 			"lsd *": "allow",
 			"make *": "allow",
