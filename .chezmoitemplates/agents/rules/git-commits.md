@@ -18,7 +18,7 @@ Use conventional types: `feat`, `fix`, `test`, `refactor`, `perf`, `style`, `bui
 
 Subject rules: imperative mood, specific, no period, max 72 chars.
 
-Bodies are usually unnecessary. If needed, use 3-5 `*` bullets, one sentence each, imperative/state-focused. Keep rationale in specs, DONE.md, ADRs, PRs, or commits around the work.
+Commit bodies should be used **only** when multiple meaningful tasks are not captured by the title, when a rationale is valuable to record why a change was needed, or to explain why a certain approach was taken. If needed, use at most 3-5 `*` bullets, one sentence each, imperative/state-focused. Keep deeper rationale in specs, TODO.md/DONE.md, ADRs, docs, and PRs. **Never** restate the commit title in more detail or add prose paragraphs. Bodies must add value, not volume to the commit history.
 
 ##### Linear history
 
