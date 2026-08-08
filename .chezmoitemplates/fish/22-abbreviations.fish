@@ -363,6 +363,7 @@ abbr --add bnr bun run
 abbr --add bnc bun create
 abbr --add bnpm bun pm
 abbr --add bnlsg bun pm ls -g
+abbr --add bunset "bun pm pkg set packageManager=bun@\$(semtrim \$(bun --version))"
 ### deno
 abbr --add dn deno
 abbr --add dncli deno install -grAf --root $DENO_HOME
