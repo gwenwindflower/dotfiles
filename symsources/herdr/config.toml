@@ -26,8 +26,13 @@ enabled = true
 [theme]
 name = "terminal"
 
+auto_switch = false
+
 [theme.custom]
 accent = "#ca9ee6"
+
+[experimental]
+kitty_graphics = true
 
 [keys]
 prefix = "ctrl+space"
@@ -119,6 +124,3 @@ key = "prefix+shift+O"
 type = "plugin_action"
 command = "herdr-navigator.open-side"
 description = "navigator side pane"
-
-[experimental]
-kitty_graphics = true
