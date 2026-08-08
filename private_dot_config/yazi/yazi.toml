@@ -4,6 +4,46 @@
 show_hidden = true
 sort_dir_first = true
 
+[[plugin.prepend_previewers]]
+url = "*.jsonc"
+run = '''piper -- bat -p --color=always --theme="$([ "$t" = "light" ] && echo "Catppuccin Latte" || echo "Catppuccin Frappe")" "$1"'''
+
+[[plugin.prepend_previewers]]
+url = "*.ipynb"
+run = "nbpreview"
+
+[[plugin.prepend_previewers]]
+url = "*.csv"
+run = "duckdb"
+
+[[plugin.prepend_previewers]]
+url = "*.tsv"
+run = "duckdb"
+
+[[plugin.prepend_previewers]]
+url = "*.tsv"
+run = "duckdb"
+
+[[plugin.prepend_previewers]]
+url = "*.json"
+run = "duckdb"
+
+[[plugin.prepend_previewers]]
+url = "*.parquet"
+run = "duckdb"
+
+[[plugin.prepend_previewers]]
+url = "*.xlsx"
+run = "duckdb"
+
+[[plugin.prepend_previewers]]
+url = "*.db"
+run = "duckdb"
+
+[[plugin.prepend_previewers]]
+url = "*.duckdb"
+run = "duckdb"
+
 [[plugin.prepend_fetchers]]
 url = "*"
 run = "git"
@@ -13,3 +53,23 @@ group = "git"
 url = "*/"
 run = "git"
 group = "git"
+
+[[plugin.prepend_preloaders]]
+url = "*.csv"
+run = "duckdb"
+
+[[plugin.prepend_preloaders]]
+url = "*.tsv"
+run = "duckdb"
+
+[[plugin.prepend_preloaders]]
+url = "*.json"
+run = "duckdb"
+
+[[plugin.prepend_preloaders]]
+url = "*.parquet"
+run = "duckdb"
+
+[[plugin.prepend_preloaders]]
+url = "*.xlsx"
+run = "duckdb"

@@ -109,3 +109,5 @@ require("searchjump"):setup({
 	enable_capital_label = true,
 	search_patterns = { "toml", "yaml", "yml", "json", "jsonc", "conf" },
 })
+
+require("duckdb"):setup()

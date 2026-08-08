@@ -34,9 +34,24 @@ rev = "9014ed2"
 hash = "9105494e98299f392aee95340066da9f"
 
 [[plugin.deps]]
+use = "yazi-rs/plugins:piper"
+rev = "0be29a9"
+hash = "f23ecc89ce0f9eeefdd4cea14e2a9ba7"
+
+[[plugin.deps]]
 use = "gwenwindflower/searchjump"
-rev = "52db952"
-hash = "759c80986dac19897a5500d67323434e"
+rev = "f2b1d91"
+hash = "a69beac8a0438c6f3a7b160671e002eb"
+
+[[plugin.deps]]
+use = "AnirudhG07/nbpreview"
+rev = "b504594"
+hash = "b83919985400521dee78e1c352b5d9db"
+
+[[plugin.deps]]
+use = "wylie102/duckdb"
+rev = "3f8c863"
+hash = "87b9233a74325e95011670ed20bbd0d4"
 
 [[flavor.deps]]
 use = "yazi-rs/flavors:catppuccin-frappe"
