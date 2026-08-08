@@ -1,3 +1,3 @@
-function opc
+function oco
     opo opencode $argv
 end
