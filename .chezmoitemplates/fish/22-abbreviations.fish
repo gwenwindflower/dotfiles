@@ -361,6 +361,7 @@ abbr --add bns bun start
 abbr --add bnt bun test
 abbr --add bnr bun run
 abbr --add bnc bun create
+abbr --add bnpm bun pm
 abbr --add bnlsg bun pm ls -g
 ### deno
 abbr --add dn deno
