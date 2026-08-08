@@ -228,6 +228,7 @@ packages:
         - databow
         - ipython
         - marimo
+        - nbpreview
         - rematter
       personal:
         - zmk
