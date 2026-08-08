@@ -84,9 +84,9 @@
       "kind": "github",
       "owner": "thanhdat77",
       "repo": "herdr-navigator",
-      "resolved_commit": "67cb6d9676532f0d5c3136e785815da712ac9063",
+      "resolved_commit": "8e90917a1a635682e435aa4627c59b3e6f7942b6",
       "managed_path": "/Users/winnie/.config/herdr/plugins/github/herdr-navigator-3a5a6fa5dfb5",
-      "installed_unix_ms": 1785733066264
+      "installed_unix_ms": 1786137716006
     }
   },
   {
@@ -204,10 +204,9 @@
       "kind": "github",
       "owner": "lmilojevicc",
       "repo": "herdr-splits.nvim",
-      "requested_ref": "c58bfdf01520845583e0033c11c56fc9d21a5424",
       "resolved_commit": "c58bfdf01520845583e0033c11c56fc9d21a5424",
       "managed_path": "/Users/winnie/.config/herdr/plugins/github/herdr-splits-d880c4924f2b",
-      "installed_unix_ms": 1785717185514
+      "installed_unix_ms": 1786137740746
     }
   },
   {
@@ -327,7 +326,7 @@
           "workspace"
         ],
         "command": [
-          "target/release/wtherdr",
+          "wtherdr",
           "popup",
           "create"
         ]
@@ -339,7 +338,7 @@
           "workspace"
         ],
         "command": [
-          "target/release/wtherdr",
+          "wtherdr",
           "popup",
           "merge"
         ]
@@ -351,7 +350,7 @@
           "workspace"
         ],
         "command": [
-          "target/release/wtherdr",
+          "wtherdr",
           "popup",
           "remove"
         ]
@@ -363,7 +362,7 @@
           "workspace"
         ],
         "command": [
-          "target/release/wtherdr",
+          "wtherdr",
           "popup",
           "switch"
         ]
@@ -375,7 +374,7 @@
         "title": "Worktrunk — create",
         "placement": "popup",
         "command": [
-          "target/release/wtherdr",
+          "wtherdr",
           "create"
         ]
       },
@@ -384,7 +383,7 @@
         "title": "Worktrunk — merge",
         "placement": "popup",
         "command": [
-          "target/release/wtherdr",
+          "wtherdr",
           "merge"
         ]
       },
@@ -393,7 +392,7 @@
         "title": "Worktrunk — remove",
         "placement": "popup",
         "command": [
-          "target/release/wtherdr",
+          "wtherdr",
           "remove"
         ]
       },
@@ -402,7 +401,7 @@
         "title": "Worktrunk — switch",
         "placement": "popup",
         "command": [
-          "target/release/wtherdr",
+          "wtherdr",
           "switch"
         ]
       }
