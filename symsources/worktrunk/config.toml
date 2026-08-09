@@ -17,12 +17,39 @@ template-append = """
 [list]
 summary = true
 
+# Virtualenvs bake absolute paths into pyvenv.cfg and script shebangs, so they
+# break at a new path. Everything else is reflink-cloned and costs no disk.
+[step.copy-ignored]
+exclude = [".venv/", "venv/"]
+
 [aliases]
-switch-dirty = '''
-if git diff --quiet HEAD && test -z "$(git ls-files --others --exclude-standard)"; then
-  wt switch --create {{ to }} --execute="{{ args }}"
+switch-shift = '''
+fish -c """
+if git diff --quiet HEAD and test -z '$(git ls-files --others --exclude-standard)'
+    wt switch --create {{ to }} --execute='{{ args }}'
 else
-  git stash push --include-untracked --quiet
-  wt switch --create {{ to }} --execute fish -- -c "git stash pop --index; {{ args }}"
-fi
+    git stash push --include-untracked --quiet
+    wt switch --create {{ to }} --execute fish -- -c 'git stash pop --index; {{ args }}'
+end
+"""
 '''
+
+switch-keep = '''
+fish -c """
+if git diff --quiet HEAD and test -z '$(git ls-files --others --exclude-standard)'
+    wt switch --create {{ to }} --execute='{{ args }}'
+else
+    git stash push --include-untracked --quiet
+    wt switch --create {{ to }} --execute fish -- -c 'git stash apply --index --quiet; {{ args }}'
+end
+"""
+'''
+
+# pre-start rather than post-start: --execute agents must land on installed deps.
+[[pre-start]]
+copy = "wt step copy-ignored"
+
+# A failing pre-start step cancels --execute, so a machine without depop would
+# create the worktree but never launch the agent. Degrade to skipping instead.
+[[pre-start]]
+deps = "command -v depop >/dev/null || { echo 'depop not installed; skipping dependency sync' >&2; exit 0; }; depop"
