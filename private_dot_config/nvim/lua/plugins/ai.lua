@@ -101,13 +101,6 @@ return {
           },
         },
       },
-      prompt_library = {
-        markdown = {
-          dirs = {
-            vim.fn.stdpath("config") .. "/codecompanion_prompts",
-          },
-        },
-      },
       display = {
         action_palette = {
           width = 95,
