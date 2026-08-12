@@ -40,8 +40,8 @@ hash = "f23ecc89ce0f9eeefdd4cea14e2a9ba7"
 
 [[plugin.deps]]
 use = "gwenwindflower/searchjump"
-rev = "f2b1d91"
-hash = "a69beac8a0438c6f3a7b160671e002eb"
+rev = "852cdef"
+hash = "921bdd560acce2157cc28e057ea772a9"
 
 [[plugin.deps]]
 use = "AnirudhG07/nbpreview"
