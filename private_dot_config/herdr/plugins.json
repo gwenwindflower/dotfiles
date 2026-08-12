@@ -212,11 +212,11 @@
   {
     "plugin_id": "livery",
     "name": "Livery",
-    "version": "0.4.0",
+    "version": "0.0.1",
     "min_herdr_version": "0.7.5",
-    "description": "Dress herdr tabs as [N] <icon> <program> and feed sidebar rows composable tokens: $jump (workspace jump number) plus $space/$worktree (repo + nested worktree names for agent rows). Labels stay bare for the agents panel and navigator; manual renames win. Icons come from the hand-edited icons.conf manifest.",
-    "manifest_path": "/Users/winnie/dev/herdr/livery/herdr-plugin.toml",
-    "plugin_root": "/Users/winnie/dev/herdr/livery",
+    "description": "Dress herdr tabs as [N] <icon> <program> and feed sidebar rows composable tokens: $jump (workspace jump number) plus $space/$worktree (repo + nested worktree names for agent rows). Labels stay bare for the agents panel and navigator; manual renames win. Icons reload from icons.conf with a compiled fallback.",
+    "manifest_path": "/Users/winnie/dev/_herdr/livery/herdr-plugin.toml",
+    "plugin_root": "/Users/winnie/dev/_herdr/livery",
     "enabled": true,
     "platforms": [
       "linux",
@@ -225,10 +225,8 @@
     "build": [
       {
         "command": [
-          "cargo",
-          "build",
-          "--locked",
-          "--release"
+          "sh",
+          "scripts/install-binary.sh"
         ]
       }
     ],
@@ -240,7 +238,7 @@
           "global"
         ],
         "command": [
-          "target/release/livery",
+          "livery",
           "clear"
         ]
       },
@@ -251,7 +249,7 @@
           "global"
         ],
         "command": [
-          "target/release/livery",
+          "livery",
           "reset"
         ]
       }
@@ -260,35 +258,35 @@
       {
         "on": "pane.agent_detected",
         "command": [
-          "target/release/livery",
+          "livery",
           "kick"
         ]
       },
       {
         "on": "pane.focused",
         "command": [
-          "target/release/livery",
+          "livery",
           "kick"
         ]
       },
       {
         "on": "tab.created",
         "command": [
-          "target/release/livery",
+          "livery",
           "kick"
         ]
       },
       {
         "on": "tab.focused",
         "command": [
-          "target/release/livery",
+          "livery",
           "kick"
         ]
       },
       {
         "on": "workspace.created",
         "command": [
-          "target/release/livery",
+          "livery",
           "kick"
         ]
       }
@@ -303,8 +301,8 @@
     "version": "0.1.0",
     "min_herdr_version": "0.7.5",
     "description": "Run Worktrunk's native worktree workflows in Herdr popups and keep nested workspaces in sync.",
-    "manifest_path": "/Users/winnie/dev/herdr/wtherdr/herdr-plugin.toml",
-    "plugin_root": "/Users/winnie/dev/herdr/wtherdr",
+    "manifest_path": "/Users/winnie/dev/_herdr/wtherdr/herdr-plugin.toml",
+    "plugin_root": "/Users/winnie/dev/_herdr/wtherdr",
     "enabled": true,
     "platforms": [
       "linux",
