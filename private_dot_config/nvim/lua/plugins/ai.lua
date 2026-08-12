@@ -171,12 +171,12 @@ return {
             -- Pretty much all of the default Sidekick keybinds conflict with various agents,
             -- e.g. ctrl-p for prompts is used in the ctrl-n/p based scrolling in Cluade Code,
             -- so I've remapped everything to use alt/opt/meta + a mnemonic key where possible
-            prompt = { "<m-p>", "prompt", mode = "t", desc = "Insert prompt or context" },
+            prompt = { "<m-P>", "prompt", mode = "t", desc = "Insert prompt or context" },
             -- a for '@' is the mnemonic, you @ files in most agents, and usually I'm
             -- @'ing an open buffer
-            buffers = { "<m-a>", "buffers", mode = "t", desc = "Pick buffers to add" },
+            buffers = { "<m-A>", "buffers", mode = "t", desc = "Pick buffers to add" },
             -- f for 'files'/'fuzzy finder'
-            files = { "<m-f>", "files", mode = "t", desc = "Pick files to add" },
+            files = { "<m-F>", "files", mode = "t", desc = "Pick files to add" },
             -- Escape to normal mode from within Claude Code terminal,
             -- ctrl-b was default, which is send to background in Claude Code,
             -- thankfully this seems to be unused across agents, which is nice because
@@ -194,6 +194,13 @@ return {
       }
       return opts
     end,
+    keys = {
+      {
+        "<c-.>",
+        mode = { "n", "i" },
+        false,
+      },
+    },
   },
   -- minuet.nvim FIM completions
   -- {
