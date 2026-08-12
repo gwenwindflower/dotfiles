@@ -28,6 +28,9 @@ vim.filetype.add({
     ["env"] = "dotenv",
     ["gitconfig"] = "gitconfig",
   },
+  pattern = {
+    [".*/spell/[^/]+%.[^/]+%.add"] = "spellfile",
+  },
 })
 
 -- use bash syntax highlighting for dotenv files,
@@ -87,6 +90,21 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 })
 
 local wk = require("which-key")
+vim.api.nvim_create_autocmd("FileType", {
+  group = augroup("spellfiles"),
+  pattern = "spellfile",
+  callback = function(event)
+    vim.api.nvim_buf_create_user_command(event.buf, "SpellfileRebuild", function()
+      vim.cmd.update()
+      vim.cmd("mkspell! %")
+    end, { desc = "Rebuild the current spellfile" })
+    vim.keymap.set("n", "<LocalLeader>r", "<cmd>SpellfileRebuild<cr>", {
+      buffer = event.buf,
+      desc = "Rebuild spellfile",
+    })
+  end,
+})
+
 -- Markdown-specific keymaps (buffer-local, only active in markdown files)
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "markdown",
