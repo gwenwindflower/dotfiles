@@ -76,16 +76,7 @@ writable_roots = [
 pet = "disabled"
 show_tooltips = false
 theme = "catppuccin-frappe"
-status_line = [
-  "model-with-reasoning",
-  "project-name",
-  "git-branch",
-  "branch-changes",
-  "five-hour-limit",
-  "weekly-limit",
-  "task-progress",
-  "context-used"
-]
+status_line = ["model-with-reasoning", "branch-changes", "five-hour-limit", "weekly-limit", "task-progress", "context-used", "approval-mode"]
 status_line_use_colors = true
 
 [tui.keymap.composer]
