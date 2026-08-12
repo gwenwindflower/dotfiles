@@ -138,7 +138,7 @@ return {
       },
       resolve_relative_path_application = "grealpath",
       keymaps = {
-        show_help = "<c-`>",
+        show_help = "<m-?>",
       },
     },
   },
