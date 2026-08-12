@@ -100,23 +100,5 @@ vim.api.nvim_create_autocmd("FileType", {
         buffer = event.buf,
       },
     })
-    wk.add({
-      {
-        "<LocalLeader>ml",
-        ":MarkdownPasteLink<cr>",
-        mode = { "x" },
-        desc = "Paste URL as link",
-        buffer = event.buf,
-      },
-    })
-    wk.add({
-      {
-        "<LocalLeader>mt",
-        "<cmd>'<,'>MarkdownTableFixCompactPipeSpacing<cr>",
-        mode = { "x" },
-        desc = "Fix table pipe spacing",
-        buffer = event.buf,
-      },
-    })
   end,
 })

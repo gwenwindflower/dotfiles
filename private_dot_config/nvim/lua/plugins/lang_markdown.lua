@@ -96,59 +96,79 @@ return {
       return opts
     end,
   },
-  -- {
-  --   "neovim/nvim-lspconfig",
-  --   opts = function(_, opts)
-  --     opts.servers = opts.servers or {}
-  --     opts.servers.harper_ls = {
-  --       filetypes = {
-  --         "asciidoc",
-  --         "codecompanion",
-  --         "gitcommit",
-  --         "json",
-  --         "json5",
-  --         "jsonc",
-  --         "markdown",
-  --         "sidekick_terminal",
-  --         "text",
-  --         "tex",
-  --         "toml",
-  --         "typst",
-  --         "yaml",
-  --       },
-  --     }
-  --     return opts
-  --   end,
-  -- },
-  -- {
-  --   "obsidian-nvim/obsidian.nvim",
-  --   version = "*",
-  --   ft = "markdown",
-  --   dependencies = { "nvim-lua/plenary.nvim", "saghen/blink.cmp" },
-  --   opts = {
-  --     legacy_commands = false,
-  --     frontmatter = {
-  --       enabled = false,
-  --     },
-  --     workspaces = {
-  --       {
-  --         name = "girlOS",
-  --         path = os.getenv("OBSIDIAN_DEFAULT_VAULT"),
-  --       },
-  --       -- {
-  --       --   name = "cwd",
-  --       --   path = function()
-  --       --     return assert(vim.fn.getcwd())
-  --       --   end,
-  --       --   overrides = {
-  --       --     notes_subdir = vim.NIL,
-  --       --     new_notes_location = "current_dir",
-  --       --     disable_frontmatter = true,
-  --       --   },
-  --       -- },
-  --     },
-  --     completion = { blink = true, min_chars = 2 },
-  --     picker = { name = "snacks.picker" },
-  --   },
-  -- }
+  {
+    "jakewvincent/mkdnflow.nvim",
+    ft = { "markdown", "rmd" },
+    opts = function(_, opts)
+      opts.modules = opts.modules or {}
+      opts.modules.folds = false
+
+      opts.mappings = opts.mappings or {}
+      local mappings = opts.mappings
+      mappings.MkdnEnter = { { "i", "n", "v" }, "<M-CR>" }
+      mappings.MkdnGoBack = { "n", "<C-,>" }
+      mappings.MkdnGoForward = { "n", "<C-.>" }
+      mappings.MkdnNextLink = { "n", "<M-Tab>" }
+      mappings.MkdnPrevLink = { "n", "<M-S-Tab>" }
+      mappings.MkdnMoveSource = { "n", "<LocalLeader>mlm" }
+      mappings.MkdnDestroyLink = { "n", "<LocalLeader>mld" }
+      mappings.MkdnTagSpan = { "v", "<LocalLeader>mls" }
+      mappings.MkdnYankAnchorLink = { "n", "<LocalLeader>mla" }
+      mappings.MkdnYankFileAnchorLink = { "n", "<LocalLeader>mlf" }
+      mappings.MkdnCreateLinkFromClipboard = { { "n", "v" }, "<leader>P" }
+      mappings.MkdnUpdateNumbering = { "n", "<LocalLeader>mi" }
+      mappings.MkdnTableNextRow = false
+      mappings.MkdnTablePrevRow = { "i", "<M-S-CR>" }
+      mappings.MkdnTableNewRowBelow = { "n", "<LocalLeader>mTr" }
+      mappings.MkdnTableNewRowAbove = { "n", "<LocalLeader>mTR" }
+      mappings.MkdnTableNewColAfter = { "n", "<LocalLeader>mTc" }
+      mappings.MkdnTableNewColBefore = { "n", "<LocalLeader>mTC" }
+      mappings.MkdnTableDeleteRow = { "n", "<LocalLeader>mTdr" }
+      mappings.MkdnTableDeleteCol = { "n", "<LocalLeader>mTdc" }
+      mappings.MkdnTableAlignLeft = { "n", "<LocalLeader>mTal" }
+      mappings.MkdnTableAlignRight = { "n", "<LocalLeader>mTar" }
+      mappings.MkdnTableAlignCenter = { "n", "<LocalLeader>mTac" }
+      mappings.MkdnTableAlignDefault = { "n", "<LocalLeader>mTax" }
+      mappings.MkdnTab = { "i", "<M-Tab>" }
+      mappings.MkdnSTab = { "i", "<M-S-Tab>" }
+      mappings.MkdnIndentListItem = { "i", "<M-.>" }
+      mappings.MkdnDedentListItem = { "i", "<M-,>" }
+      mappings.MkdnTableNextCell = false
+      mappings.MkdnTablePrevCell = false
+      mappings.MkdnIncreaseHeading = false
+      mappings.MkdnDecreaseHeading = false
+      mappings.MkdnIncreaseHeadingOp = false
+      mappings.MkdnDecreaseHeadingOp = false
+      mappings.MkdnToggleToDo = false
+      mappings.MkdnFoldSection = false
+      mappings.MkdnUnfoldSection = false
+
+      local on_attach = opts.on_attach
+      opts.on_attach = function(bufnr)
+        if type(on_attach) == "function" then
+          on_attach(bufnr)
+        end
+
+        vim.keymap.set({ "n", "x", "i" }, "<D-CR>", "<M-CR>", {
+          buffer = bufnr,
+          desc = "Contextual enter",
+          remap = true,
+        })
+        vim.keymap.set("n", "<M-,>", "<<", { buffer = bufnr, desc = "Dedent line" })
+        vim.keymap.set("n", "<M-.>", ">>", { buffer = bufnr, desc = "Indent line" })
+        vim.keymap.set("n", "<LocalLeader>mt", "<cmd>MkdnTableFormat<cr>", {
+          buffer = bufnr,
+          desc = "Format table",
+        })
+
+        require("which-key").add({
+          { "<LocalLeader>m", group = "markdown", mode = { "n", "x" }, buffer = bufnr },
+          { "<LocalLeader>ml", group = "links", mode = { "n", "x" }, buffer = bufnr },
+          { "<LocalLeader>mT", group = "tables", mode = "n", buffer = bufnr },
+        })
+      end
+
+      return opts
+    end,
+  },
 }
