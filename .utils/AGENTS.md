@@ -56,14 +56,14 @@ you improve it; copy back to keep this dir in sync.
 
 ## Current Tools
 
-One reference doc per tool — load only what's relevant to the task:
+One reference doc per tool in `.utils/docs/` — load only what's relevant to the task:
 
-- `docs/fix-md-tables.md` — markdown table spacing fixer
-- `docs/generate-logo.md` — text-to-SVG with per-glyph `<path>` for animation
-- `docs/herdir.md` — additive herdr session preset reconciler
-- `docs/lscolors-to-toml.md` — `$LS_COLORS` → yazi TOML rules
-- `docs/packy.md` — declaratively manage `.chezmoidata/packages.yaml` (formula/cask/tap/uv)
-- `docs/provision-repo.md` — reconcile GitHub labels + Discussion categories for a Supermodel Labs repo
-- `docs/scrape-github-stars.md` — scrape curated GitHub star lists via agent-browser
-- `docs/sprite-bootstrap.md` — bootstrap a fresh Fly.io Sprite from the dotfiles repo
-- `docs/twinsies.md` — sync shared `bash`/`edit` permission entries across Claude and OpenCode
+- `fix-md-tables.md` — markdown table spacing fixer
+- `generate-logo.md` — text-to-SVG with per-glyph `<path>` for animation
+- `git-wash.md` — back up, classify, and delete SHA-verified remote branch targets
+- `herdir.md` — additive herdr session preset reconciler
+- `lscolors-to-toml.md` — `$LS_COLORS` → yazi TOML rules
+- `packy.md` — declaratively manage `.chezmoidata/packages.yaml` (formula/cask/tap/cargo/uv)
+- `provision-repo.md` — reconcile GitHub labels + Discussion categories for a Supermodel Labs repo
+- `scrape-github-stars.md` — scrape curated GitHub star lists via agent-browser
+- `sprite-bootstrap.md` — bootstrap a fresh Fly.io Sprite from the dotfiles repo
