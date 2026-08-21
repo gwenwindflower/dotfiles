@@ -9,7 +9,7 @@ function skf -d "Browse Agent Skills with fzf"
         logirl help_flag h/help "Show this help message"
         logirl help_flag a/all "Include deactivated skills"
         logirl help_header Keybindings
-        printf "  enter      View the SKILL.md with bat\n"
+        printf "  enter      Open the SKILL.md in nvim\n"
         printf "  ctrl-y     Copy skill name to clipboard\n"
         printf "  ctrl-t     Copy skill directory path to clipboard\n"
         logirl help_header Examples
@@ -19,9 +19,18 @@ function skf -d "Browse Agent Skills with fzf"
         return 0
     end
 
-    if not type -q fzf
-        logirl error "fzf not found in PATH"
-        logirl info "Install with: brew install fzf"
+    for cmd in fzf bat nvim
+        if type -q $cmd
+            continue
+        end
+
+        logirl error "$cmd not found in PATH"
+        switch $cmd
+            case nvim
+                logirl info "Install with: brew install neovim"
+            case '*'
+                logirl info "Install with: brew install $cmd"
+        end
         return 127
     end
 
@@ -128,16 +137,17 @@ function skf -d "Browse Agent Skills with fzf"
             --delimiter='\t' \
             --with-nth=1,2 \
             --tabstop=24 \
-            --header="enter: view  ctrl-y: copy name  ctrl-t: copy path" \
+            --no-multi \
+            --header="enter: edit  ctrl-y: copy name  ctrl-t: copy path" \
             --preview='bat --color=always --style=plain {3}/SKILL.md' \
             --preview-window=right:60%:wrap \
             --bind='ctrl-y:execute-silent(echo -n {1} | pbcopy)+abort' \
-            --bind='ctrl-t:execute-silent(echo -n {3} | pbcopy)+abort'
+            --bind='ctrl-t:execute-silent(echo -n {3} | pbcopy)+abort' \
+            --bind='enter:accept'
     )
 
-    # Enter was pressed — bat the SKILL.md
     if test -n "$selection"
         set -l selected_path (string split \t -- $selection)[3]
-        bat --style=plain "$selected_path/SKILL.md"
+        nvim "$selected_path/SKILL.md"
     end
 end
