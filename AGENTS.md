@@ -19,6 +19,8 @@ OSes supported:
 .chezmoitemplates/fish/           # Fish config fragment templates (assembled into config.fish)
 .chezmoitemplates/agents/         # Shared agent prompt/rule fragments (assembled into platform guidance files)
 
+docs/                             # Repo-level reference docs (chezmoi-ignored); agent-config.md + capabilities/
+
 private_dot_config/               # → ~/.config/
   fish/                           #   config.fish.tmpl + exact_functions/ + exact_completions/ + exact_conf.d/
   nvim/                           #   LazyVim: lua/, snippets/; lockfile + spellfile symlinks back to symsources/nvim/
@@ -38,6 +40,7 @@ private_dot_config/               # → ~/.config/
   marimo/, spotify-player/        #   Python notebooks, Spotify TUI
   herdr/                          #   Herdr config (symlinked), plugins are not included in chezmoi as they can be installed idempotently via herdr
   worktrunk/                      #   Worktrunk config
+  kulala/                         #   Kulala .http collections — layered env JSON per API dir (see below)
 
 dot_claude/                       # → ~/.claude/
   keybindings.json, statusline.toml  # Copied normally
@@ -71,6 +74,10 @@ symsources/git/                   # gitconfig (root config; [include]s pull frag
 ```
 
 ## Key Patterns
+
+### Repo docs
+
+`docs/` holds repo-level reference docs — chezmoi-ignored, so they stay in the repo and never deploy to `~`. One file per domain, loaded on demand: durable explanation belongs there rather than in this file. Docs scoped to a subtree live with it, like `.utils/docs/` for the Deno utilities.
 
 ### OS conditionals
 
@@ -146,6 +153,18 @@ The prefix is stripped on deploy, so `dot_agents/exact_skills/` still produces `
 
 `exact_` does not recurse: each directory level reconciles only its own immediate entries, so a subdirectory needs its own `exact_` prefix to have its stale files cleaned up too. `dot_agents/exact_skills/` carries `exact_` on every nested directory (each skill folder and any `references/`/`templates/`/etc. inside it) so drifted or renamed skill files never linger in the deployed target.
 
+### Kulala collections
+
+`private_dot_config/kulala/` holds `.http` request collections, one directory per API. Kulala merges
+every `http-client.env.json` it finds walking up from the open file, closest winning, so directory
+depth is the layering mechanism: shared headers at the root, hosts per API, and instance-specific
+ids and secrets in `http-client.private.env.*` files that `.chezmoiignore` keeps out of this public
+repo. `_local/` holds customer and one-off investigations and is ignored wholesale.
+
+Deliberately **not** `exact_`: kulala and the `kula` fish function both write private env files into
+these target dirs, and full reconciliation would delete them on every apply. Authoring guidance and
+the verified list of kulala mechanisms that silently fail lives in the `kulala-http` skill.
+
 ### Nerd Font icons
 
 Several files contain Nerd Font glyphs (starship.toml, yazi theme.toml, tmux statusline.conf, pane-icon.sh, nvim dashboard-art.lua, kitty.conf, herdr's livery plugin icon conf). **Do not Edit these files without taking precautions** — the Edit tool corrupts icon bytes; BMP private-use glyphs (U+E000 range) are also stripped from agent-authored Write content. Livery reads icons from its `icons.conf` manifest, which is hand-edited only — an agent needing to change it must move existing glyph bytes programmatically (script/sed), never type them; in code (e.g. livery's Rust tests) spell glyphs as escapes (`\u{e62b}`), never literals. Use `cp` or Write from a full file read instead. For targeted edits you can give the user a snippet to manually edit themselves.
@@ -190,7 +209,7 @@ Plugin file extraction matches Fisher's: top-level files in `functions/`, `compl
 
 Scripts are a surface to minimize. Each is an imperative action that can fail. If something can be a file, make it a file. `run_once_` runs once per content hash — on a fresh machine all fire on first apply. `run_onchange_` re-runs when rendered content changes (also fires on first apply since no previous hash → new hash = change).
 
-**Cargo packages:** Every package under the active OS's `cargo` section is installed with `cargo binstall`. Core packages are combined with the active profile's packages.
+**Cargo packages:** Every package under the active OS's `cargo` section is installed with `cargo binstall`. Core packages are combined with the active profile's packages. Packy manages Cargo packages on macOS and Linux; `packy upgrade -m cargo` upgrades every installed Cargo package through `cargo-update`.
 
 **Linux package philosophy:** Linuxbrew is intentionally not used — too heavy for the small-VM Linux use case. System packages are manually curated in `packages.yaml` under `linux.apt.packages`; Fish comes from its official Ubuntu PPA so every supported Linux target runs Fish 4. Mise and direct binary installers cover tools outside apt and Cargo. The apt install script checks `dpkg -s` for each package and only fetches what's missing — fast on Sprites/exe machines with preloaded packages. `packy` does **not** manage apt — apt entries are hand-edited in `packages.yaml`.
 
@@ -248,5 +267,8 @@ chezmoi apply -n --verbose                        # Dry run with detailed output
 
 ## Related Docs
 
+- `docs/agent-config.md` — Semantic contract for Claude Code, Codex, and OpenCode configuration: sandbox access, approval policy, and agent guidance as three separate controls, plus the config surface map per platform. Read before changing any agent's settings
+- `docs/capabilities/` — One file per capability domain (workspace, network, development, git, delegation, context, integrations, session, interaction), each with expected behavior, safety boundary, per-platform implementation, and verification. Indexed by `docs/agent-config.md`
+- `.utils/AGENTS.md` — Internal Deno tooling sandbox, with a reference doc per tool under `.utils/docs/`
 - `~/.agents/skills/chezmoi/` (source: `dot_agents/exact_skills/exact_chezmoi/`) — Full chezmoi skill with deep reference docs on attributes, templates, scripts, hooks
 - [chezmoi documentation](https://www.chezmoi.io) — Official docs, comprehensive reference for all features
