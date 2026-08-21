@@ -22,13 +22,13 @@ engine = "nucleo"
 source_order = [
   "workspace",
   "agent",
-  "project",
-  "session",
   "zoxide",
   "root",
-  "server",
   "quick",
-  "plugin"
+  "session",
+  "server",
+  "plugin",
+  "project"
 ]
 
 # How strongly source_order influences search ranking.
@@ -61,13 +61,14 @@ check_updates = true
 vim_mode = true
 
 # Start searching immediately after a Vim source-filter key.
-vim_filter_search = true
+vim_filter_search = false
 
 # Optional: override source filter shortcuts. Values accept "ctrl-x", "ctrl+x", "^x", or "x".
 # Defaults: server=ctrl-s, agent=ctrl-a, quick=ctrl-q, workspace=ctrl-w, project=ctrl-p,
 # zoxide=ctrl-z, root=ctrl-r, session=ctrl-l.
-# [picker.filter_keys]
-# server = "ctrl-g"
+[picker.filter_keys]
+sessions = "ctrl-s"
+servers = "ctrl-m"
 
 [notifications]
 # Show Navigator success/error notifications.
@@ -96,7 +97,7 @@ open_workspaces = true
 
 # Herdr Plus project templates from:
 # ~/.config/herdr/plugins/config/cloudmanic.herdr-plus/projects/*.toml
-herdr_plus_projects = true
+herdr_plus_projects = false
 
 # zoxide history from `zoxide query -l`.
 zoxide = true
@@ -113,7 +114,7 @@ servers = true
 sessions = true
 
 # Herdr Plus Quick Actions. Selecting opens the Quick Actions picker.
-herdr_plus_quick_actions = true
+herdr_plus_quick_actions = false
 
 [theme]
 # Reads ~/.config/herdr/config.toml theme name and [theme.custom] tokens when available.
@@ -122,12 +123,8 @@ inherit_herdr = true
 
 # Keep roots short; zoxide should handle most frequent directories.
 [[roots]]
-path = "~/workspace"
-max_depth = 3
-
-[[roots]]
-path = "~/projects"
-max_depth = 3
+path = "~/dev"
+max_depth = 4
 
 # Optional agent aliases. All match fields are optional and matched as text contains.
 # Aliases become extra search terms for matching agent panes.
