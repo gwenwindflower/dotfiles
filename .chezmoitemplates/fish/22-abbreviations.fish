@@ -74,7 +74,7 @@ abbr --add hrdpls herdr plugin list
 abbr --add hrdprm herdr plugin uninstall
 # shell snippets
 abbr --add --position anywhere -- --help '--help | bat -plhelp'
-abbr --add --position anywhere -- -h '--help | bat -plhelp'
+abbr --add --position anywhere -- -h '-h | bat -plhelp'
 abbr --add --position anywhere -- -hr '--help | bat -plhelp | rg'
 abbr --add --position anywhere -- qq '>/dev/null'
 abbr --add --position anywhere -- qqf '&>/dev/null'
