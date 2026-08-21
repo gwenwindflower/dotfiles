@@ -203,6 +203,7 @@ packages:
           - lookaway
           - mimestream
           - monodraw
+          - mullvad-vpn
           - notion
           - notion-calendar
           - notion-cli
@@ -214,6 +215,7 @@ packages:
           - zoom
         personal:
           - mitmproxy
+          - mullvad-browser
           - signal
         work:
           - fathom
