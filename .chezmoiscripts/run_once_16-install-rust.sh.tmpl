@@ -9,10 +9,8 @@ set -euo pipefail
 log_step "Installing Rust"
 
 if command -v rustup >/dev/null 2>&1; then
-  log_info "Checking Rust updates..."
-  rustup check
-  log_info "Installing or updating stable Rust toolchain..."
-  rustup toolchain install stable --profile default
+  log_info "Updating stable Rust toolchain..."
+  rustup update stable
   rustup default stable
   log_info "Adding rust-analyzer component..."
   rustup component add rust-analyzer
