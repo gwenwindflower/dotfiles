@@ -9,24 +9,60 @@ Use this reference when scaffolding or aligning a portable Rust Herdr plugin.
 ├── .github/workflows/
 │   ├── ci.yml
 │   └── release-build.yml
+├── mise-tasks/
+│   ├── release/
+│   │   ├── _default
+│   │   ├── commit
+│   │   ├── create
+│   │   ├── notes
+│   │   ├── preflight
+│   │   └── rehearse
+│   └── version/
+│       ├── bump
+│       ├── cargo
+│       ├── check
+│       ├── lock
+│       ├── manifest
+│       ├── next
+│       └── sync
 ├── scripts/
-│   ├── install-binary.sh
-│   ├── prepare-release.sh
-│   ├── publish-release.sh
-│   └── sync-release-metadata.sh
+│   └── install-binary.sh
 ├── src/
 ├── tests/
 │   ├── install-binary.sh
 │   ├── manifest.sh
-│   └── release-scripts.sh
+│   └── versioning.sh
 ├── Cargo.lock
 ├── Cargo.toml
 ├── README.md
 ├── cliff.toml
-└── herdr-plugin.toml
+├── herdr-plugin.toml
+└── mise.toml
 ```
 
-Add only files the current plugin needs. Interactive command plugins may use ordinary Rust integration tests; shell tests remain useful for installer and release boundaries.
+Add only files the current plugin needs. Interactive command plugins may use ordinary Rust integration tests; shell tests remain useful for installer and version boundaries.
+
+`scripts/` holds only what must run outside the task layer. The installer is invoked by Herdr's build hook on a user's machine, where mise is not a prerequisite; everything else is a task.
+
+## Task Layer
+
+[mise](https://mise.jdx.dev) owns the toolchain and the task list. Pin Rust and every release tool in `mise.toml` — `git-cliff`, `zizmor`, `pinact`, and `cargo-binstall` are all in the mise registry — so contributors and CI resolve identical versions from one file. Onboarding becomes `mise trust && mise install`.
+
+Split definitions by weight:
+
+- `mise.toml` holds tool versions, one-line wrappers around a single command, pipelines, and aliases.
+- `mise-tasks/` holds anything with logic, as ordinary bash. Directories become task prefixes, so `mise-tasks/version/check` is `version:check`.
+
+Task scripts must run standalone. Open each with `cd "${MISE_PROJECT_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"` so `./mise-tasks/version/check` works with no mise in the loop, and compose by calling siblings through those paths. Reserve `mise run` for pipelines, where it is also what fires confirm gates.
+
+Group by prefix — `dev:`, `herdr:`, `test:`, `ci-audit:`, `version:`, `release:` — and alias the everyday ones. Shell completion over `mise run` makes descriptions the discovery surface, so every task needs one and the README stops enumerating commands.
+
+Four mise behaviors shape the design:
+
+- `depends` runs in parallel. Anything order-sensitive belongs in a sequential `run` array instead.
+- `confirm` prompts, defaults to no, and reads the tty, so it cannot be piped past. Use it for every step that leaves the machine rather than hand-rolling prompts.
+- `#USAGE arg "[tag]" env="TAG"` declares an argument that falls back to an environment variable. That is how a pipeline resolves a version once and shares it with every step.
+- `deny_net` and `deny_write` are honored only on TOML tasks. mise warns and ignores them in `#MISE` file-task headers. Declare them for third-party tools that should never write to the checkout, and skip them for anything that needs the network and a cache.
 
 ## Cargo Contract
 
@@ -54,7 +90,7 @@ pkg-fmt = "tgz"
 disabled-strategies = ["quick-install", "compile"]
 ```
 
-Use `Cargo.toml` as the version source of truth. Synchronize `Cargo.lock` and `herdr-plugin.toml` from it and fail CI when generated metadata differs.
+Use `Cargo.toml` as the version source of truth. `version:sync` repairs `Cargo.lock` and `herdr-plugin.toml` from it and never touches Cargo's own version, so it stays idempotent and safe to run at any time. `version:check` reports drift without writing and runs in CI.
 
 ## Manifest Contract
 
@@ -118,20 +154,51 @@ Run the installer in an isolated temporary directory with fake `cargo`, `cargo-b
 
 Assert arguments and user-facing results, not incidental shell implementation.
 
+Test the version tasks the same way, in `tests/versioning.sh`: build sandbox repositories with drifted `Cargo.toml`, `Cargo.lock`, and manifest versions, then prove detection, repair, and bumping. Because task scripts are standalone bash, the test invokes them directly by path with a fake `cargo` on `PATH`, so the suite needs no mise. Do not write end-to-end tests for the mutating release steps; `release:rehearse` covers that ground against the real repository.
+
 ## Continuous Integration
 
-Run fast static checks before the operating-system matrix:
+Install the toolchain with `jdx/mise-action`, then run one task per step. The Actions UI keeps its granularity while the task definition stays the only place a check lives, so local and CI cannot drift. Set `MISE_TRUSTED_CONFIG_PATHS: ${{ github.workspace }}` at workflow level so mise trusts the checkout without a separate step.
 
-1. `cargo fmt --check`
-2. Release metadata synchronization check
-3. `cargo clippy --all-targets --all-features -- -D warnings`
-4. Manifest contract test
-5. Installer test
-6. Release script test when release automation exists
+Order the check job fast-first: `fmt`, version drift, `clippy`, manifest contract, installer, versioning. Run the Rust test suite on current Ubuntu and macOS runners.
 
-Run `cargo test --all-targets --all-features` on current Ubuntu and macOS runners. Cache only through a maintained Rust-aware action when the repository already uses one.
+Disable mise-action's caching in any workflow that publishes artifacts:
+
+```yaml
+- uses: jdx/mise-action@<sha> # vX.Y.Z
+  with:
+    cache: false # This workflow publishes release artifacts; a poisoned cache would reach users.
+```
+
+The action caches `~/.local/share/mise`, which holds the installed tool binaries rather than build intermediates. A cache hit skips mise's checksum and attestation verification, so a poisoned entry substitutes the compilers that produce a published artifact. The Actions cache carries no provenance and is writable from lower-privilege contexts than the ones that read it, which is why zizmor's `cache-poisoning` audit treats caching in a publishing workflow as high severity.
 
 Pin third-party GitHub Actions to full commit SHAs. Set `persist-credentials: false` on checkout jobs that do not push. Grant the smallest workflow permissions required.
+
+Use this `.github/pinact.yml` policy:
+
+```yaml
+# yaml-language-server: $schema=https://raw.githubusercontent.com/suzuki-shunsuke/pinact/refs/heads/main/json-schema/pinact.json
+# pinact - https://github.com/suzuki-shunsuke/pinact
+version: 3
+min_age:
+  value: 7
+  always: true
+rules:
+  - ignore: true
+    conditions:
+      - expr: |
+          ActionName == "slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml" && ActionVersion matches "v\\d+\\.\\d+\\.\\d+"
+  - min_age: 0
+    conditions:
+      - expr: |
+          ActionName matches "actions/.*"
+      - expr: |
+          ActionRepoOwner == "github"
+      - expr: |
+          ActionRepoOwner == "astral-sh" && ActionVersion == "main"
+```
+
+`pinact --verify-comment` resolves every pinned SHA through the GitHub API, where anonymous callers share 60 requests an hour per machine. A repository with a dozen action references exhausts that in a few runs, and the failure surfaces as `get a commit hash: ...`, which reads like a connectivity problem. Have the task export `GITHUB_TOKEN`, falling back to `gh auth token`, and warn when neither is available.
 
 ## Release Artifacts
 
@@ -150,16 +217,26 @@ Name archives to match Cargo Binstall metadata:
 
 Each archive contains a same-named directory with the executable inside. Generate checksums beside the archives and attach both to the GitHub release.
 
-A release preparation script should:
+Decompose the release into steps that each run on their own, then compose them into one pipeline:
 
-1. Require a clean branch in sync with the release base.
-2. Validate the requested semantic version.
-3. Update `Cargo.toml`.
-4. Refresh the lockfile and plugin manifest.
-5. Run project checks.
-6. Generate release notes with git-cliff.
+| Task | Responsibility |
+| --- | --- |
+| `version:next` | The tag git-cliff derives from the commits since the last release |
+| `version:bump` | Set `Cargo.toml`, then sync the lockfile and manifest to it |
+| `release:preflight` | Tooling, authentication, a clean `main` containing its remote, an unused tag |
+| `release:check` | Every CI check plus both workflow audits |
+| `release:commit` | Commit only the version files, refusing any other change |
+| `release:notes` | The notes git-cliff will publish |
+| `release:push` | Push the release commit, behind a `confirm` gate |
+| `release:create` | Publish the release, behind a `confirm` gate |
+| `release:rehearse` | Every read-only step plus the notes that would ship |
+| `release` | The pipeline, resolving the tag once and exporting it |
 
-A publishing script should verify the prepared version, create the signed commit and tag through the repository's normal signing configuration, push them, and create the GitHub release. Never disable signing as a fallback.
+`release:preflight` and `version:check` should report every problem they find rather than stopping at the first, since both answer "is this repository releasable" and a partial answer wastes a round trip. Everything else fails fast; the error names the task that repairs it, and that message is the recovery path.
+
+Ship `release:rehearse` as the dry run. It is the only way to exercise the pipeline without side effects, and it makes end-to-end tests of the mutating steps unnecessary.
+
+Let GitHub create the tag at the default-branch head when it publishes the release. Do not create or push a separate tag. The release commit must therefore land on the default branch before publishing, which is what makes `release:push` and `release:create` two distinct gates. Sign the release commit through the repository's normal signing configuration, and never disable signing as a fallback.
 
 Trigger artifact builds from the published GitHub release or tag contract used by the repository. Upload platform outputs as workflow artifacts, combine them in one job, and attach them to the existing release.
 
@@ -172,9 +249,10 @@ Document:
 - Marketplace installation and status verification.
 - Available actions and the workflows they own.
 - Direct binary installation with Cargo Binstall and Cargo.
-- Local development: install the binary, link the plugin, reinstall after Rust changes, and relink after manifest changes.
-- The exact local check commands.
+- Local development: `mise trust && mise install`, then the task that puts the checkout in front of Herdr.
 - Uninstall behavior and durable state cleanup when applicable.
+
+Document workflows, not the task list. `mise tasks` and `mise tasks info <task>` enumerate the tasks with their descriptions, so a README that repeats them only creates a second place to drift.
 
 Keep command help sufficient for agents and users to discover workflow requirements without opening the README.
 
@@ -187,7 +265,7 @@ Likely shared components are:
 - A typed newline-delimited Herdr socket crate.
 - Runtime context parsing and source-workspace resolution.
 - Installer and manifest contract test harnesses.
-- Version synchronization and release scripts.
+- The version and release task tree, which is nearly identical across plugins.
 - Common error rendering, color policy, and verbose diagnostics.
 
 Keep third-party workflow adapters project-specific. Their commands, hooks, output schemas, and partial-success semantics are the plugin's domain, not generic Herdr infrastructure.

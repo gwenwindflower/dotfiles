@@ -11,17 +11,18 @@ Build Herdr plugins as portable tools with a stable binary interface. Keep Herdr
 
 1. Load the core `herdr` skill and follow its CLI, schema, runtime-safety, and workspace-control guidance throughout the task.
 2. Read the repository instructions and existing project docs.
-3. Inspect `herdr-plugin.toml`, `Cargo.toml`, the binary entrypoint, installer, tests, and workflows.
-4. Check the installed CLI before changing integration behavior:
+3. Inspect `herdr-plugin.toml`, `Cargo.toml`, `mise.toml`, `mise-tasks/`, the binary entrypoint, installer, tests, and workflows.
+4. Run `mise tasks` before running anything else. The task list is the project's command surface; prefer a task over the command it wraps, and add a task rather than running a one-off.
+5. Check the installed CLI before changing integration behavior:
 
    ```bash
    herdr --help
    herdr api schema --json
    ```
 
-5. Consult the official [plugin guide](https://herdr.dev/docs/plugins/) and [socket API](https://herdr.dev/docs/socket-api/) for behavior not expressed by the installed schema.
-6. Read [references/herdr-runtime.md](references/herdr-runtime.md) when changing manifests, actions, panes, events, context, storage, or socket behavior.
-7. Read [references/rust-project-patterns.md](references/rust-project-patterns.md) when scaffolding a plugin or changing installation, CI, releases, or contributor workflows.
+6. Consult the official [plugin guide](https://herdr.dev/docs/plugins/) and [socket API](https://herdr.dev/docs/socket-api/) for behavior not expressed by the installed schema.
+7. Read [references/herdr-runtime.md](references/herdr-runtime.md) when changing manifests, actions, panes, events, context, storage, or socket behavior.
+8. Read [references/rust-project-patterns.md](references/rust-project-patterns.md) when scaffolding a plugin or changing installation, CI, releases, or contributor workflows.
 
 ## Choose the Runtime Shape
 
@@ -45,7 +46,7 @@ Keep domain decisions independent from Herdr and third-party command execution. 
 6. Make reconciliation idempotent: snapshot once, calculate desired state, and emit only necessary changes.
 7. Return actionable errors that name the failed operation, relevant workspace or path, and recovery command when one exists.
 8. Update install, manifest, and live-smoke tests with the behavior.
-9. Document installation, requirements, actions, local development, and verification in the README.
+9. Give every task a description and document workflows in the README, not the task list.
 
 ## Preserve the Plugin Contract
 
@@ -61,17 +62,13 @@ Keep domain decisions independent from Herdr and third-party command execution. 
 
 ## Verify in Layers
 
-Run the repository's exact checks. A typical Rust plugin requires:
+Run the repository's own gate rather than the underlying commands:
 
 ```bash
-cargo fmt --check
-cargo clippy --all-targets --all-features -- -D warnings
-cargo test --all-targets --all-features
-sh tests/install-binary.sh
-sh tests/manifest.sh
+mise run check
 ```
 
-Then verify the installed boundary:
+That composes formatting, lints, version drift, and every test suite. `mise run ci-audit` adds the workflow audits, and `mise run release:check` is both together. Then verify the installed boundary:
 
 1. Install the binary and confirm `<binary> --version` matches `Cargo.toml`.
 2. Link or install the plugin and inspect `herdr plugin status`.
