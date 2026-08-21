@@ -21,13 +21,14 @@
     "scrape-stars": "deno run --allow-run=agent-browser,gh --allow-read --allow-write --allow-env scrape-github-stars.ts",
     "packy": "deno run --allow-read --allow-write --allow-env --allow-run=chezmoi,brew,cargo,uv packy.ts",
     "herdir": "deno run --allow-read --allow-write=assets/herdir-snapshots --allow-env=HOME --allow-run=herdr herdir.ts",
+    "git-wash": "deno run --allow-read --allow-write --allow-run=git,gh git-wash.ts",
     "test": "deno run --allow-read --allow-run=deno scripts/test.ts",
     "test:tables": "deno test --allow-read fix-md-tables_test.ts",
     "test:logo": "deno test --allow-read --allow-env generate-logo_test.ts",
     "test:lscolors": "deno test lscolors_to_toml_test.ts",
     "test:stars": "deno test --allow-read scrape-github-stars_test.ts",
-    "test:twinsies": "deno test --allow-read --allow-write twinsies_test.ts",
     "test:packy": "deno test packy_test.ts",
-    "test:herdir": "deno test --allow-read --allow-write herdir_test.ts"
+    "test:herdir": "deno test --allow-read --allow-write herdir_test.ts",
+    "test:git-wash": "deno test --allow-read --allow-write --allow-run=git git-wash_test.ts"
   }
 }
