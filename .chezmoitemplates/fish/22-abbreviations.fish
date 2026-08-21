@@ -472,3 +472,7 @@ abbr --add amut am untrust
 abbr --add amx am tui
 abbr --add amu am use
 abbr --add amp am profile
+# mintlify
+abbr --add mintd mint dev
+abbr --add mintbl mint broken-links
+abbr --add mintl mint login
