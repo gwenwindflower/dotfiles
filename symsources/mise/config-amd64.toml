@@ -6,6 +6,7 @@ node = ["lts", "latest"]
 "npm:@readwise/cli" = "latest"
 "npm:mint" = "latest"
 "npm:supabase" = "latest"
+"npm:portless" = "latest"
 
 [settings]
 npm.package_manager = "pnpm"

@@ -8,6 +8,7 @@ aube = "latest"
 "npm:supabase" = "latest"
 "npm:sfw" = "latest"
 "npm:mint" = "latest"
+"npm:portless" = "latest"
 "npm:@opencode-ai/cli" = { version = "next", allow_builds = ["@opencode-ai/cli"] }
 
 [settings]
