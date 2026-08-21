@@ -1,4 +1,4 @@
-#!/usr/bin/env -S deno run --allow-read --allow-write --allow-env --allow-run=chezmoi,brew,uv
+#!/usr/bin/env -S deno run --allow-read --allow-write --allow-env --allow-run=chezmoi,brew,cargo,uv
 /**
  * packy — declarative package manifest tool for chezmoi's packages.yaml.
  *
@@ -10,6 +10,7 @@
  *   formula  Homebrew formulae (darwin)
  *   cask     Homebrew casks    (darwin)
  *   tap      Homebrew taps     (darwin)
+ *   cargo    Cargo binaries    (darwin, linux)
  *   uv       uv tools          (darwin)
  *
  * JS/TS globals (node, aube, and npm-backend CLIs) are managed by mise via
@@ -37,7 +38,7 @@ import { parse as parseYaml, stringify as stringifyYaml } from "@std/yaml";
 
 // ── Types ──────────────────────────────────────────────────────────────
 
-export const MANAGERS = ["formula", "cask", "tap", "uv"] as const;
+export const MANAGERS = ["formula", "cask", "tap", "cargo", "uv"] as const;
 export type Manager = (typeof MANAGERS)[number];
 
 export const PROFILES = ["core", "personal", "work"] as const;
@@ -53,6 +54,7 @@ export interface OsPackages {
     formulae?: ProfileMap;
     casks?: ProfileMap;
   };
+  cargo?: ProfileMap;
   uv?: ProfileMap;
 }
 
@@ -133,6 +135,14 @@ export function diffLists(
     added: current.filter((x) => !savedSet.has(x)),
     removed: saved.filter((x) => !currentSet.has(x)),
   };
+}
+
+export function parseCargoInstallList(output: string): string[] {
+  return output
+    .split("\n")
+    .filter((line) => /^\S+ v\S+:$/.test(line))
+    .map((line) => line.split(" ", 1)[0])
+    .sort();
 }
 
 // ── Add / remove planning ─────────────────────────────────────────────
@@ -290,6 +300,10 @@ async function readBrewTaps(): Promise<string[]> {
   return out.split("\n").filter(Boolean).sort();
 }
 
+async function readCargoPackages(): Promise<string[]> {
+  return parseCargoInstallList(await runOutput(["cargo", "install", "--list"]));
+}
+
 const SPECS: Record<Manager, ManagerSpec> = {
   formula: {
     yamlPath: (os) => ["packages", os, "homebrew", "formulae"],
@@ -348,6 +362,25 @@ const SPECS: Record<Manager, ManagerSpec> = {
     upgradeAll: () => {
       log.info("taps have no upgrade step — skipping");
       return Promise.resolve();
+    },
+  },
+  cargo: {
+    yamlPath: (os) => ["packages", os, "cargo"],
+    supports: () => true,
+    bin: "cargo",
+    listInstalled: readCargoPackages,
+    install: (pkg) =>
+      runInteractive(["cargo", "binstall", "--no-confirm", pkg]),
+    uninstall: (pkg) => runInteractive(["cargo", "uninstall", pkg]),
+    upgradeAll: async (dryRun) => {
+      if (dryRun) {
+        log.info("[DRY RUN] cargo install-update --all");
+        return;
+      }
+      log.info("cargo install-update --all...");
+      if (!(await runInteractive(["cargo", "install-update", "--all"]))) {
+        throw new Error("cargo install-update --all returned non-zero");
+      }
     },
   },
   uv: {
@@ -838,13 +871,14 @@ Options:
   -h, --help                Show this help
   -d, --dry-run             Preview without writing or running install/uninstall
   -v, --verbose             Show extra detail (e.g. full YAML on write)
-  -m, --manager <name>      formula, cask, tap, uv
+  -m, --manager <name>      formula, cask, tap, cargo, uv
   -p, --profile <name>      Override the add target (default: current profile)
 
 Managers:
   formula   Homebrew formulae (darwin)
   cask      Homebrew casks    (darwin)
   tap       Homebrew taps     (darwin)
+  cargo     Cargo binaries    (darwin, linux)
   uv        uv tools          (darwin)
 
 JS/TS globals (node, aube, npm-backend CLIs) are managed by mise via

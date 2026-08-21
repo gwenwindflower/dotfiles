@@ -4,6 +4,7 @@ import {
   findDupes,
   getAllSlots,
   getEffective,
+  parseCargoInstallList,
   planAdd,
   planRemove,
 } from "./packy.ts";
@@ -122,6 +123,33 @@ Deno.test("diffLists: mixed", () => {
 
 Deno.test("diffLists: empty both", () => {
   assertEquals(diffLists([], []), { added: [], removed: [] });
+});
+
+// ── parseCargoInstallList ───────────────────────────────────────────────
+
+Deno.test("parseCargoInstallList: returns sorted crate names", () => {
+  const output = `nightlight v2.1.0:
+    nightlight
+linear-cli v0.1.7:
+    linear
+usage-cli v2.3.2:
+    usage
+`;
+
+  assertEquals(parseCargoInstallList(output), [
+    "linear-cli",
+    "nightlight",
+    "usage-cli",
+  ]);
+});
+
+Deno.test("parseCargoInstallList: ignores warnings and binary lines", () => {
+  const output = `warning: metadata recovered
+cargo-update v18.0.0:
+    cargo-install-update
+`;
+
+  assertEquals(parseCargoInstallList(output), ["cargo-update"]);
 });
 
 // ── planAdd ───────────────────────────────────────────────────────────

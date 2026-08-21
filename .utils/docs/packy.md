@@ -1,9 +1,9 @@
 # packy
 
-Declaratively manage `.chezmoidata/packages.yaml` across four package managers:
-`formula`, `cask`, `tap`, `uv`. Reads system state from `chezmoi data`; writes
-manifest changes via `@std/yaml` round-trip. **Darwin-only** — all four
-managers are macOS-flavored.
+Declaratively manage `.chezmoidata/packages.yaml` across five package managers:
+`formula`, `cask`, `tap`, `cargo`, and `uv`. Reads system state from
+`chezmoi data`; writes manifest changes via `@std/yaml` round-trip. Cargo works
+on macOS and Linux; the other managers are macOS-only.
 
 ## Source
 
@@ -53,7 +53,8 @@ the **current** profile; `add --profile X` moves an entry between profiles.
   writes). The recovery path after a fresh machine.
 - `diff` — show drift between manifest and system state.
 - `check` — same as `diff` but with a non-zero exit on drift (CI gate).
-- `upgrade` — show available upgrades; runs the underlying manager's upgrade.
+- `upgrade` — run the underlying manager's upgrade. Cargo uses
+  `cargo install-update --all`, which uses cargo-binstall when available.
 - `list` — print tracked packages by profile.
 
 ## What lives outside packy
