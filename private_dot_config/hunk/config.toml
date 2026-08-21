@@ -1,1 +1,15 @@
-theme = "catppuccin-frappe"
+theme = "catppuccin-winnie"
+mode = "auto"
+line_numbers = true
+wrap_lines = false
+hunk_headers = true
+menu_bar = true
+agent_notes = true
+copy_decorations = false
+cursor_line = "row"
+
+[themes.catppuccin-winnie]
+base = "catppuccin-frappe"
+label = "Catppuccin Winnié"
+# controls scroll gutter too
+# lineNumberFg = "#ca9ee6"
