@@ -167,6 +167,7 @@ packages:
           - 1password-cli
           - anthropics/tap/ant
           - arc
+          - canario
           - cap
           - claude
           - claude-code
