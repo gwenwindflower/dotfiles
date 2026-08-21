@@ -4,7 +4,7 @@ node = ["lts", "latest"]
 "npm:@agentclientprotocol/claude-agent-acp" = "latest"
 "npm:@aredotna/cli" = "latest"
 "npm:@readwise/cli" = "latest"
-"npm:mintlify" = "latest"
+"npm:mint" = "latest"
 "npm:supabase" = "latest"
 
 [settings]
