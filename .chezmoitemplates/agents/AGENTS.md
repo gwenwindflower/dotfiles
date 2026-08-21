@@ -1,6 +1,4 @@
-# Shared Agent Rules
-
-Shared user rules for all agent platforms.
+# Global agent guidance
 
 ## Foundations
 
@@ -24,7 +22,7 @@ Shared user rules for all agent platforms.
 
 {{ template "agents/rules/exploration.md" . }}
 
-{{ template "agents/rules/modern-tools.md" . }}
+{{ template "agents/rules/tools.md" . }}
 
 {{ template "agents/rules/fish-variables.md" . }}
 
