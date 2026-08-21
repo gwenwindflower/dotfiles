@@ -123,6 +123,8 @@ packages:
           - sc-im
           - sd
           - sevenzip
+          - sheets
+          - slides
           - spotify_player
           - starship
           - stripe-cli
