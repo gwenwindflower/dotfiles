@@ -89,6 +89,15 @@ vim.api.nvim_create_autocmd("BufWritePost", {
   desc = "Apply config.fish when fish template fragments change",
 })
 
+vim.api.nvim_create_autocmd("FileType", {
+  group = augroup("wrap_spell_markdown_variants"),
+  pattern = { "markdown.mdx", "quarto", "rmd" },
+  callback = function()
+    vim.opt_local.wrap = true
+    vim.opt_local.spell = true
+  end,
+})
+
 local wk = require("which-key")
 vim.api.nvim_create_autocmd("FileType", {
   group = augroup("spellfiles"),

@@ -98,8 +98,12 @@ return {
   },
   {
     "jakewvincent/mkdnflow.nvim",
-    ft = { "markdown", "rmd" },
+    ft = { "markdown", "markdown.mdx", "quarto", "rmd" },
     opts = function(_, opts)
+      opts.filetypes = opts.filetypes or {}
+      opts.filetypes.mdx = "markdown.mdx"
+      opts.filetypes.qmd = "quarto"
+
       opts.modules = opts.modules or {}
       opts.modules.folds = false
 
