@@ -182,7 +182,7 @@ abbr --add llup 'llama-server -hf Qwen/Qwen3-Embedding-0.6B-GGUF:Q8_0 --embeddin
 ### agent-browser
 abbr --add abrow agent-browser
 # obsiidian and notes
-abbr --add notes "ee ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents"
+abbr --add girlos "ee ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/girlos"
 abbr --add ob notesmd-cli
 abbr --add obf "fd . --color always --hidden --ignore --extension md | fzf --preview '_fzf_preview_file {}'"
 abbr --add obs notesmd-cli search
