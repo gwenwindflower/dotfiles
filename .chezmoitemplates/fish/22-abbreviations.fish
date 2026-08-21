@@ -77,8 +77,8 @@ abbr --add --position anywhere -- --help '--help | bat -plhelp'
 abbr --add --position anywhere -- -h '-h | bat -plhelp'
 abbr --add --position anywhere -- -hr '--help | bat -plhelp | rg'
 abbr --add --position anywhere -- qq '>/dev/null'
-abbr --add --position anywhere -- qqf '&>/dev/null'
 abbr --add --position anywhere -- qqq '>/dev/null 2>&1'
+abbr --add --position anywhere -- qqf '&>/dev/null'
 # dotfiles
 abbr --add cm chezmoi
 abbr --add cmcd chezmoi cd
