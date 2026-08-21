@@ -41,6 +41,8 @@ abbr --add vi nvim
 abbr --add eee ee -e
 # network
 abbr --add ipext "curl https://api64.ipify.org | fish_clipboard_copy"
+abbr --add mulv mullvad
+abbr --add tlscl tailscale
 # cloud
 abbr --add gauth "gcloud auth application-default login"
 # ssh (kitten ssh — macOS only, kitty terminal)
