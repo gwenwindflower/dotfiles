@@ -227,6 +227,7 @@ packages:
           - superwhisper
     cargo:
       core:
+        - cargo-update
         - linear-cli
         - nightlight
       personal: []
@@ -257,7 +258,8 @@ packages:
           - yq
     cargo:
       core:
-        - yazi-fm
+        - cargo-update
         - usage-cli
+        - yazi-fm
       personal: []
       work: []
