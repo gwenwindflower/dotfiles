@@ -96,46 +96,55 @@ description = "launch lazygit in a new pane"
 key = "ctrl+h"
 type = "plugin_action"
 command = "herdr-splits.nav-left"
+description = "herds-splits navigate left"
 
 [[keys.command]]
 key = "ctrl+j"
 type = "plugin_action"
 command = "herdr-splits.nav-down"
+description = "herds-splits navigate down"
 
 [[keys.command]]
 key = "ctrl+k"
 type = "plugin_action"
 command = "herdr-splits.nav-up"
+description = "herds-splits navigate up"
 
 [[keys.command]]
 key = "ctrl+l"
 type = "plugin_action"
 command = "herdr-splits.nav-right"
+description = "herds-splits navigate right"
 
 [[keys.command]]
 key = "ctrl+left"
 type = "plugin_action"
 command = "herdr-splits.resize-left"
+description = "herds-splits resize left"
 
 [[keys.command]]
 key = "ctrl+down"
 type = "plugin_action"
 command = "herdr-splits.resize-down"
+description = "herds-splits resize down"
 
 [[keys.command]]
 key = "ctrl+up"
 type = "plugin_action"
 command = "herdr-splits.resize-up"
+description = "herds-splits resize up"
 
 [[keys.command]]
 key = "ctrl+right"
 type = "plugin_action"
 command = "herdr-splits.resize-right"
+description = "herds-splits resize right"
 
 [[keys.command]]
 key = "prefix+alt+c"
 type = "plugin_action"
 command = "livery.reset"
+description = "reset tab livery"
 
 [[keys.command]]
 key = ["prefix+o", "shift+super+o"]
