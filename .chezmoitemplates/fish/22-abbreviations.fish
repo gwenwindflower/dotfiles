@@ -397,8 +397,17 @@ abbr --add ghscld "gh search code --repo lightdash/lightdash -- "
 abbr --add ghscldw "gh search code --web --repo lightdash/lightdash -- "
 ## shortening my git aliases
 abbr --add gmain git main
-## critique
-abbr --add gdpp critique
+## adding git aliases
+abbr --add gstam git stash -m
+abbr --add gstau git stash -u
+abbr --add gstaum git stash -u -m
+abbr --add grhh! "git reset --hard; and git clean -fd"
+## hunk
+abbr --add gdpp hunk diff
+abbr --add hud hunk diff
+abbr --add huds hunk diff --staged
+abbr --add hus hunk show
+abbr --add huss hunk stash show
 ## degit
 abbr --add degit aubx degit
 ### blacksmith
