@@ -2,7 +2,7 @@
   {
     "plugin_id": "herdr-navigator",
     "name": "Herdr Navigator",
-    "version": "0.3.5",
+    "version": "0.3.6",
     "min_herdr_version": "0.7.3",
     "description": "Jump to any Herdr workspace, agent, project, session, remote, directory, or action from one fuzzy navigator.",
     "manifest_path": "/Users/winnie/.config/herdr/plugins/github/herdr-navigator-3a5a6fa5dfb5/herdr-plugin.toml",
@@ -84,15 +84,16 @@
       "kind": "github",
       "owner": "thanhdat77",
       "repo": "herdr-navigator",
-      "resolved_commit": "8e90917a1a635682e435aa4627c59b3e6f7942b6",
+      "requested_ref": "v0.3.6",
+      "resolved_commit": "e12a97c5d9ddcd76ba18c985909ffeb4827afa6a",
       "managed_path": "/Users/winnie/.config/herdr/plugins/github/herdr-navigator-3a5a6fa5dfb5",
-      "installed_unix_ms": 1786137716006
+      "installed_unix_ms": 1787101432595
     }
   },
   {
     "plugin_id": "herdr-splits",
     "name": "Herdr Splits",
-    "version": "0.5.2",
+    "version": "0.5.3",
     "min_herdr_version": "0.7.0",
     "description": "Seamless navigation and resizing between Herdr panes and Neovim splits",
     "manifest_path": "/Users/winnie/.config/herdr/plugins/github/herdr-splits-d880c4924f2b/herdr-plugin.toml",
@@ -204,9 +205,9 @@
       "kind": "github",
       "owner": "lmilojevicc",
       "repo": "herdr-splits.nvim",
-      "resolved_commit": "c58bfdf01520845583e0033c11c56fc9d21a5424",
+      "resolved_commit": "94f30cf4e9ac76ddf185a3acd0977be728fa4106",
       "managed_path": "/Users/winnie/.config/herdr/plugins/github/herdr-splits-d880c4924f2b",
-      "installed_unix_ms": 1786137740746
+      "installed_unix_ms": 1787156291205
     }
   },
   {
@@ -319,7 +320,7 @@
     "actions": [
       {
         "id": "create",
-        "title": "Worktrunk: create worktree",
+        "title": "󱓊 wt create",
         "contexts": [
           "workspace"
         ],
@@ -331,7 +332,7 @@
       },
       {
         "id": "merge",
-        "title": "Worktrunk: merge worktree",
+        "title": " wt merge",
         "contexts": [
           "workspace"
         ],
@@ -343,7 +344,7 @@
       },
       {
         "id": "remove",
-        "title": "Worktrunk: remove worktree",
+        "title": "󱓌 wt remove",
         "contexts": [
           "workspace"
         ],
@@ -355,7 +356,7 @@
       },
       {
         "id": "switch",
-        "title": "Worktrunk: switch worktree",
+        "title": "󱓎 wt switch",
         "contexts": [
           "workspace"
         ],
@@ -369,37 +370,85 @@
     "panes": [
       {
         "id": "create",
-        "title": "Worktrunk — create",
+        "title": "󱓊 wt create",
         "placement": "popup",
+        "width": 72,
+        "height": 7,
         "command": [
           "wtherdr",
+          "prompt",
+          "create"
+        ]
+      },
+      {
+        "id": "create-run",
+        "title": "󱓊 wt create",
+        "placement": "popup",
+        "width": "90%",
+        "height": "85%",
+        "command": [
+          "wtherdr",
+          "run",
           "create"
         ]
       },
       {
         "id": "merge",
-        "title": "Worktrunk — merge",
+        "title": " wt merge",
         "placement": "popup",
+        "width": 72,
+        "height": 7,
         "command": [
           "wtherdr",
+          "prompt",
+          "merge"
+        ]
+      },
+      {
+        "id": "merge-run",
+        "title": " wt merge",
+        "placement": "popup",
+        "width": "90%",
+        "height": "85%",
+        "command": [
+          "wtherdr",
+          "run",
           "merge"
         ]
       },
       {
         "id": "remove",
-        "title": "Worktrunk — remove",
+        "title": "󱓌 wt remove",
         "placement": "popup",
+        "width": 72,
+        "height": 7,
         "command": [
           "wtherdr",
+          "prompt",
           "remove"
         ]
       },
       {
-        "id": "switch",
-        "title": "Worktrunk — switch",
+        "id": "remove-run",
+        "title": "󱓌 wt remove",
         "placement": "popup",
+        "width": "90%",
+        "height": "85%",
         "command": [
           "wtherdr",
+          "run",
+          "remove"
+        ]
+      },
+      {
+        "id": "switch-run",
+        "title": "󱓎 wt switch",
+        "placement": "popup",
+        "width": "90%",
+        "height": "85%",
+        "command": [
+          "wtherdr",
+          "run",
           "switch"
         ]
       }
