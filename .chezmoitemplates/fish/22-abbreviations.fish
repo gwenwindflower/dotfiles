@@ -49,8 +49,6 @@ abbr --add gauth "gcloud auth application-default login"
 abbr --add sshk kitten ssh -A
 abbr --add ssha ssh -A
 abbr --add exe ssh exe.dev
-# kitty
-abbr --add herdcats kitty --session ~/.config/kitty/sessions/herdr.kitty-session
 # tmux
 abbr --add tm tmux
 abbr --add tmst tstat
@@ -63,8 +61,8 @@ abbr --add tmw twin (basename "$PWD") --cmd
 abbr --add tmh tmux_hint
 # herdr
 abbr --add hrd herdr
-abbr --add hrdx herdr server
-abbr --add hrdxx herdr server stop
+abbr --add hrdq herdr server stop
+abbr --add hrdrs "herdr server stop; and herdr"
 abbr --add hrdii herdr integration install
 abbr --add hrds herdr session
 abbr --add hrdsa herdr session attach
