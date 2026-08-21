@@ -313,10 +313,12 @@ abbr --add mia "mise activate fish | source"
 abbr --add mida mise deactivate
 abbr --add miu mise use
 abbr --add mii mise install
+abbr --add miup mise upgrade
 abbr --add mir mise run
 abbr --add mic mise config
 abbr --add micl mise config list
 abbr --add mics mise config set
+abbr --add mix mise x
 abbr --add mipth $HOME/.local/share/mise/installs/
 ### aube
 abbr --add au aube
