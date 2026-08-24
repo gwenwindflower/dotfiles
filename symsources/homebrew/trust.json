@@ -21,6 +21,8 @@
     "dbt-labs/dbt/dbt",
     "denisotree/tuitab/tuitab",
     "huseyinbabal/tap/taws",
+    "kiki-ki/tap/qo",
+    "rubysolo/tools/brows",
     "supermodellabs/tap/winline",
     "superradcompany/tap/microsandbox",
     "withgraphite/tap/graphite",
