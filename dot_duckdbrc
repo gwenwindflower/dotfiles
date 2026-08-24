@@ -1,7 +1,65 @@
-.highlight_colors layout gray 
-.highlight_colors column_name magenta bold
-.highlight_colors column_type gray
-.highlight_colors string_value cyan
-.highlight_colors numeric_value green
-.highlight_colors temporal_value blue
-.highlight_colors footer gray
+-- Catppuccin Frappé. DuckDB takes palette names, not hex.
+-- ANSI names resolve through the terminal theme to exact Frappé hexes:
+--   magenta pink · cyan teal · green green · yellow yellow · blue blue
+--   gray surface2 · brightgray subtext0
+-- 256-colour names are the nearest fixed approximations for the rest:
+--   plum2 mauve · lightsalmon1 peach · lightpink3 maroon · skyblue1 sapphire
+--   lightcyan3 sky · lightsteelblue3 lavender · lightsteelblue1 text
+--   lightslategrey overlay1
+
+.highlight on
+.highlight_results on
+.highlight_errors on
+.highlight_mode dark
+
+-- Syntax
+.highlight_colors keyword plum2 bold
+.highlight_colors string_constant green
+.highlight_colors numeric_constant lightsalmon1
+.highlight_colors comment lightslategrey
+.highlight_colors bracket brightgray
+.highlight_colors continuation gray
+.highlight_colors continuation_selected plum2
+.highlight_colors prompt magenta bold
+.highlight_colors line_indicator gray
+
+-- Identifiers
+.highlight_colors database_name plum2
+.highlight_colors schema_name skyblue1
+.highlight_colors table_name cyan
+.highlight_colors column_name blue bold
+.highlight_colors column_type lightslategrey
+.highlight_colors primary_key_column yellow bold
+
+-- Values
+.highlight_colors string_value green
+.highlight_colors numeric_value lightsalmon1
+.highlight_colors temporal_value skyblue1
+.highlight_colors null_value lightslategrey
+
+-- Table chrome
+.highlight_colors layout gray
+.highlight_colors table_layout gray
+.highlight_colors view_layout gray
+.highlight_colors footer lightslategrey
+.highlight_colors startup_text lightsteelblue3
+.highlight_colors startup_version gray
+
+-- Completions
+.highlight_colors suggestion_catalog_name plum2
+.highlight_colors suggestion_schema_name skyblue1
+.highlight_colors suggestion_table_name cyan
+.highlight_colors suggestion_column_name blue
+.highlight_colors suggestion_function_name lightcyan3
+.highlight_colors suggestion_setting_name yellow
+.highlight_colors suggestion_file_name lightsteelblue1
+.highlight_colors suggestion_directory_name blue bold
+
+-- Diagnostics
+.highlight_colors error lightpink3
+.highlight_colors error_emphasis lightpink3 bold
+.highlight_colors error_suggestion yellow
+.highlight_colors log_trace gray
+.highlight_colors log_debug lightslategrey
+.highlight_colors log_info green
+.highlight_colors log_warning yellow
