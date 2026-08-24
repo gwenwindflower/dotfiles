@@ -1,28 +1,28 @@
-updated: '2026-06-13T23:10:38.924Z'
+updated: '2026-08-21T04:39:59.029Z'
 plugins:
   - repo: jhillyerd/plugin-git
-    sha: dd1f559c01cde4cf0d16581b60e20d29f33c0665
+    sha: 85d692987aabbb4018d1c38d528b7a154d6aae3f
     files:
-      - exact_conf.d/git.fish
-      - exact_functions/__git.branch_has_wip.fish
-      - exact_functions/__git.current_branch.fish
-      - exact_functions/__git.default_branch.fish
-      - exact_functions/__git.delete_branches.fish
-      - exact_functions/__git.destroy.fish
-      - exact_functions/__git.develop_branch.fish
-      - exact_functions/__git.init.fish
-      - exact_functions/gbage.fish
-      - exact_functions/gbda.fish
-      - exact_functions/gdv.fish
-      - exact_functions/gignored.fish
-      - exact_functions/glp.fish
-      - exact_functions/grel.fish
-      - exact_functions/grename.fish
-      - exact_functions/grt.fish
-      - exact_functions/gtest.fish
-      - exact_functions/gtl.fish
-      - exact_functions/gunwip.fish
-      - exact_functions/gwip.fish
+      - conf.d/git.fish
+      - functions/__git.branch_has_wip.fish
+      - functions/__git.current_branch.fish
+      - functions/__git.default_branch.fish
+      - functions/__git.delete_branches.fish
+      - functions/__git.destroy.fish
+      - functions/__git.develop_branch.fish
+      - functions/__git.init.fish
+      - functions/gbage.fish
+      - functions/gbda.fish
+      - functions/gdv.fish
+      - functions/gignored.fish
+      - functions/glp.fish
+      - functions/grel.fish
+      - functions/grename.fish
+      - functions/grt.fish
+      - functions/gtest.fish
+      - functions/gtl.fish
+      - functions/gunwip.fish
+      - functions/gwip.fish
   - repo: jorgebucaran/autopair.fish
     sha: 4d1752ff5b39819ab58d7337c69220342e9de0e2
     files:
@@ -41,21 +41,21 @@ plugins:
       - exact_functions/_puffer_fish_expand_dot.fish
       - exact_functions/_puffer_fish_expand_star.fish
   - repo: patrickf1/fzf.fish
-    sha: 0069dbbe06cc05482bfb13063b4b4eac26318992
+    sha: 6a6136998879dcc1f29a405dfdd6b92c5f229c39
     files:
-      - exact_completions/fzf_configure_bindings.fish
-      - exact_conf.d/fzf.fish
-      - exact_functions/_fzf_configure_bindings_help.fish
-      - exact_functions/_fzf_extract_var_info.fish
-      - exact_functions/_fzf_preview_changed_file.fish
-      - exact_functions/_fzf_preview_file.fish
-      - exact_functions/_fzf_report_diff_type.fish
-      - exact_functions/_fzf_report_file_type.fish
-      - exact_functions/_fzf_search_directory.fish
-      - exact_functions/_fzf_search_git_log.fish
-      - exact_functions/_fzf_search_git_status.fish
-      - exact_functions/_fzf_search_history.fish
-      - exact_functions/_fzf_search_processes.fish
-      - exact_functions/_fzf_search_variables.fish
-      - exact_functions/_fzf_wrapper.fish
-      - exact_functions/fzf_configure_bindings.fish
+      - completions/fzf_configure_bindings.fish
+      - conf.d/fzf.fish
+      - functions/_fzf_configure_bindings_help.fish
+      - functions/_fzf_extract_var_info.fish
+      - functions/_fzf_preview_changed_file.fish
+      - functions/_fzf_preview_file.fish
+      - functions/_fzf_report_diff_type.fish
+      - functions/_fzf_report_file_type.fish
+      - functions/_fzf_search_directory.fish
+      - functions/_fzf_search_git_log.fish
+      - functions/_fzf_search_git_status.fish
+      - functions/_fzf_search_history.fish
+      - functions/_fzf_search_processes.fish
+      - functions/_fzf_search_variables.fish
+      - functions/_fzf_wrapper.fish
+      - functions/fzf_configure_bindings.fish
