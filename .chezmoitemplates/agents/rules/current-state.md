@@ -1,13 +1,9 @@
-### Current State Only
+### Focus on current state
 
-When changing code, tests, specs, or docs, write the result as the intended project state, not as a narrative of the transition. A reader should not need to know what changed today, what used to exist, or why the edit happened.
+When editing code, tests, specs, docs, comments, docstrings, or agent context, describe the intended project state—not the transition that produced it. A reader should not need change history to understand the result. If `func_a` changes from task X to task Y, document that it performs task Y; do not say it “now performs Y instead of X.”
 
-Default stance: the updated behavior has always been the design. Use positive current-state language for names, examples, assertions, requirements, comments, and docs.
+Use current domain language in names, examples, assertions, requirements, and test descriptions. Avoid `new`, `old`, `previous`, `now`, `renamed`, `updated`, `legacy`, and before/after framing unless multiple modes, migration behavior, or a compatibility contract remain part of the supported system. Comments should explain only enduring constraints or invariants.
 
-- Do not mention `new`, `old`, `previous`, `now`, `renamed`, `updated`, `legacy`, `migration`, `before/after`, or `changed to` unless the project genuinely supports multiple live modes or migration behavior.
-- Remove warnings that only make sense because of edit history. For example, after renaming `target` to `selector`, say what `selector` is; do not warn readers not to confuse it with `target`.
-- Tests should assert current requirements and use current domain language. Test names should describe the condition and expected behavior, not the refactor, regression, or former bug unless exercising a permanent compatibility contract.
-- Specs and docs should state supported behavior, constraints, and examples. Put rationale, rejected alternatives, rollout notes, and issue history in commits, PRs, ADRs, CHANGELOG, DONE.md, or migration docs when those artifacts are explicitly part of the project.
-- Code comments should explain only enduring constraints or invariants. If a comment depends on knowing the old implementation, rewrite or delete it.
+Keep change history, decision rationale, rejected alternatives, and rollout context in artifacts designed to preserve them: commits, PRs, ADRs, changelogs, DONE.md, or dedicated migration documents.
 
-Before finalizing any edit, ask: does this line make sense to someone seeing only the current intended project? If not, make it current-state prose or remove it.
+Before finalizing, ask: would this make sense to someone who knows only the intended current project? If not, rewrite it as current-state guidance or remove it.

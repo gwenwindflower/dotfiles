@@ -4,7 +4,7 @@
 
 {{ joinPath .chezmoi.sourceDir ".chezmoitemplates/agents/rules/primary-user.md.age" | include | decrypt }}
 
-{{ template "agents/rules/communication-style.md" . }}
+{{ template "agents/rules/communication.md" . }}
 
 {{ template "agents/rules/interpretation.md" . }}
 
