@@ -10,6 +10,7 @@ dot_agents/CLAUDE.md
 TODO.md
 opencode.json
 biome.json
+nvim.log
 # Source files for symlinked targets
 # These are the actual files that symlink_ entries point to.
 symsources/
