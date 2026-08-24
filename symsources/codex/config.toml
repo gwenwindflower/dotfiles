@@ -75,6 +75,7 @@ writable_roots = [
 [tui]
 pet = "disabled"
 show_tooltips = false
+vim_mode_default = true
 theme = "catppuccin-frappe"
 status_line = ["model-with-reasoning", "branch-changes", "five-hour-limit", "weekly-limit", "task-progress", "context-used", "approval-mode"]
 status_line_use_colors = true
