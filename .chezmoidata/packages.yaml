@@ -229,7 +229,6 @@ packages:
           - loom
           - microsoft-teams
           - slack
-          - superwhisper
     cargo:
       core:
         - basalt-tui
