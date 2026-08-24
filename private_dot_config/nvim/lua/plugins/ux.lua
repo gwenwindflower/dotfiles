@@ -256,20 +256,20 @@ return {
     opts = function(_, opts)
       return vim.tbl_deep_extend("force", opts or {}, {
         picker = {
-          win = {
-            input = {
-              keys = {
-                ["<c-p>"] = { "preview_scroll_up", mode = { "i", "n" } },
-                ["<c-n>"] = { "preview_scroll_down", mode = { "i", "n" } },
-              },
-            },
-            list = {
-              keys = {
-                ["<c-p>"] = { "preview_scroll_up", mode = { "i", "n" } },
-                ["<c-n>"] = { "preview_scroll_down", mode = { "i", "n" } },
-              },
-            },
-          },
+          --   win = {
+          --     input = {
+          --       keys = {
+          --         ["<c-p>"] = { "preview_scroll_up", mode = { "i", "n" } },
+          --         ["<c-n>"] = { "preview_scroll_down", mode = { "i", "n" } },
+          --       },
+          --     },
+          --     list = {
+          --       keys = {
+          --         ["<c-p>"] = { "preview_scroll_up", mode = { "i", "n" } },
+          --         ["<c-n>"] = { "preview_scroll_down", mode = { "i", "n" } },
+          --       },
+          --     },
+          --   },
           ui_select = true,
           prompt = " ",
         },
