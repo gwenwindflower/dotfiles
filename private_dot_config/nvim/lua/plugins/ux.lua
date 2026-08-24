@@ -271,7 +271,10 @@ return {
             },
           },
           ui_select = true,
-          prompt = " ",
+          prompt = " ",
+        },
+        input = {
+          icon = " ",
         },
         lazygit = {
           theme = {
