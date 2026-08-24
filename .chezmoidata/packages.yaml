@@ -96,7 +96,6 @@ packages:
           - luajit
           - luarocks
           - macchina
-          - microsandbox
           - mise
           - mole
           - moor
@@ -166,13 +165,13 @@ packages:
         work:
           - graphite
           - llama.cpp
+          - microsandbox
       casks:
         core:
           - 1password
           - 1password-cli
           - anthropics/tap/ant
           - arc
-          - canario
           - cap
           - claude
           - claude-code
@@ -223,6 +222,7 @@ packages:
           - mullvad-browser
           - signal
         work:
+          - canario
           - fathom
           - google-chrome
           - linear
