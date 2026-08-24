@@ -11,6 +11,7 @@ packages:
           - denisotree/tuitab
           - huseyinbabal/tap
           - jesseduffield/lazydocker
+          - kiki-ki/tap
           - lightdash/lightdash
           - mutagen-io/mutagen
           - oven-sh/bun
@@ -115,6 +116,7 @@ packages:
           - procs
           - pulumi
           - pygments
+          - qo
           - rclone
           - redpanda
           - rem-cli
