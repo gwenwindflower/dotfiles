@@ -233,6 +233,7 @@ packages:
       core:
         - basalt-tui
         - cargo-update
+        - iching
         - linear-cli
         - nightlight
       personal: []
