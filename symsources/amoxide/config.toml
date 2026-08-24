@@ -7,7 +7,7 @@ ghscr = 'gh search code "{{1}} repo:{{2}}"'
 ghsld = 'gh search code "{{1}} repo:lightdash/lightdash"'
 ghsldw = 'gh search code --web "{{1}} repo:lightdash/lightdash"'
 gri = "git rebase -i --autosquash HEAD~{{1}}"
-hlpr = "{{1}} --help | bat -plhelp | rg {{2}}"
+helpr = "{{1}} --help | bat -plhelp | rg {{2}}"
 ltd = "lsd --tree --depth={{1}}"
 pport = "lsof -i :{{1}}"
 ski = "aubx skills@latest"
