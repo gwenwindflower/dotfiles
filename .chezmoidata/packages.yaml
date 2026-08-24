@@ -45,6 +45,7 @@ packages:
           - cmake
           - cmus
           - coreutils
+          - countdown
           - crush
           - ctx7
           - d2
