@@ -204,6 +204,7 @@ packages:
           - ia-presenter
           - karabiner-elements
           - kitty
+          - linear
           - lookaway
           - mimestream
           - monodraw
@@ -225,7 +226,6 @@ packages:
           - canario
           - fathom
           - google-chrome
-          - linear
           - loom
           - microsoft-teams
           - slack
