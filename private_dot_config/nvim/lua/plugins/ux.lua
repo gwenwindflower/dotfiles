@@ -167,8 +167,10 @@ return {
       completion = {
         menu = {
           border = "rounded",
+          -- markdown stays quiet except in the Obsidian vault, where
+          -- markdown-oxide's wikilink/tag completions should auto-pop
           auto_show = function()
-            return vim.bo.filetype ~= "markdown"
+            return vim.bo.filetype ~= "markdown" or vim.b.obsidian_buffer == true
           end,
         },
         documentation = {

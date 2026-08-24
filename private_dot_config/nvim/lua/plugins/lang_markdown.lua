@@ -93,6 +93,28 @@ return {
       local method = "textDocument/publishDiagnostics"
       local handler = opts.servers.marksman.handlers[method] or vim.lsp.handlers[method]
       opts.servers.marksman.handlers[method] = filter_chezmoi_marksman_diagnostics(handler)
+
+      -- The girlOS vault has no .git/.marksman.toml, so requiring a workspace
+      -- root keeps marksman out of the vault, where markdown-oxide and
+      -- obsidian-ls serve markdown instead (see docs/obsidian.md)
+      opts.servers.marksman.workspace_required = true
+
+      local vault = require("config.vault")
+      opts.servers.markdown_oxide = {
+        capabilities = {
+          -- oxide needs dynamic file-watch registration for live re-indexing
+          -- and its create-unresolved-file code action
+          workspace = { didChangeWatchedFiles = { dynamicRegistration = true } },
+        },
+        root_dir = function(bufnr, on_dir)
+          if vault.buf_in_vault(bufnr) then
+            on_dir(vault.root)
+          end
+        end,
+        on_attach = function(_, bufnr)
+          vim.lsp.codelens.enable(true, { bufnr = bufnr })
+        end,
+      }
       return opts
     end,
   },
