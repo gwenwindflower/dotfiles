@@ -16,6 +16,7 @@ packages:
           - oven-sh/bun
           - pulumi/tap
           - redpanda-data/tap
+          - rubysolo/tools
           - sassman/tap
           - supermodellabs/tap
           - superradcompany/tap
@@ -35,6 +36,7 @@ packages:
           - bat
           - blueutil
           - bottom
+          - brows
           - bun
           - cargo-binstall
           - chafa
