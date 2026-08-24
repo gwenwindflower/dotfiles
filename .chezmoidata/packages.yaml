@@ -232,6 +232,7 @@ packages:
           - superwhisper
     cargo:
       core:
+        - basalt-tui
         - cargo-update
         - linear-cli
         - nightlight
