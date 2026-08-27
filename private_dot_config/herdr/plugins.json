@@ -1,5 +1,91 @@
 [
   {
+    "plugin_id": "heraldr",
+    "name": "Heraldr",
+    "version": "0.0.1",
+    "min_herdr_version": "0.7.5",
+    "description": "Dress herdr tabs as [N] <icon> <program> and feed sidebar rows composable tokens: $jump (workspace jump number) plus $space/$worktree (repo + nested worktree names for agent rows). Labels stay bare for the agents panel and navigator; manual renames win. Icons reload from icons.conf with a compiled fallback.",
+    "manifest_path": "/Users/winnie/dev/_herdr/heraldr/herdr-plugin.toml",
+    "plugin_root": "/Users/winnie/dev/_herdr/heraldr",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "build": [
+      {
+        "command": [
+          "sh",
+          "scripts/install-binary.sh"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "clear",
+        "title": "Heraldr: strip all chrome",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "heraldr",
+          "clear"
+        ]
+      },
+      {
+        "id": "reset",
+        "title": "Heraldr: reset tab to automatic naming",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "heraldr",
+          "reset"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "on": "pane.agent_detected",
+        "command": [
+          "heraldr",
+          "kick"
+        ]
+      },
+      {
+        "on": "pane.focused",
+        "command": [
+          "heraldr",
+          "kick"
+        ]
+      },
+      {
+        "on": "tab.created",
+        "command": [
+          "heraldr",
+          "kick"
+        ]
+      },
+      {
+        "on": "tab.focused",
+        "command": [
+          "heraldr",
+          "kick"
+        ]
+      },
+      {
+        "on": "workspace.created",
+        "command": [
+          "heraldr",
+          "kick"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "local"
+    }
+  },
+  {
     "plugin_id": "herdr-navigator",
     "name": "Herdr Navigator",
     "version": "0.3.6",
@@ -208,92 +294,6 @@
       "resolved_commit": "94f30cf4e9ac76ddf185a3acd0977be728fa4106",
       "managed_path": "/Users/winnie/.config/herdr/plugins/github/herdr-splits-d880c4924f2b",
       "installed_unix_ms": 1787156291205
-    }
-  },
-  {
-    "plugin_id": "livery",
-    "name": "Livery",
-    "version": "0.0.1",
-    "min_herdr_version": "0.7.5",
-    "description": "Dress herdr tabs as [N] <icon> <program> and feed sidebar rows composable tokens: $jump (workspace jump number) plus $space/$worktree (repo + nested worktree names for agent rows). Labels stay bare for the agents panel and navigator; manual renames win. Icons reload from icons.conf with a compiled fallback.",
-    "manifest_path": "/Users/winnie/dev/_herdr/livery/herdr-plugin.toml",
-    "plugin_root": "/Users/winnie/dev/_herdr/livery",
-    "enabled": true,
-    "platforms": [
-      "linux",
-      "macos"
-    ],
-    "build": [
-      {
-        "command": [
-          "sh",
-          "scripts/install-binary.sh"
-        ]
-      }
-    ],
-    "actions": [
-      {
-        "id": "clear",
-        "title": "Livery: strip all chrome",
-        "contexts": [
-          "global"
-        ],
-        "command": [
-          "livery",
-          "clear"
-        ]
-      },
-      {
-        "id": "reset",
-        "title": "Livery: reset tab to automatic naming",
-        "contexts": [
-          "global"
-        ],
-        "command": [
-          "livery",
-          "reset"
-        ]
-      }
-    ],
-    "events": [
-      {
-        "on": "pane.agent_detected",
-        "command": [
-          "livery",
-          "kick"
-        ]
-      },
-      {
-        "on": "pane.focused",
-        "command": [
-          "livery",
-          "kick"
-        ]
-      },
-      {
-        "on": "tab.created",
-        "command": [
-          "livery",
-          "kick"
-        ]
-      },
-      {
-        "on": "tab.focused",
-        "command": [
-          "livery",
-          "kick"
-        ]
-      },
-      {
-        "on": "workspace.created",
-        "command": [
-          "livery",
-          "kick"
-        ]
-      }
-    ],
-    "source": {
-      "kind": "local"
     }
   },
   {

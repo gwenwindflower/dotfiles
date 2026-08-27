@@ -143,8 +143,8 @@ description = "herds-splits resize right"
 [[keys.command]]
 key = "prefix+alt+c"
 type = "plugin_action"
-command = "livery.reset"
-description = "reset tab livery"
+command = "heraldr.reset"
+description = "heraldr reset tab"
 
 [[keys.command]]
 key = ["prefix+o", "shift+super+o"]
