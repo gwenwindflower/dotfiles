@@ -1,0 +1,36 @@
+{{ if eq .chezmoi.os "darwin" "linux" -}}
+#!/bin/bash
+# Refresh month: {{ now | date "2006-01" }}
+
+set -euo pipefail
+
+{{ template "script-log.sh" }}
+{{- if eq .chezmoi.os "darwin" }}
+{{ template "brew-preamble.sh" . }}
+{{- end }}
+
+log_step "GitHub CLI extensions"
+
+if ! command -v gh >/dev/null 2>&1; then
+  log_error "gh not found; system package installation should have installed it"
+  exit 1
+fi
+
+extensions=(dlvhdr/gh-dash)
+
+log_info "Installing or updating ${#extensions[@]} GitHub CLI extension(s)..."
+for extension in "${extensions[@]}"; do
+  gh extension install "$extension" --force
+done
+
+for extension in "${extensions[@]}"; do
+  if ! gh extension list | awk -v repository="$extension" '$3 == repository { found = 1 } END { exit !found }'; then
+    log_error "$extension installation completed but the extension is not registered"
+    exit 1
+  fi
+done
+
+log_success "GitHub CLI extensions are available"
+{{ else -}}
+{{ fail (printf "unsupported OS: %s" .chezmoi.os) }}
+{{ end -}}
