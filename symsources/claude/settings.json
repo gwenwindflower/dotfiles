@@ -493,7 +493,38 @@
       "Allow all projects within a ~/dev/_supermodel/_clients/<client> directory to explore and read from each other"
     ],
     "soft_deny": [
-      "User-level configs: editing dotfiles in chezmoi is allowed, but applying them out into userspace or editing user-level configs directly is blocked"
+      "$defaults",
+      "User-level configs: editing dotfiles in chezmoi is allowed, but applying them out into userspace or editing user-level configs directly is blocked",
+      "Trust and permission surfaces: never edit trustfiles, allowlists, permission or sandbox settings, or build-script and postinstall approvals (agent permissions and sandbox config, mise trust, direnv allow, cargo/npm script trust, MCP or plugin trust state) to unblock work — surface the block and let the user decide. Change these only on a direct explicit ask to change that surface itself, never as a step toward another goal"
+    ],
+    "environment": [
+      "### Org-wide",
+      "**Organization**: Lightdash (@lightdash) for work; Supermodel Labs (@supermodellabs) for open-source side projects; personal work under @gwenwindflower",
+      "**Cloud provider(s)**: None configured",
+      "**Repository visibility**: assume private unless the remote host and repo name indicate otherwise, or a visibility check in the transcript shows public — the gh visibility/branch-protection check was not queryable here (this repo has no configured remotes), so visibility is unknown for `~/dev/_herdr/wtherdr`; the README documents it as a published Herdr plugin installed via `herdr plugin install gwenwindflower/wtherdr`, so treat pushes to any `github.com/gwenwindflower/wtherdr` remote as potentially publishing",
+      "**Internal sharing / snippet hosting**: None configured — treat public paste/gist services as outside the trust boundary",
+      "**Secrets management**: 1Password (SSH commit signing runs through it; never disable signing, stop and ask instead)",
+      "**Default / protected branches**: unknown — origin/HEAD is unset and the gh rulesets/branch-protection query was not queryable here; the user's stated convention is trunk-based development with linear history, never force-push to main or shared branches, and never merge with a merge commit",
+      "**CI/CD deploy targets**: None configured — GitHub Actions workflows exist under `.github/workflows` (CI badge in README), but no deploy target is declared",
+      "**Network posture**: None configured",
+      "**Source control**: The trusted repo and its remote(s) only (no additional orgs configured) — as scoped by the Trusted repo and Repository visibility entries above; `gh` is the expected tool for GitHub work beyond core git, read-before-write, and `gh auth token` must never be run",
+      "**Trusted internal domains**: None configured",
+      "**Trusted cloud buckets**: None configured",
+      "**Key internal services**: None configured",
+      "**Internal package registry**: None configured",
+      "**Sensitive data locations & audiences**: any file or store holding personal data, confidential business data, credentials, regulated data, or similarly sensitive material; preserve exact handles when known and share only with audiences cleared at the [named+specifics] bar",
+      "**Data retention / declassification**: None configured",
+      "**Sensitive remote targets**: any namespace, host, or container whose name carries `prod` or `production` as a whole word or name segment (hyphen/underscore/dot-delimited — e.g. matches `prod-db`, not `producer`)",
+      "**Protected deployment namespaces / environments**: None configured — fall back to the Sensitive remote targets heuristic",
+      "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries `prod` or `production` as a whole word or name segment",
+      "### User-specific",
+      "**Primary use of Claude Code**: software development — spec- and test-driven work on developer tooling (Rust/Go/TypeScript/Python CLIs and TUIs), dotfiles managed with chezmoi, and docs/prose editing",
+      "**Trusted repo**: The git repository the agent started in (its working directory) and its configured remote(s) — here `/Users/winnie/dev/_herdr/wtherdr`, which currently has no configured remote. When the repo's public/private visibility is given — by the Repository visibility entry or the user's own message — use it to scope what is OK to commit or push there: confidential material is fine in a private repo; in a public one, only that repo's own work is — and content ported, repointed, or first read from outside this session's repo is not its own work, whoever directed the port. Visibility scopes confidential material only: secrets and sensitive data (personal & entrusted) are never cleared into any repo by its visibility (see Definitions).",
+      "**Org-specific CLIs**: `herdr` (this project's host application), plus routinely used personal tooling seen across projects: `chezmoi`, `linear-cli`, `agent-browser`, `agentsview`, `rclone`, `uv`, `deno`, `mint`, `rip`/`fd`/`rg`/`bat`/`lsd`/`sd` as preferred modern replacements",
+      "**Cross-worktree read qualifier**: worktrees may explore and read from the source worktrees they branched off from (routine, per existing settings)",
+      "**Client-tree read qualifier**: projects under `~/dev/_supermodel/_clients/<client>/` may explore and read from each other (routine, per existing settings)",
+      "**User-level config qualifier**: editing dotfiles inside the chezmoi source repo is routine; applying them out into userspace or editing user-level configs directly is not",
+      "**Fish shell qualifier**: never create fish universal variables (`set -U` / `set -Ux`); export with `set -gx` in the dotfiles repo instead"
     ]
   },
   "voiceEnabled": true,
