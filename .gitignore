@@ -1,1 +1,3 @@
 nvim.log
+tmp/*
+!tmp/.gitkeep

@@ -20,6 +20,7 @@ OSes supported:
 .chezmoitemplates/agents/         # Shared agent prompt/rule fragments (assembled into platform guidance files)
 
 docs/                             # Repo-level reference docs (chezmoi-ignored); agent-config.md + capabilities/
+tmp/                              # Scratch space (git- and chezmoi-ignored); plans, reviews, references
 
 private_dot_config/               # → ~/.config/
   fish/                           #   config.fish.tmpl + exact_functions/ + exact_completions/ + exact_conf.d/
@@ -78,6 +79,10 @@ symsources/git/                   # gitconfig (root config; [include]s pull frag
 ### Repo docs
 
 `docs/` holds repo-level reference docs — chezmoi-ignored, so they stay in the repo and never deploy to `~`. One file per domain, loaded on demand: durable explanation belongs there rather than in this file. Docs scoped to a subtree live with it, like `.utils/docs/` for the Deno utilities.
+
+### Scratch space
+
+`tmp/` is the home for anything transient — plans, review notes, research, references, generated output. Its contents are ignored by both git and chezmoi (only `.gitkeep` is tracked), so nothing there leaks into a commit or deploys to `~`. Put scratch work there instead of at the repo root; root-level files need their own ignore entries and are easy to commit by accident.
 
 ### OS conditionals
 

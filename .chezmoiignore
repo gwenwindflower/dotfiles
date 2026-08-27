@@ -1,5 +1,6 @@
 # in-repo dev files
 docs/
+tmp/
 ARCHITECTURE.md
 CLAUDE.md
 PLAN.md
