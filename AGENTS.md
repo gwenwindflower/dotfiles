@@ -41,7 +41,6 @@ private_dot_config/               # → ~/.config/
   marimo/, spotify-player/        #   Python notebooks, Spotify TUI
   herdr/                          #   Herdr config (symlinked), plugins are not included in chezmoi as they can be installed idempotently via herdr
   worktrunk/                      #   Worktrunk config
-  kulala/                         #   Kulala .http collections — layered env JSON per API dir (see below)
 
 dot_claude/                       # → ~/.claude/
   keybindings.json, statusline.toml  # Copied normally
@@ -157,18 +156,6 @@ The `exact_` directory prefix opts a dir into full reconciliation: on `chezmoi a
 The prefix is stripped on deploy, so `dot_agents/exact_skills/` still produces `~/.agents/skills/` — no other refs need to change when adding it.
 
 `exact_` does not recurse: each directory level reconciles only its own immediate entries, so a subdirectory needs its own `exact_` prefix to have its stale files cleaned up too. `dot_agents/exact_skills/` carries `exact_` on every nested directory (each skill folder and any `references/`/`templates/`/etc. inside it) so drifted or renamed skill files never linger in the deployed target.
-
-### Kulala collections
-
-`private_dot_config/kulala/` holds `.http` request collections, one directory per API. Kulala merges
-every `http-client.env.json` it finds walking up from the open file, closest winning, so directory
-depth is the layering mechanism: shared headers at the root, hosts per API, and instance-specific
-ids and secrets in `http-client.private.env.*` files that `.chezmoiignore` keeps out of this public
-repo. `_local/` holds customer and one-off investigations and is ignored wholesale.
-
-Deliberately **not** `exact_`: kulala and the `kula` fish function both write private env files into
-these target dirs, and full reconciliation would delete them on every apply. Authoring guidance and
-the verified list of kulala mechanisms that silently fail lives in the `kulala-http` skill.
 
 ### Nerd Font icons
 

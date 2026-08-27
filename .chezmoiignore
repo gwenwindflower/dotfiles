@@ -25,11 +25,6 @@ MISE-MIGRATION.md
 # Neovim in-repo agent docs
 .config/nvim/AGENTS.md
 .config/nvim/docs
-# Kulala private layers — resolved secrets, 1Password reference templates, and
-# local-only investigation collections never enter the public repo.
-.config/kulala/_local
-.config/kulala/**/http-client.private.env.json
-.config/kulala/**/http-client.private.env.op.json
 
 {{ if ne .chezmoi.os "darwin" }}
 # Darwin-only configs (excluded on Linux)

@@ -4,13 +4,6 @@ nvim.log
 tmp/*
 !tmp/.gitkeep
 
-# Kulala private layers — resolved secrets, 1Password reference templates, and
-# local-only investigation collections. Mirrors .chezmoiignore so these never
-# land in the repo even if they are added to the source tree.
-private_dot_config/kulala/_local/
-private_dot_config/kulala/**/http-client.private.env.json
-private_dot_config/kulala/**/http-client.private.env.op.json
-
 # LazyVim's own excludes, scoped to the nvim source tree. The deployed
 # private_dot_config/nvim/dot_gitignore only applies when ~/.config/nvim is
 # checked out as its own repo, which it is not here.
