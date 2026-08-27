@@ -210,7 +210,6 @@ packages:
           - mimestream
           - monodraw
           - mullvad-vpn
-          - notion
           - notion-calendar
           - notion-cli
           - obsidian
