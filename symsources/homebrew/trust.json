@@ -29,6 +29,7 @@
     "yakitrak/yakitrak/notesmd-cli"
   ],
   "trustedcasks": [
-    "anthropics/tap/ant"
+    "anthropics/tap/ant",
+    "lzhgus/tap/capso"
   ]
 }
