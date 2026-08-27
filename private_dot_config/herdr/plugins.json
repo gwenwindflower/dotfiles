@@ -170,10 +170,9 @@
       "kind": "github",
       "owner": "thanhdat77",
       "repo": "herdr-navigator",
-      "requested_ref": "v0.3.6",
-      "resolved_commit": "e12a97c5d9ddcd76ba18c985909ffeb4827afa6a",
+      "resolved_commit": "9bdf30f03f53730e6232377a3fca3bdc6ed9f3ca",
       "managed_path": "/Users/winnie/.config/herdr/plugins/github/herdr-navigator-3a5a6fa5dfb5",
-      "installed_unix_ms": 1787101432595
+      "installed_unix_ms": 1787709183479
     }
   },
   {
@@ -293,7 +292,7 @@
       "repo": "herdr-splits.nvim",
       "resolved_commit": "94f30cf4e9ac76ddf185a3acd0977be728fa4106",
       "managed_path": "/Users/winnie/.config/herdr/plugins/github/herdr-splits-d880c4924f2b",
-      "installed_unix_ms": 1787156291205
+      "installed_unix_ms": 1787709195973
     }
   },
   {
