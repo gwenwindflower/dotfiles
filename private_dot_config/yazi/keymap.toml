@@ -135,3 +135,28 @@ desc = "open with duckdb"
 on = ["g", "u"]
 run = "plugin duckdb -ui"
 desc = "open with duckdb ui"
+
+[[mgr.prepend_keymap]]
+on = "C"
+run = "plugin chezmoi"
+desc = "chezmoi menu"
+
+[[mgr.prepend_keymap]]
+on = ["c", "m"]
+run = "plugin chmod"
+desc = "chmod on selected files"
+
+[[mgr.prepend_keymap]]
+on = ["c", "p"]
+run = "plugin convert -- --extension='png'"
+desc = "Convert to png"
+
+[[mgr.prepend_keymap]]
+on = ["c", "j"]
+run = "plugin convert -- --extension='jpg'"
+desc = "Convert to jpg"
+
+[[mgr.prepend_keymap]]
+on = ["c", "w"]
+run = "plugin convert -- --extension='webp'"
+desc = "Convert to webp"

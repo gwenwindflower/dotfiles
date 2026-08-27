@@ -53,6 +53,21 @@ use = "wylie102/duckdb"
 rev = "3f8c863"
 hash = "87b9233a74325e95011670ed20bbd0d4"
 
+[[plugin.deps]]
+use = "gwenwindflower/chezmoi"
+rev = "0432554"
+hash = "c8b4a1834be978eac8fa45f50901e2fa"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:chmod"
+rev = "c591a36"
+hash = "87472b05a8c420100f6a2b9cde1e7746"
+
+[[plugin.deps]]
+use = "atareao/convert"
+rev = "ce060d9"
+hash = "1c0465351f2a344e842f065ab316f265"
+
 [[flavor.deps]]
 use = "yazi-rs/flavors:catppuccin-frappe"
 rev = "20b47bf"
