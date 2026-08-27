@@ -21,14 +21,6 @@ url = "*.tsv"
 run = "duckdb"
 
 [[plugin.prepend_previewers]]
-url = "*.tsv"
-run = "duckdb"
-
-[[plugin.prepend_previewers]]
-url = "*.json"
-run = "duckdb"
-
-[[plugin.prepend_previewers]]
 url = "*.parquet"
 run = "duckdb"
 
@@ -54,22 +46,18 @@ url = "*/"
 run = "git"
 group = "git"
 
-[[plugin.prepend_preloaders]]
-url = "*.csv"
-run = "duckdb"
-
-[[plugin.prepend_preloaders]]
-url = "*.tsv"
-run = "duckdb"
-
-[[plugin.prepend_preloaders]]
-url = "*.json"
-run = "duckdb"
-
-[[plugin.prepend_preloaders]]
-url = "*.parquet"
-run = "duckdb"
-
-[[plugin.prepend_preloaders]]
-url = "*.xlsx"
-run = "duckdb"
+# [[plugin.prepend_preloaders]]
+# url = "*.csv"
+# run = "duckdb"
+#
+# [[plugin.prepend_preloaders]]
+# url = "*.tsv"
+# run = "duckdb"
+#
+# [[plugin.prepend_preloaders]]
+# url = "*.parquet"
+# run = "duckdb"
+#
+# [[plugin.prepend_preloaders]]
+# url = "*.xlsx"
+# run = "duckdb"
