@@ -291,7 +291,7 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "fable",
+  "model": "claude-fable-5[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -464,7 +464,7 @@
     ]
   },
   "syntaxHighlightingDisabled": false,
-  "effortLevel": "xhigh",
+  "effortLevel": "medium",
   "awaySummaryEnabled": false,
   "tui": "fullscreen",
   "voice": {
