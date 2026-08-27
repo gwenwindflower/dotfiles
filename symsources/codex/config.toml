@@ -18,10 +18,7 @@ sqlite_home = "~/.codex/sqlite"
 model_reasoning_effort = "high"
 suppress_unstable_features_warning = true
 
-notify = [
-  "/Users/winnie/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient",
-  "turn-ended"
-]
+notify = ["/Users/winnie/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended"]
 service_tier = "default"
 
 [sandbox_workspace_write]
@@ -319,6 +316,7 @@ allow_local_binding = true
 "pythonhosted.org" = "allow"
 "registry.npmjs.org" = "allow"
 "releases.astral.sh" = "allow"
+"results-receiver.actions.githubusercontent.com" = "allow"
 "schemastore.org" = "allow"
 "sparrow.cloudflare.com" = "allow"
 "storage.googleapis.com" = "allow"
@@ -372,12 +370,10 @@ trusted_hash = "sha256:09b9fff83447c926af5f61010bc3dd3c8f2e6194c7c06b08f8acbf808
 enabled = true
 
 [marketplaces.openai-bundled]
-last_updated = "2026-08-07T23:51:46Z"
 source_type = "local"
 source = "/Users/winnie/.codex/.tmp/bundled-marketplaces/openai-bundled"
 
 [marketplaces.openai-primary-runtime]
-last_updated = "2026-08-06T23:11:41Z"
 source_type = "local"
 source = "/Users/winnie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
 
@@ -414,9 +410,7 @@ GIT_CONFIG_KEY_1 = "tag.gpgsign"
 GIT_CONFIG_VALUE_1 = "false"
 GIT_CONFIG_KEY_2 = "user.name"
 GIT_CONFIG_VALUE_2 = "Codex (winnie)"
-BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
-NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "323bc3e687e17d7e377238d9f4c69111c4d0e6219103b6316d8c52082489533b"
-NODE_REPL_TRUSTED_CODE_PATHS = "/Users/winnie/.codex:/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "9230e2bd8b24b7ac7a0ba6774c64bf0d78ecdabbdd91d0ed627b02a587bae2df"
 
 [plugins."computer-use@openai-bundled"]
 enabled = false
@@ -463,6 +457,9 @@ enabled = true
 [plugins."template-creator@openai-primary-runtime"]
 enabled = true
 
+[plugins."codex-app-tools@openai-bundled"]
+enabled = true
+
 [mcp_servers.node_repl]
 args = []
 command = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl"
@@ -474,33 +471,34 @@ NODE_REPL_NODE_MODULE_DIRS = "/Applications/ChatGPT.app/Contents/Resources/cua_n
 NODE_REPL_NODE_PATH = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node"
 NODE_REPL_TRUSTED_CODE_PATHS = "/Users/winnie/.codex:/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
 CODEX_HOME = "/Users/winnie/.codex"
-NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "323bc3e687e17d7e377238d9f4c69111c4d0e6219103b6316d8c52082489533b"
 BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+BROWSER_USE_TINYSKY_ENABLED = "0"
 NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
 NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = "Control desktop apps on macOS through Computer Use."
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.803.41515"
+BROWSER_USE_CODEX_APP_VERSION = "26.820.60940"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/winnie/.codex/plugins/cache/openai-bundled/browser/26.820.60940/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
 CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
 
 [mcp_servers.indi]
-enabled = false
 command = "indi"
 args = ["mcp", "serve"]
+enabled = false
 
 [mcp_servers.indi.env]
-INDI_SEARCH__ENABLED_MODES = '["fts", "vector", "rrf"]'
+INDI_COST__MAX_BYTES_BILLED = "1_500_000_000"
+INDI_EMBEDDING__MODEL_PATH = "/Users/winnie/dev/_supermodel/_clients/indivisible/indi/models/embedding/nomic-embed-text-v1.5.f16.gguf"
+INDI_GRAPH__ROOT = "/Users/winnie/dev/_supermodel/_clients/indivisible/indi/ctx"
+INDI_INDEX__BACKEND = "lancedb"
 INDI_INDEX__PATH = "/Users/winnie/dev/_supermodel/_clients/indivisible/indi/.lancedb"
 INDI_SEARCH__DEFAULT_MODE = "rrf"
-INDI_GRAPH__ROOT = "/Users/winnie/dev/_supermodel/_clients/indivisible/indi/ctx"
-INDI_EMBEDDING__MODEL_PATH = "/Users/winnie/dev/_supermodel/_clients/indivisible/indi/models/embedding/nomic-embed-text-v1.5.f16.gguf"
-INDI_INDEX__BACKEND = "lancedb"
+INDI_SEARCH__ENABLED_MODES = '["fts", "vector", "rrf"]'
 INDI_WAREHOUSE__BACKEND = "bigquery"
-INDI_WAREHOUSE__LOCATION = "US"
 INDI_WAREHOUSE__CREDENTIALS_PATH = "/Users/winnie/dev/_supermodel/_clients/indivisible/indi/.secrets/bq_service_account_keyfile.json"
-INDI_COST__MAX_BYTES_BILLED = "1_500_000_000"
-INDI_WAREHOUSE__PROJECT = "proj-tmc-mem-in"
 INDI_WAREHOUSE__DEFAULT_DATASET = "dbt"
+INDI_WAREHOUSE__LOCATION = "US"
+INDI_WAREHOUSE__PROJECT = "proj-tmc-mem-in"
 
 [mcp_servers.computer-use]
 command = "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient"
@@ -659,6 +657,51 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/Users/winnie/dev/_yazi/searchjump.yazi"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/_work/lightdash-bootcamp/migrations/launchgood/data-warehouse"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/depop"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/_herdr/livery"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/_work/lightdash-bootcamp/training/shimano"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-08-13/wh"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-08-14/gi"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/_herdr/heraldr"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/tackle"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/_herdr/wtherdr"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-08-23/apply-the-agent-context-engineering-skill"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-08-23/apply-the-agent-context-engineering-skill-2"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/_yazi/chezmoi.yazi"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/_nvim/dbt.nvim"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-08-26/re"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-08-27/new-chat"]
 trust_level = "trusted"
 
 [apps._default]
