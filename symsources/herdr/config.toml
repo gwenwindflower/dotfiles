@@ -42,14 +42,16 @@ toggle_sidebar = ["prefix+b"]
 goto = "prefix+w"
 # focus_pane_* = handled by herdr-splits plugin
 close_pane = ["prefix+x", "prefix+d"]
-last_pane = ["prefix+`", "alt+shift+p"]
+last_pane = ["prefix+`", "ctrl+super+["]
 split_vertical = ["prefix+|", "prefix+ctrl+v"]
 split_horizontal = ["prefix+-", "prefix+ctrl+s"]
 new_tab = ["prefix+c", "shift+super+t"]
 rename_tab = "prefix+shift+c"
 previous_tab = "shift+super+h"
 next_tab = "shift+super+l"
-close_tab = ["prefix+shift+x", "prefix+ctrl+d"]
+move_tab_previous = "shift+alt+h"
+move_tab_next = "shift+alt+l"
+close_tab = "prefix+shift+d"
 switch_tab = "prefix+ctrl+1..9"
 new_workspace = "prefix+n"
 rename_workspace = "prefix+shift+n"
@@ -89,7 +91,7 @@ description = "wt create worktree"
 key = ["prefix+super+g"]
 type = "pane"
 command = "lazygit"
-description = "launch lazygit in a new pane"
+description = "lazygit temp pane"
 
 # nav
 [[keys.command]]
