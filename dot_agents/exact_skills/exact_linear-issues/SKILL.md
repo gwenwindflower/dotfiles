@@ -80,7 +80,7 @@ Rules:
 - Impact is never cut: who is affected, how badly, what a fix or ship changes for them — concise, but present. Same for bug context and customer demand. Preserve the customer's exact wording when it is safe and sharper than a paraphrase.
 - Flag demand affirmatively — which customers, how many, the stakes — but never write "no customer demand": an issue without a linked ask almost always means the link was forgotten, not that nobody asked. When nothing is attached, omit demand and state what is affirmatively known.
 - Separate the requested outcome from proposed solutions; mark unvalidated ideas as proposals. `## Open decisions` names each unresolved product call — its presence pairs with the `needs-decisions` label and means not agent-ready.
-- Repro carries a status marker: ✅ Reproduced (and by whom) or ⚠️ Unreproduced — from customer report. Never present unverified steps as confirmed.
+- Repro carries a status marker: ✅ Reproduced (and by whom); 📸 Corroborated — customer evidence (screenshot, recording, error output) matches a code read that explains it, no live run; or ⚠️ Unreproduced — from customer report. Never present unverified steps as confirmed.
 - No cause-guessing in the summary — root-cause evidence belongs in the agent brief, marked hypothesis or confirmed.
 - Environment facts only when they discriminate (version, cloud/self-hosted, warehouse), folded into Repro — not a section of unknowns.
 - De-jargon: no "leverage/robust/utilize", no restated urgency ("this is urgent due to deadlines" after Impact already says it), no sections that exist to look complete ("Suggested actions: investigate root cause").
