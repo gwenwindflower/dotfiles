@@ -29,6 +29,7 @@
     "test:stars": "deno test --allow-read scrape-github-stars_test.ts",
     "test:packy": "deno test packy_test.ts",
     "test:herdir": "deno test --allow-read --allow-write herdir_test.ts",
+    "test:herdr-agent-picker": "deno test --allow-read --allow-write --allow-run=sh herdr-agent-picker_test.ts",
     "test:git-wash": "deno test --allow-read --allow-write --allow-run=git git-wash_test.ts"
   }
 }

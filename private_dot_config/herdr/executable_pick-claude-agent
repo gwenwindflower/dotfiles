@@ -1,0 +1,35 @@
+#!/bin/sh
+
+set -eu
+
+script_dir=$(CDPATH='' cd "$(dirname "$0")" && pwd)
+. "$script_dir/agent-picker.sh"
+
+model=$(choose_option \
+  "model" \
+  "default" \
+  "fable" \
+  "opus" \
+  "sonnet" \
+  "haiku")
+
+effort=$(choose_option \
+  "effort" \
+  "default" \
+  "max" \
+  "xhigh" \
+  "high" \
+  "medium" \
+  "low")
+
+set --
+
+if [ "$model" != "default" ]; then
+  set -- "$@" --model "$model"
+fi
+
+if [ "$effort" != "default" ]; then
+  set -- "$@" --effort "$effort"
+fi
+
+launch_agent claude "$@"

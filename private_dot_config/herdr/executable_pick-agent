@@ -1,0 +1,13 @@
+#!/bin/sh
+
+set -eu
+
+script_dir=$(CDPATH='' cd "$(dirname "$0")" && pwd)
+. "$script_dir/agent-picker.sh"
+
+agent=$(choose_option \
+  "agent" \
+  "codex" \
+  "claude")
+
+exec "$script_dir/pick-$agent-agent"

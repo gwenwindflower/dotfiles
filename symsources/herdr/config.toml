@@ -62,6 +62,15 @@ close_workspace = ["prefix+alt+d", "prefix+super+d"]
 next_agent = "shift+super+n"
 previous_agent = "shift+super+p"
 
+# agents
+[[keys.command]]
+key = ["prefix+a", "shift+super+a"]
+type = "popup"
+command = '"$HOME/.config/herdr/pick-agent"'
+description = "choose and launch agent"
+width = 58
+height = 16
+
 # git
 [[keys.command]]
 key = "prefix+g"

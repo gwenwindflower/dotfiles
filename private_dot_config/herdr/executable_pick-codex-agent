@@ -1,0 +1,35 @@
+#!/bin/sh
+
+set -eu
+
+script_dir=$(CDPATH='' cd "$(dirname "$0")" && pwd)
+. "$script_dir/agent-picker.sh"
+
+model=$(choose_option \
+  "model" \
+  "default" \
+  "gpt-5.6-luna" \
+  "gpt-5.6-terra" \
+  "gpt-5.6-sol")
+
+effort=$(choose_option \
+  "effort" \
+  "default" \
+  "ultra" \
+  "max" \
+  "xhigh" \
+  "high" \
+  "medium" \
+  "low")
+
+set --
+
+if [ "$model" != "default" ]; then
+  set -- "$@" -m "$model"
+fi
+
+if [ "$effort" != "default" ]; then
+  set -- "$@" -c "model_reasoning_effort=\"$effort\""
+fi
+
+launch_agent codex "$@"
