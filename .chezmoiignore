@@ -22,6 +22,9 @@ symsources/
 # Located here for convenience for now
 .custom-claude-plugins/
 MISE-MIGRATION.md
+# Neovim in-repo agent docs
+.config/nvim/AGENTS.md
+.config/nvim/docs
 
 {{ if ne .chezmoi.os "darwin" }}
 # Darwin-only configs (excluded on Linux)
