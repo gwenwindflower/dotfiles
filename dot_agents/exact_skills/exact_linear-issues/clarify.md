@@ -16,11 +16,11 @@ Rewrite an existing product issue into the description format so a human groks i
 
 Before starting a sandbox, write down the questions you need it to answer. If these aren't clear, you don't need it. A ⚠️ Unreproduced marker is a valid state — don't run an instance just to upgrade it to ✅; reproduce only when the agent brief can't be written without it. If the issue is already clear from the customer report, screenshots, or confirmed details from the team, don't run a sandbox just to verify it — when that evidence matches a code read that explains it, mark it 📸 Corroborated. If you suspect the report is incorrect, a sandbox investigation is appropriate.
 
-**Surface what's open** — an unresolved product decision (default vs opt-in, conflicting prior designs, ambiguous scope) means the issue is not agent-ready. Still write the summary, list the decision under `## Open decisions`, comment @-mentioning whoever owns the call if high confidence on who that is, and label with `needs-decisions`. Never resolve a product decision silently.
+**Surface what's open** — an unresolved product decision (default vs opt-in, conflicting prior designs, ambiguous scope) means the issue is not agent-ready. Still write the summary, list the decision under `## Open decisions`, comment @-mentioning whoever owns the call if high confidence on who that is, and label with `needs-decisions`. Never resolve a product decision silently, and never remove readiness labels other than `needs-clarification`, which this pass resolves.
 
 **Rewrite the description** in the two-part format. Displaced detail worth keeping — design explorations, rejected alternatives, screenshots — moves to a comment or a linked doc before the rewrite lands, so it stays findable without reading issue history.
 
-**Sync metadata** — sharpen the title into a scannable outcome; set the readiness label to match reality, self-checking against the [compact rubric](compact-rubric.md) before expecting `ai-ready`. Don't add labels or priority just to fill fields.
+**Tidy metadata** — sharpen the title into a scannable outcome; link historical issues used for research or cited for context when relevant. A customer thread from Slack goes in the Customer requests panel when you have access to it; otherwise add it as a top-level Linear comment. The final step is removing the `needs-clarification` label. That and applying `needs-decisions` are this pass's only readiness-label writes — never add `ai-ready`; the gate re-grades on the rewrite and awards it. Self-check against the [compact rubric](compact-rubric.md) to predict that re-grade. A clear miscategorization of product area or issue type is fair to fix, but don't add labels or priority just to fill fields.
 
 ## Guardrails
 
