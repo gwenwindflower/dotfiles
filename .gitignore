@@ -10,3 +10,15 @@ tmp/*
 private_dot_config/kulala/_local/
 private_dot_config/kulala/**/http-client.private.env.json
 private_dot_config/kulala/**/http-client.private.env.op.json
+
+# LazyVim's own excludes, scoped to the nvim source tree. The deployed
+# private_dot_config/nvim/dot_gitignore only applies when ~/.config/nvim is
+# checked out as its own repo, which it is not here.
+private_dot_config/nvim/**/tt.*
+private_dot_config/nvim/**/foo.*
+private_dot_config/nvim/**/*.log
+private_dot_config/nvim/**/.tests
+private_dot_config/nvim/**/.repro
+private_dot_config/nvim/**/debug
+private_dot_config/nvim/**/data
+private_dot_config/nvim/doc/tags
