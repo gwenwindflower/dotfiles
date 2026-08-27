@@ -388,13 +388,17 @@
         "pythonhosted.org",
         "registry.npmjs.org",
         "releases.astral.sh",
+        "results-receiver.actions.githubusercontent.com",
         "schemastore.org",
         "storage.googleapis.com",
         "sum.golang.org",
         "telemetry.astro.build",
         "workers.cloudflare.com"
       ],
-      "allowUnixSockets": ["~/.agent-browser/default.sock"],
+      "allowUnixSockets": [
+        "~/.agent-browser/default.sock",
+        "~/.config/herdr/herdr.sock"
+      ],
       "allowLocalBinding": true
     },
     "filesystem": {
@@ -406,6 +410,7 @@
         "~/.cache/**",
         "~/.claude/**",
         "~/.config/.wrangler/**",
+        "~/.config/chezmoi/**",
         "~/.go/pkg/mod/**",
         "~/.local/share/aube/**",
         "~/.local/share/graveyard/**",
@@ -413,6 +418,7 @@
         "~/.local/share/nvim/**",
         "~/.local/share/pnpm/**",
         "~/.local/share/uv/**",
+        "~/.local/state/nvim/**",
         "~/Library/Caches/go-build/**"
       ]
     },
