@@ -1,6 +1,7 @@
 ---
 name: technical-synthesis
-description: Synthesize source material into a structured technical draft through a four-stage process with explicit feedback gates, plus pluggable form (audit, article) and tone (expert, friendly). Use when source content is rich in detail but low on form, and output structure matters as much as content — audits, codebase docs, research-synthesis articles, decision docs, post-mortems, position papers.
+description: Interactive four-stage synthesis of rich source material into a structured technical draft, with explicit user feedback gates between stages and pluggable form (audit, article) and tone (expert, friendly). Manual-only — load solely when the user explicitly requests it by name.
+disable-model-invocation: true
 ---
 
 # Technical Synthesis
@@ -10,6 +11,8 @@ Structural synthesis is the work: finding the shape of the eventual document, su
 The skill is modular. A core staged process and a set of standards apply universally; pluggable **form** (structural conventions for the deliverable) and **tone** (register and voice) layer on top. Defaults: `audit` form + `expert` tone.
 
 ## When to use
+
+This skill is user-invoked only. It runs an interactive, multi-round session — every stage holds for explicit user feedback — so it needs a user present and a deliverable worth that ceremony. If invoked for a quick one-pass conversion (e.g. summarizing a troubleshooting thread into a doc), say the staged process doesn't fit and offer a plain draft instead.
 
 Source material is rich in detail but low in form, and output structure matters as much as content. Concrete fits:
 
