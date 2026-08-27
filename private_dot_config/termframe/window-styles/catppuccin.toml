@@ -1,0 +1,66 @@
+#:schema https://raw.githubusercontent.com/pamburus/termframe/v0.8.7/schema/json/window-style.schema.json
+
+[window.margin]
+left = 48
+right = 48
+top = 40
+bottom = 64
+
+[window.border]
+width = 0.5
+gap = 0.5
+radius = 14
+colors = { outer = { dark = "#232634", light = "#acb0be80" }, inner = { dark = "#c6d0f530", light = "#ffffff80" } }
+
+[window.header]
+height = 32
+color = { dark = "#292c3c", light = "#e6e9ef" }
+border = { width = 0.5, color = { dark = "#232634c0", light = "#acb0be80" } }
+
+[window.title.color]
+dark = "#c6d0f5"
+light = "#4c4f69"
+
+[window.title.font]
+family = [
+    "system-ui",
+    "-apple-system",
+    "BlinkMacSystemFont",
+    "Segoe UI",
+    "Roboto",
+    "Helvetica Neue",
+    "Arial",
+    "sans-serif",
+]
+size = 14
+weight = "bold"
+
+[window.buttons]
+position = "left"
+shape = "circle"
+size = 6.5
+
+[[window.buttons.items]]
+offset = 16
+fill = "#e78284"
+stroke-width = 0.5
+stroke = { dark = "#e78284", light = "#d20f39" }
+
+[[window.buttons.items]]
+offset = 38
+fill = "#e5c890"
+stroke-width = 0.5
+stroke = { dark = "#e5c890", light = "#df8e1d" }
+
+[[window.buttons.items]]
+offset = 60
+fill = "#a6d189"
+stroke-width = 0.5
+stroke = { dark = "#a6d189", light = "#40a02b" }
+
+[window.shadow]
+enabled = true
+color = "#23263480"
+blur = 16
+x = 0
+y = 10
