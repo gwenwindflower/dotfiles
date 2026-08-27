@@ -1,0 +1,32 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+# Refresh month: {{ now | date "2006-01" }}
+
+set -euo pipefail
+
+{{ template "script-log.sh" }}
+{{ template "brew-preamble.sh" . }}
+
+log_step "LuaRocks tools"
+
+if ! command -v luarocks >/dev/null 2>&1; then
+  log_error "luarocks not found; Homebrew package installation should have installed it"
+  exit 1
+fi
+
+rocks=(busted luacheck)
+
+log_info "Installing or updating ${#rocks[@]} LuaRocks tools..."
+for rock in "${rocks[@]}"; do
+  luarocks --global install "$rock"
+done
+
+for rock in "${rocks[@]}"; do
+  if ! command -v "$rock" >/dev/null 2>&1; then
+    log_error "$rock installation completed but $rock is not on PATH"
+    exit 1
+  fi
+done
+
+log_success "LuaRocks tools are available"
+{{ end -}}

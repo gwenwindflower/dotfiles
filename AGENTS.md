@@ -207,6 +207,7 @@ Plugin file extraction matches Fisher's: top-level files in `functions/`, `compl
   run_onchange_17-install-cargo-tools.sh.tmpl     # install OS/profile Cargo tools with cargo-binstall
   run_onchange_18-mise-install.sh.tmpl            # `mise install` to materialize node + npm-backend package manager + CLI globals; re-runs on active arch's mise config change
   run_onchange_19-sync-gh-extensions.sh.tmpl      # install/update GitHub CLI extensions (gh-dash); monthly refresh stamp
+  run_onchange_19-sync-luarocks-tools.sh.tmpl     # darwin: install/update LuaRocks tools (busted, luacheck); monthly refresh stamp
   run_once_20-configure-shell.sh.tmpl            # Fish → /etc/shells, chsh
   run_once_30-yazi-plugins.sh.tmpl               # ya pkg install (yazi plugin sync)
   run_once_31-bat-cache.sh.tmpl                  # Build bat theme cache (after themes deployed)
