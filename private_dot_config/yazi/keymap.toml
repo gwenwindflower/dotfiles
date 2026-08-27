@@ -84,17 +84,17 @@ desc = "Open keymaps help"
 [[mgr.prepend_keymap]]
 on = "<A-p>"
 run = "plugin toggle-pane max-preview"
-desc = "Maximize or restore the preview pane"
+desc = "Toggle preview size"
 
 [[mgr.prepend_keymap]]
 on = "<A-P>"
 run = "plugin toggle-pane min-preview"
-desc = "Show or hide the preview pane"
+desc = "Toggle preview visibility"
 
 [[mgr.prepend_keymap]]
 on = "f"
 run = "plugin searchjump -- autocd"
-desc = "Searchjump mode"
+desc = "searchjump mode"
 
 [[mgr.prepend_keymap]]
 on = "F"
