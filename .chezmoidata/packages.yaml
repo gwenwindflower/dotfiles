@@ -112,7 +112,6 @@ packages:
           - postgresql@18
           - potrace
           - prek
-          - presenterm
           - procs
           - pulumi
           - pygments
@@ -237,6 +236,7 @@ packages:
         - iching
         - linear-cli
         - nightlight
+        - presenterm
       personal: []
       work: []
     uv:
