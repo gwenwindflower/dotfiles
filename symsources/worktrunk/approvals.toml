@@ -1,0 +1,8 @@
+[projects."github.com/gwenwindflower/marginalia"]
+approved-commands = [
+    "uv sync --locked",
+    "uv run prek run --all-files",
+    "uv run prek run --all-files --stage pre-push",
+    "uv run pytest",
+    "uv run pytest -v",
+]
