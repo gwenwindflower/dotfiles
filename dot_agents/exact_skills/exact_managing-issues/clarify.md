@@ -24,8 +24,8 @@ Before starting a sandbox, write down the questions you need it to answer. If th
 
 ## Guardrails
 
-**Only the description syncs publicly.** On a GitHub-synced issue (sync banner comment present) the title and description mirror to the public GitHub issue. Regular Linear comments and the Customer requests panel never sync.
+**The rewrite is public on a synced issue.** On a GitHub-synced issue (sync banner present) the title, description, labels, and state mirror to the public GitHub issue — the rewrite is also how the reporting customer sees their problem is understood, so the human summary must read well to them, not just internally. Regular Linear comments and the Customer requests panel never sync. Full mirror surface and pair-management patterns: [github-sync](github-sync.md).
 
-**Never post into the GitHub sync thread.** Replies threaded under the sync banner comment publish to GitHub (`parentId` in the API, the "Post to GitHub" box in the UI). Agent comments are top-level, always — reply into the sync thread only when the task is explicitly to answer the GitHub reporter publicly, which is rare.
+**Never post into the GitHub sync thread.** Replies threaded under the sync banner comment publish to GitHub (`parentId` in the API). Agent comments are top-level, always — reply into the sync thread only when the task is explicitly to answer the GitHub reporter publicly, which is rare.
 
 **Linear documents need a project home.** Support-board issues have none, so overflow detail goes in comments or external links instead.

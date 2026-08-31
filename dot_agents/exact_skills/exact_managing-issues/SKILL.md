@@ -1,31 +1,38 @@
 ---
-name: linear-issues
-description: Use whenever working with Linear issues — reading, creating, clarifying, triaging, labeling, or organizing them into projects and proposals.
+name: managing-issues
+description: Use whenever working with Linear or GitHub issues — searching, reading, creating, clarifying, triaging, labeling, closing, or organizing them into projects and proposals, including Linear↔GitHub synced repos.
 ---
 
-# Linear Issues
+# Managing Issues
 
 A good issue is graspable by a human in 30 seconds and executable by a coding agent without follow-up questions. Two things carry the whole system: the human/agent description split, and the readiness labels. Everything else is deliberately low ceremony — structure earns its place by carrying information, never by looking complete.
 
+Issues live on two platforms with distinct jobs. GitHub is for customers: they see we understand their problem, check progress, and give feedback there. Linear is for us: prioritizing and executing the work. Synced pairs mirror the shared fields — title and description must serve both audiences at once, which is exactly what the description format and the generalize-the-body rule achieve — while everything surface-specific goes to its surface: customer names, demand records, and exact figures to Linear; public narrative and progress to GitHub. Readiness labels and the gate are Linear-only.
+
 ## Jobs
 
+- [searching](searching.md) — semantic/hybrid search on both trackers: `gh --search-type` and Linear GraphQL via `linear-cli api`; the default for duplicate checks and "are there issues about X?"
+- [github-sync](github-sync.md) — how Linear↔GitHub sync works: GitHub-first creation and twin retrieval, what mirrors, public vs private surfaces, closing/duplicate/unlink patterns
 - [clarify](clarify.md) — rewrite an existing issue into the description format: research depth, open decisions, metadata sync, sync guardrails
 - [compact-rubric](compact-rubric.md) — how the readiness gate grades issues; self-check before expecting `ai-ready`
 
 ## Core rules
 
-- Search for duplicates and read local conventions (labels, statuses, recent similar work) before creating or restructuring. Enrich or link existing work when it already represents the outcome.
+- [Search](searching.md) for duplicates on both trackers and read local conventions (labels, statuses, recent similar work) before creating, closing, or restructuring. Enrich or link existing work when it already represents the outcome.
 - Follow explicit direction first, then local convention; ask only when an unresolved choice would materially change the result.
 - An explicit create/update request is write approval. Otherwise propose the structure and get sign-off before calling write tools.
 - Titles name the outcome — scannable, no numbering, prefixes, or implementation detail.
-- Customer identity stays out of descriptions — refer to segment and scale ("enterprise customer, ~3,000 operational users"). Names, support links, and customer screenshots live in customer requests, attachments, and top-level comments; never delete those — they are the canonical demand record.
+- Customer identity stays out of descriptions. Names, support links, and customer screenshots live in customer requests, attachments, and top-level comments; never delete those — they are the canonical demand record.
+- Generalize the body: a specific belongs there only when it changes how the problem is solved. Anonymizing a customer's numbers ("a workspace with ~1,800 orphaned schedules") is not generalizing — a detail that matters only for impact or demand goes on the Linear side as a comment, where the customer can be named plainly and the specifics kept exact. The same kind of number can cut either way: "export fails past 100 columns" stays in the body because it reproduces the bug; "the customer has ~340 affected dashboards" moves to Linear because it only sizes the pain. Customer details are never a reason to keep an issue internal ([creating on a synced pair](github-sync.md)).
+- Never manually attach a Slack thread as a customer request unless instructed — request linking is automated downstream of sharing the issue, and a manual add creates a duplicate.
+- Comments hold the same concision bar as the description: a tight addition of genuinely new information, never an overflow valve for detail the body rightly omitted. A well-written issue does not need a companion essay.
 - Never fabricate. Repro steps, root causes, and entry points are verified firsthand, labeled unverified, or omitted. Static verification (the file exists, the symbol is there, the PR did what the comment says) counts as firsthand — a live repro isn't required to cite a path.
 
 ## Structure
 
 - One issue by default, written in the description format from its first version — born ready, not clarified later. Add the agent brief only from verified evidence; a missing brief beats a fabricated one, and a later [clarify](clarify.md) pass can add it. Self-check against the [compact rubric](compact-rubric.md) before labeling `ai-ready`.
 - Filing on someone else's behalf: frame the problem as an ask and leave solution ownership with the assignee.
-- Related relations link cohesive siblings; blocking relations only when one issue's output is another's required input — likely sequence alone is not a dependency.
+- Related work links split by audience. Does it help customers follow the narrative and progress across multiple issues? Then a dedicated links section in the GitHub body or comments is right — an umbrella or batch issue serving as the public progress surface. Does it help engineers find related work not already associated via project or parent? Then use Linear's relation fields — right for partial-but-important overlaps, and for batches meant to land together that have no project or parent home. Outside those two jobs, don't dump `## Related` lists in descriptions: a link must earn its place, topical similarity alone never qualifies, and no relations beats padded ones. Blocking relations only when one issue's output is another's required input — likely sequence alone is not a dependency.
 - A project is coordination structure, not a folder: establish one only for committed ownership, roadmap reporting, or release needs. Shared rationale and cross-cutting links live in the project description or doc; issues stay locally actionable and link back rather than copying context. Milestones mark meaningful checkpoints (roughly five or more issues each), never status, priority, or sequence.
 - Task- and project-oriented documents — shared framing for a cluster of related issues, design rationale, project anchors — are Linear Docs, not Notion or Google Drive. A doc needs a project home.
 
@@ -78,7 +85,7 @@ Rules:
 
 - Tight bullets over prose paragraphs; expected vs actual in one or two lines, never mirrored paragraphs.
 - Impact is never cut: who is affected, how badly, what a fix or ship changes for them — concise, but present. Same for bug context and customer demand. Preserve the customer's exact wording when it is safe and sharper than a paraphrase.
-- Flag demand affirmatively — which customers, how many, the stakes — but never write "no customer demand": an issue without a linked ask almost always means the link was forgotten, not that nobody asked. When nothing is attached, omit demand and state what is affirmatively known.
+- Flag demand affirmatively — which customers, how many, the stakes — with the specifics on the Linear side of a synced pair, per the generalize-the-body rule. Never write "no customer demand": an issue without a linked ask almost always means the link was forgotten, not that nobody asked. When nothing is attached, omit demand and state what is affirmatively known.
 - Separate the requested outcome from proposed solutions; mark unvalidated ideas as proposals. `## Open decisions` names each unresolved product call — its presence pairs with the `needs-decisions` label and means not agent-ready.
 - Repro carries a status marker: ✅ Reproduced (and by whom); 📸 Corroborated — customer evidence (screenshot, recording, error output) matches a code read that explains it, no live run; or ⚠️ Unreproduced — from customer report. Never present unverified steps as confirmed.
 - No cause-guessing in the summary — root-cause evidence belongs in the agent brief, marked hypothesis or confirmed.
