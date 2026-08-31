@@ -173,6 +173,7 @@ packages:
           - anthropics/tap/ant
           - arc
           - cap
+          - chatgpt
           - claude
           - claude-code
           - codex
