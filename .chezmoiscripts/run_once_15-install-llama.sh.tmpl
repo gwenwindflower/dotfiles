@@ -1,0 +1,25 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+# Install the llama.app build of llama.cpp (hardware-probed, Metal on Apple Silicon) to ~/.local/bin.
+
+set -euo pipefail
+
+{{ template "script-log.sh" }}
+
+log_step "Installing llama.cpp"
+
+if command -v llama >/dev/null 2>&1; then
+  log_info "llama already installed ($(command -v llama)); update with 'llama update'"
+  exit 0
+fi
+
+if ! command -v curl >/dev/null 2>&1; then
+  log_error "curl not found"
+  exit 1
+fi
+
+log_info "Installing llama via the llama.app installer..."
+curl -LsSf https://llama.app/install.sh | sh
+
+log_success "llama installed"
+{{ end -}}

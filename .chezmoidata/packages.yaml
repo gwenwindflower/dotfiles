@@ -164,7 +164,6 @@ packages:
           - yt-dlp
         work:
           - graphite
-          - llama.cpp
           - microsandbox
       casks:
         core:

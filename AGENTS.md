@@ -37,6 +37,7 @@ private_dot_config/               # → ~/.config/
   opencode/                       #   OpenCode config (opencode.jsonc + tui.jsonc + exact_agents/)
   bottom/, cmus/, freeze/, glow/  #   System monitor, music player, code snapshots, markdown viewer
   k9s/, lazydocker/, lazygit/     #   Container/cluster/git TUI tools
+  llama-embed/                    #   Darwin-only launchd plist for the local llama.cpp embedding server (managed on demand by the llup fish function)
   lsd/, macchina/                 #   ls replacement, system info
   marimo/, spotify-player/        #   Python notebooks, Spotify TUI
   herdr/                          #   Herdr config (symlinked), plugins are not included in chezmoi as they can be installed idempotently via herdr
@@ -190,6 +191,7 @@ Plugin file extraction matches Fisher's: top-level files in `functions/`, `compl
   run_once_10-install-homebrew-packages.sh.tmpl  # darwin: brew bundle (formulae + casks)
   run_once_10-install-apt-packages.sh.tmpl       # linux: apt install (dpkg-s presence check + upgrade)
   run_once_15-install-global-tools.sh.tmpl       # uv tools (darwin-only)
+  run_once_15-install-llama.sh.tmpl               # darwin: install the llama.app build of llama.cpp (Metal) to ~/.local/bin
   run_once_16-install-rust.sh.tmpl                # install stable Rust via rustup
   run_onchange_17-install-cargo-tools.sh.tmpl     # install OS/profile Cargo tools with cargo-binstall
   run_onchange_18-mise-install.sh.tmpl            # `mise install` to materialize node + npm-backend package manager + CLI globals; re-runs on active arch's mise config change

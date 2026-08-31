@@ -177,8 +177,6 @@ abbr --add cki ck --index .
 abbr --add cks ck --sem
 abbr --add ckl ck --lex
 abbr --add ckh ck --hybrid
-### llama.cpp
-abbr --add llup 'llama-server -hf Qwen/Qwen3-Embedding-0.6B-GGUF:Q8_0 --embedding --pooling last -b 2048 -ub 2048 --host 127.0.0.1 --port 8383'
 ### agent-browser
 abbr --add abrow agent-browser
 # obsiidian and notes

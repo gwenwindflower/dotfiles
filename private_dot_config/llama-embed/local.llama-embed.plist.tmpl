@@ -1,0 +1,41 @@
+{{- if eq .chezmoi.os "darwin" -}}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>local.llama-embed</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>{{ .chezmoi.homeDir }}/.local/bin/llama</string>
+		<string>serve</string>
+		<string>-hf</string>
+		<string>Qwen/Qwen3-Embedding-0.6B-GGUF:Q8_0</string>
+		<string>--embedding</string>
+		<string>--pooling</string>
+		<string>last</string>
+		<string>-b</string>
+		<string>2048</string>
+		<string>-ub</string>
+		<string>2048</string>
+		<string>--host</string>
+		<string>127.0.0.1</string>
+		<string>--port</string>
+		<string>8383</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>KeepAlive</key>
+	<dict>
+		<key>SuccessfulExit</key>
+		<false/>
+	</dict>
+	<key>ProcessType</key>
+	<string>Interactive</string>
+	<key>StandardOutPath</key>
+	<string>{{ .chezmoi.homeDir }}/Library/Logs/llama-embed.log</string>
+	<key>StandardErrorPath</key>
+	<string>{{ .chezmoi.homeDir }}/Library/Logs/llama-embed.log</string>
+</dict>
+</plist>
+{{- end }}
