@@ -1,5 +1,5 @@
 ---
-# generated-by: agentsview v0.40.1 hash:a7eb82c53ab771405a1e0d0f7adf74efb8222541fc26ca6699c02b441260f13c — do not edit; re-run `agentsview skills install`
+# generated-by: agentsview v0.41.1 hash:a7eb82c53ab771405a1e0d0f7adf74efb8222541fc26ca6699c02b441260f13c — do not edit; re-run `agentsview skills install`
 name: agentsview-finding-history
 description: Use when asked why a decision was made, how something was done before, or to recover prior instructions, examples, or conversations from recorded agent history — searches the AgentsView archive for evidence.
 ---
@@ -105,17 +105,3 @@ the archive crawl, then synthesizes and verifies.
 ## Gaps / Follow-ups
 - What was not found and the next narrower probe
 ```
-
-## Embedding Upkeep
-
-<!-- local addition — re-append after `agentsview skills install` regenerates this file -->
-
-- Embeddings auto-refresh after sync (`[vector].run_after_sync = true`); no
-  manual builds needed day-to-day. On 501/503 semantic errors, check the local
-  embedding server first (`curl -s http://127.0.0.1:8383/health`; start it with
-  the `llup` abbr — llama-server in the background), then
-  `agentsview embeddings list`.
-- Embedding model changed (new GGUF served by llama-server): run
-  `agentsview embeddings build --full-rebuild`, `embeddings activate` the new
-  generation, and `embeddings retire` the old one — vectors are not compatible
-  across models.
