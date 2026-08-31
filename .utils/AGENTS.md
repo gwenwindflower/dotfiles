@@ -68,3 +68,4 @@ One reference doc per tool in `.utils/docs/` — load only what's relevant to th
 - `provision-repo.md` — reconcile GitHub labels + Discussion categories for a Supermodel Labs repo
 - `scrape-github-stars.md` — scrape curated GitHub star lists via agent-browser
 - `sprite-bootstrap.md` — bootstrap a fresh Fly.io Sprite from the dotfiles repo
+- `termshot.md` — styled termframe SVG/PNG capture with configurable backgrounds

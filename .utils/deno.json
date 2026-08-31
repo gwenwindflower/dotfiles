@@ -22,6 +22,7 @@
     "packy": "deno run --allow-read --allow-write --allow-env --allow-run=chezmoi,brew,cargo,uv packy.ts",
     "herdir": "deno run --allow-read --allow-write=assets/herdir-snapshots --allow-env=HOME --allow-run=herdr herdir.ts",
     "git-wash": "deno run --allow-read --allow-write --allow-run=git,gh git-wash.ts",
+    "termshot": "deno run --allow-read --allow-write --allow-env=HOME --allow-run=termframe,resvg termshot.ts",
     "test": "deno run --allow-read --allow-run=deno scripts/test.ts",
     "test:tables": "deno test --allow-read fix-md-tables_test.ts",
     "test:logo": "deno test --allow-read --allow-env generate-logo_test.ts",
@@ -30,6 +31,7 @@
     "test:packy": "deno test packy_test.ts",
     "test:herdir": "deno test --allow-read --allow-write herdir_test.ts",
     "test:herdr-agent-picker": "deno test --allow-read --allow-write --allow-run=sh herdr-agent-picker_test.ts",
-    "test:git-wash": "deno test --allow-read --allow-write --allow-run=git git-wash_test.ts"
+    "test:git-wash": "deno test --allow-read --allow-write --allow-run=git git-wash_test.ts",
+    "test:termshot": "deno test termshot_test.ts"
   }
 }
