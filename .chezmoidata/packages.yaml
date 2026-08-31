@@ -201,6 +201,7 @@ packages:
           - font-typographer-woodcut-initials-one
           - gcloud-cli
           - homerow
+          - ia-markdown-dictionary
           - ia-presenter
           - karabiner-elements
           - kitty
