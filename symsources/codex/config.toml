@@ -618,9 +618,6 @@ trust_level = "trusted"
 [projects."/Users/winnie/dev/_work/analytics"]
 trust_level = "trusted"
 
-[projects."/Users/winnie/dev/herdir"]
-trust_level = "trusted"
-
 [projects."/Users/winnie/dev/_work/prompts"]
 trust_level = "trusted"
 
