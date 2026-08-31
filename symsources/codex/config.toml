@@ -704,6 +704,9 @@ trust_level = "trusted"
 [projects."/Users/winnie/Documents/Codex/2026-08-27/new-chat"]
 trust_level = "trusted"
 
+[projects."/Users/winnie/dev/_forks/marginalia"]
+trust_level = "trusted"
+
 [apps._default]
 enabled = false
 
