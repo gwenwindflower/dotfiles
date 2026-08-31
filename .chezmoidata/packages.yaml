@@ -225,7 +225,6 @@ packages:
           - canario
           - capso
           - fathom
-          - google-chrome
           - loom
           - microsoft-teams
           - slack
