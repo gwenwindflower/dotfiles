@@ -410,13 +410,6 @@ abbr --add hus hunk show
 abbr --add huss hunk stash show
 ## degit
 abbr --add degit aubx degit
-### blacksmith
-abbr --add bs blacksmith
-abbr --add bsau blacksmith auth status
-abbr --add bsal blacksmith auth login
-abbr --add bst blacksmith testbox
-abbr --add bstw blacksmith testbox warmup
-abbr --add bstr blacksmith testbox run
 ## interactive tools
 abbr --add gui lazygit
 abbr --add gcmm meteor
@@ -448,6 +441,7 @@ abbr --add glod git logd
 ## worktrunk
 abbr --add wtsw wt switch
 abbr --add wtswc wt switch -c
+abbr --add wtswpr wt switch --prs
 abbr --add wtswd wt switch-dirty
 abbr --add wtm wt merge
 abbr --add wts wt step
