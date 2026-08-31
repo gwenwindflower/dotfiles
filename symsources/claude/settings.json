@@ -470,7 +470,7 @@
     ]
   },
   "syntaxHighlightingDisabled": false,
-  "effortLevel": "medium",
+  "effortLevel": "high",
   "awaySummaryEnabled": false,
   "tui": "fullscreen",
   "voice": {
