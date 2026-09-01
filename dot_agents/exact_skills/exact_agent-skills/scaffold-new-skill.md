@@ -1,5 +1,14 @@
 # Scaffolding a New Skill
 
+## Naming
+
+Two valid shapes, chosen by scope:
+
+- **Topic noun** (`chezmoi`, `fish-shell`, `effective-sql`) — for skills that span multiple actions or carry special topic knowledge.
+- **Present-tense active verb phrase** (`capture-context`, `mine-session-knowledge`, `map-project`) — for skills scoped to one action, or whenever a verb makes the trigger clearer. The verb form must complete the sentence "As an agent I want to `<skill-name>`" — so `develop-subagents`, never `developing-subagents`.
+
+Third-party skills keep their upstream names; they update externally.
+
 ## Workflow
 
 1. Clarify with the user — jobs-to-be-done, examples, what existing context is missing

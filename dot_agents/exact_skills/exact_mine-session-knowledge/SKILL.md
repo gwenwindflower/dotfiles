@@ -1,5 +1,5 @@
 ---
-name: mining-session-knowledge
+name: mine-session-knowledge
 description: Mine recorded agent session history for hard-won knowledge that was never captured — repeated investigations, corrected mistakes, decisions that live only in chat — and turn the gaps into project docs, rules, or skills via an authoring subagent. Use when asked to mine, harvest, or audit session logs for capturable knowledge, or to find documentation gaps from agent history. Skip for capturing only the current session (use capture-context) or plain history lookup (use agentsview-finding-history).
 ---
 

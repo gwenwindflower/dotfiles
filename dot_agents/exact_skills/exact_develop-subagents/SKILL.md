@@ -1,5 +1,5 @@
 ---
-name: developing-subagents
+name: develop-subagents
 description: Design subagents — specialized assistants with their own system prompt, model, and permissions. Use when adding or modifying subagents for Claude Code, OpenCode, Codex, or equivalent coding agent platforms.
 ---
 
