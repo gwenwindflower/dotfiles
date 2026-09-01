@@ -42,7 +42,7 @@ SPOT has no execution hierarchy. The terms are relational:
 - The session that takes on a Phase is that Phase's **owner**: it loads context, executes (solo or with helpers), commits, and closes.
 - **Helpers** — teammates or subagents an owner spawns for big Tasks. They work in the owner's worktree and never commit; they report done, the owner reviews and commits or sends back.
 
-Two specialist agents persist because their jobs are genuinely distinct: **planner** (spec authorship, requirement IDs, Phase scoping, research synthesis) and **medic** (git recovery). Everything else is a session with a brief.
+Two specialist agents persist because their jobs are genuinely distinct: **architect** (spec authorship, requirement IDs, Phase scoping, research synthesis) and **medic** (git recovery). Everything else is a session with a brief.
 
 ## Requirement IDs at a glance
 

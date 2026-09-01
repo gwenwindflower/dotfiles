@@ -150,7 +150,7 @@ Phase titles and Objective wording are the labels the executing session and its 
 
 ## Phase dependencies
 
-Phases run in parallel by default. The `**Dependencies**:` line is how the Planner declares that one Phase must wait for another.
+Phases run in parallel by default. The `**Dependencies**:` line is how the Architect declares that one Phase must wait for another.
 
 - **What it means.** "Phase 5 depends on Phase 2" → Phase 5 cannot start until Phase 2 is in DONE. Not "started," not "merged to a branch" — fully promoted.
 - **Independence is the goal.** Two Phases that touch different surfaces — different routes, different commands, separate subsystems — are usually independent and can run as parallel sessions. Don't add a dependency unless you genuinely have one.
@@ -205,7 +205,7 @@ For substantive reversals on requirements **already shipped to main** — wordin
 
 ## Backlog
 
-The last section of `SPEC.md`. Future requirements, open questions, big ideas. Not active work — consider when informing active decisions, but don't start without Planner approval to promote into Requirements and a Phase. **Promote or delete** — lingering items are noise.
+The last section of `SPEC.md`. Future requirements, open questions, big ideas. Not active work — consider when informing active decisions, but don't start without Architect approval to promote into Requirements and a Phase. **Promote or delete** — lingering items are noise.
 
 - Lives only in `SPEC.md`. Domain specs don't carry their own Backlog. **Never duplicated in `TODO.md`** — TODO is for active Phases.
 - Items are prose bullets (ideas, not Tasks); no checkboxes, no IDs until they're promoted into the relevant spec.

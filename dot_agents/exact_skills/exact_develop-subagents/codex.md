@@ -69,7 +69,7 @@ nickname_candidates = [
 ]
 ```
 
-Good categories are compact and visually distinct: colors for Devs, fruit for Medics, constellations for Planners, gemstones for Reviewers. Avoid similar role names like `Reviewer`, `Audit`, `Gate`; those read like alternate agent types instead of instance tags.
+Good categories are compact and visually distinct: colors for Devs, fruit for Medics, constellations for Architects, gemstones for Reviewers. Avoid similar role names like `Reviewer`, `Audit`, `Gate`; those read like alternate agent types instead of instance tags.
 
 ## Built-ins
 

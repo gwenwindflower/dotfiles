@@ -8,7 +8,7 @@ A Phase brief arrives one of two ways: the user points the session at a Phase, o
 
 1. Read `SPEC.md` (goals, non-goals, vocabulary), the Phase block in `TODO.md`, and each listed requirement ID's wording in its durable spec (`SPEC.md` for `R<NNN>`, `specs/<dom>-*.md` for `<dom>-R<NNN>`).
 2. Confirm the Phase is unblocked — every Phase on its `**Dependencies**:` line is in DONE.
-3. If requirement IDs are missing or don't cover the Tasks, stop — that's planning work (`planner` or the user), not something to improvise.
+3. If requirement IDs are missing or don't cover the Tasks, stop — that's planning work (`architect` or the user), not something to improvise.
 4. Work on a branch named for the work (`feat/oauth`, `fix/session-expiry`), never the Phase. If the session starts on main or the wrong branch, branch first.
 5. Sharpen Objective and Task wording for execution if needed — without changing *what's being built* (that goes back to planning). Vague or echoed-from-the-user names get a real name before work starts.
 
