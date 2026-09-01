@@ -291,7 +291,7 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "claude-fable-5[1m]",
+  "model": "fable[1m]",
   "hooks": {
     "PreToolUse": [
       {
