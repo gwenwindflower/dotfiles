@@ -204,7 +204,7 @@ Look for `orientation.md` at `<project root>/.agents/docs/orientation.md` (there
 
 If the file does not exist at either location, stop and tell the user:
 
-> "No orientation file found. Run `/orient:orient` first to generate one for this repo. It takes about 30 seconds."
+> "No orientation file found. Run `/map-project` first to generate one for this repo."
 
 ### Running the orientation exercise
 

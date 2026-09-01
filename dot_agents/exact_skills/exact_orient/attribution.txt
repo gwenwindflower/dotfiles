@@ -1,1 +1,0 @@
-The content of this skill came from Michael Mullarkey's project <https://github.com/mcmullarkey/orient>
