@@ -1,7 +1,7 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write --allow-env=HOME --allow-run=termframe,resvg
 
 import { parseArgs } from "@std/cli/parse-args";
-import { basename, extname } from "@std/path";
+import { basename, extname, join } from "@std/path";
 
 export interface GradientBackground {
   from: string;
@@ -40,7 +40,7 @@ export interface CaptureOptions extends Omit<TermframeOptions, "svgPath"> {
   keepSvg: boolean;
   svgOnly: boolean;
   background: GradientBackground | null;
-  fontDirectory: string;
+  fontFiles: string[];
   zoom: number;
 }
 
@@ -198,17 +198,96 @@ export function buildTermframeArgs(options: TermframeOptions): string[] {
 export function buildResvgArgs(
   svgPath: string,
   pngPath: string,
-  fontDirectory: string,
+  fontFiles: string[],
   zoom: number,
 ): string[] {
+  const fonts = fontFiles.flatMap((path) => ["--use-font-file", path]);
   return [
-    "--use-fonts-dir",
-    fontDirectory,
+    "--skip-system-fonts",
+    ...fonts,
     "--zoom",
     String(zoom),
     svgPath,
     pngPath,
   ];
+}
+
+const rasterFontFamilies = [
+  { prefix: "EllographCFFixedPitch-", name: "Ellograph CF Fixed Pitch" },
+  { prefix: "SymbolsNerdFontMono-", name: "Symbols Nerd Font Mono" },
+  { prefix: "IBMPlexMono-", name: "IBM Plex Mono" },
+];
+
+const optionalRasterFontPrefixes = ["NotoColorEmoji", "Noto-COLRv1"];
+
+export function selectRasterFontFiles(
+  directory: string,
+  names: string[],
+): string[] {
+  for (const family of rasterFontFamilies) {
+    if (!names.some((name) => name.startsWith(family.prefix))) {
+      throw new Error(`${family.name} is missing from ${directory}`);
+    }
+  }
+  return names.filter((name) =>
+    (rasterFontFamilies.some((family) => name.startsWith(family.prefix)) ||
+      optionalRasterFontPrefixes.some((prefix) => name.startsWith(prefix))) &&
+    [".otf", ".ttf"].includes(extname(name).toLowerCase())
+  ).sort().map((name) => join(directory, name));
+}
+
+export function defaultEmojiFontFile(
+  os: typeof Deno.build.os = Deno.build.os,
+): string | undefined {
+  return os === "darwin"
+    ? "/System/Library/Fonts/Apple Color Emoji.ttc"
+    : undefined;
+}
+
+async function rasterFontFiles(
+  directory: string,
+  emojiFont: string | undefined,
+): Promise<string[]> {
+  const names: string[] = [];
+  for await (const entry of Deno.readDir(directory)) {
+    if (entry.isFile) names.push(entry.name);
+  }
+  const files = selectRasterFontFiles(directory, names);
+  if (emojiFont && !files.includes(emojiFont)) {
+    try {
+      const file = await Deno.stat(emojiFont);
+      if (!file.isFile) throw new Error("not a file");
+    } catch (error) {
+      throw new Error(
+        `emoji font ${emojiFont} is unavailable: ${
+          error instanceof Error ? error.message : error
+        }`,
+      );
+    }
+    files.push(emojiFont);
+  }
+  return files;
+}
+
+const terminalFontStack =
+  "Ellograph CF Fixed Pitch, Symbols Nerd Font Mono, IBM Plex Mono, Apple Color Emoji, Noto Color Emoji";
+
+export function setTerminalFontStack(source: string): string {
+  const terminal = source.match(
+    /<svg\b(?=[^>]*\bclass=["']terminal["'])[^>]*>/,
+  );
+  if (!terminal || terminal.index === undefined) {
+    throw new Error("missing terminal SVG");
+  }
+  const updated = terminal[0].replace(
+    /\bfont-family=(["'])[^"']*\1/,
+    `font-family="${terminalFontStack}"`,
+  );
+  if (updated === terminal[0]) {
+    throw new Error("terminal SVG has no font stack");
+  }
+  return source.slice(0, terminal.index) + updated +
+    source.slice(terminal.index + terminal[0].length);
 }
 
 async function runChecked(
@@ -240,19 +319,20 @@ export async function captureTerminal(
     buildTermframeArgs({ ...options, svgPath: paths.svg, title }),
   );
 
-  if (options.background) {
-    const source = await dependencies.readTextFile(paths.svg);
-    await dependencies.writeTextFile(
-      paths.svg,
-      addGradientBackground(source, options.background),
-    );
-  }
+  const source = await dependencies.readTextFile(paths.svg);
+  const rendered = setTerminalFontStack(source);
+  await dependencies.writeTextFile(
+    paths.svg,
+    options.background
+      ? addGradientBackground(rendered, options.background)
+      : rendered,
+  );
 
   if (paths.png) {
     await runChecked(
       dependencies.runner,
       "resvg",
-      buildResvgArgs(paths.svg, paths.png, options.fontDirectory, options.zoom),
+      buildResvgArgs(paths.svg, paths.png, options.fontFiles, options.zoom),
     );
   }
 
@@ -291,7 +371,8 @@ Output:
   -o, --output FILE       PNG path, or SVG path with --svg-only
       --[no-]keep-svg     Keep the intermediate SVG (default: true)
       --svg-only          Skip PNG rendering
-      --fonts-dir DIR     Font directory for PNG rendering
+      --fonts-dir DIR     Find the three raster font families in this directory
+      --emoji-font FILE   Override the platform emoji font
       --zoom SCALE        PNG raster scale (default: 2)
 
 Terminal:
@@ -333,6 +414,7 @@ async function main(): Promise<void> {
     string: [
       "output",
       "fonts-dir",
+      "emoji-font",
       "zoom",
       "title",
       "theme",
@@ -392,7 +474,10 @@ async function main(): Promise<void> {
     keepSvg: args["keep-svg"],
     svgOnly: args["svg-only"],
     background,
-    fontDirectory: args["fonts-dir"] ?? defaultFontDirectory(),
+    fontFiles: args["svg-only"] ? [] : await rasterFontFiles(
+      args["fonts-dir"] ?? defaultFontDirectory(),
+      args["emoji-font"] ?? defaultEmojiFontFile(),
+    ),
     zoom,
     title: args.title,
     theme: args.theme,

@@ -11,6 +11,13 @@ height = { min = 4, max = 60, initial = 24 }
 [env]
 TERM = "xterm-256color"
 COLORTERM = "truecolor"
+PAGER = "cat"
+GIT_PAGER = "cat"
+GH_PAGER = "cat"
+BAT_PAGER = "cat"
+DELTA_PAGER = "cat"
+MANPAGER = "cat"
+SYSTEMD_PAGER = "cat"
 
 [theme]
 dark = "catppuccin-frappe"
@@ -26,6 +33,7 @@ family = [
   "Ellograph CF Fixed Pitch",
   "JetBrains Mono",
   "Symbols Nerd Font Mono",
+  "Noto Color Emoji",
   "monospace",
 ]
 size = 14
@@ -96,4 +104,11 @@ files = [
   "https://raw.githubusercontent.com/pamburus/fonts/refs/heads/main/SymbolsNerdFontMono/nf-s12.woff2",
   "https://raw.githubusercontent.com/pamburus/fonts/refs/heads/main/SymbolsNerdFontMono/nf-s13.woff2",
   "https://raw.githubusercontent.com/pamburus/fonts/refs/heads/main/SymbolsNerdFontMono/nf-s14.woff2",
+]
+
+[[fonts]]
+family = "Noto Color Emoji"
+license = { type = "SIL Open Font License 1.1", link = "https://raw.githubusercontent.com/googlefonts/noto-emoji/main/fonts/LICENSE" }
+files = [
+  "https://raw.githubusercontent.com/googlefonts/noto-emoji/main/fonts/Noto-COLRv1.ttf",
 ]

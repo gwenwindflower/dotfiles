@@ -7,6 +7,9 @@ import {
   captureTerminal,
   type CommandRunner,
   DEFAULT_BACKGROUND,
+  defaultEmojiFontFile,
+  selectRasterFontFiles,
+  setTerminalFontStack,
 } from "./termshot.ts";
 
 Deno.test("capturePaths derives safe output names from commands", () => {
@@ -113,15 +116,83 @@ Deno.test("buildTermframeArgs passes only requested config overrides", () => {
   );
 });
 
-Deno.test("buildResvgArgs uses the local font directory and raster scale", () => {
-  assertEquals(buildResvgArgs("demo.svg", "demo.png", "/fonts", 3), [
-    "--use-fonts-dir",
-    "/fonts",
-    "--zoom",
-    "3",
-    "demo.svg",
-    "demo.png",
-  ]);
+Deno.test("buildResvgArgs isolates local fonts and sets raster scale", () => {
+  assertEquals(
+    buildResvgArgs("demo.svg", "demo.png", [
+      "/fonts/EllographCFFixedPitch-Thin.otf",
+      "/fonts/SymbolsNerdFontMono-Regular.ttf",
+      "/fonts/IBMPlexMono-Regular.otf",
+    ], 3),
+    [
+      "--skip-system-fonts",
+      "--use-font-file",
+      "/fonts/EllographCFFixedPitch-Thin.otf",
+      "--use-font-file",
+      "/fonts/SymbolsNerdFontMono-Regular.ttf",
+      "--use-font-file",
+      "/fonts/IBMPlexMono-Regular.otf",
+      "--zoom",
+      "3",
+      "demo.svg",
+      "demo.png",
+    ],
+  );
+});
+
+Deno.test("selectRasterFontFiles keeps only the three rendering families", () => {
+  assertEquals(
+    selectRasterFontFiles("/fonts", [
+      "Arial.ttf",
+      "IBMPlexMono-Regular.otf",
+      "EllographCFFixedPitch-Regular.otf",
+      "SymbolsNerdFontMono-Regular.ttf",
+      "Noto-COLRv1.ttf",
+      "MonaspaceNeon-Regular.otf",
+      "EllographCFFixedPitch-Thin.otf",
+    ]),
+    [
+      "/fonts/EllographCFFixedPitch-Regular.otf",
+      "/fonts/EllographCFFixedPitch-Thin.otf",
+      "/fonts/IBMPlexMono-Regular.otf",
+      "/fonts/Noto-COLRv1.ttf",
+      "/fonts/SymbolsNerdFontMono-Regular.ttf",
+    ],
+  );
+});
+
+Deno.test("selectRasterFontFiles requires every rendering family", () => {
+  assertRejects(
+    async () =>
+      selectRasterFontFiles("/fonts", [
+        "EllographCFFixedPitch-Regular.otf",
+        "IBMPlexMono-Regular.otf",
+      ]),
+    Error,
+    "Symbols Nerd Font Mono",
+  );
+});
+
+Deno.test("setTerminalFontStack leaves the window title stack alone", () => {
+  const source = [
+    '<svg><text font-family="system-ui, sans-serif">Title</text>',
+    '<svg class="terminal" font-family="Ellograph CF Fixed Pitch, JetBrains Mono, monospace">',
+    "</svg></svg>",
+  ].join("");
+  const output = setTerminalFontStack(source);
+
+  assertStringIncludes(output, 'font-family="system-ui, sans-serif"');
+  assertStringIncludes(
+    output,
+    'font-family="Ellograph CF Fixed Pitch, Symbols Nerd Font Mono, IBM Plex Mono, Apple Color Emoji, Noto Color Emoji"',
+  );
+});
+
+Deno.test("defaultEmojiFontFile uses the native macOS color font", () => {
+  assertEquals(
+    defaultEmojiFontFile("darwin"),
+    "/System/Library/Fonts/Apple Color Emoji.ttc",
+  );
+  assertEquals(defaultEmojiFontFile("linux"), undefined);
 });
 
 Deno.test("captureTerminal runs termframe then resvg and removes transient SVG", async () => {
@@ -140,12 +211,17 @@ Deno.test("captureTerminal runs termframe then resvg and removes transient SVG",
       keepSvg: false,
       svgOnly: false,
       background: DEFAULT_BACKGROUND,
-      fontDirectory: "/fonts",
+      fontFiles: [
+        "/fonts/Ellograph.otf",
+        "/fonts/Symbols.ttf",
+        "/fonts/IBMPlexMono.otf",
+      ],
       zoom: 2,
     },
     {
       runner,
-      readTextFile: async () => '<svg width="10" height="10"></svg>',
+      readTextFile: async () =>
+        '<svg><svg class="terminal" font-family="JetBrains Mono"></svg></svg>',
       writeTextFile: async (path, content) => {
         writes.push({ path, content });
       },
@@ -172,7 +248,7 @@ Deno.test("captureTerminal stops when termframe fails", async () => {
           keepSvg: true,
           svgOnly: false,
           background: DEFAULT_BACKGROUND,
-          fontDirectory: "/fonts",
+          fontFiles: ["/fonts/Ellograph.otf"],
           zoom: 2,
         },
         {

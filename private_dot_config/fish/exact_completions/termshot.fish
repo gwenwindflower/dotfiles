@@ -3,7 +3,8 @@ complete -c termshot -s o -l output -d "Write PNG to this path" -r
 complete -c termshot -l keep-svg -d "Keep the intermediate SVG"
 complete -c termshot -l no-keep-svg -d "Remove the SVG after rendering"
 complete -c termshot -l svg-only -d "Create SVG without rendering PNG"
-complete -c termshot -l fonts-dir -d "Use fonts from this directory" -r
+complete -c termshot -l fonts-dir -d "Find the three raster font families here" -r
+complete -c termshot -l emoji-font -d "Override the platform emoji font" -r
 complete -c termshot -l zoom -d "Set PNG raster scale" -r -f -a "1 2 3 4"
 
 complete -c termshot -l title -d "Set the window title" -r
