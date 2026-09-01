@@ -86,96 +86,6 @@
     }
   },
   {
-    "plugin_id": "herdr-navigator",
-    "name": "Herdr Navigator",
-    "version": "0.3.6",
-    "min_herdr_version": "0.7.3",
-    "description": "Jump to any Herdr workspace, agent, project, session, remote, directory, or action from one fuzzy navigator.",
-    "manifest_path": "/Users/winnie/.config/herdr/plugins/github/herdr-navigator-3a5a6fa5dfb5/herdr-plugin.toml",
-    "plugin_root": "/Users/winnie/.config/herdr/plugins/github/herdr-navigator-3a5a6fa5dfb5",
-    "enabled": true,
-    "platforms": [
-      "linux",
-      "macos"
-    ],
-    "build": [
-      {
-        "command": [
-          "cargo",
-          "build",
-          "--release"
-        ]
-      }
-    ],
-    "actions": [
-      {
-        "id": "jump-back",
-        "title": "Herdr Navigator: jump back",
-        "contexts": [
-          "workspace",
-          "global"
-        ],
-        "command": [
-          "./target/release/herdr-navigator",
-          "jump-back"
-        ]
-      },
-      {
-        "id": "open",
-        "title": "Herdr Navigator: open",
-        "contexts": [
-          "workspace",
-          "global"
-        ],
-        "command": [
-          "./target/release/herdr-navigator",
-          "open"
-        ]
-      },
-      {
-        "id": "open-side",
-        "title": "Herdr Navigator: side pane",
-        "contexts": [
-          "workspace",
-          "global"
-        ],
-        "command": [
-          "./target/release/herdr-navigator",
-          "open-side"
-        ]
-      }
-    ],
-    "panes": [
-      {
-        "id": "picker",
-        "title": "Herdr Navigator",
-        "placement": "overlay",
-        "command": [
-          "./target/release/herdr-navigator",
-          "ui"
-        ]
-      },
-      {
-        "id": "picker-side",
-        "title": "Navigator Side",
-        "placement": "split",
-        "command": [
-          "./target/release/herdr-navigator",
-          "ui",
-          "--side"
-        ]
-      }
-    ],
-    "source": {
-      "kind": "github",
-      "owner": "thanhdat77",
-      "repo": "herdr-navigator",
-      "resolved_commit": "9bdf30f03f53730e6232377a3fca3bdc6ed9f3ca",
-      "managed_path": "/Users/winnie/.config/herdr/plugins/github/herdr-navigator-3a5a6fa5dfb5",
-      "installed_unix_ms": 1788147414231
-    }
-  },
-  {
     "plugin_id": "herdr-splits",
     "name": "Herdr Splits",
     "version": "0.5.3",
@@ -292,7 +202,7 @@
       "repo": "herdr-splits.nvim",
       "resolved_commit": "94f30cf4e9ac76ddf185a3acd0977be728fa4106",
       "managed_path": "/Users/winnie/.config/herdr/plugins/github/herdr-splits-d880c4924f2b",
-      "installed_unix_ms": 1788147426591
+      "installed_unix_ms": 1788294004291
     }
   },
   {
