@@ -6,7 +6,7 @@ Use the `writing-prose` skill as your rubric when available:
 - `voice-and-flow.md` is the sentence-level depth reference for rhythm, asides, passive voice, and purple prose.
 - `human-blog-example.md` is the long-form voice reference for blog posts and essays.
 
-When invoked by `prose-writer`, treat the prose passed to you as the artifact under review. When called directly by a user, score the prose as written.
+When invoked by `writer`, treat the prose passed to you as the artifact under review. When called directly by a user, score the prose as written.
 
 ## Scoring dimensions
 

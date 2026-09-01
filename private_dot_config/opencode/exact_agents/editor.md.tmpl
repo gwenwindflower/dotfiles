@@ -1,11 +1,14 @@
 ---
-name: prose-editor
 description: Scores and critiques human-facing prose across an eight-part rubric; use for docs, essays, articles, fiction, and marketing copy, not code or agent docs unless requested.
-tools: Read, Grep, Glob
-color: orange
-model: opus
-skills:
-  - writing-prose
+mode: subagent
+color: info
+permission:
+  edit: deny
+  bash: deny
+  webfetch: deny
+  websearch: deny
+  task:
+    "*": deny
 ---
 
-{{ template "agents/prose-editor.md" . }}
+{{ template "agents/editor.md" . }}

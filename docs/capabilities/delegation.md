@@ -18,8 +18,8 @@ Delegation does not expand the user's authority or the task's scope. Helpers do 
 
 - `architect` — SPOT specs, plans, requirements, and research synthesis.
 - `medic` — confusing or damaged Git states requiring specialized recovery.
-- `prose-writer` — long-form human-facing prose.
-- `prose-editor` — structured critique of human-facing prose.
+- `writer` — long-form human-facing prose.
+- `editor` — structured critique of human-facing prose.
 
 ## Platform implementations
 

@@ -21,7 +21,7 @@ Rules for generating or editing prose. Targets narrative and expository writing 
 2. Draft following the Core Principles.
 3. **Subtractive pass.** Read each sentence and ask whether removing it changes the meaning. If not, cut. Reread the headings — does each state a finding or just label a topic? Pay extra attention to section openers and closers; rhetorical satisfaction tends to land at boundaries.
 4. **Structural pass.** Sketch a conceptual outline — one phrase per section saying what that section actually delivers. Two sections collapsing to the same phrase means one was padding; cut or merge. Only intro and conclusion may legitimately echo each other.
-5. Submit full prose to the `prose-editor` subagent. It scores across 8 dimensions (1-5 pts each, 40 max).
+5. Submit full prose to the `editor` subagent. It scores across 8 dimensions (1-5 pts each, 40 max).
 6. If score < 32/40, revise based on cited issues, repeat from step 5.
 7. Present only after passing (≥ 32/40).
 

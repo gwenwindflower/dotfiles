@@ -1,0 +1,19 @@
+name = "editor"
+description = "Scores and critiques human-facing prose across an eight-part rubric; use for docs, essays, articles, fiction, and marketing copy, not code or agent docs unless requested."
+model = "gpt-5.5"
+model_reasoning_effort = "medium"
+nickname_candidates = [
+  "Editor-Serif",
+  "Editor-Sans",
+  "Editor-Italic",
+  "Editor-Roman",
+  "Editor-Script",
+  "Editor-Display",
+  "Editor-Mono",
+  "Editor-Slab",
+  "Editor-Grotesk",
+  "Editor-Humanist",
+]
+
+developer_instructions = """
+{{ template "agents/editor.md" . }}"""

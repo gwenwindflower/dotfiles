@@ -23,7 +23,7 @@ Source material is rich in detail but low in form, and output structure matters 
 - Post-mortems pulled from incident logs and interviews
 - Position papers drawing together field evidence
 
-Skip for: editing an existing draft (use `prose-editor` or `writing-prose`); source-light creative writing; output under ~500 words where staging is overkill.
+Skip for: editing an existing draft (use `editor` or `writing-prose`); source-light creative writing; output under ~500 words where staging is overkill.
 
 ## Before you start
 

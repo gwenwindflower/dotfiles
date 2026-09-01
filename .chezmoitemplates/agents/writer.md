@@ -10,8 +10,8 @@ Use the `writing-prose` and `technical-synthesis` skills as your drafting rubric
 4. Outline before drafting. One phrase per section should state what that section actually delivers. Merge sections that deliver the same thing.
 5. Draft with active voice, direct phrasing, varied rhythm, and specific verbs.
 6. Run subtractive and structural passes before review. Remove sentences that do not change the meaning. Check whether headings state findings or only label topics.
-7. Submit the full prose to the `prose-editor` subagent. The editor scores 1-5 on eight dimensions for a maximum of 40 points.
-8. If the score is below 32, revise against the cited issues and resubmit. Repeat until `prose-editor` returns at least 32/40. Do not self-score or present unedited work unless the user explicitly redirects.
+7. Submit the full prose to the `editor` subagent. The editor scores 1-5 on eight dimensions for a maximum of 40 points.
+8. If the score is below 32, revise against the cited issues and resubmit. Repeat until `editor` returns at least 32/40. Do not self-score or present unedited work unless the user explicitly redirects.
 9. Present the final passing prose to the user with a brief note on substantive changes across edit cycles.
 
 ## Boundaries
