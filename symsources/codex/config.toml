@@ -599,31 +599,34 @@ trust_level = "trusted"
 [projects."/Users/winnie/Documents/Codex/2026-06-15/what-s-the-most-robust-native"]
 trust_level = "trusted"
 
-[projects."/Users/winnie/dev/_work/queria"]
+[projects."/Users/winnie/dev/lightdash/queria"]
 trust_level = "trusted"
 
-[projects."/Users/winnie/dev/_supermodel/_clients/indivisible/indi"]
+[projects."/Users/winnie/dev/supermodel/clients/indivisible/indi"]
 trust_level = "trusted"
 
-[projects."/Users/winnie/dev/_work/gtm"]
+[projects."/Users/winnie/dev/supermodel/clients/indivisible"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/lightdash/gtm"]
 trust_level = "trusted"
 
 [projects."/Users/winnie/Documents/Codex/2026-06-17/research-the-best-way-as-of"]
 trust_level = "trusted"
 
-[projects."/Users/winnie/dev/_work/analytics"]
+[projects."/Users/winnie/dev/lightdash/analytics"]
 trust_level = "trusted"
 
-[projects."/Users/winnie/dev/_work/prompts"]
+[projects."/Users/winnie/dev/lightdash/prompts"]
 trust_level = "trusted"
 
-[projects."/Users/winnie/dev/_work/lightdash"]
+[projects."/Users/winnie/dev/lightdash/lightdash"]
 trust_level = "trusted"
 
-[projects."/Users/winnie/dev/_work/lightdash-cloud-announcer"]
+[projects."/Users/winnie/dev/lightdash/lightdash-cloud-announcer"]
 trust_level = "trusted"
 
-[projects."/Users/winnie/dev/_work/lightops"]
+[projects."/Users/winnie/dev/lightdash/lightops"]
 trust_level = "trusted"
 
 [projects."/Users/winnie/Documents/Codex/2026-07-10/hatch-pet-users-winnie-codex-skills"]
@@ -632,19 +635,16 @@ trust_level = "trusted"
 [projects."/Users/winnie/Documents/Codex/2026-07-10/hatch-pet-users-winnie-codex-skills-2"]
 trust_level = "trusted"
 
-[projects."/Users/winnie/dev/_work/dlt-pro"]
+[projects."/Users/winnie/dev/lightdash/dlt-pro"]
 trust_level = "trusted"
 
-[projects."/Users/winnie/dev/_work/lightdash-bootcamp"]
+[projects."/Users/winnie/dev/lightdash/lightdash-bootcamp"]
 trust_level = "trusted"
 
-[projects."/Users/winnie/dev/rowing-machine"]
+[projects."/Users/winnie/dev/tools/rowing-machine"]
 trust_level = "trusted"
 
-[projects."/Users/winnie/dev/_work/mintlify-docs"]
-trust_level = "trusted"
-
-[projects."/Users/winnie/dev/herdr/livery"]
+[projects."/Users/winnie/dev/lightdash/mintlify-docs"]
 trust_level = "trusted"
 
 [projects."/Users/winnie/dev/herdr/wtherdr"]
@@ -653,19 +653,10 @@ trust_level = "trusted"
 [projects."/Users/winnie/Documents/Codex/2026-08-06/realtime-voice-chat"]
 trust_level = "trusted"
 
-[projects."/Users/winnie/dev/_yazi/searchjump.yazi"]
+[projects."/Users/winnie/dev/yazi/searchjump.yazi"]
 trust_level = "trusted"
 
-[projects."/Users/winnie/dev/_work/lightdash-bootcamp/migrations/launchgood/data-warehouse"]
-trust_level = "trusted"
-
-[projects."/Users/winnie/dev/depop"]
-trust_level = "trusted"
-
-[projects."/Users/winnie/dev/_herdr/livery"]
-trust_level = "trusted"
-
-[projects."/Users/winnie/dev/_work/lightdash-bootcamp/training/shimano"]
+[projects."/Users/winnie/dev/tools/depop"]
 trust_level = "trusted"
 
 [projects."/Users/winnie/Documents/Codex/2026-08-13/wh"]
@@ -674,13 +665,10 @@ trust_level = "trusted"
 [projects."/Users/winnie/Documents/Codex/2026-08-14/gi"]
 trust_level = "trusted"
 
-[projects."/Users/winnie/dev/_herdr/heraldr"]
+[projects."/Users/winnie/dev/herdr/heraldr"]
 trust_level = "trusted"
 
-[projects."/Users/winnie/dev/tackle"]
-trust_level = "trusted"
-
-[projects."/Users/winnie/dev/_herdr/wtherdr"]
+[projects."/Users/winnie/dev/tools/tackle"]
 trust_level = "trusted"
 
 [projects."/Users/winnie/Documents/Codex/2026-08-23/apply-the-agent-context-engineering-skill"]
@@ -689,10 +677,10 @@ trust_level = "trusted"
 [projects."/Users/winnie/Documents/Codex/2026-08-23/apply-the-agent-context-engineering-skill-2"]
 trust_level = "trusted"
 
-[projects."/Users/winnie/dev/_yazi/chezmoi.yazi"]
+[projects."/Users/winnie/dev/yazi/chezmoi.yazi"]
 trust_level = "trusted"
 
-[projects."/Users/winnie/dev/_nvim/dbt.nvim"]
+[projects."/Users/winnie/dev/nvim/dbt.nvim"]
 trust_level = "trusted"
 
 [projects."/Users/winnie/Documents/Codex/2026-08-26/re"]
@@ -705,6 +693,12 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/Users/winnie/Documents/Codex/2026-08-31/find-dbt-snapshot-resource-chatgpt-conversation"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-09-02/if"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/lightdash/_extra/glitch-gif-logos"]
 trust_level = "trusted"
 
 [apps._default]
