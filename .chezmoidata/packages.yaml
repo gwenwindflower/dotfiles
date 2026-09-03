@@ -174,7 +174,7 @@ packages:
           - cap
           - chatgpt
           - claude
-          - claude-code
+          - claude-code@latest
           - codex
           - dbc
           - font-charter
