@@ -1,0 +1,34 @@
+{
+  "animations": true,
+  "theme": {
+    "mode": "dark",
+    "name": "catppuccin-frappe"
+  },
+  "keybinds": {
+    "session_child_first": "<leader>ctrl+j",
+    "session_child_cycle": "ctrl+l",
+    "session_child_cycle_reverse": "ctrl+h",
+    "session_parent": "ctrl+k",
+    "messages_next": "ctrl+alt+n",
+    "messages_previous": "ctrl+alt+p",
+    "command_list": "alt+p,super+p",
+    "input_newline": "return,ctrl+j",
+    "input_submit": "ctrl+return,alt+return,super+return",
+    "input_move_left": "left,ctrl+b,ctrl+h",
+    "input_move_right": "right,ctrl+f,ctrl+l",
+    "input_move_up": "up,ctrl+p",
+    "input_move_down": "down,ctrl+n",
+    "input_select_left": "shift+left,ctrl+shift+b",
+    "input_select_right": "shift+right,ctrl+shift+f",
+    "input_select_up": "shift+up,ctrl+shift+p",
+    "input_select_down": "shift+down,ctrl+shift+n",
+    "input_undo": "ctrl+-,super+z,alt+z",
+    "input_redo": "ctrl+.,super+shift+z,alt+shift+z",
+    "input_word_forward": "alt+f,alt+l,alt+right,ctrl+right",
+    "input_word_backward": "alt+b,alt+h,alt+left,ctrl+left",
+    "input_select_word_forward": "alt+shift+l,ctrl+alt+shift+f,alt+shift+right",
+    "input_select_word_backward": "alt+shift+h,ctrl+alt+shift+b,alt+shift+left",
+    "input_delete_word_forward": "ctrl+alt+shift+l,alt+d,alt+delete,ctrl+delete",
+    "input_delete_word_backward": "ctrl+alt+shift+h,ctrl+w,ctrl+backspace,alt+backspace"
+  }
+}
