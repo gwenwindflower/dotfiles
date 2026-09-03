@@ -17,10 +17,6 @@ run = "cargo install --path . --locked --force"
 description = "Rewrite every file to the rustfmt style"
 run = "cargo fmt --all"
 
-[tasks."lint:fmt"]
-description = "Verify formatting without rewriting files"
-run = "cargo fmt --all --check"
-
 [tasks."lint:clippy"]
 description = "Lint every target and feature, treating warnings as errors"
 run = "cargo clippy --all-targets --all-features --locked -- -D warnings"

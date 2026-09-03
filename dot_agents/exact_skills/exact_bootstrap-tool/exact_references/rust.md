@@ -7,7 +7,8 @@ What `assets/rust/` installs and the contract a Rust tool keeps with the templat
 | Kit file | Lands at | Purpose |
 | --- | --- | --- |
 | `mise.tools.toml` | `mise.toml` `[tools]` | `rust` (stable, minimal profile, clippy + rustfmt) and `cargo-binstall`; pinned by `mise use --pin` at bootstrap |
-| `mise.tasks.toml` | `mise.toml` | `build`, `install`, `fmt`, `lint:fmt`, `lint:clippy`, `test:rust` |
+| `mise.tasks.toml` | `mise.toml` | `build`, `install`, `fmt`, `lint:clippy`, `test:rust` |
+| `prek.hooks.toml` | `prek.toml` | `rustfmt` on staged `.rs` files; `cargo fmt --check` has no separate task |
 | `mise-tasks/version/*` | same | `read`, `write`, `files`, `verify` hooks over `Cargo.toml` and `Cargo.lock` |
 | `matchers.json` | `.github/matchers/rust.json` | rustfmt, cargo, and test-panic annotations |
 | `root/Cargo.toml` | `Cargo.toml` | Package metadata, lints, release profile, binstall metadata |

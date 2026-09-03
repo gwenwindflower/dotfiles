@@ -53,12 +53,13 @@ Nothing is overwritten. Files the template has and the repo lacks are copied in 
 - `mise run check` is the local gate and the only place a check is defined; CI runs the same tasks. See `mise-projects`.
 - Releases go through `mise run release` from a clean `main`; `release:rehearse` is the dry run. See `releasing-tools`.
 - Every `uses:` is SHA-pinned with a version comment; `mise run ci-audit` runs zizmor and pinact. See `github-actions-workflows`.
+- prek hooks guard every commit (file hygiene on staged files, Conventional Commit subjects); `.config/wt.toml` guards `wt merge` with `lint:*` and `release:check`. One definition per check: formatters and validators live in `prek.toml`, semantic checks in mise tasks.
 - The version has one source of truth read through `version:read`; kits provide `read`, `write`, `files`, and optionally `verify`.
 - Release archives are `<name>-<target>-v<version>.tgz` with Rust-style target triples for every language.
 
 ## Language kits
 
-`assets/<lang>/` holds real files the script copies and splices at the template's `LANG_TOOLS`, `LANG_TASKS`, and `LANG_IGNORES` markers. A kit must provide `build` (binary at `dist/bin/<binary>`), `lint:*`, `test:*`, and the version hooks. `references/rust.md` describes the Rust kit and the Cargo contract. Adding a kit means adding a directory with the same shape, never editing the template.
+`assets/<lang>/` holds real files the script copies and splices at the template's `LANG_TOOLS`, `LANG_TASKS`, `LANG_IGNORES`, and `LANG_HOOKS` markers. A kit must provide `build` (binary at `dist/bin/<binary>`), `lint:*` for semantic linters, `test:*`, the version hooks, and its formatter as a prek hook. `references/rust.md` describes the Rust kit and the Cargo contract. Adding a kit means adding a directory with the same shape, never editing the template.
 
 ## Related skills
 

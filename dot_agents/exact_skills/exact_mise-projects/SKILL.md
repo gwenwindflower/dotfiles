@@ -39,6 +39,18 @@ Every task carries a `description`; `mise tasks` is the discovery surface, so th
 - **`MISE_TRUSTED_CONFIG_PATHS: ${{ github.workspace }}`** at workflow level lets CI trust the checkout without a separate step.
 - **`cache: false`** on `jdx/mise-action` in any workflow that publishes artifacts. The cache holds the installed toolchain and skips verification on a hit; a poisoned entry would reach users.
 
+## Hooks and merge gates
+
+Three runners, one definition each:
+
+| Moment | Runner | Runs | Never runs |
+| --- | --- | --- | --- |
+| Every `git commit`, any tool | prek (`prek.toml`) | File hygiene, formatters, config validators, `commit-msg` Conventional Commit check, on staged files | Tests, clippy, anything whole-repo |
+| `mise run check` and CI | mise tasks | `lint:hooks` (`prek run --all-files`), `lint:*` semantic linters, `version:check`, `test:*` | — |
+| `wt merge` (`.config/wt.toml`) | worktrunk | `lint:*` before the squash, `release:check` after the rebase | Formatters or file checks |
+
+Worktrunk hooks fire only inside `wt merge`, so prek is the only guard on agent commits. `mise run hooks:install` wires prek into a clone; the bootstrap does it.
+
 ## Layout
 
 ```text

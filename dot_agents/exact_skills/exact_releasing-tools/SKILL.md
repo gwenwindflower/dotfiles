@@ -28,7 +28,7 @@ Publishing fires `release-build.yml`: one archive per target triple, checksums, 
 ## Rules
 
 - **One source of truth for the version.** `version:read` reports it; `version:write` derives everything else. No hand edits to lockfiles or manifests.
-- **Conventional Commits or the notes fail.** `cliff.toml` sets `require_conventional` and `fail_on_unmatched_commit`. Types: feat, fix, perf, refactor, test, agent, docs, build, ci, style, chore. `docs(todo)`, `chore(release):`, and `chore(specs)` are skipped.
+- **Conventional Commits or the notes fail.** `cliff.toml` sets `require_conventional` and `fail_on_unmatched_commit`. Types: feat, fix, perf, refactor, test, agent, docs, build, ci, style, chore. `docs(todo)`, `chore(release):`, and `chore(specs)` are skipped. The prek `commit-msg` hook (`scripts/check-commit-message`) rejects unparseable subjects at commit time; keep its type list and `cliff.toml` in sync.
 - **Bumps are patch unless forced.** `breaking_always_bump_major` and `features_always_bump_minor` are off; pass an explicit tag to `mise run release v0.2.0` for a minor or major.
 - **No CHANGELOG.md.** Notes live on the GitHub release.
 - **GitHub creates the tag.** Never push a tag; `release:push` and `release:create` are two gates on purpose.

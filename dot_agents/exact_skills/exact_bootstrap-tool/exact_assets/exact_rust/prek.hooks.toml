@@ -1,0 +1,1 @@
+  { id = "rustfmt", name = "rustfmt", language = "system", entry = "rustfmt --edition 2024", types = ["rust"] },

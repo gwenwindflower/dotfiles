@@ -93,6 +93,7 @@ install_kit() {
 	splice "$root/mise.toml" "# >>> LANG_TOOLS <<<" "$kit/mise.tools.toml"
 	splice "$root/mise.toml" "# >>> LANG_TASKS <<<" "$kit/mise.tasks.toml"
 	splice "$root/.gitignore" "# >>> LANG_IGNORES <<<" "$kit/gitignore"
+	splice "$root/prek.toml" "# >>> LANG_HOOKS <<<" "$kit/prek.hooks.toml"
 	mkdir -p "$root/mise-tasks/version" "$root/.github/matchers"
 	for hook in read write files verify; do
 		[[ -f "$kit/mise-tasks/version/$hook" ]] || continue
@@ -126,7 +127,7 @@ fill_tree() {
 }
 
 refresh_pins() {
-	local root="$1" tools=(git-cliff pinact zizmor shellcheck)
+	local root="$1" tools=(git-cliff pinact zizmor shellcheck prek)
 	while IFS= read -r tool; do
 		tools+=("$tool")
 	done < <(awk -F'[ =]' '/^[a-z0-9_-]+ *=/ { print $1 }' "$kit/mise.tools.toml")
@@ -139,6 +140,7 @@ refresh_pins() {
 		if [[ -x "$kit/post-install" ]]; then
 			mise exec -- "$kit/post-install" || plan "kit post-install failed; see $kit/post-install"
 		fi
+		mise run hooks:install || plan "prek install failed; run mise run hooks:install by hand"
 		GITHUB_TOKEN="${GITHUB_TOKEN:-$(gh auth token 2>/dev/null || true)}" pinact run -update || plan "pinact update failed; run mise run ci-audit:pinact later"
 	)
 }
