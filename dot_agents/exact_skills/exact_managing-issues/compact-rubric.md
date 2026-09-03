@@ -1,6 +1,6 @@
 # Compact Readiness Rubric
 
-The readiness gate is an automation that reviews an issue's full evidence trail — description, comments, relations, linked PRs, code — then applies one readiness label and a short "AI readiness review" comment. This is its grading logic distilled for issue improvers: predict the grade an edit will earn, and aim the edit at the failing gate.
+The readiness gate is an automation that reviews an issue's full evidence trail — description, comments, relations, linked PRs, code — then applies one readiness label and a short "AI readiness review" comment. This is its grading logic distilled for issue improvers: predict the grade an edit will earn, and aim the edit at the failing gate. Predicting `ai-ready` never licenses applying it; the gate awards that label.
 
 ## The five gates
 

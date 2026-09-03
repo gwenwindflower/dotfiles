@@ -4,7 +4,7 @@ Sync is configured per Linear-team↔GitHub-repo pair. **Creation flows one way:
 
 ## Creating issues on a synced pair
 
-Because creation only flows GitHub → Linear, any issue the customer should see — which is nearly all of them — **starts as a GitHub issue**: the public issue is how the customer sees their problem is understood and can follow it to resolution. A Linear-only issue requires a real justification, like a security vulnerability that can't be public; customer details are never one. Abstract them from the public body, let the sync create the Linear twin, then add customer specifics on the Linear side only if they shape the work.
+Because creation only flows GitHub → Linear, any issue the customer should see — which is nearly all of them — **starts as a GitHub issue**: the public issue is how the customer sees their problem is understood and can follow it to resolution. A Linear-only issue requires a real justification, like a security vulnerability that can't be public; customer details are never one. Abstract them from the public body, let the sync create the Linear twin, then add a Linear comment only for specifics that shape the work; the demand record itself is automated once the link is shared.
 
 The integration posts the Linear twin's link as a comment on the GitHub issue, asynchronously. After creating, retrieve it — polling until it appears:
 
@@ -13,7 +13,7 @@ until gh api repos/<owner>/<repo>/issues/<n>/comments --jq '.[].body' \
   | rg -o 'https://linear\.app/\S+'; do sleep 10; done
 ```
 
-Then report both sides to the user: the GitHub issue, its Linear twin, and what lives on one side only (customer context added in Linear; anything on GitHub that isn't mirrored). If Linear ends up holding substantive content GitHub doesn't, flag it explicitly.
+Then report both sides to the user: the GitHub issue, its Linear twin, and what lives on one side only. If Linear ends up holding substantive content GitHub doesn't, flag it explicitly.
 
 ## What mirrors
 
