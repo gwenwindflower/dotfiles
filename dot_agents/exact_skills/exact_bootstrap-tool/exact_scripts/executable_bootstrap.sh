@@ -66,6 +66,7 @@ plan() { printf '  → %s\n' "$*"; }
 # Fill placeholders in one file: {{NAME}} in Markdown, @@NAME@@ elsewhere.
 fill() {
 	local file="$1" content
+	[[ -s "$file" ]] || return 0
 	content="$(cat "$file")"
 	for pair in "TOOL_NAME=$name" "TOOL_BINARY=$binary" "GH_OWNER=$owner" "AUTHOR=$author" "YEAR=$year" "DESCRIPTION=$description"; do
 		local key="${pair%%=*}" value="${pair#*=}"
