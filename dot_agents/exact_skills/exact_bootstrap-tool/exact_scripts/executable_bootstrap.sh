@@ -147,7 +147,7 @@ report() {
 	local root="$1"
 	log ""
 	log "Remaining placeholders:"
-	(cd "$root" && grep -rnE '\{\{[A-Z_]+|@@[A-Z_]+@@' --exclude-dir=.git --exclude=bootstrap.md . || true) | sed 's/^/  /'
+	(cd "$root" && grep -rnIE '\{\{[A-Z_]+|@@[A-Z_]+@@' --exclude-dir=.git --exclude-dir=target --exclude-dir=dist --exclude-dir=node_modules --exclude=bootstrap.md . || true) | sed 's/^/  /'
 	log ""
 	log "Next: fill those, commit, push main, then follow docs/bootstrap.md."
 }
@@ -197,7 +197,7 @@ while IFS= read -r rel; do
 		cmp -s "$filled" "$dst" || differing+=("$rel")
 		rm -f "$filled"
 	fi
-done < <(cd "$template_dir" && find . -type f -o -type l | grep -v '^./.git/' | sed 's|^\./||' | sort)
+done < <(cd "$template_dir" && { git ls-files 2>/dev/null || find . \( -type f -o -type l \) -not -path './.git/*' | sed 's|^\./||'; } | sort)
 
 if [[ ! -x "$dir/mise-tasks/version/read" ]]; then
 	install_kit "$dir"
