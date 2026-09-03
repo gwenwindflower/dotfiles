@@ -12,11 +12,15 @@ The split follows one rule — **copy what nothing can regenerate, install what 
 
 The pipeline is `pre-start` rather than `post-start` because the `switch-shift` and `switch-keep` aliases launch agents via `--execute`, which must land on installed deps.
 
-`depop` is a cargo path install from `~/dev/depop`, deliberately absent from `packages.yaml` like `livery` and `wtherdr`. Fresh machines have no dependency sync until it is built.
+`depop` is a cargo path install from `~/dev/tools/depop`, deliberately absent from `packages.yaml` like `livery` and `wtherdr`. Fresh machines have no dependency sync until it is built.
 
 ### Hook failure semantics
 
 Verified, and narrower than the docs' "failure aborts the operation": a failing `pre-start` step still creates the worktree but **cancels `--execute`**. A missing binary therefore costs the agent launch silently, which is why the `depop` step is guarded by a `command -v` check.
+
+## Project merge gates
+
+Tool repositories from `gwenwindflower/_tool` ship `.config/wt.toml` with `[[pre-commit]] lint = "mise run 'lint:*'"` and `[[pre-merge]] gate = "mise run release:check"`. Per-commit checks are prek hooks, not worktrunk hooks: `pre-commit` here fires only inside `wt merge`, never on `git commit`. Keep formatters out of `wt.toml` and whole-repo tasks out of `prek.toml`; the `mise-projects` skill has the full split.
 
 ## Reflink
 
