@@ -147,3 +147,32 @@ function _uppy_refresh_herdr_plugins -d "Refresh installed Herdr plugins"
 
     return 0
 end
+
+# Drop-in replacement for _uppy_refresh_herdr_plugins, pending a trust period on
+# diegopzz/herdr-updater. Unlike the blind reinstall above, it only moves a
+# plugin when the upstream revision is a clean fast-forward, and holds local
+# checkouts. Requires `herdr plugin install diegopzz/herdr-updater` and the
+# config stashed at tmp/herdr-updater-config.toml in the chezmoi repo.
+#
+# function _uppy_herdr_plugins -d "Update Herdr plugins with the herdr-updater plugin"
+#     argparse n/dry-run -- $argv
+#     or return
+#
+#     if not type -q herdr-updater
+#         logirl warning "herdr-updater is not installed; skipping Herdr plugins"
+#         logirl info "Install it with: herdr plugin install diegopzz/herdr-updater"
+#         return 0
+#     end
+#
+#     if set -q _flag_dry_run
+#         herdr-updater plan --plugins-only
+#         # herdr-updater exits 1 when an update is pending, which a plan reports
+#         # rather than fails on
+#         if test $status -le 1
+#             return 0
+#         end
+#         return $status
+#     end
+#
+#     herdr-updater apply --plugins-only
+# end
