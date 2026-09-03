@@ -1,0 +1,23 @@
+#!/bin/sh
+
+set -eu
+
+script_dir=$(CDPATH='' cd "$(dirname "$0")" && pwd)
+. "$script_dir/agent-picker.sh"
+
+model=$(choose_option \
+  "model" \
+  "default" \
+  "opencode/kimi-k3" \
+  "opencode/glm-5.2" \
+  "opencode/deepseek-v4-pro" \
+  "opencode/deepseek-v4-flash" \
+  "opencode/ling-3.0-flash-fin-free")
+
+set --
+
+if [ "$model" != "default" ]; then
+  set -- "$@" -m "$model"
+fi
+
+launch_agent opencode2 mini "$@"

@@ -13,6 +13,7 @@ interface PickerRun {
   code: number;
   herdrCalls: string;
   gumCalls: string;
+  gumArguments: string;
   stderr: string;
 }
 
@@ -21,14 +22,15 @@ async function writeExecutable(path: string, contents: string): Promise<void> {
   await Deno.chmod(path, 0o755);
 }
 
-async function runPicker(
-  picker: string,
+async function runLauncher(
+  launcher: string,
   selections: Record<string, string>,
   cancelAt?: string,
 ): Promise<PickerRun> {
   const tempDir = await Deno.makeTempDir();
   const herdrLog = join(tempDir, "herdr.log");
   const gumLog = join(tempDir, "gum.log");
+  const gumArgumentsLog = join(tempDir, "gum-arguments.log");
 
   try {
     await Deno.copyFile(
@@ -40,6 +42,8 @@ async function runPicker(
         "pick-agent",
         "pick-codex-agent",
         "pick-claude-agent",
+        "pick-opencode-agent",
+        "open-nvim",
       ]
     ) {
       await Deno.copyFile(
@@ -61,6 +65,7 @@ while [ "$#" -gt 0 ]; do
   shift
 done
 printf '%s\n' "$header" >> "$GUM_TEST_LOG"
+printf '%s\n' "$@" >> "$GUM_ARGUMENTS_TEST_LOG"
 if [ "$header" = "${cancelAt ?? ""}" ]; then
   exit 130
 fi
@@ -88,9 +93,10 @@ fi
     );
 
     const command = new Deno.Command("sh", {
-      args: [join(tempDir, picker.replace("executable_", ""))],
+      args: [join(tempDir, launcher.replace("executable_", ""))],
       env: {
         GUM_TEST_LOG: gumLog,
+        GUM_ARGUMENTS_TEST_LOG: gumArgumentsLog,
         HERDR_TEST_LOG: herdrLog,
         HERDR_BIN_PATH: join(tempDir, "herdr"),
         HERDR_ACTIVE_WORKSPACE_ID: "w1",
@@ -106,6 +112,7 @@ fi
       code: output.code,
       herdrCalls: await Deno.readTextFile(herdrLog).catch(() => ""),
       gumCalls: await Deno.readTextFile(gumLog).catch(() => ""),
+      gumArguments: await Deno.readTextFile(gumArgumentsLog).catch(() => ""),
       stderr: new TextDecoder().decode(output.stderr),
     };
   } finally {
@@ -114,7 +121,7 @@ fi
 }
 
 Deno.test("Codex picker creates a focused tab and submits the selected model", async () => {
-  const result = await runPicker("executable_pick-agent", {
+  const result = await runLauncher("executable_pick-agent", {
     agent: "codex",
     model: "gpt-5.6-terra",
     effort: "high",
@@ -133,8 +140,21 @@ Deno.test("Codex picker creates a focused tab and submits the selected model", a
   assertEquals(result.herdrCalls.includes("\tagent\tstart\t"), false);
 });
 
+Deno.test("Codex picker orders default, Sol, Luna, then Terra", async () => {
+  const result = await runLauncher("executable_pick-codex-agent", {
+    model: "default",
+    effort: "default",
+  });
+
+  assertEquals(result.code, 0, result.stderr);
+  assertStringIncludes(
+    result.gumArguments,
+    "default\ngpt-5.6-sol\ngpt-5.6-luna\ngpt-5.6-terra\n",
+  );
+});
+
 Deno.test("tab create leaves naming to the heraldry plugin", async () => {
-  const result = await runPicker("executable_pick-claude-agent", {
+  const result = await runLauncher("executable_pick-claude-agent", {
     model: "opus",
     effort: "high",
   });
@@ -144,7 +164,7 @@ Deno.test("tab create leaves naming to the heraldry plugin", async () => {
 });
 
 Deno.test("Claude picker offers Haiku and passes its native effort flag", async () => {
-  const result = await runPicker("executable_pick-agent", {
+  const result = await runLauncher("executable_pick-agent", {
     agent: "claude",
     model: "haiku",
     effort: "xhigh",
@@ -158,8 +178,22 @@ Deno.test("Claude picker offers Haiku and passes its native effort flag", async 
   );
 });
 
+Deno.test("OpenCode picker launches the v2 binary with a Zen model", async () => {
+  const result = await runLauncher("executable_pick-agent", {
+    agent: "opencode",
+    model: "opencode/deepseek-v4-flash",
+  });
+
+  assertEquals(result.code, 0, result.stderr);
+  assertEquals(result.gumCalls, "agent\nmodel\n");
+  assertStringIncludes(
+    result.herdrCalls,
+    "CALL\tpane\trun\tw1:p9\topencode2 mini -m opencode/deepseek-v4-flash",
+  );
+});
+
 Deno.test("configured defaults launch an agent without native overrides", async () => {
-  const result = await runPicker("executable_pick-codex-agent", {
+  const result = await runLauncher("executable_pick-codex-agent", {
     model: "default",
     effort: "default",
   });
@@ -170,7 +204,7 @@ Deno.test("configured defaults launch an agent without native overrides", async 
 });
 
 Deno.test("cancelling a picker leaves the Herdr layout unchanged", async () => {
-  const result = await runPicker(
+  const result = await runLauncher(
     "executable_pick-agent",
     { agent: "codex" },
     "agent",
@@ -178,4 +212,15 @@ Deno.test("cancelling a picker leaves the Herdr layout unchanged", async () => {
 
   assertEquals(result.code, 130);
   assertEquals(result.herdrCalls, "");
+});
+
+Deno.test("nvim launcher opens a focused tab in the active pane directory", async () => {
+  const result = await runLauncher("executable_open-nvim", {});
+
+  assertEquals(result.code, 0, result.stderr);
+  assertEquals(
+    result.herdrCalls,
+    "CALL\ttab\tcreate\t--workspace\tw1\t--cwd\t/project with spaces\t--focus\n" +
+      "CALL\tpane\trun\tw1:p9\tnvim\n",
+  );
 });

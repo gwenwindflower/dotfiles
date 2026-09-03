@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -eu
+
+herdr_bin=${HERDR_BIN_PATH:-herdr}
+workspace=${HERDR_ACTIVE_WORKSPACE_ID:?missing active workspace}
+cwd=${HERDR_ACTIVE_PANE_CWD:-$PWD}
+
+created=$(
+  "$herdr_bin" tab create \
+    --workspace "$workspace" \
+    --cwd "$cwd" \
+    --focus
+)
+pane=$(printf '%s\n' "$created" | jq -er '.result.root_pane.pane_id')
+
+"$herdr_bin" pane run "$pane" nvim >/dev/null

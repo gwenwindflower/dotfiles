@@ -1,6 +1,6 @@
 # Herdr Agent Picker
 
-The Herdr agent picker opens a Catppuccin Frappé-themed popup, collects an agent, model, and effort level with `gum choose`, then creates a focused tab in the active workspace and starts the selected agent there. Tab naming belongs to the heraldry plugin; call it explicitly to set or reset a tab name.
+The Herdr agent picker opens a Catppuccin Frappé-themed popup, collects an agent and model with `gum choose`, asks for effort when the agent supports it, then creates a focused tab in the active workspace and starts the selected agent there. Tab naming belongs to the heraldry plugin; call it explicitly to set or reset a tab name.
 
 Use either binding:
 
@@ -16,10 +16,12 @@ shift+super+a
 | Source | Deployed target | Responsibility |
 | --- | --- | --- |
 | `private_dot_config/herdr/agent-picker.sh` | `~/.config/herdr/agent-picker.sh` | Shared Gum theme, tab creation, and launch behavior |
-| `private_dot_config/herdr/executable_pick-agent` | `~/.config/herdr/pick-agent` | Top-level Codex or Claude selection |
+| `private_dot_config/herdr/executable_pick-agent` | `~/.config/herdr/pick-agent` | Top-level Codex, Claude, or OpenCode selection |
 | `private_dot_config/herdr/executable_pick-codex-agent` | `~/.config/herdr/pick-codex-agent` | Codex model and effort choices plus native argument construction |
 | `private_dot_config/herdr/executable_pick-claude-agent` | `~/.config/herdr/pick-claude-agent` | Claude model and effort choices plus native argument construction |
-| `symsources/herdr/config.toml` | `~/.config/herdr/config.toml` | Popup dimensions and the `prefix+a`/`shift+super+a` binding |
+| `private_dot_config/herdr/executable_pick-opencode-agent` | `~/.config/herdr/pick-opencode-agent` | OpenCode Zen model choices for the v2 `opencode2 mini` interface |
+| `private_dot_config/herdr/executable_open-nvim` | `~/.config/herdr/open-nvim` | Focused nvim tab creation in the active pane directory |
+| `symsources/herdr/config.toml` | `~/.config/herdr/config.toml` | Popup dimensions and launcher bindings |
 
 The shared `launch_agent` function owns the Herdr interaction:
 
@@ -31,9 +33,15 @@ The shared `launch_agent` function owns the Herdr interaction:
 
 The popup closes as soon as the command reaches the new pane, while MCP loading and authentication continue visibly in the focused tab. Herdr detects the manually launched agent without assigning it a live-agent alias; target it by pane ID when later automation needs to address it.
 
-The agent-specific scripts own the hard-coded supported choices. `Configured default` omits the corresponding native override so the agent reads its normal configuration. Codex receives `-m` and `model_reasoning_effort`; Claude receives `--model` and `--effort`.
+The agent-specific scripts own the hard-coded supported choices. `default` omits the corresponding native override so the agent reads its normal configuration. Codex receives `-m` and `model_reasoning_effort`; Claude receives `--model` and `--effort`; OpenCode receives only `-m`, because its selected Zen models expose different variant systems instead of one shared effort scale.
+
+OpenCode launches through the v2 `opencode2 mini` interface. Its curated Zen list covers Kimi K3, GLM-5.2, DeepSeek V4 Pro, DeepSeek V4 Flash, and Ling 3.0 Flash Fin Free. Ling fills the fast-small role with 5.1B active parameters and high-throughput inference for latency-sensitive work.
 
 Cancelling any chooser exits the popup before a tab is created.
+
+## Editor Tab
+
+`prefix+e` runs `~/.config/herdr/open-nvim`, which creates a focused tab in the active workspace at the active pane's cwd, then launches `nvim` in its root pane. The launcher does not provide a tab label; heraldry derives the name from the running editor and project context.
 
 ## Maintenance
 
@@ -42,15 +50,18 @@ Edit the model and effort lists in the corresponding agent script. Keep values a
 ```text
 codex --help
 claude --help
+opencode2 --help
 ```
+
+OpenCode Zen changes more frequently than the native Codex and Claude model sets. Confirm its current IDs against `https://opencode.ai/zen/v1/models` before editing `pick-opencode-agent`.
 
 Validate and deploy changes from the repository root:
 
 ```text
-shellcheck -e SC1091 private_dot_config/herdr/agent-picker.sh private_dot_config/herdr/executable_pick-*
+shellcheck -e SC1091 private_dot_config/herdr/agent-picker.sh private_dot_config/herdr/executable_pick-* private_dot_config/herdr/executable_open-nvim
 HERDR_CONFIG_PATH="$PWD/symsources/herdr/config.toml" herdr config check
 chezmoi --dry-run --no-pager apply -n --verbose ~/.config/herdr
-chezmoi apply ~/.config/herdr/agent-picker.sh ~/.config/herdr/pick-agent ~/.config/herdr/pick-codex-agent ~/.config/herdr/pick-claude-agent
+chezmoi apply ~/.config/herdr/agent-picker.sh ~/.config/herdr/pick-agent ~/.config/herdr/pick-codex-agent ~/.config/herdr/pick-claude-agent ~/.config/herdr/pick-opencode-agent ~/.config/herdr/open-nvim
 herdr server reload-config
 ```
 
@@ -73,8 +84,11 @@ The tests materialize the chezmoi source files into a temporary target directory
 - The root pane returned by `tab create` becomes the `pane run` target.
 - Codex model and effort selections become native Codex arguments.
 - Claude supports Haiku and passes its native effort argument.
+- Codex models appear as Default, Sol, Luna, then Terra.
+- OpenCode uses `opencode2 mini`, passes a Zen model, and does not ask for effort.
 - Configured defaults omit native overrides.
 - Cancelling the picker creates no Herdr tab or agent.
+- The nvim launcher preserves the active workspace and pane directory.
 
 Add behavior at the command boundary rather than asserting source text or file presence. A test should fail when the launched tab or agent arguments would be wrong for the user.
 
@@ -100,6 +114,7 @@ At that point, move the implementation and its tests together under `.utils/`:
 ├── pick-agent
 ├── pick-codex-agent
 ├── pick-claude-agent
+├── pick-opencode-agent
 ├── open.sh
 └── agent-picker_test.ts
 ```

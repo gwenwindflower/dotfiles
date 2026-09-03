@@ -8,6 +8,7 @@ script_dir=$(CDPATH='' cd "$(dirname "$0")" && pwd)
 agent=$(choose_option \
   "agent" \
   "codex" \
-  "claude")
+  "claude" \
+  "opencode")
 
 exec "$script_dir/pick-$agent-agent"

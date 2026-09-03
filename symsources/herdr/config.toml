@@ -71,6 +71,12 @@ description = "choose and launch agent"
 width = 58
 height = 16
 
+[[keys.command]]
+key = "prefix+e"
+type = "shell"
+command = '"$HOME/.config/herdr/open-nvim"'
+description = "open nvim tab"
+
 # git
 [[keys.command]]
 key = "prefix+g"
