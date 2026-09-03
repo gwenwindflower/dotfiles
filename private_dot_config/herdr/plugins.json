@@ -1,369 +1,229 @@
 [
-  {
-    "plugin_id": "heraldr",
-    "name": "Heraldr",
-    "version": "0.0.1",
-    "min_herdr_version": "0.7.5",
-    "description": "Dress herdr tabs as [N] <icon> <program> and feed sidebar rows composable tokens: $jump (workspace jump number) plus $space/$worktree (repo + nested worktree names for agent rows). Labels stay bare for the agents panel and navigator; manual renames win. Icons reload from icons.conf with a compiled fallback.",
-    "manifest_path": "/Users/winnie/dev/_herdr/heraldr/herdr-plugin.toml",
-    "plugin_root": "/Users/winnie/dev/_herdr/heraldr",
-    "enabled": true,
-    "platforms": [
-      "linux",
-      "macos"
-    ],
-    "build": [
-      {
-        "command": [
-          "sh",
-          "scripts/install-binary.sh"
-        ]
-      }
-    ],
-    "actions": [
-      {
-        "id": "clear",
-        "title": "Heraldr: strip all chrome",
-        "contexts": [
-          "global"
-        ],
-        "command": [
-          "heraldr",
-          "clear"
-        ]
-      },
-      {
-        "id": "reset",
-        "title": "Heraldr: reset tab to automatic naming",
-        "contexts": [
-          "global"
-        ],
-        "command": [
-          "heraldr",
-          "reset"
-        ]
-      }
-    ],
-    "events": [
-      {
-        "on": "pane.agent_detected",
-        "command": [
-          "heraldr",
-          "kick"
-        ]
-      },
-      {
-        "on": "pane.focused",
-        "command": [
-          "heraldr",
-          "kick"
-        ]
-      },
-      {
-        "on": "tab.created",
-        "command": [
-          "heraldr",
-          "kick"
-        ]
-      },
-      {
-        "on": "tab.focused",
-        "command": [
-          "heraldr",
-          "kick"
-        ]
-      },
-      {
-        "on": "workspace.created",
-        "command": [
-          "heraldr",
-          "kick"
-        ]
-      }
-    ],
-    "source": {
-      "kind": "local"
-    }
-  },
-  {
-    "plugin_id": "herdr-splits",
-    "name": "Herdr Splits",
-    "version": "0.5.3",
-    "min_herdr_version": "0.7.0",
-    "description": "Seamless navigation and resizing between Herdr panes and Neovim splits",
-    "manifest_path": "/Users/winnie/.config/herdr/plugins/github/herdr-splits-d880c4924f2b/herdr-plugin.toml",
-    "plugin_root": "/Users/winnie/.config/herdr/plugins/github/herdr-splits-d880c4924f2b",
-    "enabled": true,
-    "platforms": [
-      "linux",
-      "macos"
-    ],
-    "actions": [
-      {
-        "id": "nav-down",
-        "title": "Navigate down (Neovim/Herder)",
-        "contexts": [
-          "global"
-        ],
-        "command": [
-          "bash",
-          "scripts/herdr-nav.sh",
-          "down"
-        ]
-      },
-      {
-        "id": "nav-left",
-        "title": "Navigate left (Neovim/Herder)",
-        "contexts": [
-          "global"
-        ],
-        "command": [
-          "bash",
-          "scripts/herdr-nav.sh",
-          "left"
-        ]
-      },
-      {
-        "id": "nav-right",
-        "title": "Navigate right (Neovim/Herder)",
-        "contexts": [
-          "global"
-        ],
-        "command": [
-          "bash",
-          "scripts/herdr-nav.sh",
-          "right"
-        ]
-      },
-      {
-        "id": "nav-up",
-        "title": "Navigate up (Neovim/Herder)",
-        "contexts": [
-          "global"
-        ],
-        "command": [
-          "bash",
-          "scripts/herdr-nav.sh",
-          "up"
-        ]
-      },
-      {
-        "id": "resize-down",
-        "title": "Resize down (Neovim/Herder)",
-        "contexts": [
-          "global"
-        ],
-        "command": [
-          "bash",
-          "scripts/herdr-resize.sh",
-          "down"
-        ]
-      },
-      {
-        "id": "resize-left",
-        "title": "Resize left (Neovim/Herder)",
-        "contexts": [
-          "global"
-        ],
-        "command": [
-          "bash",
-          "scripts/herdr-resize.sh",
-          "left"
-        ]
-      },
-      {
-        "id": "resize-right",
-        "title": "Resize right (Neovim/Herder)",
-        "contexts": [
-          "global"
-        ],
-        "command": [
-          "bash",
-          "scripts/herdr-resize.sh",
-          "right"
-        ]
-      },
-      {
-        "id": "resize-up",
-        "title": "Resize up (Neovim/Herder)",
-        "contexts": [
-          "global"
-        ],
-        "command": [
-          "bash",
-          "scripts/herdr-resize.sh",
-          "up"
-        ]
-      }
-    ],
-    "source": {
-      "kind": "github",
-      "owner": "lmilojevicc",
-      "repo": "herdr-splits.nvim",
-      "resolved_commit": "94f30cf4e9ac76ddf185a3acd0977be728fa4106",
-      "managed_path": "/Users/winnie/.config/herdr/plugins/github/herdr-splits-d880c4924f2b",
-      "installed_unix_ms": 1788294004291
-    }
-  },
-  {
-    "plugin_id": "wtherdr",
-    "name": "wtherdr",
-    "version": "0.1.0",
-    "min_herdr_version": "0.7.5",
-    "description": "Run Worktrunk's native worktree workflows in Herdr popups and keep nested workspaces in sync.",
-    "manifest_path": "/Users/winnie/dev/_herdr/wtherdr/herdr-plugin.toml",
-    "plugin_root": "/Users/winnie/dev/_herdr/wtherdr",
-    "enabled": true,
-    "platforms": [
-      "linux",
-      "macos"
-    ],
-    "build": [
-      {
-        "command": [
-          "sh",
-          "scripts/install-binary.sh"
-        ]
-      }
-    ],
-    "actions": [
-      {
-        "id": "create",
-        "title": "󱓊 wt create",
-        "contexts": [
-          "workspace"
-        ],
-        "command": [
-          "wtherdr",
-          "popup",
-          "create"
-        ]
-      },
-      {
-        "id": "merge",
-        "title": " wt merge",
-        "contexts": [
-          "workspace"
-        ],
-        "command": [
-          "wtherdr",
-          "popup",
-          "merge"
-        ]
-      },
-      {
-        "id": "remove",
-        "title": "󱓌 wt remove",
-        "contexts": [
-          "workspace"
-        ],
-        "command": [
-          "wtherdr",
-          "popup",
-          "remove"
-        ]
-      },
-      {
-        "id": "switch",
-        "title": "󱓎 wt switch",
-        "contexts": [
-          "workspace"
-        ],
-        "command": [
-          "wtherdr",
-          "popup",
-          "switch"
-        ]
-      }
-    ],
-    "panes": [
-      {
-        "id": "create",
-        "title": "󱓊 wt create",
-        "placement": "popup",
-        "width": 72,
-        "height": 7,
-        "command": [
-          "wtherdr",
-          "prompt",
-          "create"
-        ]
-      },
-      {
-        "id": "create-run",
-        "title": "󱓊 wt create",
-        "placement": "popup",
-        "width": "90%",
-        "height": "85%",
-        "command": [
-          "wtherdr",
-          "run",
-          "create"
-        ]
-      },
-      {
-        "id": "merge",
-        "title": " wt merge",
-        "placement": "popup",
-        "width": 72,
-        "height": 7,
-        "command": [
-          "wtherdr",
-          "prompt",
-          "merge"
-        ]
-      },
-      {
-        "id": "merge-run",
-        "title": " wt merge",
-        "placement": "popup",
-        "width": "90%",
-        "height": "85%",
-        "command": [
-          "wtherdr",
-          "run",
-          "merge"
-        ]
-      },
-      {
-        "id": "remove",
-        "title": "󱓌 wt remove",
-        "placement": "popup",
-        "width": 72,
-        "height": 7,
-        "command": [
-          "wtherdr",
-          "prompt",
-          "remove"
-        ]
-      },
-      {
-        "id": "remove-run",
-        "title": "󱓌 wt remove",
-        "placement": "popup",
-        "width": "90%",
-        "height": "85%",
-        "command": [
-          "wtherdr",
-          "run",
-          "remove"
-        ]
-      },
-      {
-        "id": "switch-run",
-        "title": "󱓎 wt switch",
-        "placement": "popup",
-        "width": "90%",
-        "height": "85%",
-        "command": [
-          "wtherdr",
-          "run",
-          "switch"
-        ]
-      }
-    ],
-    "source": {
-      "kind": "local"
-    }
-  }
+	{
+		"plugin_id": "heraldr",
+		"name": "Heraldr",
+		"version": "0.0.1",
+		"min_herdr_version": "0.7.5",
+		"description": "Dress herdr tabs as [N] <icon> <program> and feed sidebar rows composable tokens: $jump (workspace jump number) plus $space/$worktree (repo + nested worktree names for agent rows). Labels stay bare for the agents panel and navigator; manual renames win. Icons reload from icons.conf with a compiled fallback.",
+		"manifest_path": "/Users/winnie/dev/herdr/heraldr/herdr-plugin.toml",
+		"plugin_root": "/Users/winnie/dev/herdr/heraldr",
+		"enabled": true,
+		"platforms": ["linux", "macos"],
+		"build": [
+			{
+				"command": ["sh", "scripts/install-binary.sh"]
+			}
+		],
+		"actions": [
+			{
+				"id": "clear",
+				"title": "Heraldr: strip all chrome",
+				"contexts": ["global"],
+				"command": ["heraldr", "clear"]
+			},
+			{
+				"id": "reset",
+				"title": "Heraldr: reset tab to automatic naming",
+				"contexts": ["global"],
+				"command": ["heraldr", "reset"]
+			}
+		],
+		"events": [
+			{
+				"on": "pane.agent_detected",
+				"command": ["heraldr", "kick"]
+			},
+			{
+				"on": "pane.focused",
+				"command": ["heraldr", "kick"]
+			},
+			{
+				"on": "tab.created",
+				"command": ["heraldr", "kick"]
+			},
+			{
+				"on": "tab.focused",
+				"command": ["heraldr", "kick"]
+			},
+			{
+				"on": "workspace.created",
+				"command": ["heraldr", "kick"]
+			}
+		],
+		"source": {
+			"kind": "local"
+		}
+	},
+	{
+		"plugin_id": "herdr-splits",
+		"name": "Herdr Splits",
+		"version": "0.5.3",
+		"min_herdr_version": "0.7.0",
+		"description": "Seamless navigation and resizing between Herdr panes and Neovim splits",
+		"manifest_path": "/Users/winnie/.config/herdr/plugins/github/herdr-splits-d880c4924f2b/herdr-plugin.toml",
+		"plugin_root": "/Users/winnie/.config/herdr/plugins/github/herdr-splits-d880c4924f2b",
+		"enabled": true,
+		"platforms": ["linux", "macos"],
+		"actions": [
+			{
+				"id": "nav-down",
+				"title": "Navigate down (Neovim/Herder)",
+				"contexts": ["global"],
+				"command": ["bash", "scripts/herdr-nav.sh", "down"]
+			},
+			{
+				"id": "nav-left",
+				"title": "Navigate left (Neovim/Herder)",
+				"contexts": ["global"],
+				"command": ["bash", "scripts/herdr-nav.sh", "left"]
+			},
+			{
+				"id": "nav-right",
+				"title": "Navigate right (Neovim/Herder)",
+				"contexts": ["global"],
+				"command": ["bash", "scripts/herdr-nav.sh", "right"]
+			},
+			{
+				"id": "nav-up",
+				"title": "Navigate up (Neovim/Herder)",
+				"contexts": ["global"],
+				"command": ["bash", "scripts/herdr-nav.sh", "up"]
+			},
+			{
+				"id": "resize-down",
+				"title": "Resize down (Neovim/Herder)",
+				"contexts": ["global"],
+				"command": ["bash", "scripts/herdr-resize.sh", "down"]
+			},
+			{
+				"id": "resize-left",
+				"title": "Resize left (Neovim/Herder)",
+				"contexts": ["global"],
+				"command": ["bash", "scripts/herdr-resize.sh", "left"]
+			},
+			{
+				"id": "resize-right",
+				"title": "Resize right (Neovim/Herder)",
+				"contexts": ["global"],
+				"command": ["bash", "scripts/herdr-resize.sh", "right"]
+			},
+			{
+				"id": "resize-up",
+				"title": "Resize up (Neovim/Herder)",
+				"contexts": ["global"],
+				"command": ["bash", "scripts/herdr-resize.sh", "up"]
+			}
+		],
+		"source": {
+			"kind": "github",
+			"owner": "lmilojevicc",
+			"repo": "herdr-splits.nvim",
+			"resolved_commit": "94f30cf4e9ac76ddf185a3acd0977be728fa4106",
+			"managed_path": "/Users/winnie/.config/herdr/plugins/github/herdr-splits-d880c4924f2b",
+			"installed_unix_ms": 1788370718923
+		}
+	},
+	{
+		"plugin_id": "wtherdr",
+		"name": "wtherdr",
+		"version": "0.1.0",
+		"min_herdr_version": "0.7.5",
+		"description": "Run Worktrunk's native worktree workflows in Herdr popups and keep nested workspaces in sync.",
+		"manifest_path": "/Users/winnie/dev/herdr/wtherdr/herdr-plugin.toml",
+		"plugin_root": "/Users/winnie/dev/herdr/wtherdr",
+		"enabled": true,
+		"platforms": ["linux", "macos"],
+		"build": [
+			{
+				"command": ["sh", "scripts/install-binary.sh"]
+			}
+		],
+		"actions": [
+			{
+				"id": "create",
+				"title": "󱓊 wt create",
+				"contexts": ["workspace"],
+				"command": ["wtherdr", "popup", "create"]
+			},
+			{
+				"id": "merge",
+				"title": " wt merge",
+				"contexts": ["workspace"],
+				"command": ["wtherdr", "popup", "merge"]
+			},
+			{
+				"id": "remove",
+				"title": "󱓌 wt remove",
+				"contexts": ["workspace"],
+				"command": ["wtherdr", "popup", "remove"]
+			},
+			{
+				"id": "switch",
+				"title": "󱓎 wt switch",
+				"contexts": ["workspace"],
+				"command": ["wtherdr", "popup", "switch"]
+			}
+		],
+		"panes": [
+			{
+				"id": "create",
+				"title": "󱓊 wt create",
+				"placement": "popup",
+				"width": 72,
+				"height": 7,
+				"command": ["wtherdr", "prompt", "create"]
+			},
+			{
+				"id": "create-run",
+				"title": "󱓊 wt create",
+				"placement": "popup",
+				"width": "90%",
+				"height": "85%",
+				"command": ["wtherdr", "run", "create"]
+			},
+			{
+				"id": "merge",
+				"title": " wt merge",
+				"placement": "popup",
+				"width": 72,
+				"height": 7,
+				"command": ["wtherdr", "prompt", "merge"]
+			},
+			{
+				"id": "merge-run",
+				"title": " wt merge",
+				"placement": "popup",
+				"width": "90%",
+				"height": "85%",
+				"command": ["wtherdr", "run", "merge"]
+			},
+			{
+				"id": "remove",
+				"title": "󱓌 wt remove",
+				"placement": "popup",
+				"width": 72,
+				"height": 7,
+				"command": ["wtherdr", "prompt", "remove"]
+			},
+			{
+				"id": "remove-run",
+				"title": "󱓌 wt remove",
+				"placement": "popup",
+				"width": "90%",
+				"height": "85%",
+				"command": ["wtherdr", "run", "remove"]
+			},
+			{
+				"id": "switch-run",
+				"title": "󱓎 wt switch",
+				"placement": "popup",
+				"width": "90%",
+				"height": "85%",
+				"command": ["wtherdr", "run", "switch"]
+			}
+		],
+		"source": {
+			"kind": "local"
+		}
+	}
 ]
