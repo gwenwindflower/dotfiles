@@ -1,0 +1,36 @@
+[package]
+name = "@@TOOL_NAME@@"
+version = "0.1.0"
+edition = "2024"
+description = "@@DESCRIPTION@@"
+authors = ["@@AUTHOR@@"]
+license = "MIT"
+repository = "https://github.com/@@GH_OWNER@@/@@TOOL_NAME@@"
+readme = "README.md"
+keywords = ["cli"]
+categories = ["command-line-utilities"]
+
+[[bin]]
+name = "@@TOOL_BINARY@@"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive", "wrap_help"] }
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+
+[profile.release]
+lto = true
+strip = true
+codegen-units = 1
+
+[package.metadata.binstall]
+pkg-url = "{ repo }/releases/download/v{ version }/{ name }-{ target }-v{ version }{ archive-suffix }"
+bin-dir = "{ name }-{ target }-v{ version }/{ bin }{ binary-ext }"
+pkg-fmt = "tgz"
+disabled-strategies = ["quick-install"]

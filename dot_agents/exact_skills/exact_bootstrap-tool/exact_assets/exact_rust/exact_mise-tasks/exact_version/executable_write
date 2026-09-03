@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+#MISE description="Set the package version in Cargo.toml and resync Cargo.lock"
+#USAGE arg "<version>" help="Version to declare, as in 1.2.3"
+
+set -euo pipefail
+cd "${MISE_PROJECT_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
+
+version="${usage_version:-${1:?version required}}"
+
+if ! awk -v version="$version" '
+  $0 == "[package]" { package = 1 }
+  package && $0 != "[package]" && /^\[/ { package = 0 }
+  package && !written && /^[[:space:]]*version[[:space:]]*=/ {
+    print "version = \"" version "\""
+    written = 1
+    next
+  }
+  { print }
+  END { if (!written) exit 1 }
+' Cargo.toml >Cargo.toml.next; then
+	rm -f Cargo.toml.next
+	printf 'Cargo.toml declares no package version to write.\n' >&2
+	exit 1
+fi
+mv Cargo.toml.next Cargo.toml
+
+cargo update --workspace --offline

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Runs once inside the new repository after mise has installed the Rust toolchain.
+set -euo pipefail
+
+[[ -f Cargo.lock ]] || cargo generate-lockfile

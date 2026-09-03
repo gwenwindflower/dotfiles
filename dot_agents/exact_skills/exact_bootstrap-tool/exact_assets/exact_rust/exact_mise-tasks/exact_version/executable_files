@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="List the files version:write may change"
+#MISE quiet=true
+
+printf 'Cargo.toml\nCargo.lock\n'

@@ -1,0 +1,2 @@
+rust = { version = "latest", profile = "minimal", components = ["clippy", "rustfmt"] }
+cargo-binstall = "latest"

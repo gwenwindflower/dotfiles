@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+#MISE description="Fail when Cargo.lock records a different version than Cargo.toml declares"
+#MISE quiet=true
+
+set -euo pipefail
+cd "${MISE_PROJECT_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
+
+name="$(awk '
+  $0 == "[package]" { package = 1; next }
+  package && /^\[/ { exit }
+  package && /^[[:space:]]*name[[:space:]]*=/ { sub(/^[^"]*"/, ""); sub(/".*$/, ""); print; exit }
+' Cargo.toml)"
+declared="$(mise-tasks/version/read)"
+locked="$(awk -v name="$name" '
+  /^\[\[package\]\]$/ { match_pkg = 0; next }
+  $0 == "name = \"" name "\"" { match_pkg = 1; next }
+  match_pkg && /^version = / { sub(/^[^"]*"/, ""); sub(/".*$/, ""); print; exit }
+' Cargo.lock)"
+
+if [[ "$locked" != "$declared" ]]; then
+	printf 'Cargo.lock records %s for %s; Cargo.toml declares %s.\n' "${locked:-nothing}" "$name" "$declared" >&2
+	exit 1
+fi

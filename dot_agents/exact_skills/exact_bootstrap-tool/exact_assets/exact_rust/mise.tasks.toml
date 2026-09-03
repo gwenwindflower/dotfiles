@@ -1,0 +1,30 @@
+# Rust
+
+[tasks.build]
+description = "Compile the optimized binary into dist/bin"
+alias = "b"
+run = [
+  "cargo build --locked --release",
+  "mkdir -p dist/bin",
+  "cp target/release/@@TOOL_BINARY@@ dist/bin/@@TOOL_BINARY@@",
+]
+
+[tasks.install]
+description = "Install the checkout's binary on your PATH"
+run = "cargo install --path . --locked --force"
+
+[tasks.fmt]
+description = "Rewrite every file to the rustfmt style"
+run = "cargo fmt --all"
+
+[tasks."lint:fmt"]
+description = "Verify formatting without rewriting files"
+run = "cargo fmt --all --check"
+
+[tasks."lint:clippy"]
+description = "Lint every target and feature, treating warnings as errors"
+run = "cargo clippy --all-targets --all-features --locked -- -D warnings"
+
+[tasks."test:rust"]
+description = "Run the Rust test suite"
+run = "cargo test --all-features --locked"
