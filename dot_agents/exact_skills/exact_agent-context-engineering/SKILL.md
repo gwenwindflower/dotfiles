@@ -61,7 +61,7 @@ src/backend/AGENTS.md  → src/backend/docs/...
 
 ## Patterns to Avoid
 
-- **`@reference` imports.** Most agents inline them fully on encounter. Treat as inlined content; recursive loading (Claude Code: depth 5) compounds bloat.
+- **`@reference` imports.** Most agents inline them fully on encounter. Treat as inlined content; recursive loading (Claude Code: depth 5) compounds bloat. The one sanctioned use is `SPEC.md`'s domain-spec index, which is opened deliberately rather than loaded at session start.
 - **Rules directories.** All files load at session start — equivalent to `@`-importing every file. Reserve for genuinely universal rules.
 - **Path-scoped frontmatter globs.** Better than global, but still automatic rather than agent-driven.
 
@@ -77,6 +77,22 @@ For AGENTS.md past ~60 lines or with poor structure:
 2. Group remaining content by function or path
 3. Move detail into `docs/` files; add index entries
 4. Justify each remaining line: does every agent in this directory need it every session?
+
+## Project hub layout
+
+Every tool repository uses one layout so agents find the same things in the same places:
+
+```text
+AGENTS.md                  canonical, tracked
+CLAUDE.md -> AGENTS.md     symlink
+.agents/docs/              project docs for agents
+.agents/skills/            project-scoped skills
+.claude/settings.json      Claude Code settings; .claude/skills -> ../.agents/skills
+.codex/config.toml         Codex sandbox policy (workspace-write, no absolute paths)
+docs/                      how the system works now, indexed from AGENTS.md
+```
+
+Agent-specific directories hold only what that agent needs; shared content lives once under `.agents/` or `docs/`. `bootstrap-tool` lays this down.
 
 ## File Locations
 

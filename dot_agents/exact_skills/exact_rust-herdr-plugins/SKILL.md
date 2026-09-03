@@ -1,6 +1,6 @@
 ---
 name: rust-herdr-plugins
-description: Build, extend, test, distribute, and release portable Rust plugins for Herdr. Use when working on a Rust-based Herdr plugin maintained by Gwen Windflower or Supermodel Labs to implement the shared Herdr plugin best practices. Follow this skill's guidance on manipulating the Herdr UX, interacting with the Herdr Socket API, designing CLI structure, and setting up CI/CD, build, and release workflows.
+description: Build, extend, test, distribute, and release portable Rust plugins for Herdr. Use when working on a Rust-based Herdr plugin maintained by Gwen Windflower to implement the shared Herdr plugin contract: manipulating the Herdr UX, the Socket API, the plugin manifest, the exact-version installer, and plugin-specific tasks on top of the standard tool repository from bootstrap-tool.
 ---
 
 # Rust Herdr Plugins
@@ -22,7 +22,7 @@ Build Herdr plugins as portable tools with a stable binary interface. Keep Herdr
 
 6. Consult the official [plugin guide](https://herdr.dev/docs/plugins/) and [socket API](https://herdr.dev/docs/socket-api/) for behavior not expressed by the installed schema.
 7. Read [references/herdr-runtime.md](references/herdr-runtime.md) when changing manifests, actions, panes, events, context, storage, or socket behavior.
-8. Read [references/rust-project-patterns.md](references/rust-project-patterns.md) when scaffolding a plugin or changing installation, CI, releases, or contributor workflows.
+8. Read [references/rust-project-patterns.md](references/rust-project-patterns.md) when changing the manifest, installer, version hooks, or plugin tasks. The repository itself comes from `bootstrap-tool`; the task layer, release pipeline, and workflows are covered by `mise-projects`, `releasing-tools`, and `github-actions-workflows`.
 
 ## Choose the Runtime Shape
 

@@ -54,7 +54,9 @@ Follow [git-commits](../../rules/git-commits.md) for format, signing, linear his
 
 - **One commit per Objective**, named for the work (`feat(auth): add GCP oauth`), with that Objective's TODO checkoff folded in.
 - **No bookkeeping-only commits.** The close's TODO→DONE move amends into the Phase's last commit (`git commit --amend`). A hook blocks commits that only touch plan/spec files; deliberate planning-only commits (scoping a multi-Phase plan, a retrospective ADR) re-run with `SPOT_PLAN_COMMIT=1`.
-- **SPOT stays out of git surfaces.** Branch names, subjects, and trailers describe the work, never the protocol — no `phase-9` branches, no "Closes Phase" trailers. `DONE.md` is the ledger that maps shipped work to Phases.
+- **SPOT stays out of branch names and subjects.** Both describe the work, never the protocol — no `phase-9` branches, no "close phase 3" subjects. Commit bodies carry the bookkeeping: `Completes <Objective> in Phase N` and, on the Phase's last commit, `Closes Phase N`, placed after any body bullets and before the trailers. `DONE.md` remains the ledger.
+
+`SPEC.md` indexes domain specs with `@` imports so a session that opens it pulls the specs in; `AGENTS.md` lists docs as plain paths so agents choose what to load.
 
 ## Jobs to be done
 

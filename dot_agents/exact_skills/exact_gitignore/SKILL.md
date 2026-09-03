@@ -8,6 +8,8 @@ description: Generate or extend .gitignore files with project-aware patterns. Us
 
 The GitHub CLI (`gh`) has a `gh repo gitignore` command that can be used to fetch templates from GitHub's collection. `gh repo gitignore list` will output the list of templates in GitHub's collection to stdout. When you have the name of the one you want, use `gh repo gitignore view [TEMPLATE]` to have the content output to stdout, which you can redirect to a `.gitignore` file or wherever you need it. This is the easiest way to spike out the boilerplate for a given project type.
 
+Tool repositories created with `bootstrap-tool` start from the template's stack-agnostic `.gitignore` (secrets, OS and editor cruft, logs, `dist/`, local agent state such as `.claude/settings.local.json` and `.claude/.cc-writes/`) with the language kit's rules spliced in at the `LANG_IGNORES` marker. Add tool-specific rules below that block; keep `AGENTS.md`, `.agents/`, and `.claude/settings.json` tracked.
+
 The rest of the Skill covers manually adding entries in gitignore syntax for the specific project you're working in.
 
 ## `/path` vs `path/` vs `path`
