@@ -234,6 +234,7 @@ packages:
       core:
         - basalt-tui
         - cargo-update
+        - cloudflare-speed-cli
         - iching
         - linear-cli
         - nightlight
