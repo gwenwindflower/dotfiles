@@ -1,7 +1,7 @@
 #:schema https://developers.openai.com/codex/config-schema.json
 #:tombi schema.strict = false
 
-model = "gpt-5.6-sol"
+model = "gpt-6-astra"
 personality = "friendly"
 approval_policy = "on-request"
 approvals_reviewer = "auto_review"
@@ -438,9 +438,6 @@ enabled = true
 [plugins."visualize@openai-bundled"]
 enabled = true
 
-[plugins."sites@openai-bundled"]
-enabled = true
-
 [plugins."browser@openai-bundled"]
 enabled = true
 
@@ -465,6 +462,9 @@ enabled = true
 [plugins."unified-computer-use@openai-bundled"]
 enabled = true
 
+[plugins."sites@openai-bundled"]
+enabled = true
+
 [mcp_servers.node_repl]
 args = []
 command = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl"
@@ -481,8 +481,8 @@ BROWSER_USE_TINYSKY_ENABLED = "1"
 NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.831.21537"
-NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/winnie/.codex/plugins/cache/openai-bundled/browser/26.831.21537/scripts/browser-service.mjs"}'
+BROWSER_USE_CODEX_APP_VERSION = "26.901.51231"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/winnie/.codex/plugins/cache/openai-bundled/browser/26.901.51231/scripts/browser-service.mjs"}'
 CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
 
 [mcp_servers.indi]
@@ -697,6 +697,12 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/Users/winnie/dev/lightdash/_extra/glitch-gif-logos"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-09-03/mh"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-09-03/realtime-voice-chat"]
 trust_level = "trusted"
 
 [apps._default]
