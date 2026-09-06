@@ -1,16 +1,24 @@
+[tool_alias]
+# temporary until next mise release which fixes
+# attestation resolution for transferred gh repos
+aube = "github:aubepkg/aube"
+
 [tools]
 node = ["lts", "latest"]
-aube = "latest"
 
 "npm:@agentclientprotocol/claude-agent-acp" = "latest"
 "npm:@aredotna/cli" = "latest"
+"npm:@opencode-ai/cli" = [{ version = "beta", allow_builds = ["@opencode-ai/cli"] }]
 "npm:@readwise/cli" = "latest"
-"npm:supabase" = "latest"
-"npm:sfw" = "latest"
 "npm:mint" = "latest"
 "npm:portless" = "latest"
-"npm:@opencode-ai/cli" = { version = "next", allow_builds = ["@opencode-ai/cli"] }
+"npm:sfw" = "latest"
+"npm:supabase" = "latest"
+
+[tools.aube]
+version = "2.2.12"
+# minimum_release_age = "2d"
 
 [settings]
-npm.package_manager = "aube"
 idiomatic_version_file_enable_tools = ["node"]
+minimum_release_age_excludes = ["aube"]
