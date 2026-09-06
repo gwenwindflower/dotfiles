@@ -169,6 +169,12 @@ abbr --add clmcp "claude --settings '{\"env\": {\"ENABLE_CLAUDEAI_MCP_SERVERS\":
 abbr --add clld env ENABLE_CLAUDEAI_MCP_SERVERS=true claude
 abbr --add clmd ln -s AGENTS.md CLAUDE.md
 abbr --add clcf "ee $HOME/.claude"
+## skills
+abbr --add ski aubx skills@latest
+abbr --add skils aubx skills@latest list -g
+abbr --add skirm aubx skills@latest remove
+abbr --add skis aubx skills@latest search
+abbr --add skiup aubx skills@latest update
 ## agent tools
 ### usage
 abbr --add ccu bunx ccusage@latest
@@ -393,6 +399,10 @@ abbr --add ghs gh search
 abbr --add ghsc gh search code
 abbr --add ghscld "gh search code --repo lightdash/lightdash -- "
 abbr --add ghscldw "gh search code --web --repo lightdash/lightdash -- "
+abbr --add ghski gh skill
+abbr --add ghskii gh skill install
+abbr --add ghskis gh skill search
+abbr --add ghskiup gh skill update
 ## shortening my git aliases
 abbr --add gmain git main
 ## adding git aliases

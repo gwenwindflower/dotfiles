@@ -72,6 +72,7 @@ symsources/amoxide/               # config.toml, profiles.toml
 symsources/herdr/                 # config.toml
 symsources/worktrunk/             # config.toml
 symsources/git/                   # gitconfig (root config; [include]s pull fragments from ~/.config/git/)
+symsources/agents/                # skill-lock.json (gh skill install manifest)
 ```
 
 ## Key Patterns
@@ -115,6 +116,7 @@ chezmoi copies by default, which is the right call for almost everything — it 
 | `~/.config/herdr/config.toml` | `herdr` writes its own config | `symsources/herdr/` |
 | `~/.config/worktrunk/config.toml` | `wt` CLI edits its own config | `symsources/worktrunk/` |
 | `~/.gitconfig` | `git config --global` writes through to source | `symsources/git/` |
+| `~/.agents/.skill-lock.json` | `gh skill install` and `gh skill update` write it | `symsources/agents/` |
 
 Source files live in `symsources/<tool>/`, excluded by `.chezmoiignore` so chezmoi won't deploy them as `~/symsources`. Each symlink is a `symlink_*.tmpl` file containing `{{ .chezmoi.sourceDir }}/symsources/<tool>/path/to/source`.
 
@@ -133,7 +135,7 @@ The env var is the only knob — no config-file flag, no template detection. Set
 
 Shared agent rules live in `.chezmoitemplates/agents/rules/`. The platform root files (`~/.agents/AGENTS.md`, `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`, and `~/.config/opencode/AGENTS.md`) render `.chezmoitemplates/agents/AGENTS.md`, which includes those fragments with native `{{ template }}` calls.
 
-`dot_agents/exact_rules/*.md.tmpl` are generated wrappers for tools and skill docs that still read `~/.agents/rules/*.md` directly. Edit the `.chezmoitemplates/agents/rules/` fragments, not the wrappers. Shared skills remain normal copied files in `dot_agents/exact_skills/`, with `~/.claude/skills` symlinked to the applied `~/.agents/skills` target.
+`dot_agents/exact_rules/*.md.tmpl` are generated wrappers for tools and skill docs that still read `~/.agents/rules/*.md` directly. Edit the `.chezmoitemplates/agents/rules/` fragments, not the wrappers. Shared skills remain normal copied files in `dot_agents/exact_skills/`, with `~/.claude/skills` symlinked to the applied `~/.agents/skills` target. Third-party skills are installed and updated with `gh skill` (never the `skills` npm CLI or `rei`), then brought back into the source tree with `chezmoi add --recursive --exact`; `gh skill` records its manifest in the symlinked `~/.agents/.skill-lock.json`.
 
 ### `exact_` dirs: full reconciliation for churn-prone collections
 

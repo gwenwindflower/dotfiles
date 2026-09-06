@@ -135,7 +135,6 @@
 			"printf *": "allow",
 			"procs *": "allow",
 			"pwd": "allow",
-			"rei *": "allow",
 			"rg *": "allow",
 			"ruff *": "allow",
 			"sd -p *": "allow",

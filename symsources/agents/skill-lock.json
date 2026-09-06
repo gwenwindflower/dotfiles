@@ -1,0 +1,131 @@
+{
+  "version": 3,
+  "skills": {
+    "agent-browser": {
+      "source": "vercel-labs/agent-browser",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vercel-labs/agent-browser.git",
+      "skillPath": "skills/agent-browser/SKILL.md",
+      "skillFolderHash": "82def67855a0d2aad7794207951820fa5422fdb0",
+      "installedAt": "2026-09-03T13:10:54Z",
+      "updatedAt": "2026-09-03T13:12:02Z"
+    },
+    "ast-grep": {
+      "source": "ast-grep/agent-skill",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/ast-grep/agent-skill.git",
+      "skillPath": "ast-grep/skills/ast-grep/SKILL.md",
+      "skillFolderHash": "ef60f77564e2d47d0cba25a809daa3af8f0c469b",
+      "installedAt": "2026-09-04T19:53:22Z",
+      "updatedAt": "2026-09-04T19:53:22Z"
+    },
+    "cloudflare": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/cloudflare/skills.git",
+      "skillPath": "skills/cloudflare/SKILL.md",
+      "skillFolderHash": "37facb8e11208454d6c3ca02b51406d2fb93f9be",
+      "installedAt": "2026-09-04T22:50:38Z",
+      "updatedAt": "2026-09-04T22:50:38Z"
+    },
+    "dignified-python": {
+      "source": "dagster-io/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/dagster-io/skills.git",
+      "skillPath": "skills/dignified-python/skills/dignified-python/SKILL.md",
+      "skillFolderHash": "d86d858104dcfab54ac05de1f5d67b095f10a86d",
+      "installedAt": "2026-09-06T21:13:56Z",
+      "updatedAt": "2026-09-06T21:13:56Z"
+    },
+    "fallow-review": {
+      "source": "fallow-rs/fallow-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/fallow-rs/fallow-skills.git",
+      "skillPath": "fallow/skills/fallow-review/SKILL.md",
+      "skillFolderHash": "10f50d260d74dafe324a450e05e20ffd66ec1bc0",
+      "installedAt": "2026-09-03T13:20:04Z",
+      "updatedAt": "2026-09-03T13:20:04Z"
+    },
+    "json-canvas": {
+      "source": "kepano/obsidian-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/kepano/obsidian-skills.git",
+      "skillPath": "skills/json-canvas/SKILL.md",
+      "skillFolderHash": "9df7971db7ffebf96f2a207840b9f4765aa11b04",
+      "installedAt": "2026-09-03T13:17:00Z",
+      "updatedAt": "2026-09-03T13:17:00Z"
+    },
+    "obsidian-bases": {
+      "source": "kepano/obsidian-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/kepano/obsidian-skills.git",
+      "skillPath": "skills/obsidian-bases/SKILL.md",
+      "skillFolderHash": "f3330f27de4d7907ead57d0f48672f4d3280bb77",
+      "installedAt": "2026-09-03T13:17:00Z",
+      "updatedAt": "2026-09-03T13:17:00Z"
+    },
+    "obsidian-cli": {
+      "source": "kepano/obsidian-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/kepano/obsidian-skills.git",
+      "skillPath": "skills/obsidian-cli/SKILL.md",
+      "skillFolderHash": "96254a554e480359de7b685571876f2e7f9ba57d",
+      "installedAt": "2026-09-03T13:17:00Z",
+      "updatedAt": "2026-09-03T13:17:00Z"
+    },
+    "obsidian-markdown": {
+      "source": "kepano/obsidian-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/kepano/obsidian-skills.git",
+      "skillPath": "skills/obsidian-markdown/SKILL.md",
+      "skillFolderHash": "4723197c6dc59abc29819da87863b1ac20b96095",
+      "installedAt": "2026-09-03T13:17:00Z",
+      "updatedAt": "2026-09-03T13:17:00Z"
+    },
+    "outline": {
+      "source": "ast-grep/agent-skill",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/ast-grep/agent-skill.git",
+      "skillPath": "ast-grep/skills/outline/SKILL.md",
+      "skillFolderHash": "7ee23d31b0578aa6702d8bbafa15749fc499a8c0",
+      "installedAt": "2026-09-04T19:53:22Z",
+      "updatedAt": "2026-09-04T19:53:22Z"
+    },
+    "prek": {
+      "source": "j178/prek",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/j178/prek.git",
+      "skillPath": "skills/prek/SKILL.md",
+      "skillFolderHash": "b865e407f902c27f3f744c62948faed05641700d",
+      "installedAt": "2026-09-03T05:50:02Z",
+      "updatedAt": "2026-09-03T05:50:02Z"
+    },
+    "pydantic": {
+      "source": "pydantic/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/pydantic/skills.git",
+      "skillPath": "skills/pydantic/SKILL.md",
+      "skillFolderHash": "f1f37134a952494dab6049c4174ff6875ce8989f",
+      "installedAt": "2026-09-03T13:25:16Z",
+      "updatedAt": "2026-09-06T22:08:42Z"
+    },
+    "worktrunk": {
+      "source": "max-sixty/worktrunk",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/max-sixty/worktrunk.git",
+      "skillPath": "skills/worktrunk/SKILL.md",
+      "skillFolderHash": "5fa6e9c1a136b2d8d088f5752949ceb836ce0ee9",
+      "installedAt": "2026-09-03T13:23:59Z",
+      "updatedAt": "2026-09-03T13:23:59Z"
+    },
+    "wrangler": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/cloudflare/skills.git",
+      "skillPath": "skills/wrangler/SKILL.md",
+      "skillFolderHash": "a304132370d555714fea9346d51847d87527272a",
+      "installedAt": "2026-09-06T21:12:07Z",
+      "updatedAt": "2026-09-06T21:12:07Z"
+    }
+  }
+}
