@@ -6,8 +6,6 @@
 
 {{ template "agents/rules/communication.md" . }}
 
-{{ template "agents/rules/interpretation.md" . }}
-
 {{ template "agents/rules/naming.md" . }}
 
 {{ template "agents/rules/current-state.md" . }}
