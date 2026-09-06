@@ -105,6 +105,7 @@ packages:
           - neovim
           - notesmd-cli
           - opencode
+          - pam-reattach
           - pandoc
           - pgcli
           - pinact
