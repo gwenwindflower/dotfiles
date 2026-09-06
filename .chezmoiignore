@@ -1,6 +1,6 @@
 # in-repo dev files
 docs/
-tmp/
+wip/
 ARCHITECTURE.md
 CLAUDE.md
 PLAN.md
@@ -21,7 +21,6 @@ symsources/
 # Referenced in Claude settings via absolute path into this repo
 # Located here for convenience for now
 .custom-claude-plugins/
-MISE-MIGRATION.md
 # Neovim in-repo agent docs
 .config/nvim/AGENTS.md
 .config/nvim/docs

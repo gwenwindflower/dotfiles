@@ -152,7 +152,7 @@ end
 # diegopzz/herdr-updater. Unlike the blind reinstall above, it only moves a
 # plugin when the upstream revision is a clean fast-forward, and holds local
 # checkouts. Requires `herdr plugin install diegopzz/herdr-updater` and the
-# config stashed at tmp/herdr-updater-config.toml in the chezmoi repo.
+# config stashed at wip/herdr-updater-config.toml in the chezmoi repo.
 #
 # function _uppy_herdr_plugins -d "Update Herdr plugins with the herdr-updater plugin"
 #     argparse n/dry-run -- $argv

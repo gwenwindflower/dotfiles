@@ -1,8 +1,8 @@
 nvim.log
 
 # Scratch space
-tmp/*
-!tmp/.gitkeep
+wip/*
+!wip/.gitkeep
 
 # LazyVim's own excludes, scoped to the nvim source tree. The deployed
 # private_dot_config/nvim/dot_gitignore only applies when ~/.config/nvim is
