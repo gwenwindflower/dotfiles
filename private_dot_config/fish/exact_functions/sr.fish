@@ -72,7 +72,7 @@ function sr -d "Search with rg, then replace all matches with sd"
         set search_path $_flag_path
     end
 
-    set -l files (rg -l $rg_base $search_term $search_path)
+    set -l files (command rg -l $rg_base $search_term $search_path)
     if test (count $files) -eq 0
         logirl info "No matches found for: $search_term"
         return 0
@@ -82,11 +82,11 @@ function sr -d "Search with rg, then replace all matches with sd"
 
     if set -q _flag_dry_run
         logirl warning "DRY-RUN: previewing replacements"
-        rg -n --heading --color=always $rg_base -r $replace_term $search_term $search_path
+        command rg -n --heading --color=always $rg_base -r $replace_term $search_term $search_path
         return 0
     end
 
-    rg -n --heading --color=always $rg_base $search_term $search_path
+    command rg -n --heading --color=always $rg_base $search_term $search_path
     for file in $files
         sd $sd_flags $search_term $replace_term $file
     end

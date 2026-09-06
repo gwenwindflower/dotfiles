@@ -35,8 +35,9 @@ fzf_configure_bindings --variables='ctrl-alt-v' --git_log=
 # yazi built-in fzf and zoxide
 set -gx YAZI_ZOXIDE_OPTS '--bind=enter:accept'
 
-# ripgrep
-set -gx RIPGREP_CONFIG_PATH "$HOME/.config/ripgrep/ripgrep.conf"
+# ripgrep — deliberately not exported: RIPGREP_CONFIG_PATH is inherited by every
+# tool that shells out to rg, and --pretty breaks machine-parsed output. The rg
+# function applies the config for interactive use only.
 
 # qmd
 set -gx QMD_EDITOR_URI "obsidian://open?path={path}"
