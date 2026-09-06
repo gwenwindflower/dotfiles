@@ -84,13 +84,12 @@ abbr --add hrdp herdr plugin
 abbr --add hrdpi herdr plugin install
 abbr --add hrdpls herdr plugin list
 abbr --add hrdprm herdr plugin uninstall
-# shell snippets
-abbr --add --position anywhere -- --help '--help | bat -plhelp'
-abbr --add --position anywhere -- -h '-h | bat -plhelp'
-abbr --add --position anywhere -- -hr '--help | bat -plhelp | rg'
-abbr --add --position anywhere -- qq '>/dev/null'
-abbr --add --position anywhere -- qqq '>/dev/null 2>&1'
-abbr --add --position anywhere -- qqf '&>/dev/null'
+## refresh built-in herdr skill documentation to chezmoi
+abbr --add hrdskrf "herdr --skill > ~/.agents/skills/herdr/SKILL.md; and chezmoi add --recursive --exact ~/.agents/skills/herdr"
+## update herdr's managed agent plugins and hooks back into chezmoi
+abbr --add hrdapu "chezmoi re-add ~/.config/opencode/plugins/herdr-agent-state.js ~/.config/opencode/tui.jsonc ~/.claude/hooks/herdr-agent-state.sh ~/.codex/herdr-agent-state.sh"
+# cloudflare
+abbr --add wr wrangler
 # dotfiles
 abbr --add cm chezmoi
 abbr --add cmcd chezmoi cd
@@ -101,8 +100,6 @@ abbr --add cmaa chezmoi re-add
 abbr --add cmra chezmoi re-add
 abbr --add cmaf chezmoi add --follow
 abbr --add cmaasr chezmoi add --recursive --exact ~/.agents/skills/
-abbr --add cmaahp chezmoi re-add ~/.config/herdr/plugins.json
-abbr --add cmaahh "chezmoi re-add ~/.config/opencode/plugins/herdr-agent-state.js ~/.config/opencode/tui.jsonc ~/.claude/hooks/herdr-agent-state.sh ~/.codex/herdr-agent-state.sh"
 abbr --add cmx chezmoi apply
 abbr --add cmxx chezmoi apply ~/.config/
 abbr --add cmxf chezmoi apply ~/.config/fish/

@@ -1,6 +1,6 @@
 ---
 name: rust-herdr-plugins
-description: Build, extend, test, distribute, and release portable Rust plugins for Herdr. Use when working on a Rust-based Herdr plugin maintained by Gwen Windflower to implement the shared Herdr plugin contract: manipulating the Herdr UX, the Socket API, the plugin manifest, the exact-version installer, and plugin-specific tasks on top of the standard tool repository from bootstrap-tool.
+description: Build, extend, test, distribute, and release portable Rust plugins for Herdr using Gwen Windflower's preferred patterns. Use when working on a Rust-based Herdr plugin she maintains to keep Herdr-specific functionality cohesive on top of the standard tool repository from bootstrap-tool.
 ---
 
 # Rust Herdr Plugins
