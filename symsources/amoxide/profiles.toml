@@ -1,0 +1,11 @@
+[[profiles]]
+name = "data"
+
+[profiles.aliases]
+ddb = "duckdb --cmd '.read ~/dev/02_spellbook/pastel_duck_theme.sql'"
+
+[[profiles]]
+name = "python"
+
+[profiles.aliases]
+uvlt = "uv pip tree --depth {{1}}"

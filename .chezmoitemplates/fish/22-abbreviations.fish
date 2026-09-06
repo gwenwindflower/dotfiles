@@ -19,6 +19,13 @@ abbr --add fun functions
 abbr --add cmd command
 abbr --add wa which -a
 abbr --add hist history
+## snippets
+abbr --add --position anywhere -- --help '--help | bat -plhelp'
+abbr --add --position anywhere -- -h '-h | bat -plhelp'
+abbr --add --position anywhere -- -hr '--help | bat -plhelp | rg'
+abbr --add --position anywhere -- qq '>/dev/null'
+abbr --add --position anywhere -- qqq '>/dev/null 2>&1'
+abbr --add --position anywhere -- qqf '&>/dev/null'
 # procs
 abbr --add pps procs
 abbr --add ppsm procs --sortd usagemem
@@ -42,9 +49,14 @@ abbr --add eee ee -e
 # network
 abbr --add ipext "curl https://api64.ipify.org | fish_clipboard_copy"
 abbr --add mulv mullvad
-abbr --add tlscl tailscale
+abbr --add tls tailscale
 # cloud
 abbr --add gauth "gcloud auth application-default login"
+# sprites
+abbr --add sp sprite
+abbr --add spls sprite list
+abbr --add sps sprite sessions
+abbr --add spnew sprite create
 # ssh (kitten ssh — macOS only, kitty terminal)
 abbr --add sshk kitten ssh -A
 abbr --add ssha ssh -A
@@ -99,7 +111,7 @@ abbr --add cmxa chezmoi apply ~/.agents/
 abbr --add cmxc chezmoi apply ~/.claude/
 abbr --add cmc chezmoi cat
 abbr --add cmd chezmoi diff
-abbr --add cmd. 'chezmoi diff .'
+abbr --add cmdr chezmoi diff -r
 # runners
 abbr --add tk task
 abbr --add mk make

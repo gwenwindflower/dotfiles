@@ -1,0 +1,5 @@
+complete -c sprm -n __fish_is_first_arg -f -a "(_sprite_names)" -d "Sprite to destroy"
+complete -c sprm -s o -l org -x -d "Specify organization"
+complete -c sprm -s s -l sprite -x -a "(_sprite_names)" -d "Specify sprite"
+complete -c sprm -l force -d "Skip confirmation prompt"
+complete -c sprm -s h -l help -d "Show help"
