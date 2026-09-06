@@ -5,7 +5,7 @@ The readiness gate is an automation that reviews an issue's full evidence trail 
 ## The five gates
 
 1. **Problem** — the issue clearly describes what is wrong or what behavior is wanted.
-2. **Repro / acceptance** — a bug has concrete reproduction info or enough technical evidence to reproduce it; a feature has acceptance criteria or a definition of done (`## Verifications` satisfies this).
+2. **Repro / acceptance** — a bug has concrete reproduction info or enough technical evidence to reproduce it; a feature has acceptance criteria or a definition of done (the brief's stated done-when behaviors satisfy this).
 3. **Expected vs actual** — stated or clearly established; for a feature, the completed behavior is defined.
 4. **No blocking concerns** — no unresolved objections, dependencies, conflicting implementations, or open product/policy decisions. Missing implementation detail is not a blocker when an existing codebase pattern answers it; an undefined product or security policy always is.
 5. **Scope** — the narrowest sufficient patch is bounded enough for one agent to implement and test as one focused PR.
@@ -33,7 +33,7 @@ When the blocker is a discrete product call, use `needs-decisions` so the owner 
 
 The gate re-grades on meaningful changes — description edits, new repro or acceptance criteria, human comments, new relations or linked PRs — and ignores its own label and comment churn.
 
-- Verified repro or `## Verifications` clears gates 2–3.
+- Verified repro or stated done-when behaviors clears gates 2–3.
 - A recorded product call clears `needs-decisions`; delete the resolved entry from `## Open decisions`.
 - Splitting into scoped issues with individual briefs clears `needs-decomposition`.
 - A clean rewrite with all facts present clears `needs-clarification`.

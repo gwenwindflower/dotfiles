@@ -1,8 +1,12 @@
 ---
-name: obsidian-bases
 description: Create and edit Obsidian Bases (.base files) with views, filters, formulas, and summaries. Use when working with .base files, creating database-like views of notes, or when the user mentions Bases, table views, card views, filters, or formulas in Obsidian.
+metadata:
+    github-path: skills/obsidian-bases
+    github-ref: refs/heads/main
+    github-repo: https://github.com/kepano/obsidian-skills
+    github-tree-sha: f3330f27de4d7907ead57d0f48672f4d3280bb77
+name: obsidian-bases
 ---
-
 # Obsidian Bases Skill
 
 ## Workflow

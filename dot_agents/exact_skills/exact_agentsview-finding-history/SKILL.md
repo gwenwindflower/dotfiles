@@ -1,5 +1,5 @@
 ---
-# generated-by: agentsview v0.41.1 hash:a7eb82c53ab771405a1e0d0f7adf74efb8222541fc26ca6699c02b441260f13c — do not edit; re-run `agentsview skills install`
+# generated-by: agentsview v0.42.0 hash:5463b3e566cc2ade8de9722c8f688e0435f6761cef07b05bdefbefc754c4106c — do not edit; re-run `agentsview skills install`
 name: agentsview-finding-history
 description: Use when asked why a decision was made, how something was done before, or to recover prior instructions, examples, or conversations from recorded agent history — searches the AgentsView archive for evidence.
 ---
@@ -18,12 +18,14 @@ the archive crawl, then synthesizes and verifies.
 1. Translate the ask into a target behavior and desired evidence: likely
    projects, agents, time windows, vocabulary.
 2. Concept questions ("why did we…", "how did we handle…") start with
-   hybrid search; exact identifiers (paths, error strings, tool names)
-   start with plain or FTS search:
+   hybrid search. Exact identifiers (IDs, paths, commands, error strings,
+   tool names) start with plain substring search over tool inputs and results;
+   FTS searches messages only and cannot find identifiers stored only in tool
+   calls:
 
    ```bash
    agentsview session search "<concept query>" --hybrid --context 2 --json --limit 8
-   agentsview session search "<exact string>" --fts --json --limit 8
+   agentsview session search "<exact string>" --in tool_input,tool_result --json --limit 8
    ```
 
 3. Narrow by recency when the ask implies it: `--since 14d`, `--since 3m`
@@ -85,7 +87,7 @@ the archive crawl, then synthesizes and verifies.
 | --- | --- |
 | "One good snippet is enough." | Snippets are leads. Inspect a window before extracting a pattern. |
 | "A longer query is more semantic." | Hybrid works best with a focused phrase; FTS works best with 2-3 word probes. |
-| "Tool output matches are just as good." | Start in messages for concepts; add tool sources only for artifacts, commands, or errors. |
+| "FTS is best for exact identifiers." | FTS searches messages only. Use plain search with `--in tool_input,tool_result` for IDs, paths, commands, errors, and tool names. |
 | "This current session mentions it, so it counts." | Down-rank active-session echoes; historical evidence needs older sessions. |
 | "A subordinate hit settles it." | Sidechain/subagent hits restate delegated work; confirm against the parent session before citing. |
 | "Keep searching until certain." | Return a bounded, evidence-backed pass and list follow-ups. |

@@ -21,7 +21,7 @@ Issues live on two platforms with distinct jobs. GitHub is for customers: they s
 - [Search](searching.md) for duplicates on both trackers and read local conventions (labels, statuses, recent similar work) before creating, closing, or restructuring. Enrich or link existing work when it already represents the outcome.
 - Follow explicit direction first, then local convention; ask only when an unresolved choice would materially change the result.
 - An explicit create/update request is write approval. Otherwise propose the structure and get sign-off before calling write tools.
-- Titles name the outcome — scannable, no numbering, prefixes, or implementation detail.
+- Titles name the outcome in plain language — scannable, with no numbering, implementation detail, or bracketed area prefixes such as `[Data App Themes]`. Do not imitate those prefixes from historical issues; carry area and other context in labels or metadata when useful.
 - Customer identity stays out of descriptions. Names, support links, and customer screenshots live in customer requests and attachments; never delete those — they are the canonical demand record.
 - Generalize the body: a specific belongs there only when it changes how the problem is solved. Anonymizing a customer's numbers ("a workspace with ~1,800 orphaned schedules") is not generalizing — a detail that matters only for impact goes in a Linear comment, where the customer can be named plainly and the specifics kept exact. The same kind of number can cut either way: "export fails past 100 columns" stays in the body because it reproduces the bug; "the customer has ~340 affected dashboards" moves to Linear because it only sizes the pain. Customer details are never a reason to keep an issue internal ([creating on a synced pair](github-sync.md)).
 - One label per concept. Where the workspace has near-duplicate labels (`✨ feature-request` and `✨ Feature Request`), use the kebab-case one and remove the other; label sync between GitHub and Linear can re-add the duplicate, so check labels after a synced edit.
@@ -53,7 +53,7 @@ Clarity and decisions are independent: an issue can be perfectly clear yet block
 
 ## Description format
 
-The description is two parts: a tight human summary, then a blank line and `# Additional agent context` written as a delegation brief. Sections in both parts are a menu, not a template — include one only when it carries information no other section does; state each fact once in the section that best carries it; delete empty-value lines ("Version: unknown"). The description is sufficient to act on without opening every link; deep detail lives in the links.
+The description is two parts: a tight human summary, then a blank line and `# Additional agent context` written as a delegation brief. Neither part has a section list. A short issue is a paragraph and a few bullets; add a header only when a block of content needs one to stay scannable. Two headers carry a contract and are named here for that reason: `## Repro` (status marker) and `## Open decisions` (pairs with `needs-decisions`). State each fact once; delete empty-value lines ("Version: unknown"). The description is sufficient to act on without opening every link; deep detail lives in the links.
 
 ### Part 1 — human summary
 
@@ -61,21 +61,19 @@ Bug:
 
 ```text
 Grouped bar charts with value labels set to "Top" only label the taller series; shorter bars get no label (value still visible on hover). Regression — this worked previously.
+- Display-only: values readable via tooltip; workaround is label position "Inside"
+- Enterprise customer's exec reporting charts are unreadable; second report suggests stacked bars share the fault
 ## Repro
 ✅ Reproduced internally
 1. Grouped bar chart, two series with different magnitudes
 2. Chart config → Series → value labels "Top"
 3. Shorter series renders no labels
-## Impact
-- Display-only: values readable via tooltip; workaround is label position "Inside"
-- Enterprise customer's exec reporting charts are unreadable; second report suggests stacked bars share the fault
 ```
 
 Feature:
 
 ```text
 Parameter options render alphabetically regardless of YAML order. Modelers want the YAML order preserved so option lists follow business logic, mirroring `order_fields_by` table config.
-## Impact
 - Option order carries meaning (defaults first, hierarchies grouped); alphabetical sorting scrambles it
 - Small, well-bounded change
 ## Open decisions
@@ -90,8 +88,8 @@ Rules:
 - Separate the requested outcome from proposed solutions; mark unvalidated ideas as proposals. `## Open decisions` names each unresolved product call — its presence pairs with the `needs-decisions` label and means not agent-ready.
 - Repro carries a status marker: ✅ Reproduced (and by whom); 📸 Corroborated — customer evidence (screenshot, recording, error output) matches a code read that explains it, no live run; or ⚠️ Unreproduced — from customer report. Never present unverified steps as confirmed.
 - No cause-guessing in the summary — root-cause evidence belongs in the agent brief, marked hypothesis or confirmed.
-- Environment facts only when they discriminate (version, cloud/self-hosted, warehouse), folded into Repro — not a section of unknowns.
-- De-jargon: no "leverage/robust/utilize", no restated urgency ("this is urgent due to deadlines" after Impact already says it), no sections that exist to look complete ("Suggested actions: investigate root cause").
+- Environment facts only when they discriminate (version, cloud/self-hosted, warehouse), folded into Repro — not a list of unknowns.
+- De-jargon: no "leverage/robust/utilize", no restated urgency ("this is urgent due to deadlines" after the impact already says it), no headers that exist to look complete ("Suggested actions: investigate root cause").
 
 ### Part 2 — agent brief
 
@@ -99,21 +97,14 @@ Brief a capable colleague, not a keystroke script. Give verified evidence and bo
 
 ```text
 # Additional agent context
-## Where to start
 - Value-label overlap handling lives in the ECharts series config: `packages/frontend/src/components/Echarts/series.ts` (`labelLayout`)
 - Prior art: PR #26679 fixed grouped bars but regressed for stacked bars — see issue comment 2026-08-04
-## Root cause
-Hypothesis (unconfirmed): overlap detection treats same-x labels across series as colliding and drops the shorter bar's label.
-## Verifications
-- Every bar in grouped and stacked charts shows its value label at position "Top"
-- "Inside" label behavior unchanged
-- A two-series grouped chart passes a visual check at both positions
-## Scope
-- Chart label rendering only; tooltips and legend untouched
+- Hypothesis (unconfirmed): overlap detection treats same-x labels across series as colliding and drops the shorter bar's label
+- Done when every bar in grouped and stacked charts shows its value label at "Top", "Inside" behavior is unchanged, and a two-series grouped chart passes a visual check at both positions; tooltips and legend untouched
 ```
 
-Menu: `## Where to start` (verified entry points and prior art — evidence, not instructions), `## Root cause` (bugs — hypothesis vs confirmed; a well-grounded hypothesis from reading the code is fine, and usually all that's needed), `## Verifications` (behaviors that must hold when the work is done — name the behaviors, not the test design), `## Constraints` (invariants and patterns the implementer can't discover locally), `## Scope` (non-goals — only when a boundary genuinely needs stating and Verifications don't already imply it).
-
-- Anchor with file + symbol, not line numbers — lines rot.
+- Entry points and prior art are evidence, not instructions. Anchor with file + symbol, not line numbers — lines rot.
+- Root-cause theories are marked hypothesis or confirmed; a well-grounded hypothesis from reading the code is usually all that's needed.
+- Say what must hold when the work is done — behaviors, not test design. That is the definition of done; never add "PR references this issue" — PR↔issue linking is repo convention, and on the issue's own page it renders as a link back to itself.
+- Non-goals and invariants only when the implementer can't discover them locally and the done criteria don't already imply them.
 - Repo conventions (commands, test patterns, TDD) live in the repo's agent context — don't restate them.
-- Verifications define done. No `Done:` restatement, and never "PR references this issue" — PR↔issue linking is repo convention, and on the issue's own page it renders as a link back to itself.

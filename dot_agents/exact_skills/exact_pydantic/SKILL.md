@@ -1,8 +1,12 @@
 ---
-name: pydantic
 description: Pydantic is a Python data validation and serialization library, based on type hints. Use this skill whenever you need to do relatively complex data modeling using Pydantic, e.g. when adding constraints, defining a model hierarchy with subclasses, etc.
+metadata:
+    github-path: skills/pydantic
+    github-ref: refs/heads/main
+    github-repo: https://github.com/pydantic/skills
+    github-tree-sha: f1f37134a952494dab6049c4174ff6875ce8989f
+name: pydantic
 ---
-
 # Pydantic Validation
 
 In a nutshell, Pydantic is dataclasses with runtime validation. It leverages type hints
