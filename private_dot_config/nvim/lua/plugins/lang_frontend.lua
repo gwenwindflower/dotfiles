@@ -7,6 +7,8 @@ return {
     opts = function(_, opts)
       opts.servers = opts.servers or {}
       -- nvim-lspconfig routes Deno projects to denols and Node projects to vtsls.
+      -- TODO: this causes an extra Deno install because Deno's LSP is just `deno lsp`
+      -- fix this and ensure mason isn't doing a secondary install if Deno is already available globally
       opts.servers.denols = {}
       opts.servers.emmet_language_server = {}
       opts.servers.graphql = {}
