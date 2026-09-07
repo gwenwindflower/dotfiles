@@ -6,6 +6,16 @@ return {
       env_dirs = { "~/.config/op/environments" },
     },
   },
+  {
+    "Piotr1215/presenterm.nvim",
+    build = false,
+    dependencies = {
+      "folke/snacks.nvim",
+    },
+    opts = {
+      default_keybindings = true,
+    },
+  },
   -- Alignment tools
   -- TODO: figure out how the hell this works,
   -- my mental model of it is terrible and i can never
