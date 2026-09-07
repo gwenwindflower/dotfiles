@@ -1,6 +1,5 @@
 {
   "trustedtaps": [
-    "anthropics/tap",
     "charmbracelet/tap",
     "columnar-tech/tap",
     "databricks/tap",
@@ -16,7 +15,6 @@
     "supermodellabs/tap"
   ],
   "trustedformulae": [
-    "agavra/tap/tuicr",
     "bro3886/tap/rem-cli",
     "dbt-labs/dbt/dbt",
     "denisotree/tuitab/tuitab",
@@ -30,6 +28,7 @@
   ],
   "trustedcasks": [
     "anthropics/tap/ant",
-    "lzhgus/tap/capso"
+    "lzhgus/tap/capso",
+    "santofer/tap/remindian"
   ]
 }

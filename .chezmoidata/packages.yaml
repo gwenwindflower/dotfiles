@@ -3,6 +3,7 @@ packages:
     homebrew:
       taps:
         core:
+          - anthropics/tap
           - bro3886/tap
           - charmbracelet/tap
           - columnar-tech/tap
@@ -67,6 +68,7 @@ packages:
           - fx
           - fzf
           - gh
+          - gifski
           - git
           - git-cliff
           - git-delta
@@ -145,8 +147,10 @@ packages:
           - tuitab
           - typst
           - unar
+          - usage
           - uv
           - vhs
+          - vite-plus
           - vivid
           - wget
           - winline
@@ -170,7 +174,8 @@ packages:
         core:
           - 1password
           - 1password-cli
-          - anthropics/tap/ant
+          - agentsview
+          - ant
           - arc
           - cap
           - chatgpt
@@ -227,6 +232,8 @@ packages:
           - canario
           - capso
           - fathom
+          - google-chrome
+          - kimi
           - loom
           - microsoft-teams
           - slack
