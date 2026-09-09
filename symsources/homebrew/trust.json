@@ -28,7 +28,6 @@
   ],
   "trustedcasks": [
     "anthropics/tap/ant",
-    "lzhgus/tap/capso",
-    "santofer/tap/remindian"
+    "lzhgus/tap/capso"
   ]
 }
