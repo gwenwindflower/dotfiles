@@ -67,6 +67,7 @@ writable_roots = [
   "~/Library/Caches/mise",
   "~/Library/Caches/node-gyp",
   "~/Library/Caches/pip",
+  "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/girlOS",
 ]
 
 [tui]
@@ -150,6 +151,7 @@ glob_scan_max_depth = 4
 "Library/Caches/kitty" = "write"
 ".local/share/graveyard" = "write"  # rip
 ".local/share/chezmoi" = "read"
+"Library/Mobile Documents/iCloud~md~obsidian/Documents/girlOS" = "write"  # notesmd-cli
 ## agents
 ".codex" = "read"
 ".codex/tmp" = "write"
@@ -330,6 +332,7 @@ allow_local_binding = true
 
 [permissions.workspace-winnie.network.unix_sockets]
 "~/.agent-browser/default.sock" = "allow"
+"~/.obsidian-cli.sock" = "allow"
 "~/.orbstack/run/docker.sock" = "allow"
 
 [agents]
@@ -705,6 +708,9 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/Users/winnie/Documents/Codex/2026-09-03/realtime-voice-chat"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-09-08/w"]
 trust_level = "trusted"
 
 [apps._default]

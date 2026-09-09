@@ -19,7 +19,7 @@ Installing an integration grants capability, not blanket permission to use it fo
 | Platform | Mechanism | Coverage |
 | --- | --- | --- |
 | Claude Code | Plugins, marketplaces, optional Claude.ai MCP servers, CLI tools, and agent-browser | Current config favors language tooling and Worktrunk; general Claude.ai MCP access is disabled. |
-| Codex | Plugins, apps, MCP servers, browser integration, and artifact skills | Broadest native integration catalog; individual apps and servers retain enablement state. |
+| Codex | Plugins, apps, MCP servers, browser integration, artifact skills, and scoped command rules | Broadest native integration catalog; host-only CLIs may allow routine reads while routing destructive or bulk mutations through Auto-review. |
 | OpenCode | Plugins, configured language tooling, and shell CLIs | Smaller native integration surface; external capabilities primarily arrive through plugins and established CLIs. |
 
 ## Verification

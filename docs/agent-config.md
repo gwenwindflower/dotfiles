@@ -39,6 +39,8 @@ A domain allowed by the sandbox is not automatically trusted content. A command 
 | [Git and worktrees](capabilities/git.md) | Inspect and change repositories safely, with clear ownership for commits, remotes, and parallel work. |
 | [Delegation](capabilities/delegation.md) | Use specialized helpers without losing scope, context, or ownership boundaries. |
 | [Context and extensions](capabilities/context.md) | Discover shared guidance and reusable capabilities through each platform's native mechanisms. |
+| [Obsidian notes](capabilities/notes.md) | Read and capture in girlOS from any project; perform targeted task and note edits when explicitly requested. |
+| [Tasks and Reminders](capabilities/tasks.md) | Give every macOS harness access to Obsidian Tasks and Apple Reminders for reliable reconciliation, organization, and scheduling. |
 | [Integrations](capabilities/integrations.md) | Use browsers, services, and artifact tools without embedding credentials or broad implicit authority. |
 | [Session runtime](capabilities/session.md) | Give subprocesses stable environment, lifecycle, and state-reporting behavior. |
 | [Interaction](capabilities/interaction.md) | Preserve a consistent terminal interaction model across different agent interfaces. |
