@@ -42,6 +42,18 @@ abbr --add rmm rip
 abbr --add mac macchina
 abbr --add chmx chmod +x
 abbr --add chme chmod 700
+abbr --add s z
+# file search/view/explore
+abbr --add f fzf
+abbr --add fw "fzf --preview= --preview-window=hidden --bind 'enter:accept'"
+abbr --add fzfopts "echo \$FZF_DEFAULT_OPTS | sed 's/^--//; s/ --/\n/g' | bat"
+# listing
+abbr --add l lsd -lAg
+abbr --add ls lsd --classic
+abbr --add ll lsd -l
+abbr --add la lsd -lA
+abbr --add lg lsd -lg
+abbr --add lt lsd --tree
 # editor
 abbr --add v nvim
 abbr --add vi nvim
@@ -50,13 +62,16 @@ abbr --add eee ee -e
 abbr --add ipext "curl https://api64.ipify.org | fish_clipboard_copy"
 abbr --add mulv mullvad
 abbr --add tls tailscale
+# project bookmarks
+# uses ee fish function
+abbr --add dots "ee -e $DOTFILES"
+abbr --add de "ee -e $DOTFILES"
+abbr --add conf "ee $XDG_CONFIG_HOME"
+abbr --add keeb "ee -e $HOME/dev/tinybabykeeb"
+abbr --add ana "ee -e $HOME/dev/lightdash/analytics"
+abbr --add lde "ee -e $HOME/dev/lightdash/lightdash"
 # cloud
 abbr --add gauth "gcloud auth application-default login"
-# sprites
-abbr --add sp sprite
-abbr --add spls sprite list
-abbr --add sps sprite sessions
-abbr --add spnew sprite create
 # ssh (kitten ssh — macOS only, kitty terminal)
 abbr --add sshk kitten ssh -A
 abbr --add ssha ssh -A
@@ -89,6 +104,11 @@ abbr --add hrdpu herdr-updater apply --plugins-only
 abbr --add hrdskrf "herdr --skill > ~/.agents/skills/herdr/SKILL.md; and chezmoi add --recursive --exact ~/.agents/skills/herdr"
 ## update herdr's managed agent plugins and hooks back into chezmoi
 abbr --add hrdapu "chezmoi re-add ~/.config/opencode/plugins/herdr-agent-state.js ~/.config/opencode/herdr-tui-session.js ~/.claude/hooks/herdr-agent-state.sh ~/.codex/herdr-agent-state.sh"
+# sprites
+abbr --add sp sprite
+abbr --add spls sprite list
+abbr --add sps sprite sessions
+abbr --add spnew sprite create
 # cloudflare
 abbr --add wr wrangler
 # dotfiles
@@ -119,23 +139,6 @@ abbr --add ldr lazydocker
 # linear cli
 abbr --add lin linear-cli
 abbr --add linear linear-cli
-# file search/view/explore
-abbr --add f fzf
-abbr --add fw "fzf --preview= --preview-window=hidden --bind 'enter:accept'"
-abbr --add fzfopts "echo \$FZF_DEFAULT_OPTS | sed 's/^--//; s/ --/\n/g' | bat"
-# listing
-abbr --add l lsd -lAg
-abbr --add ls lsd --classic
-abbr --add ll lsd -l
-abbr --add la lsd -lA
-abbr --add lg lsd -lg
-abbr --add lt lsd --tree
-# navigation
-abbr --add s z
-abbr --add dots "ee -e $DOTFILES"
-abbr --add de "ee -e $DOTFILES"
-abbr --add conf "ee $XDG_CONFIG_HOME"
-abbr --add keeb "ee -e $HOME/dev/tinybabykeeb"
 # brew
 abbr --add brx brewdo
 abbr --add bri "brew update; brew install"
