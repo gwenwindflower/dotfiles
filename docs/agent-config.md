@@ -29,6 +29,12 @@ A domain allowed by the sandbox is not automatically trusted content. A command 
 | OpenCode | `symsources/opencode/opencode.jsonc` | `private_dot_config/opencode/`, `private_dot_config/opencode/exact_agents/`, `private_dot_config/opencode/tui.jsonc` |
 | Shared | `.chezmoitemplates/agents/` | `dot_agents/exact_skills/`, `dot_agents/exact_rules/` |
 
+## Platform notes
+
+### Claude Code permission patterns
+
+A trailing ` *` in a `Bash(...)` rule matches either more characters or the end of the command after the last non-whitespace character, so one stem rule covers both the bare command and every argument form. `Bash(notesmd-cli create * -o *)` already matches `notesmd-cli create "Note" -o`; a second `Bash(notesmd-cli create * -o)` rule is redundant. Rules without a trailing wildcard (`Bash(pwd)`, `Bash(git remote -v)`) match only that exact command. A wildcard glued to a token (`--dry-run*`) matches that token with any suffix, which is how flags that take `=value` are covered.
+
 ## Capabilities
 
 | Domain | Goal |
@@ -39,6 +45,7 @@ A domain allowed by the sandbox is not automatically trusted content. A command 
 | [Git and worktrees](capabilities/git.md) | Inspect and change repositories safely, with clear ownership for commits, remotes, and parallel work. |
 | [Delegation](capabilities/delegation.md) | Use specialized helpers without losing scope, context, or ownership boundaries. |
 | [Context and extensions](capabilities/context.md) | Discover shared guidance and reusable capabilities through each platform's native mechanisms. |
+| [Remote environments](capabilities/environments.md) | Run in disposable exe.dev, Sprite, or microsandbox environments that carry the same dotfiles and guidance as the workstation. |
 | [Obsidian notes](capabilities/notes.md) | Read and capture in girlOS from any project; perform targeted task and note edits when explicitly requested. |
 | [Tasks and Reminders](capabilities/tasks.md) | Give every macOS harness access to Obsidian Tasks and Apple Reminders for reliable reconciliation, organization, and scheduling. |
 | [Integrations](capabilities/integrations.md) | Use browsers, services, and artifact tools without embedding credentials or broad implicit authority. |

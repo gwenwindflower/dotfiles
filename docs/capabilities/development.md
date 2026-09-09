@@ -14,6 +14,17 @@ Routine feedback loops should run without repeated approval prompts while destru
 
 Command families are approved by purpose, not because a binary is globally trusted. A routine subcommand may be automatic while destructive or configuration-changing subcommands remain ask or deny.
 
+Environment names follow one convention: `prod` is production, `staging` is a long-lived staging environment, and `dev` is a development environment, each matched as a whole word or a hyphen, underscore, or dot-delimited segment (`prod-db` matches, `producer` does not). Projects outside the user's control may spell them `production` and `development`. Anything matching production is a sensitive target: deploys, deletes, and infrastructure changes there are denied or reviewed. Long-lived environments are the exception; per-PR and CI-gated environments are the norm, and a project that deviates says so in its own docs.
+
+## CI/CD
+
+GitHub Actions is the only CI/CD system. The `github-actions-workflows` skill is the authoritative source for workflow patterns and loads whenever a workflow file is being edited; other skills link to it rather than restating its rules.
+
+- `zizmor` audits workflows for template injection, excessive permissions, `pull_request_target` misuse, cache poisoning, and unpinned actions. It runs locally from the repo root and in CI with GitHub annotations.
+- `pinact` pins every `uses:` reference to a full commit SHA with a version comment, and checks or updates those pins.
+- Both run in every tool repository's `ci-audit` task and in the `audit` CI job, so a workflow change is not finished until they pass.
+- Release workflows and anything that publishes remain approval-gated; `mise run release*` is denied outright.
+
 ## Platform implementations
 
 | Platform | Mechanism | Coverage |
