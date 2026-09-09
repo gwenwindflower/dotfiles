@@ -84,10 +84,11 @@ abbr --add hrdp herdr plugin
 abbr --add hrdpi herdr plugin install
 abbr --add hrdpls herdr plugin list
 abbr --add hrdprm herdr plugin uninstall
+abbr --add hrdpu herdr-updater apply --plugins-only
 ## refresh built-in herdr skill documentation to chezmoi
 abbr --add hrdskrf "herdr --skill > ~/.agents/skills/herdr/SKILL.md; and chezmoi add --recursive --exact ~/.agents/skills/herdr"
 ## update herdr's managed agent plugins and hooks back into chezmoi
-abbr --add hrdapu "chezmoi re-add ~/.config/opencode/plugins/herdr-agent-state.js ~/.config/opencode/tui.jsonc ~/.claude/hooks/herdr-agent-state.sh ~/.codex/herdr-agent-state.sh"
+abbr --add hrdapu "chezmoi re-add ~/.config/opencode/plugins/herdr-agent-state.js ~/.config/opencode/herdr-tui-session.js ~/.claude/hooks/herdr-agent-state.sh ~/.codex/herdr-agent-state.sh"
 # cloudflare
 abbr --add wr wrangler
 # dotfiles
