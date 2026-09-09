@@ -3,7 +3,7 @@ name: agent-context-engineering
 description: Author and maintain agent context markdown — AGENTS.md, rules, skills, memory files. Use when creating, editing, or refactoring any agent-focused doc, or after major codebase exploration to capture learning.
 ---
 
-# Agent Context Docs
+# Agent context docs
 
 Every line is loaded on every trigger. If it doesn't change agent behavior, cut it.
 
@@ -16,6 +16,7 @@ Every line is loaded on every trigger. If it doesn't change agent behavior, cut 
 - **Progressive disclosure.** Minimal root file; modular detail loaded on demand.
 - **No redundancy.** Don't repeat README, package.json, or anything inferable from code.
 - **Living document.** Update after significant exploration to prevent re-crawling.
+- **Sentence-case headings.** Capitalize only the first word and proper nouns (`Refactoring overgrown files`, `Git commits`). Product names keep their own casing: `Herdr configuration rules` because Herdr capitalizes at sentence starts in its own docs, `dbt guidance` because dbt never does.
 
 ## Authoring AGENTS.md
 
@@ -30,7 +31,7 @@ Include only what an agent can't infer from the code:
 
 Exclude generic language idioms, README content, and vague directives ("write clean code").
 
-## Index Pattern
+## Index pattern
 
 The recommended progressive-disclosure approach:
 
@@ -38,7 +39,7 @@ The recommended progressive-disclosure approach:
 2. List them as a tight index in AGENTS.md — plain paths, **not** `@`-imports
 
 ```text
-# Shopping App Agent Guidance
+# Shopping app agent guidance
 
 docs/adding-shadcn-components.md
 docs/using-drizzle-with-supabase.md
@@ -59,17 +60,17 @@ src/backend/AGENTS.md  → src/backend/docs/...
 | **Rule** | How something should be done, always (workflow, conventions) | User-level if global, project-level if specific |
 | **Doc** | State of something / how it works (API, architecture) | Skill if cross-project, `docs/` if project-specific |
 
-## Patterns to Avoid
+## Patterns to avoid
 
 - **`@reference` imports.** Most agents inline them fully on encounter. Treat as inlined content; recursive loading (Claude Code: depth 5) compounds bloat. The one sanctioned use is `SPEC.md`'s domain-spec index, which is opened deliberately rather than loaded at session start.
 - **Rules directories.** All files load at session start — equivalent to `@`-importing every file. Reserve for genuinely universal rules.
 - **Path-scoped frontmatter globs.** Better than global, but still automatic rather than agent-driven.
 
-## Living Document Workflow
+## Living document workflow
 
 After significant work, update AGENTS.md with new structure, patterns, or decisions. Universally relevant → root; area-specific → `docs/` with index entry.
 
-## Refactoring Overgrown Files
+## Refactoring overgrown files
 
 For AGENTS.md past ~60 lines or with poor structure:
 
@@ -94,7 +95,7 @@ docs/                      how the system works now, indexed from AGENTS.md
 
 Agent-specific directories hold only what that agent needs; shared content lives once under `.agents/` or `docs/`. `bootstrap-tool` lays this down.
 
-## File Locations
+## File locations
 
 | Location | Shared With | Loaded |
 | --- | --- | --- |
@@ -104,6 +105,6 @@ Agent-specific directories hold only what that agent needs; shared content lives
 | `~/.agents/AGENTS.md` | User (all projects) | Always |
 | `~/.agents/*` | User (all projects) | Varies by agent |
 
-## MCP Tool References
+## MCP tool references
 
 Use fully qualified names: `ServerName:tool_name` (e.g., `BigQuery:bigquery_schema`). Bare tool names may not resolve when many MCP servers are connected.
