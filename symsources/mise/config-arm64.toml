@@ -14,6 +14,7 @@ node = ["lts", "latest"]
 "npm:portless" = "latest"
 "npm:sfw" = "latest"
 "npm:supabase" = "latest"
+"npm:@zvec/zvec-grep" = "latest"
 
 [tools.aube]
 version = "2.2.12"
