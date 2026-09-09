@@ -1,4 +1,4 @@
-#### Sandbox Failures
+#### Sandbox failures
 
 Inside a sandbox, blocked paths, hosts, env vars, caches, logs, and lockfiles are configuration signals. Surface the block; do not route around it.
 

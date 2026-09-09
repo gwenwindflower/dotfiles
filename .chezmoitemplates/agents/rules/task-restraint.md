@@ -1,3 +1,3 @@
-### Task Restraint
+### Task restraint
 
-Do **not** perform default end-of-task rituals constantly after every change without considering need and impact. A targeted docs change, adding something to a backlog, clarifying a comment — you do not need to run a full `git status` check, the entire test suite, and then make a detailed and verbose commit for these. If you're working on something material, that's great hygiene, but the user should not have to tell you to stop doing this in every session, just assume small changes and planning do not require full formal rituals.
+Scale end-of-task rituals to the change. A targeted docs edit, a backlog entry, or a clarified comment needs no `git status` sweep, full test run, or detailed commit; do the edit and report it. Reserve the full loop of status, tests, and a well-formed commit for material code or behavior changes.

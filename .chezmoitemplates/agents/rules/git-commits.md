@@ -1,4 +1,4 @@
-#### Git Commits
+#### Git commits
 
 Commits are SSH-signed through 1Password. If signing fails, stop and ask the user to commit manually or fix signing; do not disable signing unless the environment has an explicit hook/config for it.
 

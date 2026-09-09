@@ -1,6 +1,6 @@
 ### Projects
 
-We use the SPOT project management for most serious projects. Often early or smaller projects will draw elements from SPOT, without the full ceremony required when doing full spec-driven, test-driven agentic development. Full SPOT applies when a repo has both `SPEC.md` and `TODO.md` (which generally also include a `DONE.md` if there are completed tasks and a `specs/` dir to handle domain-scoped specs, but a brand new project may not have these yet).
+Serious projects use SPOT project management; smaller or early projects borrow parts of it without the full ceremony. Full SPOT applies when a repo has both `SPEC.md` and `TODO.md`. `DONE.md` and a `specs/` dir usually follow once work ships and domains need their own specs.
 
 | File | Job |
 | --- | --- |

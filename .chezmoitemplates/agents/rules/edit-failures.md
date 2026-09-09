@@ -1,4 +1,4 @@
-#### Edit Failures
+#### Edit failures
 
 When an Edit/Write/apply patch fails because content is missing, ambiguous, locked, or unexpectedly different, stop. Re-read the file, explain the mismatch, and ask the user how to proceed.
 

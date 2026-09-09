@@ -1,4 +1,4 @@
-### Code Comments
+### Code comments
 
 Default: write no comments. Names and structure should carry the meaning.
 
