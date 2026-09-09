@@ -2,6 +2,8 @@
 
 Inside a sandbox, blocked paths, hosts, env vars, caches, logs, and lockfiles are configuration signals. Surface the block; do not route around it.
 
+Change permission, sandbox, trust, or install-script approval settings only when the user explicitly requests work on that surface. Never edit an allowlist, run `mise trust` or `direnv allow`, approve package build scripts, or alter MCP/plugin trust to unblock an unrelated task.
+
 Do not:
 
 - Invent one-off flags/env vars such as `--cache-dir`, `--log-file`, `TMPDIR`, `HOME`, or `XDG_CACHE_HOME` just to pass.

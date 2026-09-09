@@ -24,18 +24,28 @@ Trailer order: GitHub closing keywords (`Closes #12`), then attribution (`Co-Aut
 
 #### Linear history
 
-Aim for clean, linear history that tells the story of the work. Rebase and fixup/squash with `push --force-with-lease` to tidy local branches before merging; never force-push to main or shared branches. **Never** merge with a merge commit. Fast-forward rebase on top of main when pulling. Default to trunk-based development unless the project says otherwise.
+Keep history linear. Use `git pull --ff-only`; if histories diverge, inspect them and explicitly rebase the session's owned work onto the intended upstream. Rebase/fixup/squash may rewrite an owned feature branch, never a shared or protected branch. Only `--force-with-lease` on an owned feature branch is an acceptable force push. **Never** create a merge commit. Default to trunk-based development unless the project says otherwise.
+
+Ordinary pushes and guarded merges follow the task and repository policy, including pushes to `main` in trunk workflows. A native review gate may still run; existing user authorization remains valid.
+
+#### Worktrees and cleanup
+
+Prefer `wt switch`, `wt merge`, and `wt remove` for worktrees. Preserve hooks, clean-worktree and integration checks, and project trust approvals; do not bypass them with `--yes`, `--no-hooks`, or force flags. Direct `git worktree` mutations require review.
+
+Local branch deletion uses lowercase `git branch -d` or guarded Worktrunk cleanup. Forced deletion (`-D`, `--force`, and equivalents) is manual-only. Never delete remote refs or mirror-push; GitHub handles head-branch cleanup after merge.
+
+The lead owns staging, commits, branches, rebases, remotes, and worktree mutations. Helpers edit and verify assigned files or report recovery instructions; they do not mutate shared Git state.
 
 #### Recoverable state
 
 Any operation that rewrites history or can stop halfway (rebase, squash, amend, reset, cherry-pick series, stash pop across branches, force push, conflict-prone merges) needs a way back before it starts:
 
-- Commit or stash uncommitted work first; never rewrite over a dirty tree.
+- Preserve uncommitted and untracked work before rewriting; a starting commit ref alone cannot restore it. Inspect any existing rebase or merge before starting another operation.
 - Record the starting ref: `git rev-parse HEAD` for a small step, a backup branch (`git branch backup/<name>`) for multi-commit rewrites or anything touching more than one branch.
-- Know the exit before entering: `--abort` for in-progress operations, `git reset --hard <recorded ref>` for everything else, `git reflog` as the last resort.
+- Know the exit before entering: use the operation's `--abort` when supported, and retain a recovery ref or backup for other rewrites. A hard reset is not a general-purpose recovery step.
 - Rewrite only commits that are unpushed or on a branch only you are working on.
 - If the operation stops in a partial state, do not improvise repairs on top of it. Abort back to the recorded ref, or resolve and continue only when the conflict is small and fully understood.
-- Never run `reset --hard`, `checkout --`, `restore`, or `clean` without a recorded ref that restores what they discard.
+- Resolve understood conflicts before `--continue`; never `--skip` unresolved work without explicit instruction. Discarding changes with `reset --hard`, `checkout --`, `restore`, or `clean` requires explicit scope and a backup that actually preserves the affected content, including untracked files.
 - Report an interrupted operation plainly, with the ref that restores the pre-operation state.
 
 #### GitHub
@@ -44,7 +54,9 @@ Use `gh` for GitHub work beyond core git: repos, issues, PRs, Actions, checks, a
 
 Never print tokens. Do not run `gh auth token`, it will be blocked.
 
-No destructive GitHub operations without explicit instruction: delete, close, merge, revert, archive, transfer, lock, or release delete. Prefer `gh pr merge --squash`; use rebase only for small clean histories.
+GitHub writes follow the task's authority. Review consequential changes such as repository deletion, archival, transfer, visibility changes, and destructive issue operations. Prefer `gh pr merge --squash`; use rebase only for small clean histories.
+
+Publish packages and create or mutate releases only through a reviewed, trusted project release task on explicit request. Preserve its checks and confirmations; do not substitute raw publishing commands or trigger a release workflow to bypass the task. Confidential project material follows repository-local policy; credentials and unrelated personal data never belong in a commit.
 
 For raw code, fetch the raw URL rather than routing through `gh api`. For Actions and actively developed tooling, verify current Marketplace/docs versions.
 

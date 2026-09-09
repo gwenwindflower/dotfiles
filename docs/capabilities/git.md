@@ -1,42 +1,53 @@
 # Git and worktrees
 
-Agents can inspect repository history and perform authorized source-control work while the lead session retains ownership of shared Git state and remote effects.
+Agents inspect history and complete task-authorized source-control work while the lead owns Git mutations and shared state.
 
-## Repository work
+## Command intent
 
-- Status, diff, log, blame, branches, tags, remotes, and other read-only inspection should be routine.
-- Remote traffic authenticates over SSH through the 1Password agent, which the sandbox cannot reach, so fetch, pull, and push run outside the sandbox under narrow per-command exclusions instead of a session-wide sandbox drop. Fetch, fast-forward pull, and branch switching are routine; every push is approval-gated.
-- The lead session may stage and commit completed in-scope work when authorized by the task and repository workflow.
-- Helpers edit and verify their assigned files but do not stage, commit, branch, rebase, push, or mutate worktrees.
-- History remains linear. `--force-with-lease` on a feature branch the session owns is the only permitted force form, and it is approval-gated like any push; bare `--force` or `-f` is blocked, and protected or shared branches are never force-pushed.
-- GitHub work uses `gh`, reads before writes, and treats publishing, merging, closing, or deleting as separate authority.
+| Operation | Policy |
+| --- | --- |
+| Inspection | Status, diff, log, reflog inspection, branch listing, remotes, and worktree listing are routine. A broad `git branch *` or `git worktree *` grant also permits mutations and is not an inspection rule. |
+| Local changes | The lead may stage, commit, create/switch branches, and delete integrated local branches with lowercase `git branch -d`. Helpers report edits and findings without mutating Git state. |
+| Pull and rebase | Prefer `git pull --ff-only`. If histories diverge, inspect ownership and explicitly rebase the session's work onto the intended upstream. Rebase is reviewed; never rewrite shared/protected history or skip unresolved work. |
+| Push and merge | Normal pushes and guarded merges follow task and repo policy, including `main` in trunk workflows. `--force-with-lease` is reserved for an owned feature branch; unrestricted force and shared-branch rewrites are blocked. |
+| Cleanup | Prefer `wt merge`/`wt remove`; retain their clean-worktree, integration, and hook checks. Forced deletion (`git branch -D`, `wt remove -D`/`--force`) is manual. Remote ref deletion and mirror pushes are blocked; GitHub handles head-branch cleanup after merge. |
 
-## Worktrees
+## Recoverable history
 
-- Agents may inspect the source checkout from a worktree when repository metadata or context requires it.
-- Worktrunk supports the worktree workflow: listing, status, configuration, switching, and creation are routine; merging or removal follow the task's authority and ownership boundary.
-- Worktrunk places worktrees as sibling directories of the checkout, outside the sandbox's writable set, so `wt` runs outside the sandbox and relies on permission rules and guidance for its boundary.
-- The capability remains tool-independent if a different worktree interface becomes the daily driver.
+Before rebase, amend, squash, reset, or another operation that can stop midway, preserve uncommitted work and record the starting ref. A ref cannot recover untracked or uncommitted content by itself. Inspect any existing operation before starting another.
 
-## Commit policy
+Resolve understood conflicts and continue, or abort to the preserved starting state. Do not use `--skip`, `reset --hard`, or forced cleanup to discard unresolved work. Report an interrupted operation and its recovery point.
 
-- Commit subjects describe the work, follow the repository's conventional format, and carry the active agent's attribution.
-- SPOT checkoffs travel with the behavior commit; bookkeeping-only commits are blocked unless the work is deliberately planning-only.
-- User terminal commits remain SSH-signed. Harnesses that cannot access the 1Password signing agent may inject a session-scoped identity and signing override without changing global Git configuration.
+Keep history linear: fast-forward integration or squash/rebase merging, never a merge commit. Commit subjects follow the repository convention and include the active agent's attribution. SPOT bookkeeping travels with the behavior commit.
 
-## Platform implementations
+## Worktrunk and authentication
 
-| Platform | Mechanism | Coverage |
-| --- | --- | --- |
-| Claude Code | Bash permissions, sandbox exclusions for remote Git and Worktrunk, Git environment hook, SPOT commit hook, teammate Git-write hook, and Worktrunk plugin | Most explicit command and ownership enforcement. |
-| Codex | Sandbox Git access, `GIT_OPTIONAL_LOCKS`, session identity, shared guidance, and Worktrunk hooks | Native multi-agent ownership is guided by shared rules; command approvals remain contextual. |
-| OpenCode | Read-oriented Git command permissions, Worktrunk plugin, agent definitions, and shared guidance | Git writes ask by default; no teammate-specific Git hook is currently configured. |
+Use `wt switch`, `wt merge`, and `wt remove` for normal worktree workflows. Direct `git worktree add/move/remove/prune/repair` calls require review. Worktrunk's project hook approvals are independent of harness permission; do not use `--yes`, `--no-hooks`, or config changes to skip them.
+
+SSH authentication uses 1Password. Claude's remote-Git and Worktrunk host exclusions address SSH and sibling-worktree access; they do not grant task authority. Codex reviews host access contextually rather than broadly allowing all Git/Worktrunk execution outside its sandbox.
+
+User terminal commits remain signed. Existing harness-provided session identity/signing overrides remain valid; never change global signing settings or disable signing in response to a failure.
+
+## GitHub and publication
+
+Use `gh`, read before writing, and verify changed destinations. Confidential project material follows repository-local policy; credentials and unrelated personal data do not belong in commits.
+
+Repository deletion, archival, visibility changes, transfers, and destructive issue changes receive review. Package publication and release creation/mutation/deletion use a reviewed project release task on explicit request. Raw publication commands are blocked; a normal push or merge is not equivalent to publication unless the project's automation makes it so.
+
+## Native enforcement
+
+| Harness | Mechanism and limits |
+| --- | --- |
+| Claude Code | Bash rules, classifier guidance, SSH/Worktrunk exclusions, and helper Git hooks. Specific flag rules take precedence over routine allows. |
+| Codex | `git.rules` gates canonical pushes/rebases/worktree mutations and blocks immediate force/delete flags and raw release commands. Prefix rules cannot inspect every argument position. |
+| OpenCode | Ordered Bash patterns and a read-only medic shell allowlist. Agent overrides must preserve global safety rules. No process sandbox is supplied by command policy. |
+
+For Codex, `git push origin --delete topic` reaches general push review, while `git push --delete origin topic` matches a prohibition. Leading `git -C`/`-c`, executable paths, wrappers, and `gh api` payloads require contextual inspection. Do not reshape a command to evade a rule.
 
 ## Verification
 
-- Repository inspection and worktree status do not require broad Git write permission.
-- A helper attempting to mutate Git state is stopped and reports its work to the lead.
-- Remote writes remain distinguishable from local commits.
-- Fetch, pull, and worktree creation complete without a sandbox-override prompt; a push prompts once, and a bare force push is refused.
-- Agent commits made outside the sandbox are still unsigned and attributed to the session identity.
-- Worktree navigation does not grant permission to merge or remove worktrees.
+- Inspection and lowercase local branch cleanup retain the intended path.
+- Forced local cleanup and remote deletion hit prohibitions in supported command forms.
+- Rebase review checks ownership, dirty state, and the recovery point.
+- Guarded Worktrunk integration keeps its checks and approvals.
+- Raw publishing is blocked while an explicitly requested, project-authorized release task remains usable.

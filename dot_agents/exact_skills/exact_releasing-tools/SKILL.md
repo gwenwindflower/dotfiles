@@ -5,7 +5,7 @@ description: Cut and distribute releases of OSS dev tools through the standard m
 
 # Releasing tools
 
-A release is a commit on `main` that sets the version, followed by a GitHub release that creates the tag. Humans run it; agents rehearse it.
+A release is a commit on `main` that sets the version, followed by a GitHub release that creates the tag. Agents may run the reviewed project release task on explicit request, with the project's trust approvals, checks, and confirmation gates intact.
 
 ## The pipeline
 
@@ -55,7 +55,7 @@ Only the Rust kit exists today; other rows describe the target and get kits as t
 
 See [references/homebrew-tap.md](references/homebrew-tap.md) for the tap repository, the PAT, the formula template, and how the `homebrew` job renders and pushes it.
 
-## Cutting a release, as the human
+## Cutting a release
 
 ```bash
 mise run release:rehearse      # read-only; fix anything it reports

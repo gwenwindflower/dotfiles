@@ -14,13 +14,17 @@ Agents receive the same durable operating guidance and can discover specialized 
 
 Context files contain durable behavior-changing guidance, not config inventories or session history. Skills and plugins are loaded for relevant tasks, and unknown third-party extensions are reviewed before installation or execution.
 
+Manage external skills through `gh skill`: install/add, update, search, preview, and list are routine within task scope, including user scope. Review destructive removal or forced replacement; raw skill publishing follows the project release-task boundary. Specify the shared agent destination and track approved content back into chezmoi. Do not use package-runner `skills` commands or alternative skill installers.
+
+OpenCode discovers project `AGENTS.md` and `~/.config/opencode/AGENTS.md` natively. No additional instruction paths are needed; root guidance links to domain docs for deliberate loading. See [OpenCode rule discovery](https://opencode.ai/docs/rules/).
+
 ## Platform implementations
 
 | Platform | Mechanism | Coverage |
 | --- | --- | --- |
 | Claude Code | Rendered `CLAUDE.md`, shared skills symlink, rules, plugins, and agent Markdown | Adds Claude-specific keybinding and hook guidance beside shared rules. |
 | Codex | Rendered `AGENTS.md`, shared skills, plugins, apps, MCP servers, and TOML agents | Supports capability packages and connected apps through native registries. |
-| OpenCode | Rendered `AGENTS.md`, instruction globs, shared skills, plugins, and Markdown agents | Explicitly discovers common docs and both shared and Claude-compatible rule paths. |
+| OpenCode | Native project/global `AGENTS.md`, shared skills, plugins, and Markdown agents | Loads root guidance directly and follows its documentation links on demand. |
 
 ## Verification
 

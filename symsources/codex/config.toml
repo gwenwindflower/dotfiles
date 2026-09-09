@@ -7,13 +7,7 @@ model = "gpt-6-astra"
 personality = "friendly"
 approval_policy = "on-request"
 approvals_reviewer = "auto_review"
-sandbox_mode = "workspace-write"
-# Waiting for the beta Permissions system to be fully baked
-# It's been a huge pain in the ass the past week or two
-# This is the profile when ready
-# leaving the configs for it in place
-# as they don't hurt anything if the profile is not active
-# default_permissions = "workspace-winnie"
+default_permissions = "workspace-winnie"
 web_search = "cached"
 project_doc_max_bytes = 65536
 sqlite_home = "~/.codex/sqlite"
@@ -22,53 +16,6 @@ suppress_unstable_features_warning = true
 
 notify = ["/Users/winnie/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended"]
 service_tier = "default"
-
-[sandbox_workspace_write]
-network_access = true
-writable_roots = [
-  "~/.agent-browser",
-  "~/.bun/install",
-  "~/.cache",
-  "~/.cargo/git",
-  "~/.cargo/registry",
-  "~/.codex/.tmp",
-  "~/.codex/cache",
-  "~/.codex/memories",
-  "~/.codex/plugins",
-  "~/.codex/skills",
-  "~/.codex/sqlite",
-  "~/.codex/tmp",
-  "~/.config/.wrangler",
-  "~/.context7",
-  "~/.deno/bin",
-  "~/.duckdb",
-  "~/.gitconfig",
-  "~/.go/pkg/mod",
-  "~/.local/share/aube",
-  "~/.local/share/chezmoi/symsources/aube",
-  "~/.local/share/chezmoi/symsources/herdr",
-  "~/.local/share/chezmoi/symsources/mise",
-  "~/.local/share/chezmoi/symsources/worktrunk",
-  "~/.local/share/chezmoi/symsources/yazi",
-  "~/.local/share/graveyard",
-  "~/.local/share/mise",
-  "~/.local/share/nvim",
-  "~/.local/share/pnpm",
-  "~/.local/share/uv",
-  "~/.local/state/herdr",
-  "~/.local/state/mise",
-  "~/.local/state/nvim",
-  "~/.npm",
-  "~/Library/Caches/Homebrew",
-  "~/Library/Caches/deno",
-  "~/Library/Caches/dev.biomejs.biome",
-  "~/Library/Caches/go-build",
-  "~/Library/Caches/kitty",
-  "~/Library/Caches/mise",
-  "~/Library/Caches/node-gyp",
-  "~/Library/Caches/pip",
-  "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/girlOS",
-]
 
 [tui]
 pet = "disabled"
@@ -97,6 +44,7 @@ jump_bottom = ["end", "shift-g"]
 "gpt-5.5" = 4
 
 [features]
+network_proxy = true
 hooks = true
 multi_agent = true
 terminal_resize_reflow = true
@@ -122,6 +70,7 @@ glob_scan_max_depth = 4
 # system
 "/System/Cryptexes/App/usr/bin" = "read"
 "/System/Library/OpenSSL" = "read"
+"/Library/Developer/CommandLineTools" = "read"
 # bins in app contents
 "/Applications/kitty.app/Contents/MacOS" = "read"
 "/Applications/Obsidian.app/Contents/MacOS" = "read"
@@ -130,7 +79,7 @@ glob_scan_max_depth = 4
 [permissions.workspace-winnie.filesystem."~"]
 # tools
 ".local/bin" = "read"
-".local/share/nvim" = "read"
+".local/share/nvim" = "write"
 ".orbstack/bin" = "read"
 "Desktop" = "read"
 # tool state, config, caches
@@ -148,6 +97,7 @@ glob_scan_max_depth = 4
 ".duckdb" = "write"
 ".gitconfig" = "write"
 ".local/state/herdr" = "write"
+".local/state/nvim" = "write"
 "Library/Caches/kitty" = "write"
 ".local/share/graveyard" = "write"  # rip
 ".local/share/chezmoi" = "read"
@@ -163,6 +113,7 @@ glob_scan_max_depth = 4
 ".codex/skills" = "write"
 ".claude" = "read"
 ".agents" = "read"
+".agents/skills" = "write"
 # runtimes and package managers
 ## brew
 "Library/Caches/Homebrew" = "write"
@@ -187,6 +138,7 @@ glob_scan_max_depth = 4
 ".go" = "read"
 ".go/pkg/mod" = "write"
 "Library/Caches/go-build" = "write"
+"Library/Application Support/go/telemetry" = "write"
 ## rust
 ".cargo/bin" = "read"
 ".cargo/env" = "read"
@@ -206,7 +158,8 @@ glob_scan_max_depth = 4
 "**/credentials/**" = "deny"
 "**/secrets/**" = "deny"
 ".aws" = "deny"
-# ".config/gcloud" = "deny"
+".config/gcloud" = "deny"
+".ssh" = "deny"
 ".gnupg" = "deny"
 ".env" = "deny"
 ".env.*" = "deny"
@@ -229,12 +182,13 @@ glob_scan_max_depth = 4
 "symsources/aube/**" = "write"
 # "symsources/claude/**" = "write"
 # "symsources/codex/**" = "write"
-# "symsources/herdr/**" = "write"
+"symsources/herdr/**" = "write"
 "symsources/mise/**" = "write"
 # "symsources/nvim/**" = "write"
 # "symsources/uv/**" = "write"
 "symsources/worktrunk/**" = "write"
-# "symsources/yazi/**" = "write"
+"symsources/yazi/**" = "write"
+"symsources/agents/skill-lock.json" = "write"
 
 # workspace-level secret patterns
 [permissions.workspace-winnie.filesystem.":workspace_roots"]
@@ -331,9 +285,9 @@ allow_local_binding = true
 "www.chezmoi.io" = "allow"
 
 [permissions.workspace-winnie.network.unix_sockets]
-"~/.agent-browser/default.sock" = "allow"
-"~/.obsidian-cli.sock" = "allow"
-"~/.orbstack/run/docker.sock" = "allow"
+"/Users/winnie/.agent-browser/default.sock" = "allow"
+"/Users/winnie/.obsidian-cli.sock" = "allow"
+"/Users/winnie/.orbstack/run/docker.sock" = "allow"
 
 [agents]
 max_threads = 10  # upstream schema: tombi expects a table here

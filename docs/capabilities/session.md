@@ -15,6 +15,8 @@ Agent sessions provide subprocesses with stable environment behavior and report 
 
 Lifecycle hooks enforce durable invariants or report state; they do not become a second configuration system. Integration failures are non-fatal unless the guarded invariant itself is safety-critical.
 
+Codex's `shell_environment_policy` inherits core variables, retains default secret exclusions, and explicitly excludes cloud, GitHub, package-registry, and 1Password token families. Preserve that intent across harnesses: a working authenticated integration should receive only the credentials it requires, not every token from the launching shell. Environment filtering does not protect credential files or independently running connectors.
+
 ## Platform implementations
 
 | Platform | Mechanism | Coverage |

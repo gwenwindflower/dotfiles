@@ -1,15 +1,15 @@
 prefix_rule(
-    pattern = [["rem", "/opt/homebrew/bin/rem"], ["help", "--help", "version", "--version", "list", "ls", "lists", "show", "get", "search", "stats", "today", "overdue", "upcoming", "add", "create", "new"]],
+    pattern = [["rem", "/opt/homebrew/bin/rem"],["help", "--help", "version", "--version", "list", "ls", "lists", "show", "get", "search", "stats", "today", "overdue", "upcoming", "add", "create", "new", "complete", "done", "uncomplete", "flag", "unflag", "update", "edit"]],
     decision = "allow",
-    justification = "Reminders uses host EventKit access; reads and single-reminder creation run outside the sandbox.",
-    match = ["rem list -o json", "rem add Task --list Reminders", "/opt/homebrew/bin/rem show ABCD"],
-    not_match = ["rem complete ABCD", "rem delete ABCD", "rem export --output-file reminders.json", "rem update ABCD --list Shared"],
+    justification = "EventKit requires host access; routine reads and task-authorized individual reminder changes run without an extra review.",
+    match = ["rem list -o json", "rem add Task --list Reminders", "/opt/homebrew/bin/rem show ABCD", "rem complete EXAMPLE", "rem update EXAMPLE --list Work"],
+    not_match = ["rem delete EXAMPLE", "rem export --output-file reminders.json", "rem import tasks.json"],
 )
 
 prefix_rule(
-    pattern = [["rem", "/opt/homebrew/bin/rem"], ["complete", "done", "uncomplete", "flag", "unflag", "update", "edit", "delete", "rm", "remove", "import", "export", "list-mgmt", "lm", "interactive", "i", "skills"]],
+    pattern = [["rem", "/opt/homebrew/bin/rem"],["delete", "rm", "remove", "import", "export", "list-mgmt", "lm", "interactive", "i", "skills"]],
     decision = "prompt",
-    justification = "Review status mutations, exports, deletion, bulk import, list management, shared-list-capable updates, interactive operations, and skill installation.",
-    match = ["rem complete ABCD", "rem complete ABCD EFGH", "rem delete ABCD EFGH --force", "rem export --output-file reminders.json", "rem import tasks.json", "rem lm delete Work", "rem update ABCD --list Shared"],
-    not_match = ["rem list -o json", "rem add Task --list Reminders"],
+    justification = "Review deletion, bulk import/export, list administration, interactive operations, and skill installation.",
+    match = ["rem delete EXAMPLE OTHER --force", "rem export --output-file reminders.json", "rem import tasks.json", "rem lm delete Work"],
+    not_match = ["rem list -o json", "rem complete EXAMPLE", "rem update EXAMPLE --list Work"],
 )

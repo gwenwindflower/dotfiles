@@ -14,6 +14,8 @@ Agents can use external services, browsers, and artifact tools through scoped in
 
 Installing an integration grants capability, not blanket permission to use it for external effects. Unknown repositories, plugins, MCP servers, and package installers require source and permission review.
 
+Broad CLI grants such as `linear-cli *`, `blacksmith *`, or `herdr *` do not authorize messages, ticket changes, remote job execution, or control of another agent. Check the operation and the user's requested scope; shell rules do not cover connector tool calls. Never run `op` or `gh auth token` to expose credentials. Codex's explicit credential-command prohibitions supplement its environment filtering without claiming to block every possible secret reader.
+
 ## Platform implementations
 
 | Platform | Mechanism | Coverage |

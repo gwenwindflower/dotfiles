@@ -1,0 +1,127 @@
+prefix_rule(
+    pattern = ["gh", "auth", "token"],
+    decision = "forbidden",
+    justification = "Never print authentication tokens; use gh's authenticated commands.",
+    match = ["gh auth token"],
+    not_match = ["gh auth status"],
+)
+
+prefix_rule(
+    pattern = ["git", "push"],
+    decision = "prompt",
+    justification = "Review destination and task scope; ordinary pushes to main are valid in trunk workflows. Reject remote deletion and forced rewrites of shared branches.",
+    match = ["git push", "git push origin --force", "git push --force-with-lease origin topic"],
+    not_match = ["git status", "git fetch"],
+)
+
+prefix_rule(
+    pattern = ["git", "push", ["--force", "-f"]],
+    decision = "forbidden",
+    justification = "Unrestricted force push is blocked; only reviewed --force-with-lease on an owned feature branch is permitted.",
+    match = ["git push --force origin topic", "git push -f origin topic"],
+    not_match = ["git push --force-with-lease origin topic", "git push origin --force"],
+)
+
+prefix_rule(
+    pattern = ["gh", "pr", ["merge", "close"]],
+    decision = "prompt",
+    justification = "Merging or closing a pull request requires explicit task authority and review of the concrete PR.",
+    match = ["gh pr merge 12", "gh pr close 12"],
+    not_match = ["gh pr view 12", "gh pr create --draft"],
+)
+
+prefix_rule(
+    pattern = ["gh", "release", ["create", "upload", "edit", "delete", "delete-asset"]],
+    decision = "forbidden",
+    justification = "Release publication, artifact mutation, and deletion must run through the reviewed project release task on explicit request.",
+    match = ["gh release create v1", "gh release delete v1"],
+    not_match = ["gh release view v1"],
+)
+
+prefix_rule(
+    pattern = ["gh", "repo", ["delete", "archive", "rename", "edit"]],
+    decision = "prompt",
+    justification = "Review repository administration, visibility, and destructive effects against explicit task authority.",
+    match = ["gh repo delete example/repo", "gh repo edit --visibility public"],
+    not_match = ["gh repo view"],
+)
+
+prefix_rule(
+    pattern = ["gh", "issue", ["close", "delete", "transfer", "lock", "unlock"]],
+    decision = "prompt",
+    justification = "Review consequential issue state changes against explicit task authority.",
+    match = ["gh issue close 12", "gh issue delete 12"],
+    not_match = ["gh issue view 12"],
+)
+
+prefix_rule(
+    pattern = ["git", "branch", ["-D", "-f", "--force"]],
+    decision = "forbidden",
+    justification = "Use git branch -d or guarded wt remove; forced branch cleanup is manual.",
+    match = ["git branch -D topic", "git branch --force topic"],
+    not_match = ["git branch -d topic"],
+)
+
+prefix_rule(
+    pattern = ["git", "push", ["--delete", "-d", "--mirror"]],
+    decision = "forbidden",
+    justification = "Remote branch cleanup is handled by GitHub after merge; do not delete remote refs or mirror-push.",
+    match = ["git push --delete origin topic"],
+    not_match = ["git push origin main"],
+)
+
+prefix_rule(
+    pattern = ["wt", "remove", ["-D", "--force-delete", "-f", "--force", "--no-hooks", "--yes", "-y"]],
+    decision = "forbidden",
+    justification = "Retain Worktrunk's clean-worktree, integration, hook, and trust checks; forced cleanup is manual.",
+    match = ["wt remove --force topic", "wt remove -D topic"],
+    not_match = ["wt remove topic"],
+)
+
+prefix_rule(
+    pattern = ["wt", "merge", ["--no-hooks", "--yes", "-y", "--no-ff"]],
+    decision = "forbidden",
+    justification = "Keep approved hooks, trust checks, and fast-forward integration enabled.",
+    match = ["wt merge --no-hooks"],
+    not_match = ["wt merge"],
+)
+
+prefix_rule(
+    pattern = ["git", "rebase"],
+    decision = "prompt",
+    justification = "Review ownership and starting state. Rebase owned work onto the intended upstream; never rewrite shared history or skip unresolved commits.",
+    match = ["git rebase origin/main", "git rebase --continue"],
+    not_match = ["git status"],
+)
+
+prefix_rule(
+    pattern = ["git", "worktree", ["add", "move", "remove", "prune", "repair"]],
+    decision = "prompt",
+    justification = "Prefer guarded wt workflows; review direct worktree mutations and shared Git metadata.",
+    match = ["git worktree remove ../topic"],
+    not_match = ["git worktree list"],
+)
+
+prefix_rule(
+    pattern = ["gh", ["skill", "skills"], "publish"],
+    decision = "forbidden",
+    justification = "Skill publishing creates a release; invoke the reviewed project release task on explicit request.",
+    match = ["gh skill publish --tag v1"],
+    not_match = ["gh skill install owner/repo example"],
+)
+
+prefix_rule(
+    pattern = ["gh", ["skill", "skills"],["remove", "uninstall", "delete"]],
+    decision = "prompt",
+    justification = "Review destructive skill operations; routine install, update, search, list, and preview remain task-authorized.",
+    match = ["gh skill remove example"],
+    not_match = ["gh skill update --all"],
+)
+
+prefix_rule(
+    pattern = ["gh", ["skill", "skills"],["install", "add"],["--force", "-f"]],
+    decision = "prompt",
+    justification = "Review forced replacement of existing skill content.",
+    match = ["gh skill install --force owner/repo example"],
+    not_match = ["gh skill install owner/repo example"],
+)

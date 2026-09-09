@@ -1,0 +1,15 @@
+prefix_rule(
+    pattern = ["notesmd-cli", ["add-vault", "remove-vault", "set-default-vault"]],
+    decision = "forbidden",
+    justification = "Vault registration and default-vault changes are manual; keep operations scoped to girlOS.",
+    match = ["notesmd-cli add-vault Example", "notesmd-cli remove-vault Example", "notesmd-cli set-default-vault Example"],
+    not_match = ["notesmd-cli delete Example", "notesmd-cli move Example Elsewhere"],
+)
+
+prefix_rule(
+    pattern = ["obsidian", ["eval", "command"]],
+    decision = "prompt",
+    justification = "Review arbitrary app-side execution and batch scope; routine individual note and task changes do not need a separate review.",
+    match = ["obsidian eval code=1"],
+    not_match = ["obsidian tasks", "obsidian delete file=Example"],
+)

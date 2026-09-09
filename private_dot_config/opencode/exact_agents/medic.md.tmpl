@@ -7,8 +7,16 @@ permission:
   task:
     "*": deny
   bash:
-    "git *": allow
-    "wt *": allow
+    "*": deny
+    "git status*": allow
+    "git diff*": allow
+    "git log*": allow
+    "git reflog show*": allow
+    "git show *": allow
+    "git branch --list*": allow
+    "git worktree list*": allow
+    "wt list*": allow
+    "wt status*": allow
     "git gc": deny
     "git gc *": deny
     "git prune": deny

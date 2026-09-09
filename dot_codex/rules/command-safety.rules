@@ -1,0 +1,84 @@
+prefix_rule(
+    pattern = [["op", "dd", "mkfs"]],
+    decision = "forbidden",
+    justification = "Do not expose credentials or overwrite disks; use the owning authenticated integration and non-destructive inspection.",
+    match = ["op read op://example/item/password", "dd if=example of=output", "mkfs example"],
+    not_match = ["file example"],
+)
+
+prefix_rule(
+    pattern = ["rm", "-rf"],
+    decision = "forbidden",
+    justification = "Use recoverable rip for authorized file deletion.",
+    match = ["rm -rf example"],
+    not_match = ["rip example"],
+)
+
+prefix_rule(
+    pattern = ["rip", "-d"],
+    decision = "forbidden",
+    justification = "Keep deletion recoverable; do not purge the graveyard.",
+    match = ["rip -d example"],
+    not_match = ["rip example"],
+)
+
+prefix_rule(
+    pattern = ["sudo", "rm"],
+    decision = "forbidden",
+    justification = "Do not perform privileged deletion; inspect the target and ask the user to handle system cleanup.",
+    match = ["sudo rm example"],
+)
+
+prefix_rule(
+    pattern = ["chmod", "-R", "777"],
+    decision = "forbidden",
+    justification = "Use narrowly scoped ownership or permission changes instead of recursive mode 777.",
+    match = ["chmod -R 777 example"],
+    not_match = ["chmod 755 example"],
+)
+
+prefix_rule(
+    pattern = ["terraform", "destroy"],
+    decision = "forbidden",
+    justification = "Infrastructure destruction is blocked; present the target and plan for user handling.",
+    match = ["terraform destroy"],
+)
+
+prefix_rule(
+    pattern = ["kubectl", "delete"],
+    decision = "forbidden",
+    justification = "Cluster deletion is blocked; present the resources for user handling.",
+    match = ["kubectl delete pod example"],
+)
+
+prefix_rule(
+    pattern = [["npm", "pnpm", "aube", "bun", "cargo", "uv", "deno"], "publish"],
+    decision = "forbidden",
+    justification = "Publish only through the reviewed project release task on explicit request; do not invoke raw registry publication.",
+    match = ["npm publish", "cargo publish", "uv publish"],
+    not_match = ["cargo test", "npm run build"],
+)
+
+prefix_rule(
+    pattern = [["wrangler", "fly", "flyctl", "railway"], "deploy"],
+    decision = "prompt",
+    justification = "Review the deployment artifact, destination, and task authority before changing a remote environment.",
+    match = ["wrangler deploy", "fly deploy"],
+    not_match = ["wrangler dev"],
+)
+
+prefix_rule(
+    pattern = [["terraform", "kubectl"], "apply"],
+    decision = "prompt",
+    justification = "Review the infrastructure diff and target, including production, IAM, RBAC, and networking effects.",
+    match = ["terraform apply", "kubectl apply -f example.yaml"],
+    not_match = ["terraform plan", "kubectl get pods"],
+)
+
+prefix_rule(
+    pattern = ["chezmoi", "apply"],
+    decision = "prompt",
+    justification = "Review deployment into userspace; preview with chezmoi --dry-run --no-pager apply.",
+    match = ["chezmoi apply"],
+    not_match = ["chezmoi --dry-run --no-pager apply", "chezmoi diff"],
+)

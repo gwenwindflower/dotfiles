@@ -12,7 +12,9 @@ For actively developed tools, syntax, versions, APIs, or framework behavior, che
 
 #### Built-in tool skills
 
-Many tools ship skills that track their own version, described in their help text. Check whether a skill command prints to stdout or installs into the environment. Never install a global skill without explicit user consent; the global skill library is curated. Project-scoped installs are fine but may shadow a global skill for the same tool.
+Manage external skills with `gh skill`: search, preview, list, install/add, and update are routine within the task, including user scope. Review destructive removal or forced replacement. Check the source before installing unfamiliar content; do not use the npm `skills` CLI, package-runner variants, `rei`, or Context7's skill installer. Shared user skills live in `~/.agents/skills`; track approved changes back into chezmoi. Project-scoped skills may shadow global ones.
+
+Many tools also ship version-matched skills. Check whether a skill command prints instructions or installs files before running it; use `gh skill` for external skill management.
 
 #### Trusting non-official sources
 

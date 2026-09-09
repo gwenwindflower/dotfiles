@@ -98,6 +98,8 @@ Tracked project config is copied into Codex-created worktrees, preserving normal
 
 ## Network Rules
 
+Set `features.network_proxy = true` to enforce profile domain rules. `network.enabled = true` permits networking but does not start the proxy; without it, the domain table does not restrict direct egress. Unix-socket entries must be absolute paths: the proxy rejects `~/...` entries.
+
 Keep `[permissions.<name>.network] enabled = false` unless sandboxed command networking is required. When enabled, prefer domain allowlists over `"*"`.
 
 ```toml
