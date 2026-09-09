@@ -164,6 +164,14 @@ command = "heraldr.reset"
 description = "heraldr reset tab"
 
 [[keys.command]]
+key = "prefix+u"
+type = "popup"
+command = '"$HOME/.config/herdr/update-herdr-plugins"'
+description = "update Herdr plugins"
+width = 72
+height = 16
+
+[[keys.command]]
 key = ["prefix+super+f"]
 type = "pane"
 command = "yazi"

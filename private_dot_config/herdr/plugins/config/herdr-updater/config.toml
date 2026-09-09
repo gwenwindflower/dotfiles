@@ -1,0 +1,23 @@
+# Auto authorizes explicit apply commands; startup and scheduling stay disabled.
+policy = "auto"
+
+# Homebrew owns the Herdr binary. Packy handles core upgrades.
+check_core = false
+check_plugins = true
+
+startup_check = false
+check_interval = "12h"
+catalog_refresh_interval = "30m"
+initial_delay = "2m"
+jitter = "5m"
+
+require_fast_forward = true
+immutable_pins = true
+allow_protocol_change = false
+
+trusted_owners = ["thanhdat77", "lmilojevicc", "diegopzz"]
+
+scheduled_fleet_sync = false
+sync_update_settings = false
+
+max_concurrency = 8

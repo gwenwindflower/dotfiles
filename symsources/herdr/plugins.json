@@ -206,6 +206,404 @@
     }
   },
   {
+    "plugin_id": "herdr-updater",
+    "name": "Herdr Updater",
+    "version": "0.3.0",
+    "min_herdr_version": "0.8.2",
+    "description": "Update Herdr safely with a plugin store, fleet sync, schedules, drift checks, and rollback",
+    "manifest_path": "/Users/winnie/.config/herdr/plugins/github/herdr-updater-cc32fd88a3de/herdr-plugin.toml",
+    "plugin_root": "/Users/winnie/.config/herdr/plugins/github/herdr-updater-cc32fd88a3de",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "build": [
+      {
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "sh",
+          "scripts/install-cli.sh"
+        ]
+      },
+      {
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "scripts/install-cli.ps1"
+        ]
+      }
+    ],
+    "startup": [
+      {
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "sh",
+          "bin/herdr-updater",
+          "startup"
+        ]
+      },
+      {
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "bin/herdr-updater.ps1",
+          "startup"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "apply",
+        "title": "Apply safe Herdr and plugin updates",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "sh",
+          "bin/herdr-updater",
+          "apply"
+        ]
+      },
+      {
+        "id": "apply-windows",
+        "title": "Apply safe Herdr and plugin updates",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "bin/herdr-updater.ps1",
+          "apply"
+        ]
+      },
+      {
+        "id": "check",
+        "title": "Check Herdr and plugin updates",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "sh",
+          "bin/herdr-updater",
+          "check"
+        ]
+      },
+      {
+        "id": "check-windows",
+        "title": "Check Herdr and plugin updates",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "bin/herdr-updater.ps1",
+          "check"
+        ]
+      },
+      {
+        "id": "doctor",
+        "title": "Diagnose the Herdr updater",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "sh",
+          "bin/herdr-updater",
+          "doctor"
+        ]
+      },
+      {
+        "id": "doctor-windows",
+        "title": "Diagnose the Herdr updater",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "bin/herdr-updater.ps1",
+          "doctor"
+        ]
+      },
+      {
+        "id": "fleet",
+        "title": "Check Herdr fleet drift",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "sh",
+          "bin/herdr-updater",
+          "fleet"
+        ]
+      },
+      {
+        "id": "fleet-windows",
+        "title": "Check Herdr fleet drift",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "bin/herdr-updater.ps1",
+          "fleet"
+        ]
+      },
+      {
+        "id": "open-store",
+        "title": "Browse and install Herdr plugins",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "sh",
+          "bin/herdr-updater",
+          "open-store"
+        ]
+      },
+      {
+        "id": "open-store-windows",
+        "title": "Browse and install Herdr plugins",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "bin/herdr-updater.ps1",
+          "open-store"
+        ]
+      },
+      {
+        "id": "plan",
+        "title": "Plan Herdr and plugin updates",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "sh",
+          "bin/herdr-updater",
+          "plan"
+        ]
+      },
+      {
+        "id": "plan-windows",
+        "title": "Plan Herdr and plugin updates",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "bin/herdr-updater.ps1",
+          "plan"
+        ]
+      },
+      {
+        "id": "schedule-status",
+        "title": "Show Herdr update schedule",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "sh",
+          "bin/herdr-updater",
+          "schedule",
+          "status"
+        ]
+      },
+      {
+        "id": "schedule-status-windows",
+        "title": "Show Herdr update schedule",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "bin/herdr-updater.ps1",
+          "schedule",
+          "status"
+        ]
+      },
+      {
+        "id": "sync-plan",
+        "title": "Plan plugin sync across connected hosts",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "sh",
+          "bin/herdr-updater",
+          "sync",
+          "plan"
+        ]
+      },
+      {
+        "id": "sync-plan-windows",
+        "title": "Plan plugin sync across connected hosts",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "bin/herdr-updater.ps1",
+          "sync",
+          "plan"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "store",
+        "title": "Herdr Plugin Store",
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "placement": "popup",
+        "width": "90%",
+        "height": "80%",
+        "command": [
+          "sh",
+          "bin/herdr-updater",
+          "store"
+        ]
+      },
+      {
+        "id": "store-windows",
+        "title": "Herdr Plugin Store",
+        "platforms": [
+          "windows"
+        ],
+        "placement": "popup",
+        "width": "90%",
+        "height": "80%",
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "bin/herdr-updater.ps1",
+          "store"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "diegopzz",
+      "repo": "herdr-updater",
+      "resolved_commit": "3d015e8c4fbb539c6091172ce68e06018f24f0a3",
+      "managed_path": "/Users/winnie/.config/herdr/plugins/github/herdr-updater-cc32fd88a3de",
+      "installed_unix_ms": 1788836996444
+    }
+  },
+  {
     "plugin_id": "wtherdr",
     "name": "wtherdr",
     "version": "0.1.0",

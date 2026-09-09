@@ -1,0 +1,41 @@
+#!/bin/sh
+
+set -u
+
+printf '\nUpdating Herdr plugins...\n\n'
+
+status=0
+herdr-updater apply --plugins-only || status=$?
+
+if [ "$status" -eq 0 ]; then
+  printf '\nHerdr plugins are up to date\n'
+  sleep 0.5
+  exit 0
+fi
+
+printf '\nHerdr plugin update failed — run `herdr-updater apply --plugins-only` yourself to troubleshoot\n'
+printf 'Press Escape to close\n'
+
+terminal_state=
+if [ -t 0 ]; then
+  terminal_state=$(stty -g) || terminal_state=
+  if [ -n "$terminal_state" ]; then
+    trap 'stty "$terminal_state"' 0 1 2 15
+    stty -echo -icanon min 1 time 0
+  fi
+fi
+
+escape=$(printf '\033')
+while :; do
+  key=$(dd bs=1 count=1 2>/dev/null)
+  if [ -z "$key" ] || [ "$key" = "$escape" ]; then
+    break
+  fi
+done
+
+if [ -n "$terminal_state" ]; then
+  stty "$terminal_state"
+  trap - 0 1 2 15
+fi
+
+exit "$status"

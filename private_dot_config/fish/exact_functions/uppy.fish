@@ -28,7 +28,7 @@ function uppy -d "Upgrade system tools across package and plugin managers"
         "Packy managers" "packy upgrade" \
         "Mise tools" "mise -C "(string escape -- $source_path)" upgrade" \
         "GitHub CLI extensions" "gh extension upgrade --all" \
-        "Herdr plugins" _uppy_refresh_herdr_plugins
+        "Herdr plugins" _uppy_update_herdr_plugins
 
     set -l failures
     if set -q _flag_dry_run
@@ -65,114 +65,24 @@ function uppy -d "Upgrade system tools across package and plugin managers"
     end
 end
 
-function _uppy_refresh_herdr_plugins -d "Refresh installed Herdr plugins"
+function _uppy_update_herdr_plugins -d "Update installed Herdr plugins"
     argparse n/dry-run -- $argv
     or return
 
-    set -l plugins_json (herdr plugin list --json)
-    set -l list_status $status
-    if test $list_status -ne 0
-        logirl error "Could not list installed Herdr plugins"
-        return $list_status
-    end
-
-    set -l plugin_rows (printf '%s\n' "$plugins_json" | jq -r '
-        .result.plugins[] |
-        [
-            .plugin_id,
-            (.enabled | tostring),
-            .source.kind,
-            (if .source.kind == "github"
-                then "\(.source.owner)/\(.source.repo)"
-                elif .source.kind == "local"
-                then .plugin_root
-                else ""
-            end)
-        ] | @tsv
-    ')
-    set -l parse_status $status
-    if test $parse_status -ne 0
-        logirl error "Could not parse installed Herdr plugins"
-        return $parse_status
-    end
-
-    if test (count $plugin_rows) -eq 0
-        logirl info "No Herdr plugins installed"
+    if not type -q herdr-updater
+        logirl warning "herdr-updater is not installed; skipping Herdr plugins"
+        logirl info "Install it with: herdr plugin install diegopzz/herdr-updater"
         return 0
     end
 
-    set -l failed_plugins
-    set -l tab (printf '\t')
-    for row in $plugin_rows
-        set -l fields (string split $tab -- $row)
-        set -l plugin_id $fields[1]
-        set -l enabled $fields[2]
-        set -l source_kind $fields[3]
-        set -l source $fields[4]
-        set -l command_string
-
-        switch $source_kind
-            case github
-                set command_string "herdr plugin install "(string escape -- $source)" --yes"
-            case local
-                set -l enabled_flag --enabled
-                if test "$enabled" != true
-                    set enabled_flag --disabled
-                end
-                set command_string "herdr plugin link "(string escape -- $source)" $enabled_flag"
-            case '*'
-                set -a failed_plugins $plugin_id
-                logirl warning "Skipping $plugin_id with unsupported source: $source_kind"
-                continue
+    if set -q _flag_dry_run
+        herdr-updater plan --plugins-only
+        set -l plan_status $status
+        if test $plan_status -le 1
+            return 0
         end
-
-        logirl info "$plugin_id"
-        logirl dim "\$ $command_string"
-        if set -q _flag_dry_run
-            continue
-        end
-
-        eval "$command_string"
-        set -l refresh_status $status
-        if test $refresh_status -ne 0
-            set -a failed_plugins $plugin_id
-            logirl warning "$plugin_id failed with status $refresh_status; continuing"
-        end
+        return $plan_status
     end
 
-    if test (count $failed_plugins) -gt 0
-        logirl error "Herdr plugin failures: "(string join ", " $failed_plugins)
-        return 1
-    end
-
-    return 0
+    herdr-updater apply --plugins-only
 end
-
-# Drop-in replacement for _uppy_refresh_herdr_plugins, pending a trust period on
-# diegopzz/herdr-updater. Unlike the blind reinstall above, it only moves a
-# plugin when the upstream revision is a clean fast-forward, and holds local
-# checkouts. Requires `herdr plugin install diegopzz/herdr-updater` and the
-# config stashed at wip/herdr-updater-config.toml in the chezmoi repo.
-#
-# function _uppy_herdr_plugins -d "Update Herdr plugins with the herdr-updater plugin"
-#     argparse n/dry-run -- $argv
-#     or return
-#
-#     if not type -q herdr-updater
-#         logirl warning "herdr-updater is not installed; skipping Herdr plugins"
-#         logirl info "Install it with: herdr plugin install diegopzz/herdr-updater"
-#         return 0
-#     end
-#
-#     if set -q _flag_dry_run
-#         herdr-updater plan --plugins-only
-#         # herdr-updater exits 1 when an update is pending, which a plan reports
-#         # rather than fails on
-#         if test $status -le 1
-#             return 0
-#         end
-#         return $status
-#     end
-#
-#     herdr-updater apply --plugins-only
-# end
