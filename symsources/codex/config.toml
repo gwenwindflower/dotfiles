@@ -1,5 +1,7 @@
 #:schema https://developers.openai.com/codex/config-schema.json
 #:tombi schema.strict = false
+# The upstream schema mistypes some keys, so tombi reports errors on valid
+# config. Known false positives are marked "upstream schema" inline.
 
 model = "gpt-6-astra"
 personality = "friendly"
@@ -331,8 +333,8 @@ allow_local_binding = true
 "~/.orbstack/run/docker.sock" = "allow"
 
 [agents]
-max_threads = 10
-max_depth = 1
+max_threads = 10  # upstream schema: tombi expects a table here
+max_depth = 1  # upstream schema: tombi expects a table here
 job_max_runtime_seconds = 1800
 
 [hooks.state]
