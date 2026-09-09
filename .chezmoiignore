@@ -11,6 +11,9 @@ dot_agents/CLAUDE.md
 TODO.md
 # In-repo tool configs
 biome.json
+.markdownlint.yaml
+.rumdl_cache
+# Logs, backups, and other generated files
 nvim.log
 # Source files for symlinked targets
 # These are the actual files that symlink_ entries point to.
