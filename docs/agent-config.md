@@ -25,8 +25,8 @@ A domain allowed by the sandbox is not automatically trusted content. A command 
 | Platform | Primary config | Supporting surfaces |
 | --- | --- | --- |
 | Claude Code | `symsources/claude/settings.json` | `dot_claude/exact_hooks/`, `dot_claude/exact_agents/`, `dot_claude/CLAUDE.md.tmpl` |
-| Codex | `symsources/codex/config.toml` | `dot_codex/hooks.json`, `dot_codex/exact_agents/`, `dot_codex/AGENTS.md.tmpl` |
-| OpenCode | `private_dot_config/opencode/opencode.jsonc` | `private_dot_config/opencode/plugins/`, `private_dot_config/opencode/exact_agents/`, `private_dot_config/opencode/tui.jsonc` |
+| Codex | `symsources/codex/config.toml` | `dot_codex/rules/`, `dot_codex/hooks.json`, `dot_codex/exact_agents/`, `dot_codex/AGENTS.md.tmpl` |
+| OpenCode | `symsources/opencode/opencode.jsonc` | `private_dot_config/opencode/`, `private_dot_config/opencode/exact_agents/`, `private_dot_config/opencode/tui.jsonc` |
 | Shared | `.chezmoitemplates/agents/` | `dot_agents/exact_skills/`, `dot_agents/exact_rules/` |
 
 ## Capabilities
