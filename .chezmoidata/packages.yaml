@@ -182,6 +182,7 @@ packages:
           - chatgpt
           - claude
           - claude-code@latest
+          - cloudflare-warp
           - codex
           - dbc
           - font-charter
