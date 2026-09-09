@@ -1,4 +1,4 @@
-# in-repo dev files
+# Docs and planning
 docs/
 wip/
 ARCHITECTURE.md
@@ -9,22 +9,24 @@ AGENTS.md
 dot_agents/AGENTS.md
 dot_agents/CLAUDE.md
 TODO.md
-opencode.json
+# In-repo tool configs
 biome.json
 nvim.log
 # Source files for symlinked targets
 # These are the actual files that symlink_ entries point to.
 symsources/
+# Repo-scoped Deno utility collection
+# subproject
 .utils
+# Personal collection of gitignores
+# for various tools and languages
 .gitignores/
 # Local Claude Code plugin 'marketplace'
-# Referenced in Claude settings via absolute path into this repo
-# Located here for convenience for now
+# referenced in Claude settings via absolute path into this repo
 .custom-claude-plugins/
-# Neovim in-repo agent docs
+# Neovim subdir agent docs for project
 .config/nvim/AGENTS.md
 .config/nvim/docs
-
 {{ if ne .chezmoi.os "darwin" }}
 # Darwin-only configs (excluded on Linux)
 private_dot_config/kitty/
