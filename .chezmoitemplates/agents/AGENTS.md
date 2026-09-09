@@ -20,8 +20,7 @@
 {{ template "agents/rules/edit-failures.md" . }}
 ### Git
 
-{{ template "agents/rules/git-commits.md" . }}
-{{ template "agents/rules/github.md" . }}
+{{ template "agents/rules/git.md" . }}
 ## Output
 
 {{ template "agents/rules/notes-vault.md" . }}
