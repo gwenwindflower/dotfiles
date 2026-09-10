@@ -16,7 +16,7 @@ if ! command -v gh >/dev/null 2>&1; then
   exit 1
 fi
 
-extensions=(dlvhdr/gh-dash)
+extensions=(dlvhdr/gh-dash github/gh-stack)
 
 log_info "Installing or updating ${#extensions[@]} GitHub CLI extension(s)..."
 for extension in "${extensions[@]}"; do

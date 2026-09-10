@@ -46,6 +46,15 @@
       "installedAt": "2026-09-03T13:20:04Z",
       "updatedAt": "2026-09-03T13:20:04Z"
     },
+    "gh-stack": {
+      "source": "github/gh-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/github/gh-stack.git",
+      "skillPath": "skills/gh-stack/SKILL.md",
+      "skillFolderHash": "6bfe555e89a6b264e09d5ece7c4040226458c8e5",
+      "installedAt": "2026-09-10T20:23:49Z",
+      "updatedAt": "2026-09-10T20:23:49Z"
+    },
     "json-canvas": {
       "source": "kepano/obsidian-skills",
       "sourceType": "github",
