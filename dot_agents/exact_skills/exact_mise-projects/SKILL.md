@@ -37,6 +37,7 @@ Every task carries a `description`; `mise tasks` is the discovery surface, so th
 - **`quiet = true`** suppresses the task banner; use it on tasks whose stdout is consumed by other scripts (`version:read`, `version:next`).
 - **`mise use --pin <tool>@latest`** writes the resolved version. Pin every tool; `latest` in a committed `mise.toml` lets CI and contributors drift.
 - **`MISE_TRUSTED_CONFIG_PATHS: ${{ github.workspace }}`** at workflow level lets CI trust the checkout without a separate step.
+- **`mise.local.toml` is the per-machine layer.** Gitignored, loaded after `mise.toml`, trusted with the directory. A contributor skips project tools already on `PATH` with `[settings] disable_tools = ["prek", "rust"]`: the setting is scoped to that directory, `mise install` skips those tools, tasks fall through to `command -v`, and `mise use --pin` still writes to `mise.toml`. Ship `mise.local.toml.example` showing it. Never pin a tool to `@system`; it is deprecated, and the rust backend hands it to rustup, which fails.
 - **`cache: false`** on `jdx/mise-action` in any workflow that publishes artifacts. The cache holds the installed toolchain and skips verification on a hit; a poisoned entry would reach users.
 
 ## Hooks and merge gates
@@ -72,4 +73,4 @@ tests/*.sh           shell suites that call task scripts directly by path
 3. Standalone-safe: the `cd` line, `set -euo pipefail`, siblings by path.
 4. Side effects that leave the machine get `confirm`.
 5. Add it to the right `depends` group (`check`, `ci-audit`, `release:check`) or CI never runs it.
-6. `shellcheck` clean; `lint:shell` covers `mise-tasks/*/*` and `tests/*.sh`.
+6. `shellcheck` clean; the prek shellcheck hook covers every file with a shell shebang.
