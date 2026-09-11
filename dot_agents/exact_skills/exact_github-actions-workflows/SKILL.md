@@ -44,6 +44,10 @@ The template (`gwenwindflower/_tool`) ships two workflows; `bootstrap-tool` inst
 
 Workflow files carry no language-specific content; the toolchain comes from `mise.toml` through `jdx/mise-action`. `MISE_TRUSTED_CONFIG_PATHS: ${{ github.workspace }}` at workflow level trusts the checkout. Publishing workflows set `cache: false` on mise-action, because a cache hit skips verification of the toolchain that produces user-facing artifacts.
 
+## Caching
+
+Every job starts on a fresh VM; only `actions/cache` (10 GB per repo, entries evicted after 7 days unused, saved only on a key miss) and artifacts (per run, across jobs) carry state between jobs. `jdx/mise-action` caches mise's data directory keyed on the platform and the hash of the mise config files, so anything mise installs is one restore away; anything installed by another path (a prek hook with its own `language`, `npm install`, `cargo install`) is paid in full every run. Keep every CI tool in `mise.toml`, and because tools float on `latest`, rotate the key weekly (`MISE_CACHE_WEEK` from `date +%G-%V`, `cache_key: "{{default}}-{{env.MISE_CACHE_WEEK}}"`) so the cache picks up moved versions. Actions that need no setup are JavaScript actions with a bundled `dist/`, which run on the runner's own node; a Docker action pulls its image every job.
+
 ## Annotations
 
 Failures must land on the diff as file-and-line annotations. See [references/annotations.md](references/annotations.md) for problem matchers (registered with `::add-matcher::` from `.github/matchers/*.json`), tools with native GitHub output, and the limits.
@@ -63,7 +67,7 @@ Failures must land on the diff as file-and-line annotations. See [references/ann
 
 - `gh run view <run-id> --log-failed` for just the failing step.
 - Re-run with `ACTIONS_RUNNER_DEBUG=true` and `ACTIONS_STEP_DEBUG=true` repo secrets.
-- "Works locally, fails in CI" usually means a runner-image version differs (Rule 1) or `mise.toml` pins are stale.
+- "Works locally, fails in CI" usually means a runner-image version differs (Rule 1), a local `mise.local.toml` disables a tool CI installs fresh, or a floating tool moved this week.
 - Fork PRs get a read-only token; anything needing write on PRs must avoid `pull_request_target` or treat it as privileged.
 
 ## Auditing a repo

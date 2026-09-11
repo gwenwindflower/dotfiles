@@ -14,9 +14,9 @@ Matchers live in `.github/matchers/<tool>.json` and are registered once per job 
     done
 ```
 
-The template carries `markdownlint.json` and `shellcheck.json`; language kits add their own (`rust.json` covers rustfmt diffs, cargo and clippy diagnostics, and test panics). A matcher has an `owner`, an optional default `severity`, and one or more `pattern` regexes with capture-group indexes for `file`, `line`, `column`, `severity`, `code`, and `message`. Multi-line diagnostics (cargo's `error: ...` followed by `--> src/x.rs:3:5`) use two patterns in sequence; the last one may set `loop: true` to match repeated lines.
+The template carries `rumdl.json` and `shellcheck.json`; language kits add their own (`rust.json` covers rustfmt diffs, cargo and clippy diagnostics, and test panics). A matcher has an `owner`, an optional default `severity`, and one or more `pattern` regexes with capture-group indexes for `file`, `line`, `column`, `severity`, `code`, and `message`. Multi-line diagnostics (cargo's `error: ...` followed by `--> src/x.rs:3:5`) use two patterns in sequence; the last one may set `loop: true` to match repeated lines.
 
-Tools must print in the format the matcher expects: `shellcheck --format=gcc`, `cargo` in its default human format, `markdownlint-cli2` default output. Paths must be relative to the workspace root, which is why task scripts `cd` to `MISE_PROJECT_ROOT`.
+Tools must print in the format the matcher expects: `shellcheck --format=gcc`, `cargo` in its default human format, `rumdl check` in its default text format (`path:line:col: [MD012] message`). Paths must be relative to the workspace root, which is why task scripts `cd` to `MISE_PROJECT_ROOT`.
 
 ## Native GitHub output
 
@@ -26,6 +26,7 @@ Some tools emit workflow commands themselves; use that instead of a matcher:
 | --- | --- | --- |
 | zizmor | `--format github` | 10 annotations per step, so keep findings at zero |
 | ruff | `--output-format github` | |
+| rumdl | `--output-format github` | Through prek it prints text for the matcher instead |
 | biome | `--reporter github` | |
 | golangci-lint | `--out-format github-actions` | |
 

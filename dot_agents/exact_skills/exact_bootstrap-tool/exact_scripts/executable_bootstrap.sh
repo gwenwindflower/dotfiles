@@ -127,16 +127,12 @@ fill_tree() {
 	done < <(find "$root" -type f -not -path '*/.git/*' -not -name 'bootstrap.md')
 }
 
-refresh_pins() {
-	local root="$1" tools=(git-cliff pinact zizmor shellcheck prek)
-	while IFS= read -r tool; do
-		tools+=("$tool")
-	done < <(awk -F'[ =]' '/^[a-z0-9_-]+ *=/ { print $1 }' "$kit/mise.tools.toml")
-	log "Pinning tools: ${tools[*]}"
+install_tools() {
+	local root="$1"
+	log "Installing the toolchain"
 	(
 		cd "$root"
 		mise trust --quiet . 2>/dev/null || true
-		mise use --pin "${tools[@]/%/@latest}" || plan "mise use failed; pin tools by hand"
 		mise install --quiet || plan "mise install failed; run it by hand"
 		if [[ -x "$kit/post-install" ]]; then
 			mise exec -- "$kit/post-install" || plan "kit post-install failed; see $kit/post-install"
@@ -161,7 +157,7 @@ if [[ "$mode" == new ]]; then
 		plan "gh repo create $owner/$name --template $TEMPLATE_REPO --public --clone"
 		plan "fill placeholders: TOOL_NAME=$name TOOL_BINARY=$binary GH_OWNER=$owner AUTHOR=$author YEAR=$year"
 		plan "install kit from $kit (mise tools and tasks, version hooks, matchers, root files, src/)"
-		plan "mise use --pin git-cliff pinact zizmor shellcheck; mise install; pinact run -update"
+		plan "mise trust; mise install; kit post-install; mise run hooks:install; pinact run -update"
 		plan "report remaining placeholders"
 		exit 0
 	fi
@@ -170,7 +166,7 @@ if [[ "$mode" == new ]]; then
 	[[ "$dir" == "$PWD/$name" ]] || mv "$PWD/$name" "$dir"
 	fill_tree "$dir"
 	install_kit "$dir"
-	refresh_pins "$dir"
+	install_tools "$dir"
 	report "$dir"
 	exit 0
 fi
@@ -205,7 +201,7 @@ done < <(cd "$template_dir" && { git ls-files 2>/dev/null || find . \( -type f -
 if [[ ! -x "$dir/mise-tasks/version/read" ]]; then
 	install_kit "$dir"
 fi
-refresh_pins "$dir"
+install_tools "$dir"
 
 log ""
 log "Added from the template (${#missing[@]}):"
