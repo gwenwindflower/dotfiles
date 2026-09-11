@@ -54,6 +54,7 @@ Nothing is overwritten. Files the template has and the repo lacks are copied in 
 - Releases go through `mise run release` from a clean `main`; `release:rehearse` is the dry run. See `releasing-tools`.
 - Every `uses:` is SHA-pinned with a version comment; `mise run ci-audit` runs zizmor and pinact. See `github-actions-workflows`.
 - prek hooks guard every commit (file hygiene on staged files, Conventional Commit subjects); `.config/wt.toml` guards `wt merge` with `lint:*` and `release:check`. One definition per check: formatters and validators live in `prek.toml`, semantic checks in mise tasks.
+- The language toolchain is never a mise tool. Rust comes from rustup on `PATH`, declared by `rust-toolchain.toml`; CI uses the runner image's rustup. `mise.toml` declares linters, release tooling, and language-adjacent binaries only.
 - The version has one source of truth read through `version:read`; kits provide `read`, `write`, `files`, and optionally `verify`.
 - Release archives are `<name>-<target>-v<version>.tgz` with Rust-style target triples for every language.
 
