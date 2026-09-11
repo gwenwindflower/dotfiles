@@ -28,7 +28,7 @@ Settle these before touching anything. Propose real names; do not carry casual p
   --name <name> --owner gwenwindflower --description "<one line>" [--binary <bin>] [--author "<name>"]
 ```
 
-The script creates the repo from the template with `gh`, clones it, fills every `{{...}}` and `@@...@@` placeholder it knows, installs the language kit, runs `mise trust && mise install` and `mise run hooks:install`, pins the workflows with `pinact run -update`, and prints what remains. Pass `--dry-run` to see the plan without creating anything.
+The script creates the repo from the template with `gh`, clones it, fills every `{{...}}` and `@@...@@` placeholder it knows, installs the language kit, writes `mise.local.toml` disabling every declared tool (the core set is installed globally; delete a line to let mise own a tool), runs `mise trust && mise install` and `mise run hooks:install`, pins the workflows with `pinact run -update`, and prints what remains. Pass `--dry-run` to see the plan without creating anything.
 
 Then, in order:
 
