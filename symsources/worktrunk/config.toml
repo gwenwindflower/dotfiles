@@ -24,26 +24,23 @@ summary = true
 exclude = [".venv/", "venv/"]
 
 [aliases]
-switch-shift = '''
-fish -c """
-if git diff --quiet HEAD and test -z '$(git ls-files --others --exclude-standard)'
-    wt switch --create {{ to }} --execute='{{ args }}'
+shift = '''
+if test -z "$(git status --porcelain)"; then
+    wt switch {{ args }}
 else
-    git stash push --include-untracked --quiet
-    wt switch --create {{ to }} --execute fish -- -c 'git stash pop --index; {{ args }}'
-end
-"""
+    git stash push --include-untracked --quiet &&
+    wt switch {{ args }} --execute git -- stash pop --index
+fi
 '''
 
-switch-keep = '''
-fish -c """
-if git diff --quiet HEAD and test -z '$(git ls-files --others --exclude-standard)'
-    wt switch --create {{ to }} --execute='{{ args }}'
+copy = '''
+if test -z "$(git status --porcelain)"; then
+    wt switch {{ args }}
 else
-    git stash push --include-untracked --quiet
-    wt switch --create {{ to }} --execute fish -- -c 'git stash apply --index --quiet; {{ args }}'
-end
-"""
+    git stash push --include-untracked --quiet &&
+    git stash apply --index --quiet &&
+    wt switch {{ args }} --execute git -- stash pop --index
+fi
 '''
 
 # pre-start rather than post-start: --execute agents must land on installed deps.
