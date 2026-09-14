@@ -98,6 +98,7 @@ A trailing ` *` in a `Bash(...)` rule matches either more characters or the end 
 | Owner | Shared decision |
 | --- | --- |
 | [Workspace](capabilities/workspace.md) and [network](capabilities/network.md) | Use the beta Codex profile with tested filesystem and proxy boundaries. Keep OpenCode's lack of an OS sandbox explicit. |
+| [Workspace](capabilities/workspace.md) | Dotfiles deploy only through the user. Dry runs use the flags-first `chezmoi --dry-run --no-pager <cmd>` form and are routine; `chezmoi apply`, `update`, `init`, `state`, `manage`, and `unmanage` are ask-level everywhere, and automatic review approves an apply only on an explicit user request made after the changes. |
 | [Development](capabilities/development.md) and [context](capabilities/context.md) | `gh skill` owns external skills; routine install/update/search is allowed, destructive replacement is reviewed. Configured package-manager upgrades are routine. Task runners need global review with specific project authority. |
 | [Git](capabilities/git.md) and [integrations](capabilities/integrations.md) | Ordinary pushes and guarded merges include trunk workflows on main. Block forced cleanup and remote ref deletion. Publish only through reviewed project release tasks on explicit request; confidential project material follows repo-local policy. |
 | [Notes](capabilities/notes.md) and [tasks](capabilities/tasks.md) | Individual requested changes are routine across projects. Review batches as a change set. Vault administration is manual-only. |

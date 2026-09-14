@@ -8,7 +8,7 @@ OSes supported:
 - **Linux:** Dev-focused CLI toolkit for VMs (exe.dev, Fly.io Sprites) and containers
 
 > [!IMPORTANT]
-> You will need to run `chezmoi apply` on new changes for them to propagate to the system. Because of the potentially destructive nature of this command, `chezmoi apply` is under `ask` permissions, but is allowed with the `-n` dry-run flag for testing changes.
+> Changes propagate to the system only through `chezmoi apply`, which the user runs. Agents verify with `chezmoi --dry-run --no-pager apply` and `chezmoi diff --no-pager`, then say what to apply. A real apply is `ask` in every harness and auto mode approves it only when the user's message explicitly asked to apply after the changes; `chezmoi apply -n` also prompts because the pattern keys on the flags-first form.
 
 ## Repo Structure
 
@@ -248,7 +248,7 @@ These compose freely: `private_dot_config/tmux/executable_pane-icon.sh` → `~/.
 ```text
 chezmoi diff                    # Preview all pending changes (allowed)
 chezmoi apply                   # Apply changes (ask)
-chezmoi apply -n                # Dry run (allowed with -n flag)
+chezmoi --dry-run --no-pager apply   # Dry run (allowed; flags before the subcommand)
 chezmoi cat <template>          # Render a template e.g. config.fish (allowed)
 chezmoi data                    # Show all template variables (allowed)
 chezmoi managed                 # List all managed files (allowed)
@@ -259,8 +259,8 @@ chezmoi doctor                  # Diagnose setup issues (allowed)
 ### Troubleshooting
 
 ```text
-chezmoi state delete-bucket --bucket=scriptState  # Reset run_once tracking (ask)
-chezmoi apply -n --verbose                        # Dry run with detailed output (allowed)
+chezmoi state delete-bucket --bucket=scriptState   # Reset run_once tracking (ask)
+chezmoi --dry-run --no-pager --verbose apply       # Dry run with detailed output (allowed)
 ```
 
 ## Related Docs

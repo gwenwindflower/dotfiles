@@ -76,9 +76,9 @@ prefix_rule(
 )
 
 prefix_rule(
-    pattern = ["chezmoi", "apply"],
+    pattern = ["chezmoi", ["apply", "update", "init", "state", "manage", "unmanage"]],
     decision = "prompt",
-    justification = "Review deployment into userspace; preview with chezmoi --dry-run --no-pager apply.",
-    match = ["chezmoi apply"],
-    not_match = ["chezmoi --dry-run --no-pager apply", "chezmoi diff"],
+    justification = "A real chezmoi apply rewrites the whole home directory (exact_ dirs, run scripts, shell config) and a half-finished source tree can break the machine. Approve only when the user explicitly asked to apply after the changes; verifying an edit uses chezmoi --dry-run --no-pager apply and chezmoi diff instead.",
+    match = ["chezmoi apply", "chezmoi apply ~/.config/fish", "chezmoi update", "chezmoi init --apply", "chezmoi state delete-bucket --bucket=scriptState"],
+    not_match = ["chezmoi --dry-run --no-pager apply", "chezmoi -n --no-pager apply ~/.agents", "chezmoi diff", "chezmoi cat ~/.bashrc", "chezmoi doctor"],
 )
