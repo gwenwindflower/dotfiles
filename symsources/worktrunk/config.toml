@@ -51,3 +51,9 @@ copy = "wt step copy-ignored"
 # create the worktree but never launch the agent. Degrade to skipping instead.
 [[pre-start]]
 deps = "command -v depop >/dev/null || { echo 'depop not installed; skipping dependency sync' >&2; exit 0; }; depop"
+
+[post-start]
+zoxide = "zoxide add {{ worktree_path }}"
+
+[post-remove]
+zoxide = "zoxide remove {{ worktree_path }}"
