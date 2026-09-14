@@ -14,7 +14,7 @@ Litmus: *would these branches merge cleanly with zero coordination?* If you have
 
 Examples: an API-surface Phase and a UX-surface Phase with a settled contract between them — good split. Two CLI commands that share flag-parsing helpers — one session, sequential Objectives.
 
-The plan declares what's parallel-safe: Phases without a `**Dependencies**:` chain between them are candidates. That's necessary, not sufficient — apply the seam test on top.
+The plan declares what's parallel-safe: Phases without a `**Dependencies**:` chain between them, or parent issues with no `blocks` relation between them, are candidates. That's necessary, not sufficient — apply the seam test on top.
 
 ## Worktree readiness
 
@@ -38,7 +38,7 @@ From the parent session:
    ```
 
 2. **Spawn a full session in the new worktree** — a herdr pane running the platform CLI (`claude`, `codex`, `opencode`). A handoff session is a root session in its own right: it can spawn its own helpers, which subagent recursion guards would block if it were spawned as a subagent instead. Spawn mechanics live in the herdr-sessions skill.
-3. **Brief it as a Phase owner:** *"You're running Phase \<n\> (\<name\>) of \<project\> under SPOT. Load the spot-project-management skill and follow running-phases.md. Requirements: \<ids\>. Stop after the close — the parent session folds the branch."*
+3. **Brief it as a Phase owner:** *"You're running Phase \<n\> (\<name\>) of \<project\> under SPOT. Load the spot-project-management skill and follow running-phases.md. Requirements: \<ids\>. Stop after the close — the parent session folds the branch."* In Linear mode name the parent issue instead of the Phase and add *"Load managing-issues before touching the issue."*
 
 ## Monitoring and completion
 
@@ -63,7 +63,7 @@ The parent session stays the judge of done:
    ```
 
    The pipeline rebases onto the target, runs pre-merge hooks, fast-forwards, and removes the worktree. On failure it aborts in place — fix in the worktree, re-run.
-3. `TODO.md`/`DONE.md` conflicts between parallel Phases resolve toward the later state: DONE accumulates, TODO shrinks. Surface anything ambiguous.
+3. `TODO.md`/`DONE.md` conflicts between parallel Phases resolve toward the later state: DONE accumulates, TODO shrinks. Surface anything ambiguous. Linear mode has no plan files to conflict; check that each folded parent issue moved to Done.
 4. Fold finished branches one at a time; the second rebases onto the updated target automatically.
 
 Leftovers (abandoned experiments, already-integrated branches flagged by `wt list`) go through `wt remove`. Broken git states go to `medic`.

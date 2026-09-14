@@ -12,4 +12,4 @@ Use comments only for one-line current-state constraints:
 
 Never comment what code does. Fix the name, boundary, or structure instead. Avoid task references, ownerless TODOs, dead-code notes, argument history, and parenthetical agent asides.
 
-Config files and scripts follow the same rule. Section dividers that label current structure are fine; justifications and "we chose X" notes are not. In SPOT projects: specs hold what, DONE.md holds why, code holds how.
+Config files and scripts follow the same rule. Section dividers that label current structure are fine; justifications and "we chose X" notes are not. In SPOT projects: specs hold what, the ledger (DONE.md or the parent issue) holds why, code holds how.

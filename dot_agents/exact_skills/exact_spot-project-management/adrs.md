@@ -10,7 +10,7 @@ Use them sparingly. Most situations don't need one.
 | --- | --- |
 | New requirement | Durable spec (`SPEC.md` or `specs/`), with a fresh ID. **No ADR.** |
 | Requirement on a not-yet-merged branch | Edit in place or remove. **No ADR** — the branch hasn't committed to anything yet. |
-| Rationale for newly shipped work | `DONE.md` narrative for the Phase. **No ADR.** |
+| Rationale for newly shipped work | `DONE.md` narrative for the Phase, or the parent issue's closing comment. **No ADR.** |
 | **Changing the behavior of a shipped requirement** | **ADR.** Edit the requirement in place (or retire it) *and* write the ADR to publicize the reversal and preserve the rationale. |
 | **Retiring a shipped requirement** | **ADR.** Same shape — explain why. |
 | Mid-project pivot in a load-bearing architectural choice | **ADR.** Optional; use when the choice will affect future Phases enough that DONE narrative isn't a discoverable enough home. |
@@ -57,7 +57,7 @@ The common case — ADR drives spec changes that land in a Phase:
 
 1. Write the ADR with `status: proposed` alongside the new spec edits, in the same Phase scope. The Phase's `**Requirements**:` line covers the changed IDs.
 2. The Phase that lands the spec edits also lands the ADR file; flip `status: accepted` in the commit that ships the change.
-3. The Phase's `DONE.md` block mentions the ADR by filename so future readers can trace it from either direction (requirement → ADR, or ADR → shipping Phase).
+3. The Phase's `DONE.md` block (or the parent issue's closing comment) mentions the ADR by filename so future readers can trace it from either direction (requirement → ADR, or ADR → shipping Phase).
 
 Purely retrospective ADRs — recording a decision that already shipped without one — stand alone as a `chore(adr)` commit. That's deliberate planning work, not bookkeeping (use `SPOT_PLAN_COMMIT=1` if the commit also touches spec files).
 

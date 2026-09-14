@@ -25,4 +25,4 @@
 
 {{ template "agents/rules/notes-vault.md" . }}
 {{ template "agents/rules/markdown-editing.md" . }}
-{{ template "agents/rules/code-comments.md" . -}}
+{{ template "agents/rules/code-comments.md" . }}
