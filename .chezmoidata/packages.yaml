@@ -224,6 +224,7 @@ packages:
           - orbstack
           - orion
           - postico
+          - spotify
           - tailscale-app
           - zoom
         personal:
