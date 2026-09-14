@@ -28,6 +28,7 @@
   ],
   "trustedcasks": [
     "anthropics/tap/ant",
-    "lzhgus/tap/capso"
+    "lzhgus/tap/capso",
+    "szamowski-dev/tap/hora"
   ]
 }
