@@ -243,6 +243,7 @@ packages:
     cargo:
       core:
         - basalt-tui
+        - cargo-pretty-build
         - cargo-update
         - cloudflare-speed-cli
         - iching
