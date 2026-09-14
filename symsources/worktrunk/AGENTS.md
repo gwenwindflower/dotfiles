@@ -10,7 +10,7 @@ Load the `worktrunk` skill for hook types, template variables, and `wt step copy
 
 The split follows one rule — **copy what nothing can regenerate, install what a package manager owns.** Reflink makes copying free, so the exclude list is only `.venv/` and `venv/`: virtualenvs bake absolute paths into `pyvenv.cfg` and script shebangs, so they break at a new path, and `uv sync` rebuilds them faster than a copy would.
 
-The pipeline is `pre-start` rather than `post-start` because the `switch-shift` and `switch-keep` aliases launch agents via `--execute`, which must land on installed deps.
+The pipeline runs before `wt switch --execute`, so commands start with dependencies installed.
 
 `depop` is a cargo path install from `~/dev/tools/depop`, deliberately absent from `packages.yaml` like `livery` and `wtherdr`. Fresh machines have no dependency sync until it is built.
 
@@ -29,4 +29,4 @@ Tool repositories from `gwenwindflower/_tool` ship `.config/wt.toml` with `[[pre
 - Plain `cp` does **not** clone on APFS. `-c` is required, and it fails loudly instead of falling back, which makes it a usable capability probe. On Linux use `cp --reflink=auto` for silent fallback or `=always` to fail loudly.
 - **`du` cannot see block sharing.** It counts logical blocks per file, so N cloned worktrees report N× the disk they actually occupy. Measure with `df` free-space deltas.
 
-This is why copying `target/`, `node_modules/`, and `.ck` embedding indexes is correct rather than wasteful. It also makes symlinking them to dodge disk cost a bad trade: reflink already gets the space back, while a symlink adds cross-worktree shared mutable state that concurrent agent installs can corrupt.
+This is why copying `target/`, `node_modules/`, and `.zvec-grep` embedding indexes is correct rather than wasteful. It also makes symlinking them to dodge disk cost a bad trade: reflink already gets the space back, while a symlink adds cross-worktree shared mutable state that concurrent agent installs can corrupt.
