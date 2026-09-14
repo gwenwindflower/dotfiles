@@ -14,6 +14,7 @@
 {{ template "agents/rules/exploration.md" . }}
 {{ template "agents/rules/tools.md" . }}
 {{ template "agents/rules/fish-variables.md" . }}
+{{ template "agents/rules/config.md" . }}
 ### Failures
 
 {{ template "agents/rules/sandbox-failures.md" . }}
