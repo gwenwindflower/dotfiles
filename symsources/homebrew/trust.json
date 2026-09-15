@@ -16,6 +16,7 @@
   ],
   "trustedformulae": [
     "bro3886/tap/rem-cli",
+    "charmbracelet/tap/crush",
     "dbt-labs/dbt/dbt",
     "denisotree/tuitab/tuitab",
     "huseyinbabal/tap/taws",
