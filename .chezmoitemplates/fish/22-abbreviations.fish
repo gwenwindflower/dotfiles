@@ -461,12 +461,14 @@ abbr --add gdd git diffd
 abbr --add gshd git showd
 abbr --add glod git logd
 ## worktrunk
-abbr --add wtsw wt switch
-abbr --add wtswc wt switch -c
-abbr --add wtswpr wt switch --prs
-abbr --add wtswd wt switch-dirty
+abbr --add wts wt switch
+abbr --add wtc wt switch -c
+abbr --add wtspr wt switch --prs
+abbr --add wtsm wt switch main
 abbr --add wtm wt merge
-abbr --add wts wt step
+abbr --add wtt wt step
+abbr --add wtd wt step diff
+abbr --add wtp wt step push
 abbr --add wtls wt list
 abbr --add wtrm wt remove
 abbr --add wtrm! wt remove --force
