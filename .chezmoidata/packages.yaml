@@ -219,7 +219,6 @@ packages:
           - mimestream
           - monodraw
           - mullvad-vpn
-          - notion-calendar
           - notion-cli
           - obsidian
           - orbstack
