@@ -326,18 +326,18 @@ abbr --add cgfm cargo fmt
 abbr --add cgfx cargo fix
 ## typescript
 ### mise
-abbr --add mi mise
-abbr --add mia "mise activate fish | source"
-abbr --add mida mise deactivate
-abbr --add miu mise use
-abbr --add mii mise install
-abbr --add miup mise upgrade
-abbr --add mir mise run
-abbr --add mic mise config
-abbr --add micl mise config list
-abbr --add mics mise config set
-abbr --add mix mise x
-abbr --add mipth $HOME/.local/share/mise/installs/
+abbr --add m mise
+abbr --add maa "mise activate fish | source"
+abbr --add mda mise deactivate
+abbr --add mu mise use
+abbr --add mi mise install
+abbr --add mip "ff $HOME/.local/share/mise/installs"
+abbr --add mup mise upgrade
+abbr --add mr mise run
+abbr --add mc mise config
+abbr --add mcs mise config set
+abbr --add mcg mise config get
+abbr --add mx mise x
 ### aube
 abbr --add au aube
 abbr --add aux aubx
