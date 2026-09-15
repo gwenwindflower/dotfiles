@@ -71,15 +71,22 @@ description = "choose and launch agent"
 width = 58
 height = 16
 
+# editor
 [[keys.command]]
 key = "prefix+e"
 type = "shell"
 command = '"$HOME/.config/herdr/open-nvim"'
 description = "open nvim tab"
 
+[[keys.command]]
+key = ["prefix+super+e", "shift+super+e"]
+type = "pane"
+command = "nvim"
+description = "nvim overlay"
+
 # git
 [[keys.command]]
-key = "prefix+g"
+key = ["prefix+g", "shift+super+g"]
 type = "plugin_action"
 command = "wtherdr.switch"
 description = "wt switch worktree"
@@ -103,10 +110,10 @@ command = "wtherdr.create"
 description = "wt create worktree"
 
 [[keys.command]]
-key = ["prefix+super+g"]
+key = "prefix+super+g"
 type = "pane"
 command = "lazygit"
-description = "lazygit temp pane"
+description = "lazygit overlay"
 
 # nav
 [[keys.command]]
