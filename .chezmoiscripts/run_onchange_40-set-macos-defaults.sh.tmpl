@@ -1,0 +1,43 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+# Default apps per file extension (Launch Services handler plist) and system preferences (defaults).
+# Data: .chezmoidata/macos.yaml. Keyboard values apply at next login; the Dock and lsd restart here.
+
+set -euo pipefail
+
+{{ template "script-log.sh" }}
+
+log_step "Default apps"
+
+reconciler="${TMPDIR:-/tmp}/set-default-apps.$$.py"
+trap 'rm -f "$reconciler"' EXIT
+cat > "$reconciler" <<'PY'
+{{ template "set-default-apps.py" }}
+PY
+
+result=$(/usr/bin/python3 "$reconciler" {{ .macos.default_apps | toJson | quote }})
+if [ "$result" = changed ]; then
+  killall lsd 2>/dev/null || true
+  log_success "Default apps written; Launch Services reloaded"
+else
+  log_info "Default apps already match"
+fi
+
+log_step "System defaults"
+
+{{ range $domain, $keys := .macos.defaults -}}
+{{ range $key, $value := $keys -}}
+{{ if kindIs "bool" $value -}}
+defaults write {{ $domain }} {{ $key }} -bool {{ $value }}
+{{ else if kindIs "string" $value -}}
+defaults write {{ $domain }} {{ $key }} -string {{ $value | quote }}
+{{ else -}}
+defaults write {{ $domain }} {{ $key }} -int {{ $value }}
+{{ end -}}
+{{ end -}}
+{{ end }}
+killall Dock 2>/dev/null || true
+log_success "System defaults written (keyboard settings take effect at next login)"
+{{ else -}}
+{{ fail (printf "unsupported OS: %s" .chezmoi.os) }}
+{{ end -}}

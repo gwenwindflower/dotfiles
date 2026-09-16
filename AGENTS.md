@@ -14,10 +14,12 @@ OSes supported:
 
 ```text
 .chezmoidata/packages.yaml        # Packages: darwin (homebrew + uv), linux (apt). JS/TS globals live in symsources/mise/config-<arch>.toml.
+.chezmoidata/macos.yaml           # Default app per file extension (bundle id -> extensions) and `defaults` keys per domain
 .chezmoiscripts/                  # Lifecycle scripts (bootstrap, taps, packages, global tools, mise install, shell, yazi plugins, bat cache, ephemeral symlink materialization)
 .chezmoiignore                    # Excludes dev files + OS-conditional dirs
 .chezmoitemplates/fish/           # Fish config fragment templates (assembled into config.fish)
 .chezmoitemplates/agents/         # Shared agent prompt/rule fragments (assembled into platform guidance files)
+.chezmoitemplates/*.sh, *.py      # Fragments embedded into scripts (logging helpers, brew preamble, Launch Services handler reconciler)
 
 docs/                             # Repo-level reference docs (chezmoi-ignored); agent-config.md + capabilities/
 wip/                              # Scratch space (git- and chezmoi-ignored); plans, reviews, references
@@ -202,12 +204,15 @@ Plugin file extraction matches Fisher's: top-level files in `functions/`, `compl
   run_once_20-configure-shell.sh.tmpl            # Fish → /etc/shells, chsh
   run_once_30-yazi-plugins.sh.tmpl               # ya pkg install (yazi plugin sync)
   run_once_31-bat-cache.sh.tmpl                  # Build bat theme cache (after themes deployed)
+  run_onchange_40-set-macos-defaults.sh.tmpl     # darwin: default apps per extension + `defaults` prefs from .chezmoidata/macos.yaml; re-runs when that data changes
   run_after_99-materialize-symsource-symlinks.sh.tmpl  # One-shot ephemeral support (gated on CHEZMOI_ONESHOT=1)
 ```
 
 Scripts are a surface to minimize. Each is an imperative action that can fail. If something can be a file, make it a file. `run_once_` runs once per content hash — on a fresh machine all fire on first apply. `run_onchange_` re-runs when rendered content changes (also fires on first apply since no previous hash → new hash = change).
 
 **Cargo packages:** Every package under the active OS's `cargo` section is installed with `cargo binstall`. Core packages are combined with the active profile's packages. Packy manages Cargo packages on macOS and Linux; `packy upgrade -m cargo` upgrades every installed Cargo package through `cargo-update`.
+
+**macOS defaults:** `.chezmoidata/macos.yaml` maps bundle ids to file extensions and lists `defaults` keys per domain. The script writes extension handlers straight into the Launch Services preferences plist through cfprefsd (`defaults export`/`import`) and restarts `lsd`; that path never shows the per-type consent dialog that `duti` and the `NSWorkspace` API trigger on current macOS, and it handles extensions with only a dynamic UTI (`rs`, `toml`, `go`), which `duti` cannot set at all. Inspect a mapping with `duti -x <ext>`.
 
 **Linux package philosophy:** Linuxbrew is intentionally not used — too heavy for the small-VM Linux use case. System packages are manually curated in `packages.yaml` under `linux.apt.packages`; Fish comes from its official Ubuntu PPA so every supported Linux target runs Fish 4. Mise and direct binary installers cover tools outside apt and Cargo. The apt install script checks `dpkg -s` for each package and only fetches what's missing — fast on Sprites/exe machines with preloaded packages. `packy` does **not** manage apt — apt entries are hand-edited in `packages.yaml`.
 

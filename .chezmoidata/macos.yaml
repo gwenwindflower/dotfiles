@@ -1,0 +1,68 @@
+macos:
+  default_apps:
+    net.kovidgoyal.kitty:
+      - py
+      - rb
+      - lua
+      - go
+      - rs
+      - c
+      - h
+      - zig
+      - swift
+      - kt
+      - java
+      - ts
+      - tsx
+      - mts
+      - cts
+      - js
+      - jsx
+      - mjs
+      - cjs
+      - json
+      - jsonc
+      - jsonl
+      - geojson
+      - ipynb
+      - toml
+      - yaml
+      - yml
+      - ini
+      - cfg
+      - conf
+      - env
+      - editorconfig
+      - gitignore
+      - mdx
+      - txt
+      - log
+      - csv
+      - tsv
+      - sql
+      - ndjson
+      - xml
+      - css
+      - scss
+      - graphql
+      - hbs
+      - vue
+      - svelte
+      - astro
+      - mk
+      - proto
+      - tf
+      - hcl
+      - nix
+      - tmpl
+      - j2
+      - vim
+    pro.writer.mac:
+      - md
+  defaults:
+    NSGlobalDomain:
+      KeyRepeat: 2
+      InitialKeyRepeat: 15
+      ApplePressAndHoldEnabled: false
+    com.apple.dock:
+      autohide: true
