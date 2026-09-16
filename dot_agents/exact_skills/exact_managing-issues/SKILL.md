@@ -51,6 +51,16 @@ An automated gate reviews each issue, applies one readiness label, and leaves an
 
 Clarity and decisions are independent: an issue can be perfectly clear yet blocked on a product call, a clear-cut problem can hide in a bad write-up, or both at once.
 
+Readiness labels are scoped to product issues. The gate does not review docs, analytics, Analytics Engineering (AE) team, or general ops issues, so `ai-ready` and the `needs-*` labels never go on them — the description format and [clarify](clarify.md) pass still apply, but leave the label fields alone.
+
+### AE team labels
+
+| Label | Means | Cleared by |
+| --- | --- | --- |
+| `planning` | A task is spiked out but still needs a detailed plan or spec, or specifics remain to be decided | Writing the plan or spec, or recording the decisions, then removing the label |
+
+`planning` is the AE team's stand-in for `needs-decisions` and the readiness gate: apply it by hand when spiking out work whose shape is clear but whose details are not. Record open specifics in the description so the planning pass has something concrete to resolve.
+
 ## Description format
 
 The description is two parts: a tight human summary, then a blank line and `# Additional agent context` written as a delegation brief. Neither part has a section list. A short issue is a paragraph and a few bullets; add a header only when a block of content needs one to stay scannable. Two headers carry a contract and are named here for that reason: `## Repro` (status marker) and `## Open decisions` (pairs with `needs-decisions`). State each fact once; delete empty-value lines ("Version: unknown"). The description is sufficient to act on without opening every link; deep detail lives in the links.
