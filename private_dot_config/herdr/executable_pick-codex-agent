@@ -8,6 +8,7 @@ script_dir=$(CDPATH='' cd "$(dirname "$0")" && pwd)
 model=$(choose_option \
   "model" \
   "default" \
+  "gpt-6-astra" \
   "gpt-5.6-sol" \
   "gpt-5.6-luna" \
   "gpt-5.6-terra")
