@@ -408,13 +408,13 @@
 			"Bash(wt merge * --no-ff *)",
 			"Bash(git push * :* *)"
 		],
+		"ask": [
 			"Bash(chezmoi apply *)",
 			"Bash(chezmoi init *)",
 			"Bash(chezmoi manage *)",
 			"Bash(chezmoi state *)",
 			"Bash(chezmoi unmanage *)",
 			"Bash(chezmoi update *)",
-		"ask": [
 			"Bash(rem delete *)",
 			"Bash(rem rm *)",
 			"Bash(rem remove *)",
