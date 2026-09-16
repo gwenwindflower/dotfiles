@@ -7,7 +7,7 @@ Agents inspect history and complete task-authorized source-control work while th
 | Operation | Policy |
 | --- | --- |
 | Inspection | Status, diff, log, reflog inspection, branch listing, remotes, and worktree listing are routine. A broad `git branch *` or `git worktree *` grant also permits mutations and is not an inspection rule. |
-| Local changes | The lead may stage, commit, create/switch branches, and delete integrated local branches with lowercase `git branch -d`. Helpers report edits and findings without mutating Git state. |
+| Local changes | The lead may stage, commit, and delete integrated local branches with lowercase `git branch -d`. New branches are Worktrunk worktrees (`wt switch -c` or a global branching alias such as `wt shift`/`wt copy`, which share its permissions); plain `git switch -c`/`checkout -b` is reserved for an explicit user request. Helpers report edits and findings without mutating Git state. |
 | Pull and rebase | Prefer `git pull --ff-only`. A clean rebase of an owned, non-shared feature branch onto inspected `main` or `origin/main` is routine with no operation in progress and a recovery ref recorded. Continue after understood conflicts are resolved, or abort to recover. Complex rebases need contextual review; never rewrite shared/protected history or skip unresolved work. |
 | Push and merge | Task-authorized normal pushes to verified non-protected branches on the intended remote should pass automatic evaluation without another user confirmation. Resolve refspecs and push configuration; names alone do not establish branch protection. Shared/protected targets need explicit task or repo authority, including `main` in trunk workflows. Guarded merges follow repo policy. `--force-with-lease` needs review and is reserved for an owned feature branch; unrestricted force and shared-branch rewrites are blocked. |
 | Cleanup | Prefer `wt merge`/`wt remove`; retain their clean-worktree, integration, and hook checks. Forced deletion (`git branch -D`, `wt remove -D`/`--force`) is manual. Remote ref deletion and mirror pushes are blocked; GitHub handles head-branch cleanup after merge. |
@@ -22,9 +22,9 @@ Keep history linear: fast-forward integration or squash/rebase merging, never a 
 
 ## Worktrunk
 
-Use `wt switch`, `wt merge`, and `wt remove` for normal worktree workflows. Direct `git worktree add/move/remove/prune/repair` calls require review. Worktrunk's project hook approvals are independent of harness permission; do not use `--yes`, `--no-hooks`, or config changes to skip them. Take time to set up per-project configs to make the workflow as easy as possible, and use Worktrunk aliases to package up complex or multi-step git operations into easy commands.
+Worktrunk is the agent-facing surface for branching. Every branch is a worktree, so parallel workstreams are always one `wt switch -c` away, and the harness can keep raw `git branch`/`git switch`/`git worktree` mutations under review while `wt` commands carry the day-to-day flow with their own hooks, checks, and per-branch state. Use `wt switch`, `wt merge`, and `wt remove` for normal worktree workflows. Direct `git worktree add/move/remove/prune/repair` calls require review. Worktrunk's project hook approvals are independent of harness permission; do not use `--yes`, `--no-hooks`, or config changes to skip them. Take time to set up per-project configs to make the workflow as easy as possible, and use Worktrunk aliases to package up complex or multi-step git operations into easy commands.
 
-Key global aliases used across projects:
+Global branching aliases are `wt switch [-c]` wrapped for a particular starting state, so they share its permission treatment. Renamed or added aliases in `symsources/worktrunk/config.toml` (a stacking alias is a likely addition) inherit the same treatment until a rule says otherwise. Current aliases:
 
 - `wt copy [-c] <branch>` copies staged, unstaged, and untracked changes to the destination and switches to it, preserving the source.
 - `wt shift [-c] <branch>` moves those changes to the destination and switches to it, leaving the source clean after success.

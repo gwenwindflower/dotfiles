@@ -34,7 +34,9 @@ Use automatic evaluation for these routine operations where the harness supports
 
 #### Worktrees and cleanup
 
-Prefer `wt switch`, `wt merge`, and `wt remove` for worktrees. Preserve hooks, clean-worktree and integration checks, and project trust approvals; do not bypass them with `--yes`, `--no-hooks`, or force flags. Direct `git worktree` mutations require review.
+Branch with Worktrunk. Any new branch starts as a worktree via `wt switch -c <branch>`; `git switch -c`, `git checkout -b`, and `git branch <name>` are for when the user specifically asks for a plain branch. A worktree is always ready for parallel work, so a second workstream can branch off it without stashing or juggling checkouts, and Worktrunk carries the project's setup hooks, per-branch state, and aliases that a bare branch lacks. Branching aliases in the global Worktrunk config (`wt shift`, `wt copy`, and any later ones such as a stacking alias) are conveniences over `wt switch [-c]` for starting a branch from a different working-tree state and carry the same permissions as `wt switch`.
+
+Use `wt switch`, `wt merge`, and `wt remove` for the rest of the worktree lifecycle. Preserve hooks, clean-worktree and integration checks, and project trust approvals; do not bypass them with `--yes`, `--no-hooks`, or force flags. Direct `git worktree` mutations require review.
 
 Configure Codex Git permissions before launching agents in new worktrees with this hook in `.config/wt.toml`. Trunks defaults to the `dev` permission profile; use `trunks --profile <name>` if the active Codex profile differs.
 
