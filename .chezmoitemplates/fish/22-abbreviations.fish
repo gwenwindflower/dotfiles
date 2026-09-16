@@ -219,6 +219,8 @@ abbr --add obo notesmd-cli open
 abbr --add obp notesmd-cli print
 abbr --add obdv notesmd-cli print-default
 abbr --add obfmp "fd . --color always --hidden --ignore --extension md | fzf --preview '_fzf_preview_file {}' --bind 'enter:execute(notesmd-cli frontmatter {} --print)+abort'"
+# markdown tools
+abbr --add mdl rumdl
 # security and network
 abbr --add opg "op run --env-file=$OP_ENV_DIR/global.env --no-masking -- "
 abbr --add opi "op run --no-masking -- "
