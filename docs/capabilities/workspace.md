@@ -1,6 +1,6 @@
 # Workspace access
 
-Agents can edit the active project and use the local state required by its toolchain without receiving broad access to the rest of the home directory.
+Agents can edit the active project and use the local state required by its toolchain without receiving broad write access to the rest of the home directory.
 
 ## Expected behavior
 
@@ -31,7 +31,7 @@ A real `chezmoi apply` (and `update`, `init`) rewrites the whole home directory 
 | Platform | Mechanism | Coverage |
 | --- | --- | --- |
 | Claude Code | `sandbox.filesystem.allowWrite` plus `Read` and `Edit` deny rules | Read/Edit denies also merge into the Bash sandbox. Excluded host commands retain command policy but lose process containment. |
-| Codex | Selected beta `workspace-winnie` profile extending `:workspace` | Minimal/toolchain reads, scoped workspace/cache/state writes, and explicit secret denies. Symlinked writable roots are unsupported; grant the real skill-lock manifest target. |
+| Codex | `sandbox_mode = "workspace-write"` plus `sandbox_workspace_write.writable_roots` | General filesystem reads; scoped workspace/cache/state writes. No configured secret-read denies. Guidance and automatic review govern sensitive reads. Use real symlink targets, including the skill-lock manifest. |
 | OpenCode | `permission.read` and `permission.edit` rules | Protects agent file tools; shell commands do not receive an equivalent filesystem sandbox from this config. |
 
 Dotfiles deployment across harnesses:

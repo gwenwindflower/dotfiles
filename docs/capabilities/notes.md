@@ -23,7 +23,7 @@ App-side `obsidian eval` and generic command execution need review of the actual
 | Harness | Mechanism |
 | --- | --- |
 | Claude Code | Vault sandbox write root, routine note-command permissions, classifier guidance for individual/batch scope, and vault-administration denies. |
-| Codex | `workspace-winnie` grants the exact vault path; `notes.rules` forbids canonical vault administration and reviews app-side code. Routine note changes stay sandboxed with no host allow. |
+| Codex | `sandbox_workspace_write.writable_roots` includes the exact vault path; `notes.rules` forbids canonical vault administration and reviews app-side code. Routine note changes stay sandboxed with no host allow. |
 | OpenCode | Ordered Bash rules plus `external_directory` access for girlOS. File tools and shell permissions are separate; the shell has no OS sandbox here. |
 
 Shared behavior lives in `.chezmoitemplates/agents/rules/notes-vault.md`. The vault environment variable supplies the CLI path; sandbox roots contain the literal path because they do not expand arbitrary environment variables.

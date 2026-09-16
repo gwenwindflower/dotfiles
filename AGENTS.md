@@ -63,7 +63,7 @@ private_dot_ssh/                  # → ~/.ssh/ (allowed_signers)
 # Symlink sources (ignored as `symsources/`, not deployed as ~/symsources)
 symsources/nvim/                  # lazy-lock.json, lazyvim.json, spell/en.utf-8.add{,.spl}
 symsources/claude/                # settings.json
-symsources/codex/                 # config.toml
+symsources/codex/                 # config.toml (live symlink target) + workspace-config.toml and profile-config.toml, the two sandbox-system sources it is swapped from
 symsources/yazi/                  # package.toml
 symsources/mise/                  # config-arm64.toml (aube), config-amd64.toml (pnpm) — symlink picks by .chezmoi.arch
 symsources/uv/                    # .python-version

@@ -19,12 +19,12 @@ Provider ownership does not make every path or payload safe. Prefer exact hosts 
 | Platform | Mechanism | Coverage |
 | --- | --- | --- |
 | Claude Code | Sandbox domain allowlist, `WebFetch` permissions, local binding, and configured Unix sockets | WebFetch domain rules merge with sandbox network lists; built-in fetch and Bash remain distinct execution surfaces. Excluded host commands are outside the network sandbox. |
-| Codex | Selected `workspace-winnie` profile with `features.network_proxy = true` | Domain policy is enforced through the proxy; enabling networking alone does not enforce domain rules. Unix sockets use absolute paths. Web search, apps, MCP, and browser tools retain separate controls. |
+| Codex | `sandbox_workspace_write.network_access = true` | Outbound networking is enabled without a configured domain proxy or Unix-socket allowlist. Task authority and automatic review govern network use. Web search, apps, MCP, and browser tools retain separate controls. |
 | OpenCode | Bash approval policy and tool-specific behavior | No equivalent network allowlist is expressed in the current config. |
 
 ## Verification
 
 - Official CLI metadata requests such as `gh run list` work in the sandbox.
 - A known documentation fetch uses its dedicated fetch permission rather than a shell-network wildcard.
-- Verify redirects to unlisted artifact hosts against the active policy. The Codex profile/proxy smoke test permits the npm registry and refuses an unlisted host with HTTP CONNECT 403. OpenCode still has no matching domain gate here.
+- Verify redirects and artifact downloads against task authority. Claude enforces its domain policy; Codex and OpenCode have no equivalent configured domain gate.
 - A local development server can bind when the task requires it.

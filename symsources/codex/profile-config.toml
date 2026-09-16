@@ -7,7 +7,7 @@ model = "gpt-6-astra"
 personality = "friendly"
 approval_policy = "on-request"
 approvals_reviewer = "auto_review"
-sandbox_mode = "workspace-write"
+default_permissions = "dev"
 web_search = "cached"
 project_doc_max_bytes = 65536
 sqlite_home = "~/.codex/sqlite"
@@ -54,61 +54,235 @@ request_permissions_tool = true
 js_repl = false
 apps = true
 
-[sandbox_workspace_write]
-network_access = true
-writable_roots = [
-  "/Users/winnie/.local/share/nvim",
-  "/Users/winnie/.cache",
-  "/Users/winnie/.cache/mise",
-  "/Users/winnie/.agent-browser",
-  "/Users/winnie/Library/Caches/dev.biomejs.biome",
-  "/Users/winnie/.blacksmith",
-  "/Users/winnie/.config/.wrangler",
-  "/Users/winnie/.context7",
-  "/Users/winnie/.critique",
-  "/Users/winnie/.zvec-grep",
-  "/Users/winnie/.duckdb",
-  "/Users/winnie/.gitconfig",
-  "/Users/winnie/.local/state/herdr",
-  "/Users/winnie/.local/state/nvim",
-  "/Users/winnie/Library/Caches/kitty",
-  "/Users/winnie/.local/share/graveyard",
-  "/Users/winnie/Library/Mobile Documents/iCloud~md~obsidian/Documents/girlOS",
-  "/Users/winnie/.codex/tmp",
-  "/Users/winnie/.codex/.tmp",
-  "/Users/winnie/.codex/sqlite",
-  "/Users/winnie/.codex/cache",
-  "/Users/winnie/.codex/memories",
-  "/Users/winnie/.codex/plugins",
-  "/Users/winnie/.codex/skills",
-  "/Users/winnie/.agents/skills",
-  "/Users/winnie/Library/Caches/Homebrew",
-  "/Users/winnie/Library/Caches/mise/.auto_prune",
-  "/Users/winnie/.bun/install",
-  "/Users/winnie/.deno/bin",
-  "/Users/winnie/Library/Caches/deno",
-  "/Users/winnie/.local/share/aube",
-  "/Users/winnie/.local/share/mise",
-  "/Users/winnie/.local/state/mise",
-  "/Users/winnie/.npm",
-  "/Users/winnie/Library/Caches/node-gyp",
-  "/Users/winnie/.local/share/pnpm",
-  "/Users/winnie/.go/pkg/mod",
-  "/Users/winnie/Library/Caches/go-build",
-  "/Users/winnie/Library/Application Support/go/telemetry",
-  "/Users/winnie/.cargo/registry",
-  "/Users/winnie/.cargo/git",
-  "/Users/winnie/.rustup",
-  "/Users/winnie/.local/share/uv",
-  "/Users/winnie/Library/Caches/pip",
-  "/Users/winnie/.local/share/chezmoi/symsources/aube",
-  "/Users/winnie/.local/share/chezmoi/symsources/herdr",
-  "/Users/winnie/.local/share/chezmoi/symsources/mise",
-  "/Users/winnie/.local/share/chezmoi/symsources/worktrunk",
-  "/Users/winnie/.local/share/chezmoi/symsources/yazi",
-  "/Users/winnie/.local/share/chezmoi/symsources/agents/skill-lock.json",
-  "/Users/winnie/.local/share/chezmoi/.git",
-]
+[permissions.dev]
+extends = ":workspace"
+
+[permissions.dev.filesystem]
+glob_scan_max_depth = 4
+":root" = "deny"
+":minimal" = "read"
+":tmpdir" = "write"
+":slash_tmp" = "write"
+# core paths
+"/usr/local" = "read"
+"/opt/homebrew" = "read"
+# system
+"/System/Cryptexes/App/usr/bin" = "read"
+"/System/Library/OpenSSL" = "read"
+# bins in app contents
+"/Applications/kitty.app/Contents/MacOS" = "read"
+"/Applications/Obsidian.app/Contents/MacOS" = "read"
+"/Applications/Monodraw.app/Contents/Resources" = "read"
+
+[permissions.dev.filesystem."~"]
+# tools
+".local/bin" = "read"
+".local/share/nvim" = "read"
+".orbstack/bin" = "read"
+"Desktop" = "read"
+# tool state, config, caches
+".cache" = "write"
+".agent-browser" = "write"
+"Library/Caches/dev.biomejs.biome" = "write"
+".blacksmith" = "write"
+".config/**" = "read"
+".config" = "read"
+".config/.wrangler" = "write"  # cloudflare
+".context7" = "write"
+".critique" = "write"
+".zvec-grep" = "write"
+".dbt" = "read"
+".docker" = "read"
+".duckdb" = "write"
+".gitconfig" = "write"
+".local/state/herdr" = "write"
+"Library/Caches/kitty" = "write"
+".local/share/graveyard" = "write"  # rip
+".local/share/chezmoi" = "read"
+"Library/Mobile Documents/iCloud~md~obsidian/Documents/girlOS" = "write"  # notesmd-cli
+## agents
+".codex" = "read"
+".codex/tmp" = "write"
+".codex/.tmp" = "write"
+".codex/sqlite" = "write"
+".codex/cache" = "write"
+".codex/memories" = "write"
+".codex/plugins" = "write"
+".codex/skills" = "write"
+".claude" = "read"
+".agents" = "read"
+# runtimes and package managers
+## brew
+"Library/Caches/Homebrew" = "write"
+## js/ts
+### bun
+".bun" = "read"
+".bun/install" = "write"
+### deno
+".deno" = "read"
+".deno/bin" = "write"
+"Library/Caches/deno" = "write"
+### mise + aube
+".local/share/aube" = "write"
+".local/share/mise" = "write"
+".local/state/mise" = "write"
+"Library/Caches/mise/.auto_prune" = "write"
+### npm
+".npm" = "write"
+"Library/Caches/node-gyp" = "write"
+### pnpm
+".local/share/pnpm" = "write"
+## go
+".go" = "read"
+".go/pkg/mod" = "write"
+"Library/Caches/go-build" = "write"
+## rust
+".cargo/bin" = "read"
+".cargo/env" = "read"
+".cargo/registry" = "write"
+".cargo/git" = "write"
+".rustup" = "write"
+## python
+".local/share/uv" = "write"
+"Library/Caches/pip" = "write"
+# shell
+".profile" = "read"
+".bashrc" = "read"
+".zshrc" = "read"
+".zprofile" = "read"
+".zshenv" = "read"
+# denied secrets and keys
+"**/credentials/**" = "deny"
+"**/secrets/**" = "deny"
+".aws" = "deny"
+# ".config/gcloud" = "deny"
+".gnupg" = "deny"
+".env" = "deny"
+".env.*" = "deny"
+"*.env" = "deny"
+"*.key" = "deny"
+"*.p12" = "deny"
+"*.pem" = "deny"
+"*.pfx" = "deny"
+"**/.env" = "deny"
+"**/.env.*" = "deny"
+"**/*.env" = "deny"
+"**/id_ed25519" = "deny"
+"**/id_rsa" = "deny"
+# "**/*.key" = "deny"
+# "**/*.p12" = "deny"
+# "**/*.pfx" = "deny"
+
+[permissions.dev.filesystem."~/.local/share/chezmoi"]
+# "symsources/amoxide/**" = "write"
+"symsources/aube/**" = "write"
+# "symsources/claude/**" = "write"
+# "symsources/codex/**" = "write"
+# "symsources/herdr/**" = "write"
+"symsources/mise/**" = "write"
+# "symsources/nvim/**" = "write"
+# "symsources/uv/**" = "write"
+"symsources/worktrunk/**" = "write"
+# "symsources/yazi/**" = "write"
+
+# workspace-level secret patterns
+[permissions.dev.filesystem.":workspace_roots"]
+"." = "write"
+".env" = "deny"
+".env.*" = "deny"
+"*.env" = "deny"
+"*.key" = "deny"
+"*.p12" = "deny"
+"*.pem" = "deny"
+"*.pfx" = "deny"
+"**/.env" = "deny"
+"**/.env.*" = "deny"
+"**/*.env" = "deny"
+"**/*.key" = "deny"
+"**/*.p12" = "deny"
+# "**/*.pem" = "deny"
+"**/*.pfx" = "deny"
+"**/credentials/**" = "deny"
+"**/secrets/**" = "deny"
+"**/id_ed25519" = "deny"
+"**/id_rsa" = "deny"
+
+# network permissions
+[permissions.dev.network]
+enabled = true
+allow_local_binding = true
+
+[permissions.dev.network.domains]
+"::1" = "allow"
+"127.0.0.1" = "allow"
+"agentskills.io" = "allow"
+"amoxide.rs" = "allow"
+"api.attio.com" = "allow"
+"api.github.com" = "allow"
+"api.linear.app" = "allow"
+"api.lightdash.com" = "allow"
+"backend.blacksmith.sh" = "allow"
+"blacksmith.sh" = "allow"
+"bun.com" = "allow"
+"charm.land" = "allow"
+"chezmoi.io" = "allow"
+"claude.com" = "allow"
+"cli.github.com" = "allow"
+"cliffy.io" = "allow"
+"clireleases.blacksmith.sh" = "allow"
+"codecompanion.olimorris.dev" = "allow"
+"context7.com" = "allow"
+"deno.land" = "allow"
+"developer.1password.com" = "allow"
+"developers.openai.com" = "allow"
+"dl.deno.land" = "allow"
+"docs.astral.sh" = "allow"
+"docs.attio.com" = "allow"
+"docs.blacksmith.sh" = "allow"
+"docs.brew.sh" = "allow"
+"docs.deno.com" = "allow"
+"docs.github.com" = "allow"
+"docs.lightdash.com" = "allow"
+"exe.dev" = "allow"
+"files.pythonhosted.org" = "allow"
+"fishshell.com" = "allow"
+"git-cliff.org" = "allow"
+"github.com" = "allow"
+"jdx.dev" = "allow"
+"json.schemastore.org" = "allow"
+"jsr.io" = "allow"
+"lazy.folke.io" = "allow"
+"lazyvim.org" = "allow"
+"linear.app" = "allow"
+"localhost" = "allow"
+"lunarmodules.github.io" = "allow"
+"neovim.io" = "allow"
+"notion.com" = "allow"
+"notion.so" = "allow"
+"opencode.ai" = "allow"
+"pkg.go.dev" = "allow"
+"prek.j178.dev" = "allow"
+"proxy.golang.org" = "allow"
+"pypi.org" = "allow"
+"pythonhosted.org" = "allow"
+"registry.npmjs.org" = "allow"
+"releases.astral.sh" = "allow"
+"results-receiver.actions.githubusercontent.com" = "allow"
+"schemastore.org" = "allow"
+"sparrow.cloudflare.com" = "allow"
+"storage.googleapis.com" = "allow"
+"sum.golang.org" = "allow"
+"sw.kovidgoyal.net" = "allow"
+"tailscale.com" = "allow"
+"telemetry.astro.build" = "allow"
+"workers.cloudflare.com" = "allow"
+"worktrunk.dev" = "allow"
+"www.chezmoi.io" = "allow"
+
+[permissions.dev.network.unix_sockets]
+"~/.agent-browser/default.sock" = "allow"
+"~/.obsidian-cli.sock" = "allow"
+"~/.orbstack/run/docker.sock" = "allow"
 
 [agents]
 max_threads = 10  # upstream schema: tombi expects a table here

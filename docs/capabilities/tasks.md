@@ -45,7 +45,7 @@ Moving across a shared-list boundary can recreate a reminder with a different ID
 
 Prefix rules cannot count IDs or identify every option position. A host allow for `rem complete` also matches multi-ID completion; there is no claim of automatic batch detection. The agent reviews scope across calls before executing a batch. Do not add a universal `rem *` host allow.
 
-Codex's selected beta profile grants the Obsidian socket by absolute path. Its network proxy requires absolute Unix-socket entries. Verify live IPC in the launch context used by the harness; a configured socket entry alone is not proof the app connection works.
+Codex uses workspace-write with networking enabled and no profile socket allowlist. Verify live Obsidian IPC in the harness launch context; configuration alone is not proof the app connection works.
 
 ## Verification
 
