@@ -1,0 +1,26 @@
+[global]
+# standard markdownlint disabled rules
+# MD057 is uniqe to this repo because chezmoi dotfiles
+# are not always in the normal target relationship to each other
+# so relative links look broken but are correct in the target directory
+disable = ["line-length", "no-duplicate-heading", "first-line-h1", "no-inline-html", "MD057"]
+exclude = [
+  "./.chezmoitemplates/agents/AGENTS.md,",
+  "dot_agents/exact_skills/exact_agent-browser",
+  "dot_agents/exact_skills/exact_ast-grep",
+  "dot_agents/exact_skills/exact_cloudflare",
+  "dot_agents/exact_skills/exact_fallow-review",
+  "dot_agents/exact_skills/exact_gh-stack",
+  "dot_agents/exact_skills/exact_json-canvas",
+  "dot_agents/exact_skills/exact_obsidian-bases",
+  "dot_agents/exact_skills/exact_obsidian-cli",
+  "dot_agents/exact_skills/exact_obsidian-markdown",
+  "dot_agents/exact_skills/exact_outline",
+  "dot_agents/exact_skills/exact_prek",
+  "dot_agents/exact_skills/exact_pydantic",
+  "dot_agents/exact_skills/exact_worktrunk",
+  "dot_agents/exact_skills/exact_wrangler",
+  "dot_agents/exact_skills/exact_developing-in-lightdash",
+  "dot_agents/exact_skills/exact_rem-cli",
+]
+flavor = "github"

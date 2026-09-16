@@ -124,7 +124,9 @@ Do not suggest obstacles. The learner must generate their own. This is more impo
 
 For each obstacle the user identified, ask them to write their own if-then plan in this format:
 
-*"If [obstacle/situation], then I will [specific action]."*
+```text
+If [obstacle/situation], then I will [specific action].
+```
 
 Do not write the if-then plan for the learner. Ask them to draft it, then help them refine it. The learner must produce the first version. This is the same generation principle as Step 4: the exercise works because the learner is the one connecting their obstacle to their planned response.
 

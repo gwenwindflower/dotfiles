@@ -2,6 +2,7 @@
 name: gitignore
 description: Generate or extend .gitignore files with project-aware patterns. Use when creating .gitignore, ignoring a new tool/language, or auditing existing rules.
 ---
+
 # .gitignore Creation and Management
 
 ## Templates and Initial Scaffolding

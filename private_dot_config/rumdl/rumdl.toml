@@ -1,0 +1,2 @@
+[global]
+disable = ["line-length", "no-duplicate-heading", "first-line-h1", "no-inline-html"]

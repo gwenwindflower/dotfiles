@@ -105,7 +105,6 @@ Strip on sight; they almost never do real work.
 
 - Bad: "the design conversation is the **actual** gating step"
 - Good: "the design conversation is the gating step"
-
 - Bad: "is the right tool for **exactly this shape of work**"
 - Good: "is the right tool for this work"
 

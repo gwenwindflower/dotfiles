@@ -36,7 +36,7 @@ Access: `{{ .email }}`, `{{ .features.work }}`
 
 ### String Functions
 
-```
+```text
 {{ "hello" | upper }}              # HELLO
 {{ "HELLO" | lower }}              # hello
 {{ "hello" | title }}              # Hello
@@ -48,7 +48,7 @@ Access: `{{ .email }}`, `{{ .features.work }}`
 
 ### Conditionals & Logic
 
-```
+```text
 {{ if eq .chezmoi.os "darwin" }}macOS{{ end }}
 {{ if ne .chezmoi.os "windows" }}not windows{{ end }}
 {{ if and (eq .chezmoi.os "linux") (eq .chezmoi.arch "arm64") }}linux arm{{ end }}
@@ -59,7 +59,7 @@ Access: `{{ .email }}`, `{{ .features.work }}`
 
 ### List Operations
 
-```
+```text
 {{ range .items }}{{ . }}{{ end }}
 {{ range $i, $v := .items }}{{ $i }}: {{ $v }}{{ end }}
 {{ first .list }}
@@ -71,7 +71,7 @@ Access: `{{ .email }}`, `{{ .features.work }}`
 
 ### File Operations
 
-```
+```text
 {{ include "path/to/file" }}                    # Include file contents
 {{ include "file" | sha256sum }}                # Hash for run_onchange_
 {{ .chezmoi.sourceDir | joinPath "subdir" }}    # Build paths
@@ -79,7 +79,7 @@ Access: `{{ .email }}`, `{{ .features.work }}`
 
 ### Environment & System
 
-```
+```text
 {{ env "HOME" }}                    # Environment variable
 {{ lookPath "brew" }}               # Find executable path (empty if not found)
 {{ stat "/path/to/file" }}          # File info (nil if doesn't exist)
@@ -90,7 +90,7 @@ Access: `{{ .email }}`, `{{ .features.work }}`
 
 ### Using hostname
 
-```
+```text
 {{ if eq .chezmoi.hostname "work-laptop" -}}
 # Work configuration
 export HTTP_PROXY=http://proxy.work.com:8080
@@ -111,7 +111,7 @@ machine:
 
 Template:
 
-```
+```text
 {{ if eq .machine.type "work" -}}
 # Work-specific settings
 export COMPANY={{ .machine.company }}
@@ -120,7 +120,7 @@ export COMPANY={{ .machine.company }}
 
 ### Using OS detection
 
-```
+```text
 {{ if eq .chezmoi.os "darwin" -}}
 # macOS
 alias ls="gls --color=auto"
@@ -153,7 +153,7 @@ chezmoi diff -v
 
 ### Conditional blocks with proper whitespace
 
-```
+```text
 {{- if .feature_enabled }}
 # Feature is enabled
 export FEATURE=1
@@ -164,7 +164,7 @@ Note: `{{-` trims whitespace before, `-}}` trims after.
 
 ### Including optional sections
 
-```
+```text
 # Core config
 set -gx EDITOR nvim
 

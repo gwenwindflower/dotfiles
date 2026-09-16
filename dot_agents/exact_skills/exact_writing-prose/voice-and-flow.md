@@ -70,11 +70,11 @@ A specific passive-voice trap that lures you in but never works. It's tempting t
 
 Real example:
 
-> One aspect of centralization with a bad rap — the thing people most point to when extolling the virtues of decentralization — is _process_.
+> One aspect of centralization with a bad rap — the thing people most point to when extolling the virtues of decentralization — is *process*.
 
 Better:
 
-> The marquee issue that proponents of decentralization claim to be eliminating is _process_.
+> The marquee issue that proponents of decentralization claim to be eliminating is *process*.
 
 ## Rhetorical Setups
 

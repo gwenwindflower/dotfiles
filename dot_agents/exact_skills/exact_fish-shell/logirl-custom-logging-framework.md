@@ -32,7 +32,7 @@ These are your primary logging tools for errors, warnings, status updates, and p
 
 ### error
 
-Red text with  icon (bold):
+Red text with icon (bold):
 
 ```fish
 logirl error "File not found: $filepath"
@@ -43,7 +43,7 @@ logirl error "Command failed with exit code $status"
 
 ### warning
 
-Bright yellow with  icon (bold tag, colored message):
+Bright yellow with icon (bold tag, colored message):
 
 ```fish
 logirl warning "Deprecated flag used: --old-format"
@@ -54,7 +54,7 @@ logirl warning "Rate limit approaching (80% used)"
 
 ### info
 
-Cyan with  icon (bold tag, normal message):
+Cyan with icon (bold tag, normal message):
 
 ```fish
 logirl info "Processing 42 files"

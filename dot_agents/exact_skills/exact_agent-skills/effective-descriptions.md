@@ -19,22 +19,22 @@ Constraints:
 
 ## Bad → good
 
-**Vague**
+### Vague
 
 - ❌ `dbt Analytics Engineering`
 - ✅ `Build, test, and debug dbt projects — models, tests, semantic layer, CLI. Use when editing files in a dbt project (.sql/.yml under models/, dbt_project.yml) or running dbt commands.`
 
-**First-person, no triggers**
+### First-person, no triggers
 
 - ❌ `Always load when working with fish files to get guidance on idiomatic fish syntax and better terminal UX.`
 - ✅ `Idiomatic fish shell scripting — functions, completions, abbreviations, conf.d. Use when editing .fish files or fish config under ~/.config/fish.`
 
-**Long scenario list**
+### Long scenario list
 
 - ❌ `Use when adding shadcn components; customizing variants; understanding architecture; troubleshooting setup; auditing style; checking installation; updating themes.`
 - ✅ `Add, customize, and troubleshoot shadcn/ui components. Use when working with shadcn components, variants, or components.json.`
 
-**Restating without triggers**
+### Restating without triggers
 
 - ❌ `Generate advanced and comprehensive .gitignore files based on project type, using stringent syntax for selecting and excluding files and directories.`
 - ✅ `Generate or extend .gitignore files with project-aware patterns. Use when creating .gitignore, adding ignores for a new tool/language, or auditing an existing one.`
