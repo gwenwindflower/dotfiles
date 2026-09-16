@@ -33,8 +33,9 @@ Use `-c`/`--create` to create a branch, or omit it for an existing branch/worktr
 
 ## Authentication
 
-SSH authentication uses 1Password. Claude's remote-Git and Worktrunk host exclusions address SSH and sibling-worktree access; they do not grant task authority. Codex reviews host access contextually rather than broadly allowing all Git/Worktrunk execution outside its sandbox.
+SSH authentication uses 1Password. Claude's remote-Git and Worktrunk host exclusions address SSH and sibling-worktree access; they do not grant task authority. Codex grants host execution to Git `add`, `commit`, `fetch`, and `pull` across repositories. Other commands retain contextual review and their specific rules.
 
+Codex's workspace sandbox protects `.git`; command-scoped host permissions let routine Git work across checkouts without per-repository path exceptions. Prefix rules match canonical commands, so global options such as `git -C <path>` and wrappers may still need contextual review. Worktrunk's native project-hook approval remains required. Other sandboxed tools needing linked-worktree metadata must resolve `git rev-parse --absolute-git-dir --git-common-dir`; a `.git` pointer alone does not grant its external target.
 
 User terminal commits remain signed. Existing harness-provided session identity/signing overrides remain valid; never change global signing settings or disable signing in response to a failure.
 
@@ -49,15 +50,16 @@ Repository deletion, archival, visibility changes, transfers, and destructive is
 | Harness | Mechanism and limits |
 | --- | --- |
 | Claude Code | Routine pushes/rebases have no blanket Bash ask or allow, so auto mode can evaluate scope and state. Classifier guidance describes destination, ownership, and recovery checks. Explicit asks cover force-with-lease and canonical complex rebase flags; destructive denies, SSH/Worktrunk exclusions, and helper Git hooks remain. |
-| Codex | `git.rules` gates canonical pushes/rebases/worktree mutations and blocks immediate force/delete flags and raw release commands. Prefix rules cannot inspect every argument position. |
+| Codex | Git add/commit/fetch/pull have command-scoped host allows across repositories. Other operations retain contextual policy and `auto_review`. `git.rules` gates canonical force-with-lease, complex rebase, and direct worktree mutations and blocks immediate force/delete flags and raw release commands. Stronger prompt/forbidden matches override allows; prefix rules cannot inspect every argument position. |
 | OpenCode | Ordered Bash patterns allow exact `git rebase main`, `git rebase origin/main`, `git rebase --continue`, and `git rebase --abort`; shared guidance requires ownership and recovery checks. Other rebases and pushes retain ask: this harness has no automatic evaluator or branch-protection-aware pattern. A broad push allow cannot express the target-dependent contract. Agent overrides preserve global safety rules; no process sandbox is supplied by command policy. |
 
-For Codex, `git push origin --delete topic` reaches general push review, while `git push --delete origin topic` matches a prohibition. Leading `git -C`/`-c`, executable paths, wrappers, and `gh api` payloads require contextual inspection. Do not reshape a command to evade a rule.
+For Codex, `git push origin --delete topic` requires contextual rejection, while `git push --delete origin topic` matches a prohibition. Later flags, `--flag=value` forms, leading `git -C`/`-c`, executable paths, wrappers, and `gh api` payloads require contextual inspection. Do not reshape a command to evade a rule. Static rules cannot determine branch protection or ownership, so automatic evaluation must resolve these before approval; absence of a rule is not unconditional authorization.
 
 ## Verification
 
 - Inspection and lowercase local branch cleanup retain the intended path.
 - Forced local cleanup and remote deletion hit prohibitions in supported command forms.
+- Routine push/rebase commands have no matching Claude ask or Codex prefix rule; contextual evaluation checks destination, protection, ownership, dirty state, and the recovery point.
 - OpenCode's exact common rebase forms resolve to allow; additional arguments and complex variants retain ask, as do pushes without a branch-aware evaluator.
 - Guarded Worktrunk integration keeps its checks and approvals.
 - Raw publishing is blocked while an explicitly requested, project-authorized release task remains usable.

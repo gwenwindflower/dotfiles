@@ -1,4 +1,12 @@
 prefix_rule(
+    pattern = ["git", ["add", "commit", "fetch", "pull"]],
+    decision = "allow",
+    justification = "Routine repository operations need Git metadata, worktree, and SSH access in every checkout, independent of workspace sandbox roots.",
+    match = ["git add src/main.rs", "git commit -m fix", "git fetch origin", "git pull --ff-only"],
+    not_match = ["git push origin main", "git reset --hard", "git clean -fd", "git rebase -i main", "git config --global core.sshCommand example"],
+)
+
+prefix_rule(
     pattern = ["gh", "auth", "token"],
     decision = "forbidden",
     justification = "Never print authentication tokens; use gh's authenticated commands.",
@@ -7,11 +15,11 @@ prefix_rule(
 )
 
 prefix_rule(
-    pattern = ["git", "push"],
+    pattern = ["git", "push", "--force-with-lease"],
     decision = "prompt",
-    justification = "Review destination and task scope; ordinary pushes to main are valid in trunk workflows. Reject remote deletion and forced rewrites of shared branches.",
-    match = ["git push", "git push origin --force", "git push --force-with-lease origin topic"],
-    not_match = ["git status", "git fetch"],
+    justification = "Review the lease and ownership; force-with-lease is permitted only on the session's owned feature branch, never shared or protected history.",
+    match = ["git push --force-with-lease origin topic"],
+    not_match = ["git push", "git push origin topic", "git push -u origin topic"],
 )
 
 prefix_rule(
@@ -87,11 +95,11 @@ prefix_rule(
 )
 
 prefix_rule(
-    pattern = ["git", "rebase"],
+    pattern = ["git", "rebase", ["-i", "--interactive", "--onto", "--root", "--exec", "-x", "--skip"]],
     decision = "prompt",
     justification = "Review ownership and starting state. Rebase owned work onto the intended upstream; never rewrite shared history or skip unresolved commits.",
-    match = ["git rebase origin/main", "git rebase --continue"],
-    not_match = ["git status"],
+    match = ["git rebase -i origin/main", "git rebase --onto main base topic", "git rebase --skip"],
+    not_match = ["git rebase main", "git rebase origin/main", "git rebase --continue", "git rebase --abort"],
 )
 
 prefix_rule(
