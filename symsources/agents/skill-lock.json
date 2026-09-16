@@ -28,15 +28,6 @@
       "installedAt": "2026-09-04T22:50:38Z",
       "updatedAt": "2026-09-04T22:50:38Z"
     },
-    "dignified-python": {
-      "source": "dagster-io/skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/dagster-io/skills.git",
-      "skillPath": "skills/dignified-python/skills/dignified-python/SKILL.md",
-      "skillFolderHash": "d86d858104dcfab54ac05de1f5d67b095f10a86d",
-      "installedAt": "2026-09-06T21:13:56Z",
-      "updatedAt": "2026-09-06T21:13:56Z"
-    },
     "fallow-review": {
       "source": "fallow-rs/fallow-skills",
       "sourceType": "github",
