@@ -267,6 +267,7 @@ chezmoi --dry-run --no-pager --verbose apply       # Dry run with detailed outpu
 
 - `docs/agent-config.md` — Semantic contract for Claude Code, Codex, and OpenCode configuration: sandbox access, approval policy, and agent guidance as three separate controls, plus the config surface map per platform. Read before changing any agent's settings
 - `docs/capabilities/` — One file per capability domain (workspace, network, development, git, delegation, context, integrations, session, interaction), each with expected behavior, safety boundary, per-platform implementation, and verification. Indexed by `docs/agent-config.md`
+- `docs/agent-commits.md` — Commit types and the `agents/<sub-scope>` and `<agent name>` scope convention for agent-facing changes
 - `.utils/AGENTS.md` — Internal Deno tooling sandbox, with a reference doc per tool under `.utils/docs/`
 - `~/.agents/skills/chezmoi/` (source: `dot_agents/exact_skills/exact_chezmoi/`) — Full chezmoi skill with deep reference docs on attributes, templates, scripts, hooks
 - [chezmoi documentation](https://www.chezmoi.io) — Official docs, comprehensive reference for all features
