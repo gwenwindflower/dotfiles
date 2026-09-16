@@ -1,27 +1,27 @@
 # Print an optspec for argparse to handle cmd's options that are independent of any subcommand.
 function __fish_linear_cli_global_optspecs
-	string join \n o/output= q/quiet id-only color-mode= no-color width= no-truncate compact fields= sort= order= profile= format= filter= fail-on-empty limit= after= before= page-size= all cache-ttl= no-cache dry-run yes retry= schema no-pager h/help V/version
+    string join \n o/output= q/quiet id-only color-mode= no-color width= no-truncate compact fields= sort= order= profile= format= filter= fail-on-empty limit= after= before= page-size= all cache-ttl= no-cache dry-run yes retry= schema no-pager h/help V/version
 end
 
 function __fish_linear_cli_needs_command
-	# Figure out if the current invocation already has a command.
-	set -l cmd (commandline -opc)
-	set -e cmd[1]
-	argparse -s (__fish_linear_cli_global_optspecs) -- $cmd 2>/dev/null
-	or return
-	if set -q argv[1]
-		# Also print the command, so this can be used to figure out what it is.
-		echo $argv[1]
-		return 1
-	end
-	return 0
+    # Figure out if the current invocation already has a command.
+    set -l cmd (commandline -opc)
+    set -e cmd[1]
+    argparse -s (__fish_linear_cli_global_optspecs) -- $cmd 2>/dev/null
+    or return
+    if set -q argv[1]
+        # Also print the command, so this can be used to figure out what it is.
+        echo $argv[1]
+        return 1
+    end
+    return 0
 end
 
 function __fish_linear_cli_using_subcommand
-	set -l cmd (__fish_linear_cli_needs_command)
-	test -z "$cmd"
-	and return 1
-	contains -- $cmd[1] $argv
+    set -l cmd (__fish_linear_cli_needs_command)
+    test -z "$cmd"
+    and return 1
+    contains -- $cmd[1] $argv
 end
 
 complete -c linear-cli -n "__fish_linear_cli_needs_command" -s o -l output -d 'Output format (table or json)' -r -f -a "table\t'Display results as formatted tables (default)'
@@ -105,7 +105,7 @@ complete -c linear-cli -n "__fish_linear_cli_needs_command" -f -a "setup" -d 'Gu
 complete -c linear-cli -n "__fish_linear_cli_needs_command" -f -a "sprint" -d 'Sprint planning - manage cycle-based sprints'
 complete -c linear-cli -n "__fish_linear_cli_needs_command" -f -a "completions" -d 'Generate shell completions'
 complete -c linear-cli -n "__fish_linear_cli_needs_command" -f -a "_complete" -d 'Internal: provide dynamic completion values (hidden from help)'
-complete -c linear-cli -n "__fish_linear_cli_needs_command" -f -a "config" -d 'Configure CLI settings - API keys and workspaces'
+complete -c linear-cli -n "__fish_linear_cli_needs_command" -f -a "config" -d 'Configure CLI settings - API keys, default team, and workspaces'
 complete -c linear-cli -n "__fish_linear_cli_needs_command" -f -a "help" -d 'Print this message or the help of the given subcommand(s)'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand common" -s o -l output -d 'Output format (table or json)' -r -f -a "table\t'Display results as formatted tables (default)'
 json\t'Display results as raw JSON'
@@ -461,45 +461,46 @@ complete -c linear-cli -n "__fish_linear_cli_using_subcommand attachments; and _
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand attachments; and __fish_seen_subcommand_from help" -f -a "delete" -d 'Delete an attachment'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand attachments; and __fish_seen_subcommand_from help" -f -a "link-url" -d 'Link a URL to an issue'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand attachments; and __fish_seen_subcommand_from help" -f -a "help" -d 'Print this message or the help of the given subcommand(s)'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -s o -l output -d 'Output format (table or json)' -r -f -a "table\t'Display results as formatted tables (default)'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -s o -l output -d 'Output format (table or json)' -r -f -a "table\t'Display results as formatted tables (default)'
 json\t'Display results as raw JSON'
 ndjson\t'Display results as NDJSON (one JSON object per line)'"
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -l color-mode -d 'Color output: auto, always, or never' -r -f -a "auto\t''
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -l color-mode -d 'Color output: auto, always, or never' -r -f -a "auto\t''
 always\t''
 never\t''"
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -l width -d 'Max column width for table output (default: 50)' -r
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -l fields -d 'Limit JSON output to specific fields (comma-separated, supports dot paths)' -r
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -l sort -d 'Sort JSON array output by a field (default: identifier/id when available)' -r
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -l order -d 'Sort order for JSON array output' -r -f -a "asc\t''
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -l width -d 'Max column width for table output (default: 50)' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -l fields -d 'Limit JSON output to specific fields (comma-separated, supports dot paths)' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -l sort -d 'Sort JSON array output by a field (default: identifier/id when available)' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -l order -d 'Sort order for JSON array output' -r -f -a "asc\t''
 desc\t''"
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -l profile -d 'Override workspace profile for this invocation' -r
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -l format -d 'Output using a template (e.g. \'{{identifier}} {{title}}\')' -r
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -l filter -d 'Filter results (field=value, field!=value, field~=value). Supports dot-notation for nested fields (e.g. state.name=Done). ~= is a case-insensitive "contains" match. All comparisons are case-insensitive. Multiple --filter flags are combined with AND logic' -r
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -l limit -d 'Max results to return for list/search commands' -r
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -l after -d 'Pagination cursor to start after' -r
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -l before -d 'Pagination cursor to end before' -r
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -l page-size -d 'Page size per request for list/search commands' -r
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -l cache-ttl -d 'Override cache TTL in seconds' -r
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -l retry -d 'Number of retries for failed API requests (with exponential backoff)' -r
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -s q -l quiet -d 'Suppress decorative output (headers, separators, tips) - for scripting'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -l id-only -d 'Only output IDs of created/updated resources - for chaining commands'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -l no-color -d 'Disable color output'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -l no-truncate -d 'Disable truncation for table output'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -l compact -d 'Emit compact JSON without pretty formatting'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -l fail-on-empty -d 'Exit with non-zero status when a list is empty'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -l all -d 'Fetch all pages for list/search commands'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -l no-cache -d 'Disable cache usage for this invocation'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -l dry-run -d 'Preview without making changes where supported'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -l yes -d 'Auto-confirm all prompts (deletes, destructive operations)'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -l schema -d 'Print JSON schema version info and exit'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -l no-pager -d 'Disable pager for output (default: auto-detect from terminal)'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -s h -l help -d 'Print help (see more with \'--help\')'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -f -a "login" -d 'Store API key for the current profile'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -f -a "logout" -d 'Remove API key for the current profile'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -f -a "status" -d 'Show current auth status'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -f -a "oauth" -d 'Authenticate via OAuth 2.0 (browser-based)'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -f -a "revoke" -d 'Revoke OAuth tokens for the current profile'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status oauth revoke help" -f -a "help" -d 'Print this message or the help of the given subcommand(s)'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -l profile -d 'Override workspace profile for this invocation' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -l format -d 'Output using a template (e.g. \'{{identifier}} {{title}}\')' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -l filter -d 'Filter results (field=value, field!=value, field~=value). Supports dot-notation for nested fields (e.g. state.name=Done). ~= is a case-insensitive "contains" match. All comparisons are case-insensitive. Multiple --filter flags are combined with AND logic' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -l limit -d 'Max results to return for list/search commands' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -l after -d 'Pagination cursor to start after' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -l before -d 'Pagination cursor to end before' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -l page-size -d 'Page size per request for list/search commands' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -l cache-ttl -d 'Override cache TTL in seconds' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -l retry -d 'Number of retries for failed API requests (with exponential backoff)' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -s q -l quiet -d 'Suppress decorative output (headers, separators, tips) - for scripting'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -l id-only -d 'Only output IDs of created/updated resources - for chaining commands'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -l no-color -d 'Disable color output'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -l no-truncate -d 'Disable truncation for table output'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -l compact -d 'Emit compact JSON without pretty formatting'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -l fail-on-empty -d 'Exit with non-zero status when a list is empty'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -l all -d 'Fetch all pages for list/search commands'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -l no-cache -d 'Disable cache usage for this invocation'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -l dry-run -d 'Preview without making changes where supported'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -l yes -d 'Auto-confirm all prompts (deletes, destructive operations)'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -l schema -d 'Print JSON schema version info and exit'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -l no-pager -d 'Disable pager for output (default: auto-detect from terminal)'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -s h -l help -d 'Print help (see more with \'--help\')'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -f -a "login" -d 'Store API key for the current profile'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -f -a "logout" -d 'Remove API key for the current profile'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -f -a "status" -d 'Show current auth status'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -f -a "migrate" -d 'Migrate API keys from config file to OS keyring'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -f -a "oauth" -d 'Authenticate via OAuth 2.0 (browser-based)'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -f -a "revoke" -d 'Revoke OAuth tokens for the current profile'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and not __fish_seen_subcommand_from login logout status migrate oauth revoke help" -f -a "help" -d 'Print this message or the help of the given subcommand(s)'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from login" -l key -d 'API key to store (if omitted, prompt interactively)' -r
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from login" -s o -l output -d 'Output format (table or json)' -r -f -a "table\t'Display results as formatted tables (default)'
 json\t'Display results as raw JSON'
@@ -604,6 +605,41 @@ complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_s
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from status" -l schema -d 'Print JSON schema version info and exit'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from status" -l no-pager -d 'Disable pager for output (default: auto-detect from terminal)'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from status" -s h -l help -d 'Print help (see more with \'--help\')'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -s o -l output -d 'Output format (table or json)' -r -f -a "table\t'Display results as formatted tables (default)'
+json\t'Display results as raw JSON'
+ndjson\t'Display results as NDJSON (one JSON object per line)'"
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -l color-mode -d 'Color output: auto, always, or never' -r -f -a "auto\t''
+always\t''
+never\t''"
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -l width -d 'Max column width for table output (default: 50)' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -l fields -d 'Limit JSON output to specific fields (comma-separated, supports dot paths)' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -l sort -d 'Sort JSON array output by a field (default: identifier/id when available)' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -l order -d 'Sort order for JSON array output' -r -f -a "asc\t''
+desc\t''"
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -l profile -d 'Override workspace profile for this invocation' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -l format -d 'Output using a template (e.g. \'{{identifier}} {{title}}\')' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -l filter -d 'Filter results (field=value, field!=value, field~=value). Supports dot-notation for nested fields (e.g. state.name=Done). ~= is a case-insensitive "contains" match. All comparisons are case-insensitive. Multiple --filter flags are combined with AND logic' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -l limit -d 'Max results to return for list/search commands' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -l after -d 'Pagination cursor to start after' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -l before -d 'Pagination cursor to end before' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -l page-size -d 'Page size per request for list/search commands' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -l cache-ttl -d 'Override cache TTL in seconds' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -l retry -d 'Number of retries for failed API requests (with exponential backoff)' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -l keep-config -d 'Keep keys in config file after migrating'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -l force -d 'Skip confirmation prompt'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -s q -l quiet -d 'Suppress decorative output (headers, separators, tips) - for scripting'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -l id-only -d 'Only output IDs of created/updated resources - for chaining commands'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -l no-color -d 'Disable color output'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -l no-truncate -d 'Disable truncation for table output'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -l compact -d 'Emit compact JSON without pretty formatting'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -l fail-on-empty -d 'Exit with non-zero status when a list is empty'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -l all -d 'Fetch all pages for list/search commands'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -l no-cache -d 'Disable cache usage for this invocation'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -l dry-run -d 'Preview without making changes where supported'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -l yes -d 'Auto-confirm all prompts (deletes, destructive operations)'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -l schema -d 'Print JSON schema version info and exit'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -l no-pager -d 'Disable pager for output (default: auto-detect from terminal)'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from migrate" -s h -l help -d 'Print help (see more with \'--help\')'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from oauth" -l client-id -d 'OAuth client ID (uses default if not specified)' -r
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from oauth" -l scopes -d 'OAuth scopes (comma-separated)' -r
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from oauth" -l port -d 'Port for localhost callback server' -r
@@ -678,6 +714,7 @@ complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_s
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from help" -f -a "login" -d 'Store API key for the current profile'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from help" -f -a "logout" -d 'Remove API key for the current profile'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from help" -f -a "status" -d 'Show current auth status'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from help" -f -a "migrate" -d 'Migrate API keys from config file to OS keyring'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from help" -f -a "oauth" -d 'Authenticate via OAuth 2.0 (browser-based)'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from help" -f -a "revoke" -d 'Revoke OAuth tokens for the current profile'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand auth; and __fish_seen_subcommand_from help" -f -a "help" -d 'Print this message or the help of the given subcommand(s)'
@@ -2812,7 +2849,7 @@ complete -c linear-cli -n "__fish_linear_cli_using_subcommand cycles; and not __
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand cycles; and not __fish_seen_subcommand_from list get current create update delete complete help" -f -a "delete" -d 'Delete a cycle'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand cycles; and not __fish_seen_subcommand_from list get current create update delete complete help" -f -a "complete" -d 'Mark a cycle as completed'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand cycles; and not __fish_seen_subcommand_from list get current create update delete complete help" -f -a "help" -d 'Print this message or the help of the given subcommand(s)'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand cycles; and __fish_seen_subcommand_from list" -s t -l team -d 'Team ID or name' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand cycles; and __fish_seen_subcommand_from list" -s t -l team -d 'Team ID or name (falls back to default-team / LINEAR_CLI_TEAM)' -r
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand cycles; and __fish_seen_subcommand_from list" -s o -l output -d 'Output format (table or json)' -r -f -a "table\t'Display results as formatted tables (default)'
 json\t'Display results as raw JSON'
 ndjson\t'Display results as NDJSON (one JSON object per line)'"
@@ -2879,7 +2916,7 @@ complete -c linear-cli -n "__fish_linear_cli_using_subcommand cycles; and __fish
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand cycles; and __fish_seen_subcommand_from get" -l schema -d 'Print JSON schema version info and exit'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand cycles; and __fish_seen_subcommand_from get" -l no-pager -d 'Disable pager for output (default: auto-detect from terminal)'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand cycles; and __fish_seen_subcommand_from get" -s h -l help -d 'Print help (see more with \'--help\')'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand cycles; and __fish_seen_subcommand_from current" -s t -l team -d 'Team ID or name' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand cycles; and __fish_seen_subcommand_from current" -s t -l team -d 'Team ID or name (falls back to default-team / LINEAR_CLI_TEAM)' -r
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand cycles; and __fish_seen_subcommand_from current" -s o -l output -d 'Output format (table or json)' -r -f -a "table\t'Display results as formatted tables (default)'
 json\t'Display results as raw JSON'
 ndjson\t'Display results as NDJSON (one JSON object per line)'"
@@ -2913,7 +2950,7 @@ complete -c linear-cli -n "__fish_linear_cli_using_subcommand cycles; and __fish
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand cycles; and __fish_seen_subcommand_from current" -l schema -d 'Print JSON schema version info and exit'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand cycles; and __fish_seen_subcommand_from current" -l no-pager -d 'Disable pager for output (default: auto-detect from terminal)'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand cycles; and __fish_seen_subcommand_from current" -s h -l help -d 'Print help (see more with \'--help\')'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand cycles; and __fish_seen_subcommand_from create" -s t -l team -d 'Team key, name, or ID' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand cycles; and __fish_seen_subcommand_from create" -s t -l team -d 'Team key, name, or ID (falls back to default-team / LINEAR_CLI_TEAM)' -r
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand cycles; and __fish_seen_subcommand_from create" -s n -l name -d 'Cycle name' -r
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand cycles; and __fish_seen_subcommand_from create" -s d -l description -d 'Cycle description' -r
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand cycles; and __fish_seen_subcommand_from create" -l starts-at -d 'Start date (ISO 8601, e.g. 2024-01-01)' -r
@@ -3719,7 +3756,7 @@ complete -c linear-cli -n "__fish_linear_cli_using_subcommand statuses; and not 
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand statuses; and not __fish_seen_subcommand_from list get update help" -f -a "get" -d 'Get details of a specific status'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand statuses; and not __fish_seen_subcommand_from list get update help" -f -a "update" -d 'Update a workflow state'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand statuses; and not __fish_seen_subcommand_from list get update help" -f -a "help" -d 'Print this message or the help of the given subcommand(s)'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand statuses; and __fish_seen_subcommand_from list" -s t -l team -d 'Team name or ID' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand statuses; and __fish_seen_subcommand_from list" -s t -l team -d 'Team name or ID (falls back to default-team / LINEAR_CLI_TEAM)' -r
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand statuses; and __fish_seen_subcommand_from list" -s o -l output -d 'Output format (table or json)' -r -f -a "table\t'Display results as formatted tables (default)'
 json\t'Display results as raw JSON'
 ndjson\t'Display results as NDJSON (one JSON object per line)'"
@@ -3753,7 +3790,7 @@ complete -c linear-cli -n "__fish_linear_cli_using_subcommand statuses; and __fi
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand statuses; and __fish_seen_subcommand_from list" -l schema -d 'Print JSON schema version info and exit'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand statuses; and __fish_seen_subcommand_from list" -l no-pager -d 'Disable pager for output (default: auto-detect from terminal)'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand statuses; and __fish_seen_subcommand_from list" -s h -l help -d 'Print help (see more with \'--help\')'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand statuses; and __fish_seen_subcommand_from get" -s t -l team -d 'Team name or ID' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand statuses; and __fish_seen_subcommand_from get" -s t -l team -d 'Team name or ID (falls back to default-team / LINEAR_CLI_TEAM)' -r
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand statuses; and __fish_seen_subcommand_from get" -s o -l output -d 'Output format (table or json)' -r -f -a "table\t'Display results as formatted tables (default)'
 json\t'Display results as raw JSON'
 ndjson\t'Display results as NDJSON (one JSON object per line)'"
@@ -3787,7 +3824,7 @@ complete -c linear-cli -n "__fish_linear_cli_using_subcommand statuses; and __fi
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand statuses; and __fish_seen_subcommand_from get" -l schema -d 'Print JSON schema version info and exit'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand statuses; and __fish_seen_subcommand_from get" -l no-pager -d 'Disable pager for output (default: auto-detect from terminal)'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand statuses; and __fish_seen_subcommand_from get" -s h -l help -d 'Print help (see more with \'--help\')'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand statuses; and __fish_seen_subcommand_from update" -s t -l team -d 'Team name or ID' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand statuses; and __fish_seen_subcommand_from update" -s t -l team -d 'Team name or ID (falls back to default-team / LINEAR_CLI_TEAM)' -r
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand statuses; and __fish_seen_subcommand_from update" -s n -l name -d 'New name' -r
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand statuses; and __fish_seen_subcommand_from update" -s c -l color -d 'New color (hex)' -r
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand statuses; and __fish_seen_subcommand_from update" -s d -l description -d 'New description' -r
@@ -3828,45 +3865,46 @@ complete -c linear-cli -n "__fish_linear_cli_using_subcommand statuses; and __fi
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand statuses; and __fish_seen_subcommand_from help" -f -a "get" -d 'Get details of a specific status'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand statuses; and __fish_seen_subcommand_from help" -f -a "update" -d 'Update a workflow state'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand statuses; and __fish_seen_subcommand_from help" -f -a "help" -d 'Print this message or the help of the given subcommand(s)'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -s o -l output -d 'Output format (table or json)' -r -f -a "table\t'Display results as formatted tables (default)'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -s o -l output -d 'Output format (table or json)' -r -f -a "table\t'Display results as formatted tables (default)'
 json\t'Display results as raw JSON'
 ndjson\t'Display results as NDJSON (one JSON object per line)'"
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -l color-mode -d 'Color output: auto, always, or never' -r -f -a "auto\t''
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -l color-mode -d 'Color output: auto, always, or never' -r -f -a "auto\t''
 always\t''
 never\t''"
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -l width -d 'Max column width for table output (default: 50)' -r
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -l fields -d 'Limit JSON output to specific fields (comma-separated, supports dot paths)' -r
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -l sort -d 'Sort JSON array output by a field (default: identifier/id when available)' -r
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -l order -d 'Sort order for JSON array output' -r -f -a "asc\t''
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -l width -d 'Max column width for table output (default: 50)' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -l fields -d 'Limit JSON output to specific fields (comma-separated, supports dot paths)' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -l sort -d 'Sort JSON array output by a field (default: identifier/id when available)' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -l order -d 'Sort order for JSON array output' -r -f -a "asc\t''
 desc\t''"
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -l profile -d 'Override workspace profile for this invocation' -r
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -l format -d 'Output using a template (e.g. \'{{identifier}} {{title}}\')' -r
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -l filter -d 'Filter results (field=value, field!=value, field~=value). Supports dot-notation for nested fields (e.g. state.name=Done). ~= is a case-insensitive "contains" match. All comparisons are case-insensitive. Multiple --filter flags are combined with AND logic' -r
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -l limit -d 'Max results to return for list/search commands' -r
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -l after -d 'Pagination cursor to start after' -r
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -l before -d 'Pagination cursor to end before' -r
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -l page-size -d 'Page size per request for list/search commands' -r
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -l cache-ttl -d 'Override cache TTL in seconds' -r
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -l retry -d 'Number of retries for failed API requests (with exponential backoff)' -r
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -s q -l quiet -d 'Suppress decorative output (headers, separators, tips) - for scripting'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -l id-only -d 'Only output IDs of created/updated resources - for chaining commands'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -l no-color -d 'Disable color output'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -l no-truncate -d 'Disable truncation for table output'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -l compact -d 'Emit compact JSON without pretty formatting'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -l fail-on-empty -d 'Exit with non-zero status when a list is empty'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -l all -d 'Fetch all pages for list/search commands'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -l no-cache -d 'Disable cache usage for this invocation'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -l dry-run -d 'Preview without making changes where supported'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -l yes -d 'Auto-confirm all prompts (deletes, destructive operations)'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -l schema -d 'Print JSON schema version info and exit'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -l no-pager -d 'Disable pager for output (default: auto-detect from terminal)'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -s h -l help -d 'Print help (see more with \'--help\')'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -f -a "checkout" -d 'Checkout a branch for an issue (creates if doesn\'t exist)'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -f -a "branch" -d 'Show the branch name for an issue'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -f -a "create" -d 'Create a branch for an issue without checking out'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -f -a "commits" -d 'Show commits with Linear issue trailers (jj only)'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -f -a "pr" -d 'Create a GitHub PR from a Linear issue'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits pr help" -f -a "help" -d 'Print this message or the help of the given subcommand(s)'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -l profile -d 'Override workspace profile for this invocation' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -l format -d 'Output using a template (e.g. \'{{identifier}} {{title}}\')' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -l filter -d 'Filter results (field=value, field!=value, field~=value). Supports dot-notation for nested fields (e.g. state.name=Done). ~= is a case-insensitive "contains" match. All comparisons are case-insensitive. Multiple --filter flags are combined with AND logic' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -l limit -d 'Max results to return for list/search commands' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -l after -d 'Pagination cursor to start after' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -l before -d 'Pagination cursor to end before' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -l page-size -d 'Page size per request for list/search commands' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -l cache-ttl -d 'Override cache TTL in seconds' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -l retry -d 'Number of retries for failed API requests (with exponential backoff)' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -s q -l quiet -d 'Suppress decorative output (headers, separators, tips) - for scripting'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -l id-only -d 'Only output IDs of created/updated resources - for chaining commands'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -l no-color -d 'Disable color output'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -l no-truncate -d 'Disable truncation for table output'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -l compact -d 'Emit compact JSON without pretty formatting'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -l fail-on-empty -d 'Exit with non-zero status when a list is empty'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -l all -d 'Fetch all pages for list/search commands'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -l no-cache -d 'Disable cache usage for this invocation'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -l dry-run -d 'Preview without making changes where supported'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -l yes -d 'Auto-confirm all prompts (deletes, destructive operations)'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -l schema -d 'Print JSON schema version info and exit'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -l no-pager -d 'Disable pager for output (default: auto-detect from terminal)'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -s h -l help -d 'Print help (see more with \'--help\')'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -f -a "checkout" -d 'Checkout a branch for an issue (creates if doesn\'t exist)'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -f -a "branch" -d 'Show the branch name for an issue'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -f -a "create" -d 'Create a branch for an issue without checking out'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -f -a "commits" -d 'Show commits with Linear issue trailers (jj only)'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -f -a "review-url" -d 'Show the Linear review URL for an issue\'s pull request(s)'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -f -a "pr" -d 'Create a GitHub PR from a Linear issue'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and not __fish_seen_subcommand_from checkout branch create commits review-url pr help" -f -a "help" -d 'Print this message or the help of the given subcommand(s)'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from checkout" -s b -l branch -d 'Custom branch name (optional, uses issue\'s branch name by default)' -r
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from checkout" -l vcs -d 'Version control system to use (auto-detected by default)' -r -f -a "git\t'Git version control'
 jj\t'Jujutsu (jj) version control'"
@@ -4009,6 +4047,39 @@ complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_se
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from commits" -l schema -d 'Print JSON schema version info and exit'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from commits" -l no-pager -d 'Disable pager for output (default: auto-detect from terminal)'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from commits" -s h -l help -d 'Print help (see more with \'--help\')'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -s o -l output -d 'Output format (table or json)' -r -f -a "table\t'Display results as formatted tables (default)'
+json\t'Display results as raw JSON'
+ndjson\t'Display results as NDJSON (one JSON object per line)'"
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -l color-mode -d 'Color output: auto, always, or never' -r -f -a "auto\t''
+always\t''
+never\t''"
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -l width -d 'Max column width for table output (default: 50)' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -l fields -d 'Limit JSON output to specific fields (comma-separated, supports dot paths)' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -l sort -d 'Sort JSON array output by a field (default: identifier/id when available)' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -l order -d 'Sort order for JSON array output' -r -f -a "asc\t''
+desc\t''"
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -l profile -d 'Override workspace profile for this invocation' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -l format -d 'Output using a template (e.g. \'{{identifier}} {{title}}\')' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -l filter -d 'Filter results (field=value, field!=value, field~=value). Supports dot-notation for nested fields (e.g. state.name=Done). ~= is a case-insensitive "contains" match. All comparisons are case-insensitive. Multiple --filter flags are combined with AND logic' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -l limit -d 'Max results to return for list/search commands' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -l after -d 'Pagination cursor to start after' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -l before -d 'Pagination cursor to end before' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -l page-size -d 'Page size per request for list/search commands' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -l cache-ttl -d 'Override cache TTL in seconds' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -l retry -d 'Number of retries for failed API requests (with exponential backoff)' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -s q -l quiet -d 'Suppress decorative output (headers, separators, tips) - for scripting'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -l id-only -d 'Only output IDs of created/updated resources - for chaining commands'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -l no-color -d 'Disable color output'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -l no-truncate -d 'Disable truncation for table output'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -l compact -d 'Emit compact JSON without pretty formatting'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -l fail-on-empty -d 'Exit with non-zero status when a list is empty'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -l all -d 'Fetch all pages for list/search commands'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -l no-cache -d 'Disable cache usage for this invocation'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -l dry-run -d 'Preview without making changes where supported'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -l yes -d 'Auto-confirm all prompts (deletes, destructive operations)'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -l schema -d 'Print JSON schema version info and exit'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -l no-pager -d 'Disable pager for output (default: auto-detect from terminal)'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from review-url" -s h -l help -d 'Print help (see more with \'--help\')'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from pr" -s B -l base -d 'Base branch to merge into (default: main)' -r
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from pr" -s o -l output -d 'Output format (table or json)' -r -f -a "table\t'Display results as formatted tables (default)'
 json\t'Display results as raw JSON'
@@ -4049,6 +4120,7 @@ complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_se
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from help" -f -a "branch" -d 'Show the branch name for an issue'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from help" -f -a "create" -d 'Create a branch for an issue without checking out'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from help" -f -a "commits" -d 'Show commits with Linear issue trailers (jj only)'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from help" -f -a "review-url" -d 'Show the Linear review URL for an issue\'s pull request(s)'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from help" -f -a "pr" -d 'Create a GitHub PR from a Linear issue'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand git; and __fish_seen_subcommand_from help" -f -a "help" -d 'Print this message or the help of the given subcommand(s)'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand bulk; and not __fish_seen_subcommand_from update-state assign label unassign help" -s o -l output -d 'Output format (table or json)' -r -f -a "table\t'Display results as formatted tables (default)'
@@ -7724,7 +7796,7 @@ complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and not __
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and not __fish_seen_subcommand_from status progress plan carry-over burndown velocity help" -f -a "burndown" -d 'Show ASCII burndown chart for current sprint'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and not __fish_seen_subcommand_from status progress plan carry-over burndown velocity help" -f -a "velocity" -d 'Show sprint velocity across recent cycles'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and not __fish_seen_subcommand_from status progress plan carry-over burndown velocity help" -f -a "help" -d 'Print this message or the help of the given subcommand(s)'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from status" -s t -l team -d 'Team key, name, or ID' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from status" -s t -l team -d 'Team key, name, or ID (falls back to default-team / LINEAR_CLI_TEAM)' -r
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from status" -s o -l output -d 'Output format (table or json)' -r -f -a "table\t'Display results as formatted tables (default)'
 json\t'Display results as raw JSON'
 ndjson\t'Display results as NDJSON (one JSON object per line)'"
@@ -7758,7 +7830,7 @@ complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from status" -l schema -d 'Print JSON schema version info and exit'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from status" -l no-pager -d 'Disable pager for output (default: auto-detect from terminal)'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from status" -s h -l help -d 'Print help (see more with \'--help\')'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from progress" -s t -l team -d 'Team key, name, or ID' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from progress" -s t -l team -d 'Team key, name, or ID (falls back to default-team / LINEAR_CLI_TEAM)' -r
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from progress" -s o -l output -d 'Output format (table or json)' -r -f -a "table\t'Display results as formatted tables (default)'
 json\t'Display results as raw JSON'
 ndjson\t'Display results as NDJSON (one JSON object per line)'"
@@ -7792,7 +7864,7 @@ complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from progress" -l schema -d 'Print JSON schema version info and exit'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from progress" -l no-pager -d 'Disable pager for output (default: auto-detect from terminal)'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from progress" -s h -l help -d 'Print help (see more with \'--help\')'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from plan" -s t -l team -d 'Team key, name, or ID' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from plan" -s t -l team -d 'Team key, name, or ID (falls back to default-team / LINEAR_CLI_TEAM)' -r
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from plan" -s o -l output -d 'Output format (table or json)' -r -f -a "table\t'Display results as formatted tables (default)'
 json\t'Display results as raw JSON'
 ndjson\t'Display results as NDJSON (one JSON object per line)'"
@@ -7826,7 +7898,7 @@ complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from plan" -l schema -d 'Print JSON schema version info and exit'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from plan" -l no-pager -d 'Disable pager for output (default: auto-detect from terminal)'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from plan" -s h -l help -d 'Print help (see more with \'--help\')'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from carry-over" -s t -l team -d 'Team key, name, or ID' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from carry-over" -s t -l team -d 'Team key, name, or ID (falls back to default-team / LINEAR_CLI_TEAM)' -r
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from carry-over" -s o -l output -d 'Output format (table or json)' -r -f -a "table\t'Display results as formatted tables (default)'
 json\t'Display results as raw JSON'
 ndjson\t'Display results as NDJSON (one JSON object per line)'"
@@ -7861,7 +7933,7 @@ complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from carry-over" -l schema -d 'Print JSON schema version info and exit'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from carry-over" -l no-pager -d 'Disable pager for output (default: auto-detect from terminal)'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from carry-over" -s h -l help -d 'Print help (see more with \'--help\')'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from burndown" -s t -l team -d 'Team key, name, or ID' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from burndown" -s t -l team -d 'Team key, name, or ID (falls back to default-team / LINEAR_CLI_TEAM)' -r
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from burndown" -l width -d 'Chart width in characters (default: 60)' -r
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from burndown" -l height -d 'Chart height in lines (default: 15)' -r
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from burndown" -s o -l output -d 'Output format (table or json)' -r -f -a "table\t'Display results as formatted tables (default)'
@@ -7896,7 +7968,7 @@ complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from burndown" -l schema -d 'Print JSON schema version info and exit'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from burndown" -l no-pager -d 'Disable pager for output (default: auto-detect from terminal)'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from burndown" -s h -l help -d 'Print help (see more with \'--help\')'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from velocity" -s t -l team -d 'Team key, name, or ID' -r
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from velocity" -s t -l team -d 'Team key, name, or ID (falls back to default-team / LINEAR_CLI_TEAM)' -r
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from velocity" -s n -l count -d 'Number of past cycles to analyze (default: 6)' -r
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand sprint; and __fish_seen_subcommand_from velocity" -s o -l output -d 'Output format (table or json)' -r -f -a "table\t'Display results as formatted tables (default)'
 json\t'Display results as raw JSON'
@@ -8512,7 +8584,7 @@ complete -c linear-cli -n "__fish_linear_cli_using_subcommand help; and not __fi
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand help; and not __fish_seen_subcommand_from common agent update attachments auth doctor api projects project-updates issues labels teams users cycles comments documents search sync statuses git bulk cache notifications templates time uploads interactive context favorites roadmaps initiatives triage metrics milestones export import history views webhooks watch relations whoami done setup sprint completions _complete config help" -f -a "sprint" -d 'Sprint planning - manage cycle-based sprints'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand help; and not __fish_seen_subcommand_from common agent update attachments auth doctor api projects project-updates issues labels teams users cycles comments documents search sync statuses git bulk cache notifications templates time uploads interactive context favorites roadmaps initiatives triage metrics milestones export import history views webhooks watch relations whoami done setup sprint completions _complete config help" -f -a "completions" -d 'Generate shell completions'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand help; and not __fish_seen_subcommand_from common agent update attachments auth doctor api projects project-updates issues labels teams users cycles comments documents search sync statuses git bulk cache notifications templates time uploads interactive context favorites roadmaps initiatives triage metrics milestones export import history views webhooks watch relations whoami done setup sprint completions _complete config help" -f -a "_complete" -d 'Internal: provide dynamic completion values (hidden from help)'
-complete -c linear-cli -n "__fish_linear_cli_using_subcommand help; and not __fish_seen_subcommand_from common agent update attachments auth doctor api projects project-updates issues labels teams users cycles comments documents search sync statuses git bulk cache notifications templates time uploads interactive context favorites roadmaps initiatives triage metrics milestones export import history views webhooks watch relations whoami done setup sprint completions _complete config help" -f -a "config" -d 'Configure CLI settings - API keys and workspaces'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand help; and not __fish_seen_subcommand_from common agent update attachments auth doctor api projects project-updates issues labels teams users cycles comments documents search sync statuses git bulk cache notifications templates time uploads interactive context favorites roadmaps initiatives triage metrics milestones export import history views webhooks watch relations whoami done setup sprint completions _complete config help" -f -a "config" -d 'Configure CLI settings - API keys, default team, and workspaces'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand help; and not __fish_seen_subcommand_from common agent update attachments auth doctor api projects project-updates issues labels teams users cycles comments documents search sync statuses git bulk cache notifications templates time uploads interactive context favorites roadmaps initiatives triage metrics milestones export import history views webhooks watch relations whoami done setup sprint completions _complete config help" -f -a "help" -d 'Print this message or the help of the given subcommand(s)'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand help; and __fish_seen_subcommand_from attachments" -f -a "list" -d 'List attachments for an issue'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand help; and __fish_seen_subcommand_from attachments" -f -a "get" -d 'Get attachment details'
@@ -8523,6 +8595,7 @@ complete -c linear-cli -n "__fish_linear_cli_using_subcommand help; and __fish_s
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand help; and __fish_seen_subcommand_from auth" -f -a "login" -d 'Store API key for the current profile'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand help; and __fish_seen_subcommand_from auth" -f -a "logout" -d 'Remove API key for the current profile'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand help; and __fish_seen_subcommand_from auth" -f -a "status" -d 'Show current auth status'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand help; and __fish_seen_subcommand_from auth" -f -a "migrate" -d 'Migrate API keys from config file to OS keyring'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand help; and __fish_seen_subcommand_from auth" -f -a "oauth" -d 'Authenticate via OAuth 2.0 (browser-based)'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand help; and __fish_seen_subcommand_from auth" -f -a "revoke" -d 'Revoke OAuth tokens for the current profile'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand help; and __fish_seen_subcommand_from api" -f -a "query" -d 'Execute a raw GraphQL query'
@@ -8601,6 +8674,7 @@ complete -c linear-cli -n "__fish_linear_cli_using_subcommand help; and __fish_s
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand help; and __fish_seen_subcommand_from git" -f -a "branch" -d 'Show the branch name for an issue'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand help; and __fish_seen_subcommand_from git" -f -a "create" -d 'Create a branch for an issue without checking out'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand help; and __fish_seen_subcommand_from git" -f -a "commits" -d 'Show commits with Linear issue trailers (jj only)'
+complete -c linear-cli -n "__fish_linear_cli_using_subcommand help; and __fish_seen_subcommand_from git" -f -a "review-url" -d 'Show the Linear review URL for an issue\'s pull request(s)'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand help; and __fish_seen_subcommand_from git" -f -a "pr" -d 'Create a GitHub PR from a Linear issue'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand help; and __fish_seen_subcommand_from bulk" -f -a "update-state" -d 'Update the state of multiple issues'
 complete -c linear-cli -n "__fish_linear_cli_using_subcommand help; and __fish_seen_subcommand_from bulk" -f -a "assign" -d 'Assign multiple issues to a user'

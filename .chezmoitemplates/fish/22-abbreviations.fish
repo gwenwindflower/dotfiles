@@ -140,6 +140,9 @@ abbr --add ldr lazydocker
 # linear cli
 abbr --add lin linear-cli
 abbr --add linear linear-cli
+abbr --add lini linear-cli issues
+abbr --add linils linear-cli issues list
+abbr --add linilsm 'linear-cli issues list --assignee "Gwyneth Windflower"'
 # brew
 abbr --add brx brewdo
 abbr --add bri "brew update; brew install"
