@@ -1,15 +1,18 @@
 ---
-name: rem-cli
+allowed-tools: Bash(rem *) Bash(echo *)
+argument-hint: '[natural language request]'
+compatibility: Requires macOS with the rem CLI installed (https://rem.sidv.dev)
 description: Create, list, update, complete, tag, and search macOS Reminders via the rem CLI. Use when the user wants to manage Apple Reminders from the terminal, automate reminder workflows, reference reminders in shell scripts, or schedule anything on macOS.
 license: MIT
-compatibility: Requires macOS with the rem CLI installed (https://rem.sidv.dev)
-allowed-tools: Bash(rem *) Bash(echo *)
-argument-hint: "[natural language request]"
 metadata:
-  author: BRO3886
-  homepage: https://github.com/BRO3886/rem
+    author: BRO3886
+    github-path: skills/rem-cli
+    github-ref: refs/tags/v0.12.0
+    github-repo: https://github.com/BRO3886/rem
+    github-tree-sha: bc9d5e8928ace95d018f97734b11db83a188e23c
+    homepage: https://github.com/BRO3886/rem
+name: rem-cli
 ---
-
 # rem — macOS Reminders from the terminal
 
 rem is a single-binary Go CLI that reads and writes the Apple Reminders database in under 200ms via EventKit (cgo). Every `rem` invocation is fast and safe to run.
@@ -59,7 +62,7 @@ Do NOT use rem for:
 | "find reminders about X" | `rem search "X"` |
 | "flag / unflag X" | `rem flag <short-id>...` or `rem unflag <short-id>...` (supports multiple IDs) |
 | "show me flagged stuff" | `rem list --flagged` |
-| "move X to list Y" | `rem update <short-id> --list "Y"` (shared-list moves recreate the ID; honor existing task authority and re-resolve it — see gotchas) |
+| "move X to list Y" | `rem update <short-id> --list "Y"` (if Y or source is shared: confirm with user first, then `-f` — see gotchas) |
 | "change priority to high" | `rem update <short-id> --priority high` |
 | "add notes to X" | `rem update <short-id> --notes "..."` |
 | "tag this as work" / "add tags" | `rem add "Task #work"` or `rem update <short-id> --add-tags "work,urgent"` |
@@ -139,14 +142,14 @@ rem update AB12 --url ""    # clear
 3. **`--due none` clears** the due date in `rem update`. Same for `--remind-me none` and `--repeat none`.
 4. **Flagged and tags use private API.** Both go through Apple's private ReminderKit framework since EventKit doesn't expose these properties. Sub-200ms like everything else, but may break on future macOS versions. Both degrade gracefully — if the private API is unavailable, the reminder is still created/updated (just without the flag/tags) and a warning is printed on stderr. This applies to `flag`/`unflag` too, which behave exactly like `update --flagged`.
 5. **Tags from title are additive.** `#hashtags` in the title are parsed and stored as native Reminders.app tags. They stay in the title text AND become tag objects. Pure numbers like `#42` are ignored (treated as issue references, not tags).
-6. **`rem delete` prompts by default.** Use its confirmation flag only for the explicitly authorized items after any required batch review. A script is not authority to delete more items.
+6. **`rem delete` prompts by default.** Pass `--force` / `--yes` / `-f` / `-y` when scripting to skip the confirmation.
 7. **`rem add -i` (interactive form) has no `--silent` equivalent.** If a user wants a silent reminder via the interactive flow, create it then clear the alarm in the same Bash call: `id=$(rem add "Task" --due tomorrow -o json | jq -r '.id'); rem update "$id" --remind-me none`.
 8. **Location alarms save even without Location Services, but never fire.** rem writes the geofence via public EventKit regardless; the notification only fires if Location Services is enabled for Reminders on the device watching the fence (usually the user's iPhone). If a user reports a location reminder "not working", that's the first thing to check — not rem.
 9. **Old reminders with URLs in the notes body** (`URL: https://...`) still read correctly as a backward-compat fallback. New reminders always use the native URL field.
 10. **Moving to/from a shared list changes the reminder's ID — and rem prompts before doing it.** macOS has no true move across a shared-list boundary, so rem copies the reminder (all fields preserved, including completed state) and deletes the original. Without `-y`, `rem update --list` blocks on a confirmation you cannot answer (TTY prompt; non-TTY it errors). Procedure for a move involving a shared list:
    1. Detect: `rem lists -o json | jq -r '.[] | select(.IsShared) | .Name'` — if neither source nor target list is in that output, move normally, no flag needed.
-   2. If one is shared: establish the intended destination and account for the recreated ID. A user request for this specific move supplies authority; ask only when the destination or sharing scope is unresolved.
-   3. Run the authorized move with the tool's confirmation flag: `rem update <id> --list "Shared List" -f`.
+   2. If one is shared: tell the user the reminder will be recreated with a new ID and confirm with them — do NOT silently pass `-y`; the prompt exists to protect their data on a list other people see.
+   3. Run with the flag once confirmed: `rem update <id> --list "Shared List" -f`.
    4. Re-resolve the ID: the old short ID is dead. Find the new one with `rem list --list "Shared List" -o json` (the stderr warning also prints it).
 
 ## Reference files (load when needed)
@@ -157,7 +160,6 @@ rem update AB12 --url ""    # clear
 ## Common patterns
 
 ### Daily briefing — one tool call, not three
-
 ```bash
 echo "== OVERDUE =="; rem overdue -o plain; echo "== TODAY =="; rem today -o plain; echo "== NEXT 3 DAYS =="; rem upcoming --days 3 -o plain
 ```
@@ -165,7 +167,6 @@ echo "== OVERDUE =="; rem overdue -o plain; echo "== TODAY =="; rem today -o pla
 Chain with plain `;` (no `{ }` subshell grouping, no `$(...)` substitution) — permission allowlists check each `;`-separated segment, and `rem`/`echo` are pre-approved by this skill.
 
 ### Scripted cleanup
-
 ```bash
 # Archive completed Work items to a JSON backup
 rem export --list Work --format json --output-file work-$(date +%Y%m%d).json
@@ -175,7 +176,6 @@ rem overdue -o json | jq 'length'
 ```
 
 ### Quick capture from a user message
-
 When the user says something like "remind me to call mom tomorrow at 5pm", parse the title, due date, and list (if mentioned) and run a single `rem add`:
 
 ```bash

@@ -109,6 +109,15 @@
       "installedAt": "2026-09-03T13:25:16Z",
       "updatedAt": "2026-09-06T22:08:42Z"
     },
+    "rem-cli": {
+      "source": "BRO3886/rem",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/BRO3886/rem.git",
+      "skillPath": "skills/rem-cli/SKILL.md",
+      "skillFolderHash": "bc9d5e8928ace95d018f97734b11db83a188e23c",
+      "installedAt": "2026-09-16T00:04:21Z",
+      "updatedAt": "2026-09-16T00:04:21Z"
+    },
     "worktrunk": {
       "source": "max-sixty/worktrunk",
       "sourceType": "github",
