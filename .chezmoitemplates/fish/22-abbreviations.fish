@@ -192,11 +192,11 @@ abbr --add skiup aubx skills@latest update
 ## agent tools
 ### usage
 abbr --add ccu bunx ccusage@latest
-### ck
-abbr --add cki ck --index .
-abbr --add cks ck --sem
-abbr --add ckl ck --lex
-abbr --add ckh ck --hybrid
+### zvec-grep
+abbr --add zgq zg query
+abbr --add zgi zg index
+abbr --add zgs zg status
+abbr --add zgsv zg server
 ### agent-browser
 abbr --add abrow agent-browser
 # obsiidian and notes

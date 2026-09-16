@@ -15,6 +15,8 @@ set -gx CLAUDE_HOME $HOME/.claude
 set -gx OPENCODE_ENABLE_EXA 1
 ### AGENTSVIEW
 set -gx AGENTSVIEW_DATA_DIR $XDG_DATA_HOME/agentsview
+### zvec-grep — default model for new workspace indexes; existing indexes keep theirs
+set -gx ZVEC_GREP_EMBEDDING local/potion-code-16m-v2
 ### Local embeddings — qmd reads the same Qwen3 GGUF that llama-server
 ### downloads into the HF hub cache for agentsview (unset until first download)
 if count $HOME/.cache/huggingface/hub/models--Qwen--Qwen3-Embedding-0.6B-GGUF/snapshots/*/Qwen3-Embedding-0.6B-Q8_0.gguf >/dev/null

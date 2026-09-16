@@ -92,6 +92,7 @@ glob_scan_max_depth = 4
 ".config/.wrangler" = "write"  # cloudflare
 ".context7" = "write"
 ".critique" = "write"
+".zvec-grep" = "write"  # zg daemon state, config, model cache
 ".dbt" = "read"
 ".docker" = "read"
 ".duckdb" = "write"
@@ -364,6 +365,7 @@ exclude = [
 
 [shell_environment_policy.set]
 GIT_OPTIONAL_LOCKS = "0"
+ZVEC_GREP_EMBEDDING = "local/potion-code-16m-v2"
 GIT_CONFIG_COUNT = "3"
 GIT_CONFIG_KEY_0 = "commit.gpgsign"
 GIT_CONFIG_VALUE_0 = "false"

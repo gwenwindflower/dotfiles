@@ -55,7 +55,7 @@ dot_agents/                       # → ~/.agents/ (shared agent hub)
   exact_skills/                   # Pruned-on-apply skill collection
 
 symlink_dot_gitconfig.tmpl        # → symsources/git/gitconfig (externally writable; native git [include]s pull fragments from ~/.config/git/)
-dot_gitignore_global              # → ~/.gitignore_global
+private_dot_config/git/global_ignore  # → ~/.config/git/global_ignore (git core.excludesfile)
 dot_bashrc, dot_zshrc             # Minimal configs (worktrunk init, starship, zoxide)
 dot_profile.tmpl, dot_zprofile.tmpl  # Login shells (SHELL export, darwin SSH agent)
 private_dot_ssh/                  # → ~/.ssh/ (allowed_signers)

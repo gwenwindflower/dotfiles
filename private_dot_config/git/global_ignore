@@ -15,6 +15,7 @@ id_ed25519
 __pycache__
 .pytest_cache
 .ruff_cache
+.zvec-grep
 node_modules
 .pnpm-store
 *.swp

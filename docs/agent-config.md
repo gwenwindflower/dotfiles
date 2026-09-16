@@ -80,6 +80,7 @@ A trailing ` *` in a `Bash(...)` rule matches either more characters or the end 
 | [Remote environments](capabilities/environments.md) | Run in disposable exe.dev, Sprite, or microsandbox environments that carry the same dotfiles and guidance as the workstation. |
 | [Obsidian notes](capabilities/notes.md) | Read and capture in girlOS from any project; perform targeted task and note edits when explicitly requested. |
 | [Tasks and Reminders](capabilities/tasks.md) | Give every macOS harness access to Obsidian Tasks and Apple Reminders for reliable reconciliation, organization, and scheduling. |
+| [Local search](capabilities/search.md) | Route discovery to the indexed search tool for each corpus (code and mixed workspaces, markdown knowledge bases, agent session history) with index upkeep kept routine and local. |
 | [Integrations](capabilities/integrations.md) | Use browsers, services, and artifact tools without embedding credentials or broad implicit authority. |
 | [Session runtime](capabilities/session.md) | Give subprocesses stable environment, lifecycle, and state-reporting behavior. |
 | [Interaction](capabilities/interaction.md) | Preserve a consistent terminal interaction model across different agent interfaces. |
@@ -102,6 +103,7 @@ A trailing ` *` in a `Bash(...)` rule matches either more characters or the end 
 | [Development](capabilities/development.md) and [context](capabilities/context.md) | `gh skill` owns external skills; routine install/update/search is allowed, destructive replacement is reviewed. Configured package-manager upgrades are routine. Task runners need global review with specific project authority. |
 | [Git](capabilities/git.md) and [integrations](capabilities/integrations.md) | Ordinary pushes and guarded merges include trunk workflows on main. Block forced cleanup and remote ref deletion. Publish only through reviewed project release tasks on explicit request; confidential project material follows repo-local policy. |
 | [Notes](capabilities/notes.md) and [tasks](capabilities/tasks.md) | Individual requested changes are routine across projects. Review batches as a change set. Vault administration is manual-only. |
+| [Local search](capabilities/search.md) and [development](capabilities/development.md) | Querying and refreshing local indexes is routine; dropping an index or granting remote embedding is reviewed. Model downloads happen outside the sandbox. |
 | [Context](capabilities/context.md) and [session](capabilities/session.md) | OpenCode uses native global/project AGENTS.md discovery. Preserve deliberate environment filtering and helper ownership. |
 
 A project allow cannot override a matching global ask in Claude or a global prompt in Codex: their strongest matching decision wins. OpenCode's later project rules can specialize global asks. Claude/Codex therefore use contextual review and shared guidance for task runners, with no blanket runner allow or hard global runner ask; trusted project policy can authorize specific tasks. This is a behavioral boundary, not a guaranteed per-invocation prompt. Native runner trust, task authorization, and harness policy remain distinct controls.

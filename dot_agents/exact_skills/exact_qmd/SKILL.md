@@ -1,6 +1,6 @@
 ---
 name: qmd
-description: Search local markdown knowledge bases, notes, docs, and wikis with QMD — including the Obsidian vault (girlos). Use when users ask to find notes, retrieve documents, inspect a wiki, answer from indexed markdown, or set up QMD access. For searching codebases use ck instead; for searching past agent sessions use agentsview.
+description: Search local markdown knowledge bases, notes, docs, and wikis with QMD — including the Obsidian vault (girlos). Use when users ask to find notes, retrieve documents, inspect a wiki, answer from indexed markdown, or set up QMD access. For searching code or mixed-content workspaces use zvec-grep (`zg`) instead; for searching past agent sessions use agentsview-finding-history.
 license: MIT
 compatibility: Requires qmd CLI or MCP server. Install via `npm install -g @tobilu/qmd`.
 metadata:

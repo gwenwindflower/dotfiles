@@ -7,6 +7,7 @@ node = ["lts", "latest"]
 "npm:mint" = "latest"
 "npm:portless" = "latest"
 "npm:supabase" = "latest"
+"npm:@zvec/zvec-grep" = "latest"
 
 [settings]
 npm.package_manager = "pnpm"
