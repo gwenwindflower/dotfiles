@@ -1,6 +1,6 @@
 {
   "LazyVim": { "branch": "main", "commit": "999700997f72227187d49d8b92667183dc7fc809" },
-  "SchemaStore.nvim": { "branch": "main", "commit": "72d144a9e014646963b8a5c67a4fde19b9772528" },
+  "SchemaStore.nvim": { "branch": "main", "commit": "b93515ed6410381cd4e9ccc875fe73f092ff421b" },
   "aerial.nvim": { "branch": "master", "commit": "28fe6e822ae344544c379d60fcb13c9519a1f08a" },
   "blink-copilot": { "branch": "main", "commit": "7ad8209b2f880a2840c94cdcd80ab4dc511d4f39" },
   "blink.cmp": { "branch": "main", "commit": "473c928d8b9b5b3f638cd085a01899972cf205c6" },
@@ -65,8 +65,8 @@
   "plenary.nvim": { "branch": "master", "commit": "74b06c6c75e4eeb3108ec01852001636d85a932b" },
   "presenterm.nvim": { "branch": "main", "commit": "610ad9e44abbcff3fe41c71f14e42622b4f9a6f7" },
   "provisions.nvim": { "branch": "main", "commit": "0bbbeb33f54fd77d90e24d2551d6d7881054dc05" },
-  "render-markdown.nvim": { "branch": "main", "commit": "a778444a73080301a50c4a6f58c90d7e094dd59e" },
-  "rustaceanvim": { "branch": "main", "commit": "a8c4f9af91fddb9156f1a3f7d0806de74e62488e" },
+  "render-markdown.nvim": { "branch": "main", "commit": "640a3ec6d538bad17c328be373c7cad0293d9589" },
+  "rustaceanvim": { "branch": "main", "commit": "a968f5133b8b24f481de12f08cd79420d1ace559" },
   "sidekick.nvim": { "branch": "main", "commit": "3d80a47e6375f6d647c9695d3afea6fa1b3275df" },
   "smear-cursor.nvim": { "branch": "main", "commit": "9e9378d6ee34bb3782e0e8c63d9ec8ca618b479b" },
   "snacks.nvim": { "branch": "main", "commit": "882c996cf28183f4d63640de0b4c02ec886d01f2" },
@@ -83,5 +83,5 @@
   "vim-illuminate": { "branch": "master", "commit": "1cc33d347c574c3bd21a4852fc9ffed677c1c58c" },
   "which-key.nvim": { "branch": "main", "commit": "3aab2147e74890957785941f0c1ad87d0a44c15a" },
   "yanky.nvim": { "branch": "main", "commit": "dd6689fdda85f66cab7d9b1a1664625f3be0920d" },
-  "yazi.nvim": { "branch": "main", "commit": "82d287b80b504b3da4686d17f59b1bb2c9e47ac9" }
+  "yazi.nvim": { "branch": "main", "commit": "415d7ab69a5d969ce63e10ea2824aaab8d0a2a46" }
 }
