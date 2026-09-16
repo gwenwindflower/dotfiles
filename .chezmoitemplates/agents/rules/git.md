@@ -26,11 +26,22 @@ Trailer order: GitHub closing keywords (`Closes #12`), then attribution (`Co-Aut
 
 Keep history linear. Use `git pull --ff-only`; if histories diverge, inspect them and explicitly rebase the session's owned work onto the intended upstream. Rebase/fixup/squash may rewrite an owned feature branch, never a shared or protected branch. Only `--force-with-lease` on an owned feature branch is an acceptable force push. **Never** create a merge commit. Default to trunk-based development unless the project says otherwise.
 
-Ordinary pushes and guarded merges follow the task and repository policy, including pushes to `main` in trunk workflows. A native review gate may still run; existing user authorization remains valid.
+Task-authorized normal pushes to a verified non-protected branch on the intended remote are routine. Resolve the actual destination from refspecs and push configuration, and check repository protection policy; branch names alone do not establish protection. Shared/protected targets need explicit task or repository authority, including `main` in trunk workflows. Guarded merges follow repository policy.
+
+A clean rebase of the session's owned, non-shared feature branch onto `main` or `origin/main` is routine after inspecting the upstream, confirming no operation is in progress, and preserving the recovery state below. Continuing after understood conflicts are resolved, or aborting to recover, is routine. Complex rebases and force-with-lease pushes need contextual review of their concrete effects.
+
+Use automatic evaluation for these routine operations where the harness supports it; do not ask the user again solely because a command pushes commits or rebases owned work. Existing task authorization remains valid. Never add a blanket execution allow to bypass sandbox or native review; uncertain ownership, destination, protection, or recovery state must be resolved first.
 
 #### Worktrees and cleanup
 
 Prefer `wt switch`, `wt merge`, and `wt remove` for worktrees. Preserve hooks, clean-worktree and integration checks, and project trust approvals; do not bypass them with `--yes`, `--no-hooks`, or force flags. Direct `git worktree` mutations require review.
+
+Configure Codex Git permissions before launching agents in new worktrees with this hook in `.config/wt.toml`. Trunks defaults to the `dev` permission profile; use `trunks --profile <name>` if the active Codex profile differs.
+
+```toml
+[pre-start]
+trunks-agent-config = "trunks"
+```
 
 Local branch deletion uses lowercase `git branch -d` or guarded Worktrunk cleanup. Forced deletion (`-D`, `--force`, and equivalents) is manual-only. Never delete remote refs or mirror-push; GitHub handles head-branch cleanup after merge.
 
