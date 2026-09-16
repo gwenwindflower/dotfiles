@@ -13,6 +13,11 @@ TODO.md
 biome.json
 .markdownlint.yaml
 .rumdl_cache
+.rumdl.toml
+rumdl.toml
+pyproject.toml
+pre-commit-config.yaml
+prek.toml
 # Logs, backups, and other generated files
 nvim.log
 # Source files for symlinked targets
