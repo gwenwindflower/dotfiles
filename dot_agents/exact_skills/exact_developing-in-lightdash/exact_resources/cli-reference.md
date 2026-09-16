@@ -84,6 +84,8 @@ lightdash lint --format json
 
 ## Download & Upload Content
 
+For resource coverage, project versus organization scope, complete snapshots, and safe agent workflows, read [Content as Code](./content-as-code-reference.md) before using these commands.
+
 ```bash
 # Download all charts and dashboards
 lightdash download
@@ -106,9 +108,98 @@ lightdash upload --charts my-chart --dashboards my-dashboard
 
 # Upload dashboard with all its referenced charts
 lightdash upload --dashboards my-dashboard --include-charts
+
+# Download or upload every organization resource, including Data App themes
+lightdash download --organization
+lightdash upload --organization
+
+# Data-app external connections (enterprise; secrets via env var — see Content as Code)
+lightdash download --include-external-connections
+LIGHTDASH_EXTERNAL_CONNECTION_SECRET_STRIPE_API=sk-... lightdash upload --external-connections stripe-api
 ```
 
+## Data Apps (Enterprise)
+
+Data apps are multi-file bundles under `apps/<app-folder>/` with a `lightdash-app.yml` manifest. See [Content as Code](./content-as-code-reference.md) for how the selection flags combine.
+
+```bash
+# Download ONE specific app (ref = slug, app URL, or UUID) — complete command, do NOT add --include-apps
+lightdash download --apps revenue-explorer
+
+# Download all apps in the project (capped at 50; raise the cap with --apps-limit)
+lightdash download --include-apps
+lightdash download --include-apps --apps-limit 100
+
+# Download only apps, skipping charts, dashboards, and spaces
+lightdash download --apps-only
+
+# Upload one app (slug = the app folder name, URL, or UUID) / every app folder on disk
+lightdash upload --apps revenue-explorer
+lightdash upload --include-apps
+
+# Choose the space (slug or UUID) for apps this upload CREATES — existing apps keep their space
+lightdash upload --apps revenue-explorer --app-space sales
+
+# Create a new app (fresh slug) instead of updating the app referenced by lightdash-app.yml
+lightdash upload --apps revenue-explorer --create-new
+
+# Non-interactive upload of an app that declares custom npm dependencies
+lightdash upload --apps revenue-explorer --allow-custom-dependencies
+```
+
+### Local App Development
+
+```bash
+# Scaffold a new app under ./lightdash/apps/
+lightdash apps create "Revenue Explorer"
+
+# Run an app locally against a real Lightdash instance, authenticated as you
+lightdash apps preview ./lightdash/apps/revenue-explorer
+
+# Validate source, manifest, dependencies, and semantic-layer references
+lightdash apps validate ./lightdash/apps/revenue-explorer
+lightdash apps validate --build   # add the Cloud-parity Vite production build
+lightdash apps validate --live    # validate against fresh project explores instead of the downloaded snapshot
+```
+
+Every created or downloaded app bundle includes its own skills in `.claude/skills/` (`developing-data-apps-locally` and `lightdash-data-app`) — read them before editing app source.
+
 ## SQL Runner
+
+### Warehouse catalog
+
+Discover databases, schemas, and tables using the currently selected project's server-side warehouse credentials. The default output is a terminal table; use `--json` for deterministic machine-readable output.
+
+```bash
+# List all warehouse tables
+lightdash warehouse-catalog
+
+# Filter by exact database and schema names
+lightdash warehouse-catalog --database analytics --schema public
+
+# Return deterministic JSON for an agent or script
+lightdash warehouse-catalog --schema public --json
+
+# Include fields and Lightdash types for one fully qualified table
+lightdash warehouse-catalog --database analytics --schema public --table orders --include-fields --json
+
+# Refetch warehouse metadata and refresh the server cache before listing
+lightdash warehouse-catalog --refresh
+```
+
+**Options:**
+
+- `--database <name>` - Filter by exact database name
+- `--schema <name>` - Filter by exact schema name
+- `--table <name>` - Filter by exact table name
+- `--include-fields` - Include fields and Lightdash types; requires all three filters
+- `--refresh` - Refetch warehouse metadata and refresh the server catalog cache before listing
+- `--json` - Output deterministic JSON instead of a terminal table
+- `--verbose` - Show detailed API request output
+
+The command requires a project selected with `lightdash config set-project` and never returns warehouse credentials or secret connection metadata.
+
+### Run SQL
 
 Execute raw SQL queries against the warehouse using the current project's credentials.
 
@@ -205,17 +296,21 @@ lightdash set-warehouse --project-dir ./dbt --profiles-dir ./profiles --assume-y
 
 ## Command Summary
 
-| Command               | Purpose                          |
-| --------------------- | -------------------------------- |
-| `lightdash login`     | Authenticate with Lightdash      |
-| `lightdash config`    | Manage project selection         |
-| `lightdash deploy`    | Sync semantic layer to Lightdash |
-| `lightdash upload`    | Upload charts/dashboards         |
-| `lightdash download`  | Download charts/dashboards       |
-| `lightdash preview`   | Create temporary test project    |
-| `lightdash validate`  | Validate against server          |
-| `lightdash lint`      | Validate YAML locally            |
-| `lightdash generate`  | Generate YAML from dbt models    |
-| `lightdash sql`       | Run SQL queries                  |
-| `lightdash run-chart` | Execute chart YAML query         |
-| `lightdash set-warehouse` | Update project warehouse connection |
+| Command                       | Purpose                                          |
+| ----------------------------- | ------------------------------------------------ |
+| `lightdash login`             | Authenticate with Lightdash                      |
+| `lightdash config`            | Manage project selection                         |
+| `lightdash deploy`            | Sync semantic layer to Lightdash                 |
+| `lightdash upload`            | Upload project or organization content as code   |
+| `lightdash download`          | Download project or organization content as code |
+| `lightdash preview`           | Create temporary test project                    |
+| `lightdash validate`          | Validate against server                          |
+| `lightdash lint`              | Validate YAML locally                            |
+| `lightdash generate`          | Generate YAML from dbt models                    |
+| `lightdash warehouse-catalog` | Discover warehouse tables and fields             |
+| `lightdash sql`               | Run SQL queries                                  |
+| `lightdash run-chart`         | Execute chart YAML query                         |
+| `lightdash set-warehouse`     | Update project warehouse connection              |
+| `lightdash apps create`       | Scaffold a new data app locally (enterprise)     |
+| `lightdash apps preview`      | Run a data app locally against a real instance   |
+| `lightdash apps validate`     | Validate data app source and references          |
