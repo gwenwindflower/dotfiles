@@ -485,6 +485,7 @@ abbr --add wts wt switch
 abbr --add wtc wt switch -c
 abbr --add wtspr wt switch --prs
 abbr --add wtsm wt switch main
+abbr --add wtmain wt switch main
 abbr --add wtm wt merge
 abbr --add wtt wt step
 abbr --add wtd wt step diff
