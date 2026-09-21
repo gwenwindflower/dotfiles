@@ -6,7 +6,6 @@ packages:
           - anthropics/tap
           - bro3886/tap
           - charmbracelet/tap
-          - columnar-tech/tap
           - databricks/tap
           - dbt-labs/dbt
           - denisotree/tuitab
@@ -185,7 +184,6 @@ packages:
           - claude-code@latest
           - cloudflare-warp
           - codex
-          - dbc
           - font-charter
           - font-cormorant
           - font-eb-garamond
@@ -255,6 +253,7 @@ packages:
     uv:
       core:
         - databow
+        - dbc
         - ipython
         - marimo
         - nbpreview
