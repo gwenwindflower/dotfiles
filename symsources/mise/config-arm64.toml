@@ -1,10 +1,6 @@
-[tool_alias]
-# temporary until next mise release which fixes
-# attestation resolution for transferred gh repos
-aube = "github:aubepkg/aube"
-
 [tools]
 node = ["lts", "latest"]
+aube = "latest"
 
 "npm:@agentclientprotocol/claude-agent-acp" = "latest"
 "npm:@aredotna/cli" = "latest"
@@ -15,10 +11,6 @@ node = ["lts", "latest"]
 "npm:sfw" = "latest"
 "npm:supabase" = "latest"
 "npm:@zvec/zvec-grep" = "latest"
-
-[tools.aube]
-version = "2.2.12"
-# minimum_release_age = "2d"
 
 [settings]
 idiomatic_version_file_enable_tools = ["node"]
