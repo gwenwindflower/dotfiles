@@ -420,6 +420,9 @@ abbr --add ghro gh repo view -w
 abbr --add ghrc gh repo create
 abbr --add ghrcd gh repo create --push --private --source .
 abbr --add ghrcl gh repo clone
+abbr --add ghpr gh pr
+abbr --add ghprc gh pr create
+abbr --add ghprd gh pr diff
 abbr --add ghpro gh pr view -w
 abbr --add ghpru gh pr update-branch --rebase
 abbr --add ghprco gh pr checkout
