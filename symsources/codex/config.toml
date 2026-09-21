@@ -509,6 +509,9 @@ trust_level = "trusted"
 [projects."/Users/winnie/dev/tools/resumeme"]
 trust_level = "trusted"
 
+[projects."/Users/winnie/dev/lightdash/lightdash-library"]
+trust_level = "trusted"
+
 [apps._default]
 enabled = false
 
