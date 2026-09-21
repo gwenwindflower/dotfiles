@@ -224,6 +224,7 @@ packages:
           - postico
           - spotify
           - tailscale-app
+          - thaw
           - zoom
         personal:
           - mitmproxy
