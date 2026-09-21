@@ -63,6 +63,5 @@ macos:
     NSGlobalDomain:
       KeyRepeat: 2
       InitialKeyRepeat: 15
-      # ApplePressAndHoldEnabled: false
     com.apple.dock:
       autohide: true
