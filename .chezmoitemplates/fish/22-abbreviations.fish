@@ -96,6 +96,7 @@ abbr --add tmw twin (basename "$PWD") --cmd
 abbr --add tmh tmux_hint
 # herdr
 abbr --add hrd herdr
+abbr --add hrdld herdr --session lightdash
 abbr --add hrdq herdr server stop
 abbr --add hrdrs "herdr server stop; and herdr"
 abbr --add hrdii herdr integration install
