@@ -97,6 +97,7 @@ glob_scan_max_depth = 4
 ".gitconfig" = "write"
 ".local/state/herdr" = "write"
 "Library/Caches/kitty" = "write"
+"Library/Caches/ms-playwright" = "write"
 ".local/share/graveyard" = "write"  # rip
 ".local/share/chezmoi" = "read"
 "Library/Mobile Documents/iCloud~md~obsidian/Documents/girlOS" = "write"  # notesmd-cli

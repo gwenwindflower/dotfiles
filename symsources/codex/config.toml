@@ -72,6 +72,7 @@ writable_roots = [
   "/Users/winnie/.local/state/herdr",
   "/Users/winnie/.local/state/nvim",
   "/Users/winnie/Library/Caches/kitty",
+  "/Users/winnie/Library/Caches/ms-playwright",
   "/Users/winnie/.local/share/graveyard",
   "/Users/winnie/Library/Mobile Documents/iCloud~md~obsidian/Documents/girlOS",
   "/Users/winnie/.codex/tmp",
