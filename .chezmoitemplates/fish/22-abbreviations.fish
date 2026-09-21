@@ -71,7 +71,15 @@ abbr --add keeb "ee -e $HOME/dev/tinybabykeeb"
 abbr --add ana "ee -e $HOME/dev/lightdash/analytics"
 abbr --add lde "ee -e $HOME/dev/lightdash/lightdash"
 # cloud
-abbr --add gauth "gcloud auth application-default login"
+## gcp
+abbr --add gcld gcloud
+abbr --add gcauth "gcloud auth application-default login"
+abbr --add gccf gcloud config
+abbr --add gccfs gcloud config set
+abbr --add gccfsp gcloud config set project
+abbr --add gccfspa gcloud config set project lightdash-analytics
+abbr --add gccfsphd gcloud config set project lightdash-healthcare-demo
+abbr --add gccfsa gcloud config set account
 # ssh (kitten ssh — macOS only, kitty terminal)
 abbr --add sshk kitten ssh -A
 abbr --add ssha ssh -A
