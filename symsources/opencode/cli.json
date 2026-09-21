@@ -30,5 +30,6 @@
     "input_select_word_backward": "alt+shift+h,ctrl+alt+shift+b,alt+shift+left",
     "input_delete_word_forward": "ctrl+alt+shift+l,alt+d,alt+delete,ctrl+delete",
     "input_delete_word_backward": "ctrl+alt+shift+h,ctrl+w,ctrl+backspace,alt+backspace"
-  }
+  },
+  "plugins": ["./herdr-opencode"]
 }
