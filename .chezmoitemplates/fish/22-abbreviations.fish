@@ -331,6 +331,8 @@ abbr --add cgn cargo init
 abbr --add cgi cargo install
 abbr --add cgii cargo bininstall
 abbr --add cgls cargo install --list
+abbr --add cgiup cargo install-update
+abbr --add cgiupa cargo install-update -a
 abbr --add cga cargo add
 abbr --add cgrm cargo remove
 abbr --add cgx cargo run
