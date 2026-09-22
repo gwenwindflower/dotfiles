@@ -109,8 +109,8 @@ abbr --add hrdpi herdr plugin install
 abbr --add hrdpls herdr plugin list
 abbr --add hrdprm herdr plugin uninstall
 abbr --add hrdpu herdr-updater apply --plugins-only
-## refresh built-in herdr skill documentation to chezmoi
-abbr --add hrdskrf "herdr --skill > ~/.agents/skills/herdr/SKILL.md; and chezmoi add --recursive --exact ~/.agents/skills/herdr"
+## refresh the built-in herdr skill in the dotfiles skills source tree
+abbr --add hrdskrf "herdr --skill > ~/.local/share/chezmoi/skills/herdr/SKILL.md"
 ## update herdr's managed agent plugins and hooks back into chezmoi
 abbr --add hrdapu "chezmoi re-add ~/.config/opencode/plugins/herdr-agent-state.js ~/.config/opencode/herdr-tui-session.js ~/.claude/hooks/herdr-agent-state.sh ~/.codex/herdr-agent-state.sh"
 # sprites
@@ -129,7 +129,6 @@ abbr --add cma chezmoi add
 abbr --add cmaa chezmoi re-add
 abbr --add cmra chezmoi re-add
 abbr --add cmaf chezmoi add --follow
-abbr --add cmasr chezmoi add --recursive --exact ~/.agents/skills/
 abbr --add cmahp chezmoi add ~/.config/herdr/plugins.json
 abbr --add cmx chezmoi apply
 abbr --add cmxx chezmoi apply ~/.config/
@@ -433,7 +432,8 @@ abbr --add ghsc gh search code
 abbr --add ghscld "gh search code --repo lightdash/lightdash -- "
 abbr --add ghscldw "gh search code --web --repo lightdash/lightdash -- "
 abbr --add ghski gh skill
-abbr --add ghskii gh skill install
+abbr --add ghskii gh skill install --agent universal --scope user
+abbr --add ghskil gh skill list --agent universal --scope user
 abbr --add ghskis gh skill search
 abbr --add ghskiup gh skill update
 ## shortening my git aliases

@@ -23,6 +23,9 @@ nvim.log
 # Source files for symlinked targets
 # These are the actual files that symlink_ entries point to.
 symsources/
+# Own agent skills: a `gh skill` source tree, installed from
+# gwenwindflower/dotfiles into ~/.agents/skills rather than deployed by chezmoi
+skills/
 # Repo-scoped Deno utility collection
 # subproject
 .utils

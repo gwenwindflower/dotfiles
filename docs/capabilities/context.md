@@ -14,7 +14,7 @@ Agents receive the same durable operating guidance and can discover specialized 
 
 Context files contain durable behavior-changing guidance, not config inventories or session history. Skills and plugins are loaded for relevant tasks, and unknown third-party extensions are reviewed before installation or execution.
 
-Manage external skills through `gh skill`: install/add, update, search, preview, and list are routine within task scope, including user scope. Review destructive removal or forced replacement; raw skill publishing follows the project release-task boundary. Specify the shared agent destination and track approved content back into chezmoi. Do not use package-runner `skills` commands or alternative skill installers.
+Manage external skills through `gh skill`: install/add, update, search, preview, and list are routine within task scope, including user scope. Review destructive removal or forced replacement; raw skill publishing follows the project release-task boundary. Install with `--agent universal --scope user` so skills land in `~/.agents/skills`; own skills live in the dotfiles `skills/` tree and edits return there through `skillsave <name>`. Do not use package-runner `skills` commands or alternative skill installers.
 
 OpenCode discovers project `AGENTS.md` and `~/.config/opencode/AGENTS.md` natively. No additional instruction paths are needed; root guidance links to domain docs for deliberate loading. See [OpenCode rule discovery](https://opencode.ai/docs/rules/).
 

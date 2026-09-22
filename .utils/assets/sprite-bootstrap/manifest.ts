@@ -61,7 +61,7 @@ export const dirs: DirEntry[] = [
     exclude: ["executable_herdr-agent-state.sh"],
   },
   { srcDir: "dot_agents/exact_rules", destDir: "~/.agents/rules" },
-  { srcDir: "dot_agents/exact_skills", destDir: "~/.agents/skills" },
+  { srcDir: "skills", destDir: "~/.agents/skills" },
   {
     srcDir: "private_dot_config/opencode",
     destDir: "~/.config/opencode",

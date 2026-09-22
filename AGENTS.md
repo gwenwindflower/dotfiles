@@ -23,6 +23,7 @@ OSes supported:
 
 docs/                             # Repo-level reference docs (chezmoi-ignored); agent-config.md + capabilities/
 wip/                              # Scratch space (git- and chezmoi-ignored); plans, reviews, references
+skills/                           # Own agent skills (chezmoi-ignored); a `gh skill` source installed into ~/.agents/skills from gwenwindflower/dotfiles
 
 private_dot_config/               # → ~/.config/
   fish/                           #   config.fish.tmpl + exact_functions/ + exact_completions/ + exact_conf.d/
@@ -54,7 +55,7 @@ dot_claude/                       # → ~/.claude/
 dot_agents/                       # → ~/.agents/ (shared agent hub)
   AGENTS.md.tmpl                  #   → ~/.agents/AGENTS.md, assembled from .chezmoitemplates/agents/
   exact_rules/                    #   → ~/.agents/rules/ generated from .chezmoitemplates/agents/rules/
-  exact_skills/                   # Pruned-on-apply skill collection
+  symlink_.skill-lock.json.tmpl   #   → symsources/agents/skill-lock.json (gh skill manifest; ~/.agents/skills itself is gh-owned, not deployed)
 
 symlink_dot_gitconfig.tmpl        # → symsources/git/gitconfig (externally writable; native git [include]s pull fragments from ~/.config/git/)
 private_dot_config/git/global_ignore  # → ~/.config/git/global_ignore (git core.excludesfile)
@@ -137,7 +138,15 @@ The env var is the only knob — no config-file flag, no template detection. Set
 
 Shared agent rules live in `.chezmoitemplates/agents/rules/`. The platform root files (`~/.agents/AGENTS.md`, `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`, and `~/.config/opencode/AGENTS.md`) render `.chezmoitemplates/agents/AGENTS.md`, which includes those fragments with native `{{ template }}` calls.
 
-`dot_agents/exact_rules/*.md.tmpl` are generated wrappers for tools and skill docs that still read `~/.agents/rules/*.md` directly. Edit the `.chezmoitemplates/agents/rules/` fragments, not the wrappers. Shared skills remain normal copied files in `dot_agents/exact_skills/`, with `~/.claude/skills` symlinked to the applied `~/.agents/skills` target. Third-party skills are installed and updated with `gh skill` (never the `skills` npm CLI or `rei`), then brought back into the source tree with `chezmoi add --recursive --exact`; `gh skill` records its manifest in the symlinked `~/.agents/.skill-lock.json`.
+`dot_agents/exact_rules/*.md.tmpl` are generated wrappers for tools and skill docs that still read `~/.agents/rules/*.md` directly. Edit the `.chezmoitemplates/agents/rules/` fragments, not the wrappers.
+
+#### Skills
+
+`gh skill` owns `~/.agents/skills` end to end; chezmoi never deploys into it. `~/.claude/skills` is a symlink to it, so every install uses `--agent universal --scope user` and never `--agent claude-code`. Third-party skills come from their upstream repos. Our own skills live in the chezmoi-ignored `skills/` tree at the repo root, which follows the `skills/<name>/SKILL.md` convention so `gwenwindflower/dotfiles` is itself a `gh skill` source: `gh skill install gwenwindflower/dotfiles <name> --agent universal --scope user`. Every installed skill therefore carries GitHub metadata and `gh skill update --all` covers the whole corpus with no warnings. Never use the `skills` npm CLI or `rei`.
+
+Editing an own skill: work on the deployed copy in `~/.agents/skills/<name>`, run `skillsave <name>` to copy it back into `skills/<name>` with gh's injected `metadata` block stripped, commit, push, then `gh skill update <name>` so the deployed copy's metadata matches `main`. The repo has no tags, and must stay that way: gh resolves an untagged repo to the default branch, but a tag would pin every install to it.
+
+gh writes every installed file as 0644, so a skill that ships scripts runs them through `bash`, never by path. `gh skill` records its manifest in the symlinked `~/.agents/.skill-lock.json`; `run_onchange_19-install-agent-skills.sh.tmpl` replays that manifest on a fresh machine and re-runs whenever it changes.
 
 ### `exact_` dirs: full reconciliation for churn-prone collections
 
@@ -150,7 +159,6 @@ The `exact_` directory prefix opts a dir into full reconciliation: on `chezmoi a
 | `private_dot_config/fish/exact_functions/` | `~/.config/fish/functions/` |
 | `private_dot_config/fish/exact_completions/` | `~/.config/fish/completions/` |
 | `private_dot_config/fish/exact_conf.d/` | `~/.config/fish/conf.d/` |
-| `dot_agents/exact_skills/` | `~/.agents/skills/` |
 | `dot_agents/exact_rules/` | `~/.agents/rules/` generated from `.chezmoitemplates/agents/rules/` |
 | `dot_claude/exact_hooks/` | `~/.claude/hooks/` |
 | `dot_claude/exact_agents/` | `~/.claude/agents/` |
@@ -158,9 +166,9 @@ The `exact_` directory prefix opts a dir into full reconciliation: on `chezmoi a
 
 **When to add `exact_`:** the dir is a collection of independently-named functionality files (not a single tool's mixed config), source-of-truth lives entirely in this repo, and renames/deletions are routine. **When to skip:** the dir holds a single config file, or an external tool also writes into the target (e.g. `~/.config/yazi/plugins/` is populated by `ya pkg install`, so `exact_` would delete those plugins on every apply).
 
-The prefix is stripped on deploy, so `dot_agents/exact_skills/` still produces `~/.agents/skills/` — no other refs need to change when adding it.
+The prefix is stripped on deploy, so `dot_claude/exact_hooks/` still produces `~/.claude/hooks/` — no other refs need to change when adding it.
 
-`exact_` does not recurse: each directory level reconciles only its own immediate entries, so a subdirectory needs its own `exact_` prefix to have its stale files cleaned up too. `dot_agents/exact_skills/` carries `exact_` on every nested directory (each skill folder and any `references/`/`templates/`/etc. inside it) so drifted or renamed skill files never linger in the deployed target.
+`exact_` does not recurse: each directory level reconciles only its own immediate entries, so a subdirectory needs its own `exact_` prefix to have its stale files cleaned up too. A nested collection needs the prefix on each level (`exact_hooks/exact_lib/`) for drifted or renamed files at every depth to be cleaned up.
 
 ### Nerd Font icons
 
@@ -200,6 +208,7 @@ Plugin file extraction matches Fisher's: top-level files in `functions/`, `compl
   run_onchange_17-install-cargo-tools.sh.tmpl     # install OS/profile Cargo tools with cargo-binstall
   run_onchange_18-mise-install.sh.tmpl            # `mise install` to materialize node + npm-backend package manager + CLI globals; re-runs on active arch's mise config change
   run_onchange_19-sync-gh-extensions.sh.tmpl      # install/update GitHub CLI extensions (gh-dash); monthly refresh stamp
+  run_onchange_19-install-agent-skills.sh.tmpl    # replay the gh skill manifest into ~/.agents/skills; re-runs when skill-lock.json changes
   run_onchange_19-sync-luarocks-tools.sh.tmpl     # darwin: install/update LuaRocks tools (busted, luacheck); monthly refresh stamp
   run_once_20-configure-shell.sh.tmpl            # Fish → /etc/shells, chsh
   run_once_30-yazi-plugins.sh.tmpl               # ya pkg install (yazi plugin sync)
@@ -274,5 +283,5 @@ chezmoi --dry-run --no-pager --verbose apply       # Dry run with detailed outpu
 - `docs/capabilities/` — One file per capability domain (workspace, network, development, git, delegation, context, integrations, session, interaction), each with expected behavior, safety boundary, per-platform implementation, and verification. Indexed by `docs/agent-config.md`
 - `docs/agent-commits.md` — Commit types and the `agents/<sub-scope>` and `<agent name>` scope convention for agent-facing changes
 - `.utils/AGENTS.md` — Internal Deno tooling sandbox, with a reference doc per tool under `.utils/docs/`
-- `~/.agents/skills/chezmoi/` (source: `dot_agents/exact_skills/exact_chezmoi/`) — Full chezmoi skill with deep reference docs on attributes, templates, scripts, hooks
+- `~/.agents/skills/chezmoi/` (source: `skills/chezmoi/`) — Full chezmoi skill with deep reference docs on attributes, templates, scripts, hooks
 - [chezmoi documentation](https://www.chezmoi.io) — Official docs, comprehensive reference for all features

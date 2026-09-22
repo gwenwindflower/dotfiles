@@ -13,7 +13,7 @@ Rules, skills, agent definitions, and hooks are load-bearing: they change what a
 | Shared across agents | `agents/<sub-scope>` | `feat(agents/skills): add zvec-grep skill`, `refactor(agents/rules): tighten writing rule`, `chore(agents/config): allow rumdl` |
 | One agent only | `<agent name>` | `fix(claude): move chezmoi inside ask list`, `feat(codex): keep both sandbox systems as swappable config sources` |
 
-Sub-scopes in use: `rules` (`.chezmoitemplates/agents/rules/`), `skills` (`dot_agents/exact_skills/`), `config` (harness permission and settings files across platforms), `agents` (agent definitions), `hooks`. Pick the one that names what changed; add a new sub-scope only when none fits.
+Sub-scopes in use: `rules` (`.chezmoitemplates/agents/rules/`), `skills` (`skills/`), `config` (harness permission and settings files across platforms), `agents` (agent definitions), `hooks`. Pick the one that names what changed; add a new sub-scope only when none fits.
 
 A change to one harness's own files uses that agent's name as the whole scope: `claude`, `codex`, `opencode`, `herdr`. When the same change lands in several harness configs, it is `agents/config`.
 

@@ -1,0 +1,55 @@
+{{ if eq .chezmoi.os "darwin" "linux" -}}
+#!/bin/bash
+# skill-lock hash: {{ include "symsources/agents/skill-lock.json" | sha256sum }}
+
+set -euo pipefail
+
+{{ template "script-log.sh" }}
+{{- if eq .chezmoi.os "darwin" }}
+{{ template "brew-preamble.sh" . }}
+{{- end }}
+
+log_step "Agent skills"
+
+if ! command -v gh >/dev/null 2>&1; then
+  log_error "gh not found; system package installation should have installed it"
+  exit 1
+fi
+
+if ! gh auth status >/dev/null 2>&1; then
+  log_warn "gh is not authenticated; skipping skill install"
+  log_warn "After 'gh auth login', run: gh skill install gwenwindflower/dotfiles --all --agent universal --scope user"
+  exit 0
+fi
+
+skills_dir="$HOME/.agents/skills"
+mkdir -p "$skills_dir"
+own_repo="gwenwindflower/dotfiles"
+
+install_skill() {
+  local name="$1" source="$2" path="$3"
+  if [[ -f "$skills_dir/$name/SKILL.md" ]]; then
+    return 0
+  fi
+  log_info "Installing $name from $source"
+  gh skill install "$source" "$path" --agent universal --scope user
+}
+
+own_missing=0
+{{ range $name, $skill := (include "symsources/agents/skill-lock.json" | fromJson).skills -}}
+{{- if eq $skill.source "gwenwindflower/dotfiles" }}
+[[ -f "$skills_dir/{{ $name }}/SKILL.md" ]] || own_missing=1
+{{- else }}
+install_skill {{ $name | quote }} {{ $skill.source | quote }} {{ $skill.skillPath | quote }}
+{{- end }}
+{{- end }}
+
+if [[ "$own_missing" -eq 1 ]]; then
+  log_info "Installing every skill from $own_repo"
+  gh skill install "$own_repo" --all --agent universal --scope user --force
+fi
+
+log_success "Agent skills are available"
+{{ else -}}
+{{ fail (printf "unsupported OS: %s" .chezmoi.os) }}
+{{ end -}}

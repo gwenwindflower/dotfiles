@@ -36,7 +36,7 @@ The foundation owns these cross-cutting rules and harness semantics. Capability 
 | Claude Code | `symsources/claude/settings.json` | `dot_claude/exact_hooks/`, `dot_claude/exact_agents/`, `dot_claude/CLAUDE.md.tmpl` |
 | Codex | `symsources/codex/config.toml` | `dot_codex/rules/`, `dot_codex/hooks.json`, `dot_codex/exact_agents/`, `dot_codex/AGENTS.md.tmpl` |
 | OpenCode | `symsources/opencode/opencode.jsonc` | `private_dot_config/opencode/`, `private_dot_config/opencode/exact_agents/`, `private_dot_config/opencode/tui.jsonc` |
-| Shared | `.chezmoitemplates/agents/` | `dot_agents/exact_skills/`, `dot_agents/exact_rules/` |
+| Shared | `.chezmoitemplates/agents/` | `skills/` (installed by `gh skill`, not deployed by chezmoi), `dot_agents/exact_rules/` |
 
 ## Platform notes
 
