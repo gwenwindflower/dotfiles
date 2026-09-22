@@ -444,6 +444,8 @@ abbr --add gstau git stash -u
 abbr --add gstaum git stash -u -m
 abbr --add grhh! "git reset --hard; and git clean -fd"
 abbr --add gbmv git branch -m
+abbr --add gbcpwt gbcp worktree
+abbr --add gbcpwtb gbcp worktree.branch
 ## hunk
 abbr --add gdpp hunk diff
 abbr --add hud hunk diff
