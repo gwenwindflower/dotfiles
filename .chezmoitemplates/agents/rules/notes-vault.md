@@ -12,3 +12,5 @@ Always pass `--vault "$OBSIDIAN_DEFAULT_VAULT"`; the flag accepts the vault path
 - Review batches as one change set before execution, including loops of individual commands, imports/exports, mass deletion, and broad reorganization. An explicit sync authorizes its resolved task changes and the `org/_inbox/Task Sync` record; ambiguous matches, unrelated edits, and bulk cleanup need a concrete decision. Do not assume a wrapper script will receive automatic review.
 - Vault creation/removal, registration, and default-vault changes are manual-only. Do not run vault administration commands even during an authorized note-editing task.
 - Never run `rematter` from a capture session.
+- Do not make up new frontmatter fields or tags; only use existing patterns. No topic tags, no project fields, etc. These don't exist in the vault and are not to be invented.
+- If using existing 'type tags' (#Book, #Dataset) or enum files (e.g. `status`), use existing values, or ask if a new value really needs to be added.
