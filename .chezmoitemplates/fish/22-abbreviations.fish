@@ -485,6 +485,7 @@ abbr --add glod git logd
 ## worktrunk
 abbr --add wts wt switch
 abbr --add wtc wt switch -c
+abbr --add wtsc wt switch -c
 abbr --add wtspr wt switch --prs
 abbr --add wtsm wt switch main
 abbr --add wtmain wt switch main
