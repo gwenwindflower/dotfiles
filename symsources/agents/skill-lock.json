@@ -15,18 +15,18 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/gwenwindflower/dotfiles.git",
       "skillPath": "skills/agent-config/SKILL.md",
-      "skillFolderHash": "26ed76bfba3b5a112616eb47d23248eb6211b9c0",
+      "skillFolderHash": "3686c5fa043995899248fae256436666275e1c9b",
       "installedAt": "2026-09-23T05:13:04Z",
-      "updatedAt": "2026-09-23T05:13:04Z"
+      "updatedAt": "2026-09-23T23:53:21Z"
     },
     "agent-context-engineering": {
       "source": "gwenwindflower/dotfiles",
       "sourceType": "github",
       "sourceUrl": "https://github.com/gwenwindflower/dotfiles.git",
       "skillPath": "skills/agent-context-engineering/SKILL.md",
-      "skillFolderHash": "696b47c4515695661e2924e1418169dbb86e75d3",
+      "skillFolderHash": "ab40f671148266c5ac62a0bc17e71dfa69a681ce",
       "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-09-23T05:16:48Z"
+      "updatedAt": "2026-09-23T17:45:53Z"
     },
     "analytics-engineering": {
       "source": "gwenwindflower/dotfiles",
@@ -51,9 +51,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/gwenwindflower/dotfiles.git",
       "skillPath": "skills/bun-development/SKILL.md",
-      "skillFolderHash": "ebc24e183ff32c8a80c15d3bbcc84f3403ff5b7a",
+      "skillFolderHash": "19eb331f7f3b4d9f083f9e270546fbbc41729605",
       "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-09-23T05:16:50Z"
+      "updatedAt": "2026-09-23T17:56:21Z"
     },
     "caveman-speak": {
       "source": "gwenwindflower/dotfiles",
@@ -96,9 +96,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/gwenwindflower/dotfiles.git",
       "skillPath": "skills/context-search/SKILL.md",
-      "skillFolderHash": "60839574c86a35a72f9aa301e7185441ed2a6386",
+      "skillFolderHash": "602455081169fce324d99547e6037929843c66fc",
       "installedAt": "2026-09-23T06:10:54Z",
-      "updatedAt": "2026-09-23T06:10:54Z"
+      "updatedAt": "2026-09-23T23:53:22Z"
     },
     "deno-tools": {
       "source": "gwenwindflower/dotfiles",
