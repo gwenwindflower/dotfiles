@@ -49,7 +49,7 @@ qmd multi-get 'sources/podcast-2025-*.md' -l 80
 Maintaining the index is part of using the tool:
 
 - `qmd status` shows per-collection age. When expected content is missing or the index is more than a few days old, run `qmd update` then `qmd embed` (fills only missing vectors) before trusting results.
-- When `QMD_EMBED_MODEL` points at a new file or revision, run `qmd embed -f`; vectors don't carry across models and stale-model search degrades silently. The model is the shared Qwen3 GGUF in the HF hub cache, and `llup` re-checks HF and updates it on each start.
+- When `models.embed` in `~/.config/qmd/index.yml` changes, run `qmd embed -f`; vectors don't carry across models and stale-model search degrades silently.
 - `qmd doctor` diagnoses config, model cache, GPU, and vector fingerprints; run it before changing configuration when a model-backed command fails.
 - Adding collections (`qmd collection add`) is setup work; do it only on request.
 
