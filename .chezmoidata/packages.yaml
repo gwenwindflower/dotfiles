@@ -43,6 +43,7 @@ packages:
           - cargo-binstall
           - chafa
           - chezmoi
+          - choose-rust
           - cloudflare-wrangler
           - cmake
           - cmus
