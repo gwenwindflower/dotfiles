@@ -23,3 +23,9 @@ Neovim's Mason installs put language tools on `PATH`: `tombi` for TOML, `biome` 
 | `npm` / `npx` | `aube` / `aubx` / `aubr` |
 
 `rg`, `fd`, `rip`, and `aube` are the important defaults. Translate `npm` and `npx` in docs to `aube` and `aubx` unless discussed; `pnpm` is the fallback when `aube` is unavailable. A project's designated package manager or runtime (`bun`, `deno`) always wins over these defaults. `rip` deletes to `$XDG_DATA_HOME/graveyard`, needs no `-rf` for directories, and `rip -u` restores the last removal.
+
+#### agent-browser
+
+Use `agent-browser` with an isolated named session. Its browser binaries, sockets, sessions, and encryption state live under `~/.agent-browser`; Puppeteer fallback binaries live under `~/.cache/puppeteer`.
+
+Screenshot, snapshot, PDF, and close operations may run without review, including with `--profile Default`. Other commands using a named non-Default profile are routine for in-scope development work. Because Default can access Keychain-backed signed-in browser state, use it for other commands only when the user's current request explicitly authorizes that access; otherwise require approval. Never send browser data to another origin without explicit user authorization.

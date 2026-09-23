@@ -7,6 +7,22 @@ prefix_rule(
 )
 
 prefix_rule(
+    pattern = ["agent-browser", ["screenshot", "snapshot", "pdf", "close"]],
+    decision = "allow",
+    justification = "Routine browser capture and cleanup run on the host because Chromium cannot launch reliably inside the Codex sandbox.",
+    match = ["agent-browser screenshot page.png", "agent-browser snapshot -i", "agent-browser pdf page.pdf", "agent-browser close"],
+    not_match = ["agent-browser open https://example.com", "agent-browser cookies get"],
+)
+
+prefix_rule(
+    pattern = ["agent-browser", "--profile", "Default", ["screenshot", "snapshot", "pdf", "close"]],
+    decision = "allow",
+    justification = "Pre-approved capture and cleanup operations remain routine when the Default profile is explicitly selected.",
+    match = ["agent-browser --profile Default screenshot page.png", "agent-browser --profile Default pdf page.pdf"],
+    not_match = ["agent-browser --profile Default open https://example.com", "agent-browser --profile Default cookies get"],
+)
+
+prefix_rule(
     pattern = ["rm", "-rf"],
     decision = "forbidden",
     justification = "Use recoverable rip for authorized file deletion.",
