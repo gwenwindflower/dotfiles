@@ -1,11 +1,23 @@
 {
 	"$schema": "https://json.schemastore.org/claude-code-marketplace.json",
-	"name": "winnie-local",
-	"description": "Customized personal Claude Code plugins for adding conditional LSPs.",
+	"name": "supermodel",
+	"description": "Supermodel agent skills and conditional LSP plugins for Claude Code and Cowork.",
 	"owner": {
 		"name": "Gwyneth Windflower"
 	},
 	"plugins": [
+		{
+			"name": "supermodel-skills",
+			"description": "Supermodel agent skills: dev tooling, analytics engineering, agent context, and workflow guidance. For Cowork; Claude Code loads the same skills from ~/.claude/skills.",
+			"version": "0.0.1",
+			"author": {
+				"name": "Gwyneth Windflower"
+			},
+			"source": "./skills",
+			"skills": ["./"],
+			"category": "Skills",
+			"strict": false
+		},
 		{
 			"name": "deno-or-ts",
 			"description": "Conditional LSP that auto-routes from workspace files: `deno lsp` if deno.json/deno.jsonc is found at or above the workspace root, with typescript-language-server as fallback. Replaces the official typescript-lsp plugin.",
@@ -18,7 +30,7 @@
 			"strict": false,
 			"lspServers": {
 				"typescript": {
-					"command": "/Users/winnie/.local/share/chezmoi/.custom-claude-plugins/plugins/deno-or-ts/router.sh",
+					"command": "/Users/winnie/.local/share/chezmoi/plugins/deno-or-ts/router.sh",
 					"extensionToLanguage": {
 						".ts": "typescript",
 						".tsx": "typescriptreact",
@@ -44,7 +56,7 @@
 			"strict": false,
 			"lspServers": {
 				"python": {
-					"command": "/Users/winnie/.local/share/chezmoi/.custom-claude-plugins/plugins/pyright-or-ruff/router.sh",
+					"command": "/Users/winnie/.local/share/chezmoi/plugins/pyright-or-ruff/router.sh",
 					"extensionToLanguage": {
 						".py": "python",
 						".pyi": "python"

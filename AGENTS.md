@@ -24,6 +24,8 @@ OSes supported:
 docs/                             # Repo-level reference docs (chezmoi-ignored); agent-config.md + capabilities/
 wip/                              # Scratch space (git- and chezmoi-ignored); plans, reviews, references
 skills/                           # Own agent skills (chezmoi-ignored); a `gh skill` source installed into ~/.agents/skills from gwenwindflower/dotfiles
+.claude-plugin/marketplace.json   # `supermodel` plugin marketplace (chezmoi-ignored): supermodel-skills (skills/ for Cowork) + conditional LSP plugins
+plugins/                          # LSP router plugins (chezmoi-ignored); marketplace commands are absolute paths into this dir
 
 private_dot_config/               # → ~/.config/
   fish/                           #   config.fish.tmpl + exact_functions/ + exact_completions/ + exact_conf.d/
@@ -142,7 +144,7 @@ Shared agent rules live in `.chezmoitemplates/agents/rules/`. The platform root 
 
 #### Skills
 
-`gh skill` owns `~/.agents/skills` end to end; chezmoi never deploys into it. `~/.claude/skills` is a symlink to it, so every install uses `--agent universal --scope user` and never `--agent claude-code`. Third-party skills come from their upstream repos. Our own skills live in the chezmoi-ignored `skills/` tree at the repo root, which follows the `skills/<name>/SKILL.md` convention so `gwenwindflower/dotfiles` is itself a `gh skill` source: `gh skill install gwenwindflower/dotfiles <name> --agent universal --scope user`. Every installed skill therefore carries GitHub metadata and `gh skill update --all` covers the whole corpus with no warnings. Never use the `skills` npm CLI or `rei`.
+`gh skill` owns `~/.agents/skills` end to end; chezmoi never deploys into it. `~/.claude/skills` is a symlink to it, so every install uses `--agent universal --scope user` and never `--agent claude-code`. Third-party skills come from their upstream repos. Our own skills live in the chezmoi-ignored `skills/` tree at the repo root, which follows the `skills/<name>/SKILL.md` convention so `gwenwindflower/dotfiles` is itself a `gh skill` source: `gh skill install gwenwindflower/dotfiles <name> --agent universal --scope user`. Every installed skill therefore carries GitHub metadata and `gh skill update --all` covers the whole corpus with no warnings. Never use the `skills` npm CLI or `rei`. Claude Desktop (Cowork) gets the same tree as the `supermodel-skills` plugin from the `supermodel` marketplace in `.claude-plugin/marketplace.json`; it picks up pushes to `main` when the marketplace is updated in Desktop. Claude Code leaves that plugin disabled since it already loads `~/.claude/skills`.
 
 Editing an own skill: work on the deployed copy in `~/.agents/skills/<name>`, run `skillsave <name>` to copy it back into `skills/<name>` with gh's injected `metadata` block stripped, commit, push, then `gh skill update <name>` so the deployed copy's metadata matches `main`. The repo has no tags, and must stay that way: gh resolves an untagged repo to the default branch, but a tag would pin every install to it.
 

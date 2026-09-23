@@ -32,9 +32,10 @@ skills/
 # Personal collection of gitignores
 # for various tools and languages
 .gitignores/
-# Local Claude Code plugin 'marketplace'
-# referenced in Claude settings via absolute path into this repo
-.custom-claude-plugins/
+# `supermodel` plugin marketplace (manifest + LSP plugins); the
+# LSP commands are absolute paths into this repo
+.claude-plugin/
+plugins/
 # Neovim subdir agent docs for project
 .config/nvim/AGENTS.md
 .config/nvim/docs
