@@ -36,3 +36,4 @@
   fgcpb = forgit cherry_pick_branch
   local-ignore = update-index --skip-worktree
   local-ignore-retrack = update-index --no-skip-worktree
+  last-touch = log -1 --pretty=catppuccin-frappe --date=human
