@@ -486,7 +486,7 @@
 		],
 		"defaultMode": "auto"
 	},
-	"model": "fable[1m]",
+	"model": "opus[1m]",
 	"hooks": {
 		"PreToolUse": [
 			{
@@ -564,15 +564,7 @@
 		"enabled": true,
 		"autoAllowBashIfSandboxed": true,
 		"allowUnsandboxedCommands": true,
-		"allowAppleEvents": true,
-		"enableWeakerNetworkIsolation": true,
 		"network": {
-			"allowUnixSockets": [
-				"~/.agent-browser/default.sock",
-				"~/.config/herdr/herdr.sock",
-				"~/.obsidian-cli.sock"
-			],
-			"allowLocalBinding": true,
 			"allowedDomains": [
 				"api.attio.com",
 				"api.github.com",
@@ -597,7 +589,13 @@
 				"sum.golang.org",
 				"telemetry.astro.build",
 				"workers.cloudflare.com"
-			]
+			],
+			"allowUnixSockets": [
+				"~/.agent-browser/default.sock",
+				"~/.config/herdr/herdr.sock",
+				"~/.obsidian-cli.sock"
+			],
+			"allowLocalBinding": true
 		},
 		"filesystem": {
 			"allowWrite": [
@@ -641,6 +639,8 @@
 				"~/Library/Application Support/go/telemetry/**"
 			]
 		},
+		"enableWeakerNetworkIsolation": true,
+		"allowAppleEvents": true,
 		"excludedCommands": [
 			"agent-browser",
 			"agent-browser *",
