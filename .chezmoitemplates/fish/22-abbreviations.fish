@@ -209,7 +209,9 @@ abbr --add zgi zg index
 abbr --add zgs zg status
 abbr --add zgsv zg server
 ### agent-browser
-abbr --add abrow agent-browser
+abbr --add abro agent-browser
+### agentsview
+abbr --add agv agentsview
 # obsiidian and notes
 abbr --add girlos "ee ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/girlos"
 abbr --add ob notesmd-cli
