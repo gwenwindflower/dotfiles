@@ -21,6 +21,7 @@ packages:
           - sassman/tap
           - supermodellabs/tap
           - superradcompany/tap
+          - szamowski-dev/tap
           - yakitrak/yakitrak
         personal: []
         work:
@@ -209,6 +210,7 @@ packages:
           - font-typographer-woodcut-initials-one
           - gcloud-cli
           - homerow
+          - hora
           - ia-markdown-dictionary
           - ia-presenter
           - karabiner-elements
