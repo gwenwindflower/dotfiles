@@ -84,7 +84,7 @@ The tests materialize the chezmoi source files into a temporary target directory
 - The root pane returned by `tab create` becomes the `pane run` target.
 - Codex model and effort selections become native Codex arguments.
 - Claude supports Haiku and passes its native effort argument.
-- Codex models appear as Default, Sol, Luna, then Terra.
+- Codex models appear as Default, Astra, Sol, Luna, then Terra.
 - OpenCode uses `opencode2 mini`, passes a Zen model, and does not ask for effort.
 - Configured defaults omit native overrides.
 - Cancelling the picker creates no Herdr tab or agent.

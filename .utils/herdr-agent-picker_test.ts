@@ -140,7 +140,7 @@ Deno.test("Codex picker creates a focused tab and submits the selected model", a
   assertEquals(result.herdrCalls.includes("\tagent\tstart\t"), false);
 });
 
-Deno.test("Codex picker orders default, Sol, Luna, then Terra", async () => {
+Deno.test("Codex picker orders default, Astra, Sol, Luna, then Terra", async () => {
   const result = await runLauncher("executable_pick-codex-agent", {
     model: "default",
     effort: "default",
@@ -149,7 +149,7 @@ Deno.test("Codex picker orders default, Sol, Luna, then Terra", async () => {
   assertEquals(result.code, 0, result.stderr);
   assertStringIncludes(
     result.gumArguments,
-    "default\ngpt-5.6-sol\ngpt-5.6-luna\ngpt-5.6-terra\n",
+    "default\ngpt-6-astra\ngpt-5.6-sol\ngpt-5.6-luna\ngpt-5.6-terra\n",
   );
 });
 
