@@ -35,7 +35,7 @@ The default `zg` model for new indexes is `local/potion-code-16m-v2`, exported a
 | Codex | `sandbox_workspace_write.writable_roots` includes `.zvec-grep`, and networking is enabled. `ZVEC_GREP_EMBEDDING` is set through `shell_environment_policy.set` because shell environment inheritance is restricted to core variables. |
 | OpenCode | Explicit allows for `zg query`/`status`/`index`/`server status`, `qmd` read and search commands, and `agentsview session` search and messages; `zg index --drop` asks. |
 
-Shared routing lives in `.chezmoitemplates/agents/rules/exploration.md`; tool detail lives in the `zvec-grep`, `qmd`, and `agentsview-finding-history` skills.
+Shared routing lives in `.chezmoitemplates/agents/rules/exploration.md`; tool detail lives in the `context-search` skill.
 
 ## Verification
 

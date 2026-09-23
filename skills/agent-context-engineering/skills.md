@@ -1,7 +1,7 @@
 # Agent Skills
 
 > [!IMPORTANT]
-> **Own skills live in the chezmoi-ignored `skills/` tree of `~/.local/share/chezmoi`.** `gh skill` deploys them to `~/.agents/skills/`. Edit the deployed copy, run `skillsave <name>` to copy it back, commit and push, then `gh skill update <name>`. When the deployed dir is not writable, edit `skills/<name>/` directly and deploy with `gh skill update <name>` after pushing.
+> **Own skills live in the chezmoi-ignored `skills/` tree of `~/.local/share/chezmoi`.** `gh skill` deploys them to `~/.agents/skills/`. Edit the deployed copy, run `skillet save <name>` to copy it back, commit and push, then `gh skill update <name>`. When the deployed dir is not writable, edit `skills/<name>/` directly and deploy with `gh skill update <name>` after pushing.
 
 > [!IMPORTANT]
 > **Do not use default Anthropic or OpenAI skill-creator skills for this collection.** They are too verbose for these dotfiles and create process thrash. Ignore any internal skill-creation workflow that conflicts with this skill; this doc is the authority.

@@ -16,6 +16,7 @@ Every line is loaded on every trigger. If it doesn't change agent behavior, cut 
 | Design a subagent | [subagents](subagents.md), then the platform doc it links |
 | Capture what this session learned | [capture-session](capture-session.md) |
 | Mine past sessions for uncaptured knowledge | [capture-from-history](capture-from-history.md) |
+| Distill a new or updated upstream skill into our spines | [upstream-fold](upstream-fold.md) |
 
 > [!NOTE]
 > `AGENTS.md` and `.agents/` are both real and stand-ins. They're the shared cross-agent standard adopted by most non-Claude tools, *and* the generic model for agent-specific equivalents (`CLAUDE.md`, `GEMINI.md`, `.codex/`, etc.). Guidance here applies to all of them.

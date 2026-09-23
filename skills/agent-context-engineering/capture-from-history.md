@@ -4,7 +4,7 @@ Sweep the AgentsView archive for knowledge agents paid to learn but never
 wrote down, then capture each gap as the right durable artifact. The
 deliverable is captured context, not a report of interesting history.
 
-Load `agentsview-finding-history` for search mechanics (modes, windows,
+Read `agentsview session search --help` for search mechanics (modes, windows,
 citation format); this skill covers what to look for and what to do with it.
 
 ## Gap Signals

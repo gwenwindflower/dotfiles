@@ -1,3 +1,5 @@
+<!-- copied whole from ast-grep/agent-skill ast-grep/references/rule_reference.md @ f2175aff; refresh via skillet diff ast-grep -->
+
 # ast-grep Rule Reference
 
 This document provides comprehensive documentation for ast-grep rule syntax, covering all rule types and metavariables.

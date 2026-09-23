@@ -7,7 +7,7 @@ Two valid shapes, chosen by scope:
 - **Topic noun** (`chezmoi`, `fish-shell`, `analytics-engineering`) — for skills that span multiple actions or carry special topic knowledge.
 - **Present-tense active verb phrase** (`map-project`, `sync-tasks`) — for skills scoped to one action, or whenever a verb makes the trigger clearer. The verb form must complete the sentence "As an agent I want to `<skill-name>`" — so `map-project`, never `mapping-project`.
 
-Before adding a skill, check whether it belongs as a reference doc inside an existing skill in the same domain. Fewer, deeper skills keep the startup list short.
+Before adding a skill, check whether it belongs as a reference doc inside an existing skill in the same domain. Fewer, deeper skills keep the startup list short. External skills in a domain we cover are distilled into that spine through [upstream-fold](upstream-fold.md), not installed top-level.
 
 Third-party skills keep their upstream names; they update externally.
 

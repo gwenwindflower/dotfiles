@@ -6,25 +6,26 @@ For actively developed tools, syntax, versions, APIs, or framework behavior, che
 
 #### Finding docs
 
-- Load the `ctx7` skill for semantic search over popular libraries and frameworks.
+- Use `ctx7` (see the `context-search` skill) for current docs on popular libraries and frameworks.
 - Read the help text of any CLI you are not deeply familiar with; it is often comprehensive and agent-oriented.
 - Record key dependencies' docs sites in project context. If fetching one hits an approval wall, propose adding the domain to the global fetch allowlist so future projects skip the same wall.
 
 #### Searching local corpora
 
-Pick the corpus, then the retrieval mode. A known literal (identifier, path, error text, config key) is an `rg` job in any corpus. When the wording or location is unknown, or the question is about relationships, flow, or architecture, use the indexed tool for that corpus and load its skill:
+Pick the corpus, then the retrieval mode. A known literal (identifier, path, error text, config key) is an `rg` job in any corpus. When the wording or location is unknown, or the question is about relationships, flow, or architecture, use the indexed tool for that corpus. The `context-search` skill has each tool's usage:
 
-| Corpus | Tool | Skill |
-| --- | --- | --- |
-| Code and mixed-content workspaces | `zg` (zvec-grep) | `zvec-grep` |
-| Markdown knowledge bases and the girlOS vault | `qmd` | `qmd` |
-| Recorded agent sessions | `agentsview` | `agentsview-finding-history` |
+| Corpus | Tool |
+| --- | --- |
+| Code and mixed-content workspaces | `zg` (zvec-grep) |
+| Code structure | `ast-grep`, `ast-grep outline` |
+| Markdown knowledge bases and the girlOS vault | `qmd` |
+| Recorded agent sessions | `agentsview` |
 
 Run the indexed search before broad file reads or delegating discovery; a subagent should not be spawned only to locate material. Treat a sufficient snippet as read and open the file only when the needed detail lies outside it.
 
 #### Built-in tool skills
 
-Manage external skills with `gh skill`: search, preview, list, install/add, and update are routine within the task, including user scope. Review destructive removal or forced replacement. Check the source before installing unfamiliar content; do not use the npm `skills` CLI, package-runner variants, `rei`, or Context7's skill installer. Shared user skills live in `~/.agents/skills`, installed with `--agent universal --scope user`; own skills live in the dotfiles `skills/` tree and edits to a deployed one return there with `skillsave <name>`. Project-scoped skills may shadow global ones.
+Manage external skills with `gh skill`: search, preview, list, install/add, and update are routine within the task, including user scope. Review destructive removal or forced replacement. Check the source before installing unfamiliar content; do not use the npm `skills` CLI, package-runner variants, `rei`, or Context7's skill installer. Shared user skills live in `~/.agents/skills`, installed with `--agent universal --scope user`; own skills live in the dotfiles `skills/` tree and edits to a deployed one return there with `skillet save <name>`. Project-scoped skills may shadow global ones.
 
 Many tools also ship version-matched skills. Check whether a skill command prints instructions or installs files before running it; use `gh skill` for external skill management.
 

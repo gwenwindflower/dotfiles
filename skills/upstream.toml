@@ -1,0 +1,25 @@
+# Upstream skills distilled into our spines, grouped by spine. One entry per
+# upstream skill: `skillet` diffs it against `baseline` (the upstream commit last
+# folded in) and `accept` records a new baseline once the change is distilled
+# into every spine-relative doc in `files`.
+
+[[context-search.upstream]]
+repo = "ast-grep/agent-skill"
+skill = "ast-grep"
+files = ["ast-grep.md", "ast-grep-rules.md"]
+baseline = "f2175aff21f20cfb8e2db30c28febeb3a2d42b61"
+tree = "1f1877bfb051fff6e6de5ebe529fb47758a03367"
+
+[[context-search.upstream]]
+repo = "ast-grep/agent-skill"
+skill = "outline"
+files = ["ast-grep.md"]
+baseline = "f2175aff21f20cfb8e2db30c28febeb3a2d42b61"
+tree = "7ee23d31b0578aa6702d8bbafa15749fc499a8c0"
+
+[[context-search.upstream]]
+repo = "tobi/qmd"
+skill = "qmd"
+files = ["qmd.md"]
+baseline = "facd35e01359e59d938bc9418e93fb9318addee3"
+tree = "cfe2aef5f41452c0697447287a1598cb98b7ca9d"

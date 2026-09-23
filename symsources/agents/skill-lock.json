@@ -91,6 +91,15 @@
       "installedAt": "2026-09-04T22:50:38Z",
       "updatedAt": "2026-09-23T05:18:11Z"
     },
+    "context-search": {
+      "source": "gwenwindflower/dotfiles",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/gwenwindflower/dotfiles.git",
+      "skillPath": "skills/context-search/SKILL.md",
+      "skillFolderHash": "60839574c86a35a72f9aa301e7185441ed2a6386",
+      "installedAt": "2026-09-23T06:10:54Z",
+      "updatedAt": "2026-09-23T06:10:54Z"
+    },
     "deno-tools": {
       "source": "gwenwindflower/dotfiles",
       "sourceType": "github",
