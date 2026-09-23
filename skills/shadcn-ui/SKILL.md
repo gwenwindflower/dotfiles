@@ -1,11 +1,13 @@
 ---
 name: shadcn-ui
-description: Add, customize, and troubleshoot shadcn/ui components in any project. Use when working with shadcn components, variants, components.json, or the shadcn CLI.
+description: shadcn/ui components - add, customize variants, components.json, CLI, troubleshooting. Command-K palettes with cmdk.
 ---
 
 # shadcn/ui Components
 
 ## Overview
+
+Building a command-K or spotlight-style palette: read [command-palette](command-palette.md).
 
 shadcn/ui is a collection of copy-paste components built on Radix UI primitives and styled with Tailwind CSS. You own the code - components are copied into your project, not installed as dependencies.
 

@@ -1,11 +1,21 @@
 ---
 name: agent-context-engineering
-description: Author and maintain agent context markdown — AGENTS.md, rules, skills, memory files. Use when creating, editing, or refactoring any agent-focused doc, or after major codebase exploration to capture learning.
+description: Authoring and capturing agent context - AGENTS.md, CLAUDE.md, rules, memory, skills, subagents. Session-end capture and mining past sessions for gaps.
+allowed-tools:
+  - WebFetch(domain:docs.agentskills.io)
+  - WebFetch(domain:code.claude.com)
 ---
 
 # Agent context docs
 
-Every line is loaded on every trigger. If it doesn't change agent behavior, cut it.
+Every line is loaded on every trigger. If it doesn't change agent behavior, cut it. This file covers AGENTS.md, rules, and memory; load the doc for any other artifact or job.
+
+| Job | Doc |
+| --- | --- |
+| Author or audit a skill, write descriptions, frontmatter | [skills](skills.md), then [skill-descriptions](skill-descriptions.md), [skill-metadata](skill-metadata.md), [skill-scaffold](skill-scaffold.md) |
+| Design a subagent | [subagents](subagents.md), then the platform doc it links |
+| Capture what this session learned | [capture-session](capture-session.md) |
+| Mine past sessions for uncaptured knowledge | [capture-from-history](capture-from-history.md) |
 
 > [!NOTE]
 > `AGENTS.md` and `.agents/` are both real and stand-ins. They're the shared cross-agent standard adopted by most non-Claude tools, *and* the generic model for agent-specific equivalents (`CLAUDE.md`, `GEMINI.md`, `.codex/`, etc.). Guidance here applies to all of them.
@@ -93,7 +103,7 @@ CLAUDE.md -> AGENTS.md     symlink
 docs/                      how the system works now, indexed from AGENTS.md
 ```
 
-Agent-specific directories hold only what that agent needs; shared content lives once under `.agents/` or `docs/`. `bootstrap-tool` lays this down.
+Agent-specific directories hold only what that agent needs; shared content lives once under `.agents/` or `docs/`. The `project-workflows` bootstrap lays this down.
 
 ## File locations
 

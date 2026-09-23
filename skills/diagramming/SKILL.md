@@ -1,6 +1,6 @@
 ---
 name: diagramming
-description: Create architecture, sequence, ER, state, and flow diagrams in Mermaid or D2 with shared themes and style rules. Use when asked for any diagram, when editing .mmd files, mermaid fences, or .d2 files, or when choosing how to diagram for a destination such as GitHub, Obsidian, Confluence, docs sites, or image exports.
+description: Mermaid and D2 diagrams - architecture, sequence, ER, state, flow. Shared themes, style rules, format choice per destination.
 ---
 
 # Diagramming

@@ -1,6 +1,6 @@
 ---
 name: notion-cli
-description: Use the Notion CLI `ntn` for authenticated Notion API requests, pages, data sources, file uploads, and Notion Workers. Use when the user asks to run or script `ntn`, inspect Notion API endpoints, create or edit Notion content from the terminal, or deploy and operate Notion Workers.
+description: Notion ntn CLI - API requests, pages, data sources, file uploads, Notion Workers deploy and ops.
 allowed-tools:
   - WebFetch(domain:developers.notion.com)
   - Bash(ntn *)

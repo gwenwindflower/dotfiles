@@ -1,6 +1,6 @@
 ---
 name: learning-goal
-description: Facilitate a 10–15 minute Mental Contrasting + Implementation Intentions (MCII) goal-setting exercise. Use when the user asks to set a learning goal, structure skill development, or plan learning for a new project.
+description: Guided 10-15 minute MCII goal-setting exercise for learning goals and skill-development plans.
 license: CC-BY-4.0
 ---
 

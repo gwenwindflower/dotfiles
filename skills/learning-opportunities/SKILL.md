@@ -1,6 +1,6 @@
 ---
 name: learning-opportunities
-description: Offer 10–15 minute learning exercises after architectural work — new files, schema changes, refactors, unfamiliar patterns. Use when wrapping a meaningful chunk of work or when the user asks to understand code more deeply.
+description: Short learning exercises offered after architectural work, or on request to understand code more deeply.
 argument-hint: "[orient]"
 license: CC-BY-4.0
 ---

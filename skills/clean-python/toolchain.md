@@ -104,4 +104,4 @@ jobs:
 
 - `setup-uv` installs uv and caches its store. `uv python install` reads `.python-version`. Verify current major versions on the Marketplace before pinning; the `github-actions-workflows` skill has the standard CI layout.
 - ty has no dedicated action. Run it through `uv run` so the version comes from the lockfile.
-- Publishing: `uv build` then `uv publish` with trusted publishing. The `releasing-tools` skill covers the release pipeline.
+- Publishing: `uv build` then `uv publish` with trusted publishing. The `project-workflows` skill covers the release pipeline.

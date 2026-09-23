@@ -20,7 +20,7 @@ Verified, and narrower than the docs' "failure aborts the operation": a failing 
 
 ## Project merge gates
 
-Tool repositories from `gwenwindflower/_tool` ship `.config/wt.toml` with `[[pre-commit]] lint = "mise run 'lint:*'"` and `[[pre-merge]] gate = "mise run release:check"`. Per-commit checks are prek hooks, not worktrunk hooks: `pre-commit` here fires only inside `wt merge`, never on `git commit`. Keep formatters out of `wt.toml` and whole-repo tasks out of `prek.toml`; the `mise-projects` skill has the full split.
+Tool repositories from `gwenwindflower/_tool` ship `.config/wt.toml` with `[[pre-commit]] lint = "mise run 'lint:*'"` and `[[pre-merge]] gate = "mise run release:check"`. Per-commit checks are prek hooks, not worktrunk hooks: `pre-commit` here fires only inside `wt merge`, never on `git commit`. Keep formatters out of `wt.toml` and whole-repo tasks out of `prek.toml`; the `project-workflows` skill (`mise.md`) has the full split.
 
 ## Reflink
 

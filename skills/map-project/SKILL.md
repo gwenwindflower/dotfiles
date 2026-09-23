@@ -1,6 +1,6 @@
 ---
 name: map-project
-description: Orient in an unfamiliar existing project and produce a durable map — improved agent context files when the project lacks them, or an orientation doc that powers guided user learning. Use when asked to orient, onboard, map, or get up to speed in an existing codebase, or when landing in a project whose agent context is thin enough to be worth fixing. Skip when current AGENTS.md and docs already cover the project — read those instead.
+description: Orient in an unfamiliar codebase and leave a durable map - better agent context or a guided-learning orientation doc. Skip when AGENTS.md and docs already cover it.
 ---
 
 # Map a Project
@@ -27,7 +27,7 @@ Stop when new files stop changing the model.
 | Agent — project context thin or missing | AGENTS.md/CLAUDE.md plus a `docs/` index |
 | User — wants to understand the codebase | `.agents/docs/orientation.md` plus guided exercises |
 
-Doing both: write the agent context first, then derive the orientation doc from it. For capturing learnings at the end of an ordinary working session (rather than a deliberate mapping pass), use `capture-context` instead.
+Doing both: write the agent context first, then derive the orientation doc from it. For capturing learnings at the end of an ordinary working session (rather than a deliberate mapping pass), use `agent-context-engineering` (`capture-session.md`) instead.
 
 ### Agent context
 

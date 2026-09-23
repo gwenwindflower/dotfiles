@@ -1,0 +1,53 @@
+# Scaffolding a new skill
+
+## Naming
+
+Two valid shapes, chosen by scope:
+
+- **Topic noun** (`chezmoi`, `fish-shell`, `analytics-engineering`) — for skills that span multiple actions or carry special topic knowledge.
+- **Present-tense active verb phrase** (`map-project`, `sync-tasks`) — for skills scoped to one action, or whenever a verb makes the trigger clearer. The verb form must complete the sentence "As an agent I want to `<skill-name>`" — so `map-project`, never `mapping-project`.
+
+Before adding a skill, check whether it belongs as a reference doc inside an existing skill in the same domain. Fewer, deeper skills keep the startup list short.
+
+Third-party skills keep their upstream names; they update externally.
+
+## Workflow
+
+1. Clarify with the user — jobs-to-be-done, examples, what existing context is missing
+2. Create the skill directory manually in the right source tree:
+   - User-level skills: `~/.local/share/chezmoi/skills/<skill-name>/`, a chezmoi-ignored tree that `gh skill` installs from; no chezmoi prefixes
+   - Project skills: the project's own skill directory, if the user explicitly wants project-local scope
+3. Add `SKILL.md` manually with frontmatter `name` and `description`, then a short Markdown title
+4. Write SKILL.md tight; offload depth into modular `<topic>.md` files alongside it only when needed
+5. Add `scripts/` or `assets/` only when they are directly used by the skill
+6. [Write the description](skill-descriptions.md) before declaring done
+
+## Structure
+
+A real skill (`github-actions-workflows`) bundling templates, modular docs, and a script:
+
+```text
+github-actions-workflows/
+├── assets/
+│   ├── ci.yml.template
+│   ├── release-build.yml.template
+│   └── release.yml.template
+├── scripts/
+│   └── install-workflow.sh
+├── ci.md
+├── release-build.md
+├── release.md
+└── SKILL.md
+```
+
+For simple skills, delete `assets/` and `scripts/`.
+
+## Modular doc links
+
+Use `[label](file.md)` relative to SKILL.md. Don't include the extension in the label. Files live next to SKILL.md — no `references/` subdir for new skills (older skills may have one; preserve if present unless the user asks to flatten).
+
+## Template-style assets
+
+If a skill ships scaffolding files meant to be copied and customized, **never name them `*.tmpl`**. Skills often live inside chezmoi-managed trees, and chezmoi renders any `.tmpl` file as a Go template at apply time — it will mangle content and strip the suffix.
+
+Use `.template` instead — it signals intent to humans and scripts without colliding. If you need real templating, pick Handlebars / Jinja / `${VAR}` and drive rendering from a script in the skill itself.

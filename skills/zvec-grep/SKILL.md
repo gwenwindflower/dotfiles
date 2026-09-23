@@ -1,6 +1,6 @@
 ---
 name: zvec-grep
-description: Hybrid lexical and semantic search over code and mixed-content workspaces with zvec-grep (`zg`), plus index setup and upkeep. Use when the wording or location of something in a repo is unknown, when tracing behavior, flow, or architecture across files, when a fuzzy question needs ranked evidence before reading source, or when asked to index or refresh a workspace. Skip when you already hold an exact identifier (use `rg`). For markdown knowledge bases use qmd; for past agent sessions use agentsview-finding-history.
+description: zg hybrid lexical and semantic search over code and mixed workspaces, plus index setup. For unknown wording or flow and architecture questions; exact identifiers use rg, markdown uses qmd.
 allowed-tools: Bash(zg:*)
 ---
 

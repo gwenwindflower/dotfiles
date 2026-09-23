@@ -1,6 +1,6 @@
 ---
 name: sync-tasks
-description: Sync and reconcile Obsidian Tasks with Apple Reminders through rem, preserving task identity and surfacing conflicts. Use for cross-system task cleanup, topical reconciliation, or planning priorities and schedules across the two systems.
+description: Reconcile Obsidian Tasks with Apple Reminders via rem - identity-safe sync, conflict review, priority and schedule planning.
 argument-hint: "[topic or project] [sync, review, reconcile, or plan]"
 ---
 

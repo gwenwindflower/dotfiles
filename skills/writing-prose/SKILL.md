@@ -1,6 +1,6 @@
 ---
 name: writing-prose
-description: Write or edit narrative and expository prose for human readers — blog posts, articles, essays, fiction, marketing copy, human-facing docs. Skip agent context files (AGENTS.md, rules, skills, memory), READMEs, CLI help, and other structured/functional markdown.
+description: Narrative and expository prose for humans - posts, essays, fiction, marketing, human-facing docs. Not agent context, READMEs, or CLI help.
 ---
 
 # Writing Prose

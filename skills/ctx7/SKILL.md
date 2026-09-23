@@ -1,6 +1,6 @@
 ---
-name: context7-cli
-description: Use the ctx7 CLI to fetch library documentation, manage AI coding skills, and configure Context7 MCP. Activate when the user mentions "ctx7" or "context7", needs current docs for any library, wants to install/search/generate skills, or needs to set up Context7 for their AI coding agent.
+name: ctx7
+description: Context7 ctx7 CLI - current library and framework docs lookup, Context7 MCP setup.
 ---
 
 # ctx7 CLI

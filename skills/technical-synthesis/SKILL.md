@@ -1,6 +1,6 @@
 ---
 name: technical-synthesis
-description: Interactive four-stage synthesis of rich source material into a structured technical draft, with explicit user feedback gates between stages and pluggable form (audit, article) and tone (expert, friendly). Manual-only — load solely when the user explicitly requests it by name.
+description: Interactive four-stage synthesis of source material into a technical draft, with feedback gates and pluggable form and tone. Manual-only.
 disable-model-invocation: true
 ---
 

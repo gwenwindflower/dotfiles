@@ -1,6 +1,6 @@
 ---
 name: markdown-interactive-docs
-description: Build self-contained interactive HTML from structured Markdown and a customizable template with a bundled Deno compiler. Use when a schedule, runbook, or checklist needs collapsible rows, filters, persisted tasks, or print styling; also when editing a project that uses this skill's template.html and build.ts pattern. Skip ordinary Markdown with no HTML output.
+description: Compile structured Markdown into self-contained interactive HTML - collapsible rows, filters, persisted tasks, print styles. Deno build with template.html.
 ---
 
 # Markdown Interactive Docs

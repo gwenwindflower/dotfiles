@@ -1,6 +1,6 @@
 ---
 name: web-design-guidelines
-description: Review web UI code against the Web Interface Guidelines (accessibility, UX, visual design). Use when asked to review a UI, audit accessibility, check UX, or evaluate a site against best practices.
+description: Review web UI code against the Web Interface Guidelines - accessibility, UX, visual design.
 metadata:
   author: vercel
   version: "1.0.0"

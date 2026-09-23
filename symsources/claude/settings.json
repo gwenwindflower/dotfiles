@@ -767,5 +767,6 @@
 		]
 	},
 	"voiceEnabled": true,
-	"maxSkillDescriptionCharacters": "1000"
+	"maxSkillDescriptionCharacters": "300",
+	"syncClaudeAiSkills": false
 }

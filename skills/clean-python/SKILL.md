@@ -1,6 +1,6 @@
 ---
 name: clean-python
-description: Write clean, modern, strictly typed Python on the Astral toolchain (uv, ruff, ty). Use when writing, reviewing, or refactoring Python, setting up pyproject.toml, configuring ruff or ty, or wiring Python CI. Skip for Pydantic model design (use pydantic) and dbt Python models (use dbt-analytics-engineering).
+description: Typed modern Python on uv, ruff, and ty - pyproject, lint and type config, style, CI. Pydantic modeling uses pydantic; dbt Python uses analytics-engineering.
 metadata:
   inspired-by: dagster-io/skills dignified-python v1.13.20
 ---

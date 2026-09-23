@@ -1,6 +1,6 @@
 ---
 name: spot-project-management
-description: Manage SPOT-system projects (Spec, Phases, Objectives, Tasks) — write SPEC.md and durable domain specs, plan work in TODO.md or as Linear parent issues, run a Phase or parent issue in a session, or split truly unrelated work across parallel sessions. Skip when only completing tasks inside an already-briefed Phase (the always-on projects rule covers that).
+description: SPOT planning - SPEC.md, domain specs, TODO.md Phases or Linear parent issues, running a Phase, parallel sessions. Not needed for tasks inside a briefed Phase.
 ---
 
 # SPOT Project Management

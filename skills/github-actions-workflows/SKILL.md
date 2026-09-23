@@ -1,6 +1,6 @@
 ---
 name: github-actions-workflows
-description: Author, audit, and scaffold GitHub Actions workflows. Use when editing .github/workflows/*.yml, picking runners or marketplace actions, debugging workflow failures, adding CI annotations, or checking a repo's workflows against the standard CI and release-build pipeline.
+description: GitHub Actions workflows - authoring, runners, marketplace actions, annotations, debugging failures, auditing against the standard CI and release pipeline.
 ---
 
 # GitHub Actions Workflows
@@ -36,7 +36,7 @@ Policy: hash-pin everything; ref-pin is acceptable only for `actions/*`. [`asset
 
 ## The standard pipeline
 
-The template (`gwenwindflower/_tool`) ships two workflows; `bootstrap-tool` installs them and `mise-projects` explains the task layer they call.
+The template (`gwenwindflower/_tool`) ships two workflows; `project-workflows` installs them and explains the task layer they call.
 
 **`ci.yml`** on push to `main` and every PR. Jobs `check` (register problem matchers, `mise run version:check`, `mise run 'lint:*'`), `test` (`mise run 'test:*'` on Ubuntu and macOS), and `audit` (`zizmor --format github .`, `mise run ci-audit:pinact`). Every job carries `if: ${{ !github.event.repository.is_template }}` so the template repository itself never runs them.
 
@@ -72,4 +72,4 @@ Failures must land on the diff as file-and-line annotations. See [references/ann
 
 ## Auditing a repo
 
-Read each workflow, then check: runner labels current, actions pinned with comments, `permissions` present and minimal, `concurrency` set, `persist-credentials: false`, no job-level secrets, `cache: false` on publishing workflows, `fail-fast: false` where the matrix should finish, matchers registered. Run `mise run ci-audit`. Compare against the template's two workflows; `bootstrap-tool existing` reports the diff.
+Read each workflow, then check: runner labels current, actions pinned with comments, `permissions` present and minimal, `concurrency` set, `persist-credentials: false`, no job-level secrets, `cache: false` on publishing workflows, `fail-fast: false` where the matrix should finish, matchers registered. Run `mise run ci-audit`. Compare against the template's two workflows; the `project-workflows` bootstrap script's `existing` mode reports the diff.

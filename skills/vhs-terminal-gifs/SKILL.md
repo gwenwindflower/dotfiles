@@ -1,6 +1,6 @@
 ---
 name: vhs-terminal-gifs
-description: Create terminal GIFs/MP4s with charmbracelet vhs from a .tape script. Use when the user wants to record, demo, or capture a terminal workflow for docs, blogs, or READMEs.
+description: Terminal GIF and MP4 recording with charmbracelet vhs tape scripts for docs, blogs, and READMEs.
 ---
 
 # VHS Terminal GIFs

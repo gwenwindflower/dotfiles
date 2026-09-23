@@ -1,6 +1,6 @@
 ---
 name: lazygit-custom-commands
-description: Build and debug lazygit customCommands in config.yml — prompts, contextual keybindings, commandMenus, template-based construction, and conventional-commit flows. Use when editing lazygit config or designing a custom command.
+description: lazygit customCommands - prompts, contextual keybindings, command menus, templates, conventional-commit flows.
 ---
 
 # Lazygit Custom Commands

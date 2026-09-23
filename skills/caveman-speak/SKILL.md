@@ -1,6 +1,6 @@
 ---
 name: caveman-speak
-description: Compress natural language to caveman-style fragments to save tokens, in live conversation or in files. Preserves all technical substance, code, URLs, paths, structure. Use when user says "/caveman-speak", "caveman mode", "talk caveman", "go caveman", "caveman compress the X file/spec/doc", "compress X to caveman", "make a caveman version of X", "cavemanify X", or toggles off ("stop caveman", "normal mode", "back to normal", "english mode").
+description: Caveman-style compression of prose to save tokens, live or in files. Keeps code, paths, and technical substance. Toggled on or off by request.
 ---
 
 # Caveman Speak

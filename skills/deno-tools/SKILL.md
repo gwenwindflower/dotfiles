@@ -1,6 +1,6 @@
 ---
 name: deno-tools
-description: Build TypeScript scripts and CLIs on Deno — from one-off scripts to multi-command Cliffy CLIs. Use when writing .ts files run by deno, structuring deno.json with tasks/tests/permissions, or designing a subcommand layout.
+description: Deno TypeScript scripts and CLIs - deno.json tasks, tests, permissions, Cliffy subcommand layout.
 ---
 
 # Deno Tools

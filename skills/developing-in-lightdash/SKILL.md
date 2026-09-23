@@ -1,6 +1,6 @@
 ---
 name: developing-in-lightdash
-description: Use when working with Lightdash YAML files, dbt models with Lightdash metadata, the lightdash CLI (deploy, upload, download, preview, lint, warehouse-catalog, sql, set-warehouse, apps create/preview/validate), or managing charts, dashboards, spaces and access, AI agents, scheduled content, data apps, organization Data App themes, data-app external connections, users, groups, custom roles, metrics, and dimensions as code
+description: Lightdash as code - YAML and dbt metadata, lightdash CLI, charts, dashboards, spaces, AI agents, data apps, schedules, users and roles.
 ---
 
 # Developing in Lightdash

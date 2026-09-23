@@ -1,6 +1,6 @@
 ---
 name: managing-issues
-description: Use whenever working with Linear or GitHub issues — searching, reading, creating, clarifying, triaging, labeling, closing, or organizing them into projects and proposals, including Linear↔GitHub synced repos.
+description: Linear and GitHub issues - search, create, clarify, triage, label, close, organize into projects; Linear-GitHub synced repos.
 ---
 
 # Managing Issues
