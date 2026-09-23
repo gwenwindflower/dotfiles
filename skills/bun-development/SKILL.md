@@ -6,7 +6,7 @@ description: Bun projects - native APIs, bun test, bun build --compile, tsconfig
 # Bun Development
 
 > [!IMPORTANT]
-> In Claude Code's sandbox, `bun` and `bunx` bypass `$TMPDIR` and hit a blocked darwin temp path (see `~/.claude/tmpdirs.md`). For one-off package execution use `aubx` (or `pnpx` if `aube` isn't available); for a JS runner prefer `aube`, with `pnpm` as a backup (only use plain `npm` if it's the only option on the system). Reach for `bun` only when the project mandates it, and expect `bun install`/`bun test` to need user-side execution outside the sandbox.
+> In Claude Code's sandbox, `bun` and `bunx` bypass `$TMPDIR` and hit a blocked darwin temp path, since Bun reads it from `confstr(_CS_DARWIN_USER_TEMP_DIR)` rather than the environment. For one-off package execution use `aubx` (or `pnpx` if `aube` isn't available); for a JS runner prefer `aube`, with `pnpm` as a backup (only use plain `npm` if it's the only option on the system). Reach for `bun` only when the project mandates it, and expect `bun install`/`bun test` to need user-side execution outside the sandbox.
 
 ## Lockfile signals
 

@@ -16,7 +16,6 @@ Reference: [hooks guide](https://code.claude.com/docs/en/hooks-guide), [hooks co
 
 | Event | Matcher | Hook | External | Purpose |
 | --- | --- | --- | --- | --- |
-| `SessionStart` | — | `set-sandbox-tmpdir.sh` | | Set `$TMPDIR` to sandbox-writable per-project temp dir |
 | `SessionStart` | — | `set-git-nosign.sh` | | Disable SSH commit signing inside the sandbox |
 | `UserPromptSubmit` | `*` | `herdr-agent-state.sh working` | x | Mark agent working in the herdr state daemon |
 | `PreToolUse` | `*` | `herdr-agent-state.sh working` | x | Same — keep state fresh as tools fire |
