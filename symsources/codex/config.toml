@@ -11,7 +11,7 @@ sandbox_mode = "workspace-write"
 web_search = "cached"
 project_doc_max_bytes = 65536
 sqlite_home = "~/.codex/sqlite"
-model_reasoning_effort = "medium"
+model_reasoning_effort = "low"
 suppress_unstable_features_warning = true
 
 notify = ["/Users/winnie/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended"]
@@ -248,9 +248,6 @@ enabled = true
 [plugins."unified-computer-use@openai-bundled"]
 enabled = true
 
-[plugins."sites@openai-bundled"]
-enabled = true
-
 [plugins."worktrunk@worktrunk"]
 enabled = true
 
@@ -270,28 +267,28 @@ BROWSER_USE_TINYSKY_ENABLED = "1"
 NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.908.40401"
-NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/winnie/.codex/plugins/cache/openai-bundled/browser/26.908.40401/scripts/browser-service.mjs"}'
+BROWSER_USE_CODEX_APP_VERSION = "26.917.51856"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/winnie/.codex/plugins/cache/openai-bundled/browser/26.917.51856/scripts/browser-service.mjs"}'
 CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
 
-[mcp_servers.indi]
-command = "indi"
-args = ["mcp", "serve"]
-enabled = false
-
-[mcp_servers.indi.env]
-INDI_COST__MAX_BYTES_BILLED = "1_500_000_000"
-INDI_EMBEDDING__MODEL_PATH = "/Users/winnie/dev/_supermodel/_clients/indivisible/indi/models/embedding/nomic-embed-text-v1.5.f16.gguf"
-INDI_GRAPH__ROOT = "/Users/winnie/dev/_supermodel/_clients/indivisible/indi/ctx"
-INDI_INDEX__BACKEND = "lancedb"
-INDI_INDEX__PATH = "/Users/winnie/dev/_supermodel/_clients/indivisible/indi/.lancedb"
-INDI_SEARCH__DEFAULT_MODE = "rrf"
-INDI_SEARCH__ENABLED_MODES = '["fts", "vector", "rrf"]'
-INDI_WAREHOUSE__BACKEND = "bigquery"
-INDI_WAREHOUSE__CREDENTIALS_PATH = "/Users/winnie/dev/_supermodel/_clients/indivisible/indi/.secrets/bq_service_account_keyfile.json"
-INDI_WAREHOUSE__DEFAULT_DATASET = "dbt"
-INDI_WAREHOUSE__LOCATION = "US"
-INDI_WAREHOUSE__PROJECT = "proj-tmc-mem-in"
+# [mcp_servers.indi]
+# command = "indi"
+# args = ["mcp", "serve"]
+# enabled = false
+#
+# [mcp_servers.indi.env]
+# INDI_COST__MAX_BYTES_BILLED = "1_500_000_000"
+# INDI_EMBEDDING__MODEL_PATH = "/Users/winnie/dev/_supermodel/_clients/indivisible/indi/models/embedding/nomic-embed-text-v1.5.f16.gguf"
+# INDI_GRAPH__ROOT = "/Users/winnie/dev/_supermodel/_clients/indivisible/indi/ctx"
+# INDI_INDEX__BACKEND = "lancedb"
+# INDI_INDEX__PATH = "/Users/winnie/dev/_supermodel/_clients/indivisible/indi/.lancedb"
+# INDI_SEARCH__DEFAULT_MODE = "rrf"
+# INDI_SEARCH__ENABLED_MODES = '["fts", "vector", "rrf"]'
+# INDI_WAREHOUSE__BACKEND = "bigquery"
+# INDI_WAREHOUSE__CREDENTIALS_PATH = "/Users/winnie/dev/_supermodel/_clients/indivisible/indi/.secrets/bq_service_account_keyfile.json"
+# INDI_WAREHOUSE__DEFAULT_DATASET = "dbt"
+# INDI_WAREHOUSE__LOCATION = "US"
+# INDI_WAREHOUSE__PROJECT = "proj-tmc-mem-in"
 
 # [mcp_servers.lightdash]
 # url = "https://analytics.lightdash.cloud/api/v1/mcp"
@@ -319,7 +316,7 @@ git-pull-request-merge-method = "squash"
 git-show-sidebar-pr-icons = true
 git-always-force-push = true
 git-branch-prefix = "winnie-cdx/"
-appearanceTheme = "system"
+appearanceTheme = "dark"
 selected-avatar-id = "custom:kero"
 hotkey-window-projectless-default-enabled = true
 avatar-overlay-mascot-width-px = 99
@@ -512,8 +509,14 @@ trust_level = "trusted"
 [projects."/Users/winnie/dev/lightdash/lightdash-library"]
 trust_level = "trusted"
 
+[projects."/Users/winnie/Documents/Codex/2026-09-21/u"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/tools/_tool"]
+trust_level = "trusted"
+
 [apps._default]
-enabled = false
+enabled = true
 
 [apps.asdk_app_69d88b99c5c481918e8da9225737e1e9]
 enabled = false
@@ -522,7 +525,7 @@ enabled = false
 enabled = false
 
 [apps.asdk_app_6981f663d5cc8191ae0d5717a05ccc89]
-enabled = false
+enabled = true
 
 [apps.asdk_app_6a19d5012d308191a00a48780f7dcdcc]
 enabled = false
