@@ -1,8 +1,3 @@
----
-name: ctx7
-description: Context7 ctx7 CLI - current library and framework docs lookup, Context7 MCP setup.
----
-
 # ctx7 CLI
 
 The Context7 CLI does three things: fetches up-to-date library documentation, manages AI coding skills, and sets up Context7 MCP for your editor. We do not use anything related to the last two, we only use the open semantic docs search tool via CLI.

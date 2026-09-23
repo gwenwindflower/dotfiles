@@ -1,9 +1,3 @@
----
-name: zvec-grep
-description: zg hybrid lexical and semantic search over code and mixed workspaces, plus index setup. For unknown wording or flow and architecture questions; exact identifiers use rg, markdown uses qmd.
-allowed-tools: Bash(zg:*)
----
-
 # zvec-grep
 
 `zg` fuses BM25 full-text search and vector search over a per-workspace index at `<root>/.zvec-grep/`, with structural extraction for C, C++, Go, Java, JS/TS, Python, and Rust, heading-aware chunks for markdown, and plain chunks for everything else text. It also wraps ripgrep with the same ignore rules. Output is agent-oriented markdown by default.

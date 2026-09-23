@@ -1,14 +1,17 @@
 ---
-name: qmd
-description: QMD search over local markdown - notes, docs, wikis, the girlOS vault. Code search uses zvec-grep; past sessions use agentsview-finding-history.
-license: MIT
-compatibility: Requires qmd CLI or MCP server. Install via `npm install -g @tobilu/qmd`.
-metadata:
-  author: tobi
-  version: "2.2.0"
 allowed-tools: Bash(qmd:*), mcp__qmd__*
+compatibility: Requires qmd CLI or MCP server. Install via `npm install -g @tobilu/qmd`.
+description: Search local markdown knowledge bases, notes, docs, and wikis with QMD. Use when users ask to find notes, retrieve documents, inspect a wiki, answer from indexed markdown, or set up QMD access.
+license: MIT
+metadata:
+    author: tobi
+    github-path: skills/qmd
+    github-ref: refs/tags/v2.8.3
+    github-repo: https://github.com/tobi/qmd
+    github-tree-sha: cfe2aef5f41452c0697447287a1598cb98b7ca9d
+    version: 2.2.0
+name: qmd
 ---
-
 # QMD - Query Markdown Documents
 
 ## How search works
@@ -293,10 +296,3 @@ server configuration.
 - **Collection names matter.** Search `concepts` for synthesized wiki pages,
   `sources` for transcripts/raw source pages, and docs collections for code or
   project documentation.
-
-## Corpus upkeep (local addition — keep when re-capturing from `qmd skill show`)
-
-Maintaining the index is part of using the tool:
-
-- **Stale index?** `qmd status` shows per-collection age. If content you'd expect is missing or the index is more than a few days old, run `qmd update` (re-index) then `qmd embed` (fills only missing vectors) before trusting results.
-- **Embedding model changed?** (`QMD_EMBED_MODEL` points at a new file/revision): run `qmd embed -f` — vectors are not compatible across models, and stale-model search degrades silently. The model is the shared Qwen3 GGUF in the HF hub cache; the `llup` abbr (background llama-server) re-checks HF and updates the file on each start.

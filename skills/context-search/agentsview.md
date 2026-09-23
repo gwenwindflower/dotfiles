@@ -1,8 +1,4 @@
----
-# generated-by: agentsview v0.42.0 hash:5463b3e566cc2ade8de9722c8f688e0435f6761cef07b05bdefbefc754c4106c — do not edit; re-run `agentsview skills install`
-name: agentsview-finding-history
-description: Use when asked why a decision was made, how something was done before, or to recover prior instructions, examples, or conversations from recorded agent history — searches the AgentsView archive for evidence.
----
+<!-- upstream: `agentsview skills install` v0.42.0; refresh by regenerating, not hand-editing -->
 
 # Finding AgentsView History
 
