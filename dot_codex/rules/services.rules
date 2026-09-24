@@ -1,0 +1,194 @@
+# open: these need host resources (the chezmoi state database and every managed target,
+# Chrome, the GPU) and are routine.
+prefix_rule(
+    pattern = ["chezmoi", ["--dry-run", "-n", "diff", "status", "verify", "doctor", "cat", "data", "managed", "source-path", "target-path", "execute-template", "ignored", "cat-config", "dump-config"]],
+    decision = "allow",
+    justification = "Dotfiles inspection and dry runs read every managed target and chezmoi's state database on the host.",
+    match = ["chezmoi --dry-run --no-pager apply", "chezmoi -n --no-pager apply ~/.agents", "chezmoi diff --no-pager", "chezmoi status", "chezmoi doctor"],
+    not_match = ["chezmoi apply", "chezmoi add ~/.zshrc", "chezmoi state dump"],
+)
+
+prefix_rule(
+    pattern = ["agent-browser", ["screenshot", "snapshot", "pdf", "close"]],
+    decision = "allow",
+    justification = "Routine browser capture and cleanup run on the host because Chromium cannot launch inside the sandbox.",
+    match = ["agent-browser screenshot page.png", "agent-browser snapshot -i", "agent-browser pdf page.pdf", "agent-browser close"],
+    not_match = ["agent-browser open https://example.com", "agent-browser cookies get"],
+)
+
+prefix_rule(
+    pattern = ["agent-browser", "--profile", "Default", ["screenshot", "snapshot", "pdf", "close"]],
+    decision = "allow",
+    justification = "Capture and cleanup stay routine when the Default profile is selected.",
+    match = ["agent-browser --profile Default screenshot page.png", "agent-browser --profile Default pdf page.pdf"],
+    not_match = ["agent-browser --profile Default open https://example.com"],
+)
+
+prefix_rule(
+    pattern = ["qmd", ["embed", "query", "vsearch"]],
+    decision = "allow",
+    justification = "Local embedding and vector search load models on the GPU, which the sandbox blocks.",
+    match = ["qmd embed", "qmd query 'agent config'"],
+    not_match = ["qmd collection remove notes"],
+)
+
+# review-open / review-request-open: these would succeed in the sandbox (network, socket,
+# or granted state), so they are routed to the reviewer explicitly.
+prefix_rule(
+    pattern = ["chezmoi", ["apply", "update", "init"]],
+    decision = "prompt",
+    justification = "A real chezmoi apply rewrites the whole home directory. Approve only when the user's message asked to apply after the changes; verification uses chezmoi --dry-run --no-pager apply and chezmoi diff. Request escalation with this command.",
+    match = ["chezmoi apply", "chezmoi apply ~/.config/fish", "chezmoi update", "chezmoi init --apply"],
+    not_match = ["chezmoi --dry-run --no-pager apply", "chezmoi diff"],
+)
+
+prefix_rule(
+    pattern = ["chezmoi", ["add", "re-add", "forget", "chattr", "edit"]],
+    decision = "prompt",
+    justification = "Changing the chezmoi source from targets follows the task's scope. Request escalation with this command.",
+    match = ["chezmoi add ~/.zshrc", "chezmoi re-add"],
+    not_match = ["chezmoi cat ~/.zshrc"],
+)
+
+prefix_rule(
+    pattern = ["agent-browser", "--profile", "Default"],
+    decision = "prompt",
+    justification = "The Default profile carries signed-in, Keychain-backed browser state; use it beyond capture only when the user's current request asks for it. Request escalation with this command.",
+    match = ["agent-browser --profile Default open https://example.com"],
+)
+
+prefix_rule(
+    pattern = ["agent-browser", ["cookies", "storage", "state"]],
+    decision = "prompt",
+    justification = "Exporting browser session state needs the user's request. Request escalation with this command.",
+    match = ["agent-browser cookies get", "agent-browser state save s.json"],
+    not_match = ["agent-browser snapshot"],
+)
+
+prefix_rule(
+    pattern = ["linear-cli", ["issues", "comments", "documents", "labels", "projects", "project-updates", "attachments", "milestones", "initiatives", "relations", "templates", "views", "webhooks", "favorites", "time", "sprint", "triage", "roadmaps", "notifications"], ["create", "update", "delete", "archive", "unarchive", "assign", "unassign", "add", "remove", "move", "close", "reopen", "link", "unlink", "start", "stop", "log", "mark", "apply", "set"]],
+    decision = "prompt",
+    justification = "Linear writes follow the task's scope in the Lightdash workspace; deletions and archives need the user's request.",
+    match = ["linear-cli issues create 'Fix bug' --team ENG", "linear-cli comments create ENG-1 --body ok", "linear-cli issues update ENG-1 --state Done"],
+    not_match = ["linear-cli issues get ENG-1", "linear-cli issues list", "linear-cli search agent"],
+)
+
+prefix_rule(
+    pattern = ["linear-cli", ["bulk", "import", "sync", "done"]],
+    decision = "prompt",
+    justification = "Bulk changes, imports, and syncs are reviewed as one change set in the task's scope.",
+    match = ["linear-cli bulk update --state Done", "linear-cli done"],
+    not_match = ["linear-cli whoami"],
+)
+
+prefix_rule(
+    pattern = ["linear-cli", "api", "mutate"],
+    decision = "prompt",
+    justification = "Raw GraphQL mutations follow the task's scope, judged as the equivalent command.",
+    match = ["linear-cli api mutate '...'"],
+    not_match = ["linear-cli api query '{ viewer { id } }'"],
+)
+
+prefix_rule(
+    pattern = ["lightdash", ["upload", "deploy", "refresh", "start-preview", "stop-preview", "preview", "set-warehouse", "rename", "slug-update", "install-skills"]],
+    decision = "prompt",
+    justification = "Lightdash writes follow the task's scope for non-production projects; production projects need the user's request.",
+    match = ["lightdash deploy --create", "lightdash upload", "lightdash start-preview"],
+    not_match = ["lightdash compile", "lightdash validate", "lightdash sql 'select 1'"],
+)
+
+prefix_rule(
+    pattern = ["herdr", "pane", ["send-text", "send-keys", "run", "close"]],
+    decision = "prompt",
+    justification = "Driving a pane reaches whatever runs there; act on panes the session created or the user named.",
+    match = ["herdr pane run 2 'npm test'", "herdr pane send-keys 3 C-c"],
+    not_match = ["herdr pane list", "herdr pane read 2"],
+)
+
+prefix_rule(
+    pattern = ["herdr", "agent", ["send-keys", "prompt", "start", "attach"]],
+    decision = "prompt",
+    justification = "Driving another agent passes this session's authority to it; act on agents the session started or the user named.",
+    match = ["herdr agent prompt 2 'run tests'", "herdr agent start codex"],
+    not_match = ["herdr agent list", "herdr agent read 2"],
+)
+
+prefix_rule(
+    pattern = ["herdr", ["tab", "workspace", "session"], ["close", "stop", "delete"]],
+    decision = "prompt",
+    justification = "Closing tabs, workspaces, or sessions can end other work; act on ones the session created or the user named.",
+    match = ["herdr tab close 2", "herdr session stop work"],
+    not_match = ["herdr tab list"],
+)
+
+prefix_rule(
+    pattern = ["herdr", ["server", "update", "config", "integration", "machine", "channel"]],
+    decision = "prompt",
+    justification = "herdr administration changes the user's terminal environment; it needs the user's request.",
+    match = ["herdr server reload-config", "herdr update", "herdr config reset-keys"],
+    not_match = ["herdr status", "herdr api schema"],
+)
+
+prefix_rule(
+    pattern = ["ctx7", ["setup", "remove", "login", "logout"]],
+    decision = "prompt",
+    justification = "ctx7 setup and remove edit agent MCP and skill config, a trust surface that changes only on the user's request; skills come from gh skill.",
+    match = ["ctx7 setup", "ctx7 remove"],
+    not_match = ["ctx7 docs /vercel/next.js routing"],
+)
+
+prefix_rule(
+    pattern = [["codex", "claude"], ["mcp", "plugin", "features", "config"], ["add", "remove", "enable", "disable", "set", "install", "uninstall"]],
+    decision = "prompt",
+    justification = "Agent MCP, plugin, and feature changes are a trust surface that changes only on the user's request.",
+    match = ["codex mcp add x -- cmd", "codex features enable js_repl", "claude mcp add x cmd"],
+    not_match = ["codex mcp list", "codex features list"],
+)
+
+prefix_rule(
+    pattern = [["codex", "claude"], ["exec", "-p", "--print"]],
+    decision = "prompt",
+    justification = "A nested agent inherits none of this session's review; run one only when the task calls for it.",
+    match = ["codex exec 'summarize'", "claude -p 'hi'"],
+    not_match = ["codex --version"],
+)
+
+# user-open: the user runs these.
+prefix_rule(
+    pattern = ["chezmoi", ["state", "purge", "manage", "unmanage", "destroy"]],
+    decision = "forbidden",
+    justification = "chezmoi state, purge, and unmanage change what chezmoi tracks; give the user the exact command to run.",
+    match = ["chezmoi state delete-bucket --bucket=scriptState", "chezmoi purge"],
+    not_match = ["chezmoi status"],
+)
+
+prefix_rule(
+    pattern = [["codex", "claude"], ["login", "logout"]],
+    decision = "forbidden",
+    justification = "Agent logins are the user's; give them the exact command to run.",
+    match = ["codex login", "claude logout"],
+)
+
+prefix_rule(
+    pattern = ["linear-cli", ["auth", "config", "setup"]],
+    decision = "forbidden",
+    justification = "Linear API keys and workspace config are the user's; give them the exact command to run.",
+    match = ["linear-cli auth login", "linear-cli config set-key"],
+    not_match = ["linear-cli whoami"],
+)
+
+prefix_rule(
+    pattern = ["lightdash", "login"],
+    decision = "forbidden",
+    justification = "Lightdash logins are the user's; give them the exact command to run.",
+    match = ["lightdash login https://app.lightdash.cloud"],
+    not_match = ["lightdash compile"],
+)
+
+prefix_rule(
+    pattern = ["lightdash", "config", "set-project"],
+    decision = "forbidden",
+    justification = "Switching the active Lightdash project is the user's call; give them the exact command to run.",
+    match = ["lightdash config set-project --name x"],
+    not_match = ["lightdash config get-project"],
+)

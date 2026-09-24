@@ -7,7 +7,7 @@ prefix_rule(
 )
 
 prefix_rule(
-    pattern = ["obsidian", ["eval", "command"]],
+    pattern = ["obsidian", ["eval", "command", "plugin", "plugins"]],
     decision = "prompt",
     justification = "Review arbitrary app-side execution and batch scope; routine individual note and task changes do not need a separate review.",
     match = ["obsidian eval code=1"],

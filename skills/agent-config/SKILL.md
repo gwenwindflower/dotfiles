@@ -11,7 +11,11 @@ Runtime settings for coding agent harnesses in this dotfiles repo. `docs/agent-c
 | --- | --- |
 | Claude Code hooks, helpers, JSON output | [claude-code-hooks](claude-code-hooks.md) |
 | Codex layers, sources, workflow, guardrails | [codex](codex.md) |
-| Codex sandbox and approval profiles | [codex-permission-profiles](codex-permission-profiles.md) |
+| Codex sandbox profiles, execution rules, and the auto-review policy fork | [codex-permission-profiles](codex-permission-profiles.md) |
+
+## Permission changes
+
+In this dotfiles repo, allow, ask, deny, sandbox, network, rule, and reviewer changes follow the loop in `docs/agent-config.md` under "Changing agent configuration": contract docs first, then a probe in `.utils/agency.toml`, then each native config, then `agency` must pass.
 
 ## Shared rules
 

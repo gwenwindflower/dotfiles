@@ -32,6 +32,7 @@
     "test:herdr-agent-picker": "deno test --allow-read --allow-write --allow-run=sh herdr-agent-picker_test.ts",
     "test:git-wash": "deno test --allow-read --allow-write --allow-run=git git-wash_test.ts",
     "test:termshot": "deno test termshot_test.ts",
-    "test:skillet": "deno test --allow-read skillet_test.ts"
+    "test:skillet": "deno test --allow-read skillet_test.ts",
+    "test:agency": "deno test --allow-read --allow-write --allow-env --allow-run=codex agency_test.ts"
   }
 }

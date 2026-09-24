@@ -12,25 +12,30 @@ Agents read and maintain girlOS under the user's direction from any project. Not
 
 ## Safety boundary
 
-Vault creation/removal, registration, and default-vault changes are manual-only. `notesmd-cli add-vault`, `remove-vault`, and `set-default-vault` are prohibited even during an authorized note-editing task.
+A loop of individual commands is still a batch. Incidental capture does not authorize bulk restructuring or `rematter`. File access does not grant arbitrary application authority.
 
-A loop of individual commands is still a batch. Review its complete change set rather than assuming the harness will detect or separately review the loop. Incidental capture does not authorize bulk restructuring or `rematter`.
+## Levels
 
-App-side `obsidian eval` and generic command execution need review of the actual code and scope. File access does not grant arbitrary application authority.
+| Family | Level | Notes |
+| --- | --- | --- |
+| `notesmd-cli` reads, captures, and individual edits, moves, and deletions | `sandboxed` | Through the vault write grant. |
+| Routine `obsidian` CLI reads and task changes | `sandboxed` | Through the granted `~/.obsidian-cli.sock`. |
+| Vault batches (imports, exports, mass deletion, loops) | `sandboxed` | The review policy treats batches as requested-only, but sandboxed calls never reach a reviewer, so guidance holds the scope. |
+| `obsidian eval`, `command`, `plugin` | `review-request-open` | The reviewer checks the actual code and scope. |
+| Vault administration (`notesmd-cli add-vault`, `remove-vault`, `set-default-vault`) | `deny` | Manual-only, even during an authorized note-editing task. |
 
 ## Platform implementations
 
 | Harness | Mechanism |
 | --- | --- |
-| Claude Code | Vault sandbox write root, routine note-command permissions, classifier guidance for individual/batch scope, and vault-administration denies. |
-| Codex | `sandbox_workspace_write.writable_roots` includes the exact vault path; `notes.rules` forbids canonical vault administration and reviews app-side code. Routine note changes stay sandboxed with no host allow. |
+| Claude Code | Vault write grant and socket; `obsidian eval`/`command`/`plugin` excluded without an allow; vault-administration denies. |
+| Codex | Vault write grant and absolute socket path in the `dev` profile; `OBSIDIAN_DEFAULT_VAULT` set through `shell_environment_policy.set`; `notes.rules` prompts on app-side code and forbids vault administration. |
 | OpenCode | Ordered Bash rules plus `external_directory` access for girlOS. File tools and shell permissions are separate; the shell has no OS sandbox here. |
 
-Shared behavior lives in `.chezmoitemplates/agents/rules/notes-vault.md`. The vault environment variable supplies the CLI path; sandbox roots contain the literal path because they do not expand arbitrary environment variables.
+Shared behavior lives in `.chezmoitemplates/agents/rules/notes-vault.md`. The vault environment variable supplies the CLI path; sandbox grants contain the literal path because they do not expand arbitrary environment variables.
 
 ## Verification
 
 - Requested note changes work from an unrelated project without requiring a vault-wide task.
 - Vault administration is blocked independently of ordinary note operations.
-- Batch scripts preserve the same review boundary as native bulk commands.
 - App identity is checked before reading or mutating tasks; see [Tasks and Reminders](tasks.md).

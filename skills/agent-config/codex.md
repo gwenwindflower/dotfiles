@@ -51,7 +51,7 @@ chezmoi --dry-run --no-pager diff
 
 - Prefer documented keys over remembered names.
 - Use beta permission profiles or legacy `sandbox_mode` plus `[sandbox_workspace_write]`, never both in one loaded config.
-- Load [Permission Profiles](codex-permission-profiles.md) when choosing or changing Codex sandbox and approval behavior.
+- Load [Permission Profiles](codex-permission-profiles.md) when changing Codex sandbox, execution rules, approval behavior, or the `[auto_review] policy` fork, and on every Codex upgrade (the fork's refresh procedure lives there).
 - For hooks, use `dot_codex/hooks.json` or inline `[hooks]`; prefer one representation per layer. Codex requires trust review for changed command hooks.
 - Use `AGENTS.md`, rules, or skills for behavior instructions; use config for runtime settings.
 

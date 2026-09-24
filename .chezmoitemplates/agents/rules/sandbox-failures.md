@@ -2,6 +2,16 @@
 
 Inside a sandbox, blocked paths, hosts, env vars, caches, logs, and lockfiles are configuration signals. Surface the block; do not route around it.
 
+Some routine commands need the host by design:
+
+- SSH Git remotes, Git metadata writes in Codex, and Worktrunk.
+- chezmoi inspection and dry runs, and `rem`.
+- `agent-browser`, and local GPU model work.
+- Nested sandboxes, such as mise tasks that sandbox themselves.
+- Tool installs and upgrades.
+
+These run outside the sandbox through the harness's own mechanism, and a reviewer still sees them. Run each as a bare command, redirecting output to a file in `$TMPDIR` instead of piping or chaining, because host exceptions match whole commands. In Codex, request escalation on the first call rather than waiting for the sandboxed attempt to fail.
+
 Change permission, sandbox, trust, or install-script approval settings only when the user explicitly requests work on that surface. Never edit an allowlist, run `mise trust` or `direnv allow`, approve package build scripts, or alter MCP/plugin trust to unblock an unrelated task.
 
 Do not:

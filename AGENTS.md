@@ -8,7 +8,7 @@ OSes supported:
 - **Linux:** Dev-focused CLI toolkit for VMs (exe.dev, Fly.io Sprites) and containers
 
 > [!IMPORTANT]
-> Changes propagate to the system only through `chezmoi apply`, which the user runs. Agents verify with `chezmoi --dry-run --no-pager apply` and `chezmoi diff --no-pager`, then say what to apply. A real apply is `ask` in every harness and auto mode approves it only when the user's message explicitly asked to apply after the changes; `chezmoi apply -n` also prompts because the pattern keys on the flags-first form.
+> Changes propagate to the system only through `chezmoi apply`, which the user runs. Agents verify with `chezmoi --dry-run --no-pager apply` and `chezmoi diff --no-pager`, then say what to apply. A real apply goes to each harness's automatic reviewer, which approves it only when the user's message explicitly asked to apply after the changes; `chezmoi apply -n` is reviewed the same way because the dry-run pattern keys on the flags-first form.
 
 ## Repo Structure
 
@@ -38,7 +38,7 @@ private_dot_config/               # → ~/.config/
   yazi/                           #   File manager (package.toml symlinked, rest copied)
   mise/, uv/                      #   Language version managers (mise config.toml symlinked)
   delta/, gh/, gh-dash/, meteor/  #   Git ecosystem
-  git/                            #   Gitconfig fragments included by ~/.gitconfig (os.gitconfig.tmpl, aliases.gitconfig, pretty.gitconfig)
+  git/                            #   symlink_config.tmpl (→ symsources/git/gitconfig) + fragments it includes (os.gitconfig.tmpl, aliases.gitconfig, pretty.gitconfig)
   opencode/                       #   OpenCode config (opencode.jsonc + tui.jsonc + exact_agents/)
   bottom/, cmus/, freeze/, glow/  #   System monitor, music player, code snapshots, markdown viewer
   k9s/, lazydocker/, lazygit/     #   Container/cluster/git TUI tools
@@ -59,7 +59,6 @@ dot_agents/                       # → ~/.agents/ (shared agent hub)
   exact_rules/                    #   → ~/.agents/rules/ generated from .chezmoitemplates/agents/rules/
   symlink_.skill-lock.json.tmpl   #   → symsources/agents/skill-lock.json (gh skill manifest; ~/.agents/skills itself is gh-owned, not deployed)
 
-symlink_dot_gitconfig.tmpl        # → symsources/git/gitconfig (externally writable; native git [include]s pull fragments from ~/.config/git/)
 private_dot_config/git/global_ignore  # → ~/.config/git/global_ignore (git core.excludesfile)
 dot_bashrc, dot_zshrc             # Minimal configs (worktrunk init, starship, zoxide)
 dot_profile.tmpl, dot_zprofile.tmpl  # Login shells (SHELL export, darwin SSH agent)
@@ -68,7 +67,7 @@ private_dot_ssh/                  # → ~/.ssh/ (allowed_signers)
 # Symlink sources (ignored as `symsources/`, not deployed as ~/symsources)
 symsources/nvim/                  # lazy-lock.json, lazyvim.json, spell/en.utf-8.add{,.spl}
 symsources/claude/                # settings.json
-symsources/codex/                 # config.toml (live symlink target) + workspace-config.toml and profile-config.toml, the two sandbox-system sources it is swapped from
+symsources/codex/                 # config.toml
 symsources/yazi/                  # package.toml
 symsources/mise/                  # config-arm64.toml (aube), config-amd64.toml (pnpm) — symlink picks by .chezmoi.arch
 symsources/uv/                    # .python-version
@@ -120,7 +119,7 @@ chezmoi copies by default, which is the right call for almost everything — it 
 | `~/.config/amoxide/profiles.toml` | `amoxide` CLI edits profiles | `symsources/amoxide/` |
 | `~/.config/herdr/config.toml` | `herdr` writes its own config | `symsources/herdr/` |
 | `~/.config/worktrunk/config.toml` | `wt` CLI edits its own config | `symsources/worktrunk/` |
-| `~/.gitconfig` | `git config --global` writes through to source | `symsources/git/` |
+| `~/.config/git/config` | `git config --global` writes through to source | `symsources/git/` |
 | `~/.agents/.skill-lock.json` | `gh skill install` and `gh skill update` write it | `symsources/agents/` |
 
 Source files live in `symsources/<tool>/`, excluded by `.chezmoiignore` so chezmoi won't deploy them as `~/symsources`. Each symlink is a `symlink_*.tmpl` file containing `{{ .chezmoi.sourceDir }}/symsources/<tool>/path/to/source`.
@@ -265,25 +264,25 @@ These compose freely: `private_dot_config/tmux/executable_pane-icon.sh` → `~/.
 
 ```text
 chezmoi diff                    # Preview all pending changes (allowed)
-chezmoi apply                   # Apply changes (ask)
+chezmoi apply                   # Apply changes (reviewed; approved only on request)
 chezmoi --dry-run --no-pager apply   # Dry run (allowed; flags before the subcommand)
 chezmoi cat <template>          # Render a template e.g. config.fish (allowed)
 chezmoi data                    # Show all template variables (allowed)
 chezmoi managed                 # List all managed files (allowed)
-chezmoi manage/unmanage         # Bring an existing file under chezmoi or remove it (ask)
+chezmoi manage/unmanage         # Bring an existing file under chezmoi or remove it (user runs)
 chezmoi doctor                  # Diagnose setup issues (allowed)
 ```
 
 ### Troubleshooting
 
 ```text
-chezmoi state delete-bucket --bucket=scriptState   # Reset run_once tracking (ask)
+chezmoi state delete-bucket --bucket=scriptState   # Reset run_once tracking (user runs)
 chezmoi --dry-run --no-pager --verbose apply       # Dry run with detailed output (allowed)
 ```
 
 ## Related Docs
 
-- `docs/agent-config.md` — Semantic contract for Claude Code, Codex, and OpenCode configuration: sandbox access, approval policy, and agent guidance as three separate controls, plus the config surface map per platform. Read before changing any agent's settings
+- `docs/agent-config.md` — Semantic contract for Claude Code, Codex, and OpenCode configuration: sandbox access, approval policy, and agent guidance as three separate controls, plus the config surface map per platform and the permission-change loop that ends in `agency` (`.utils/docs/agency.md`). Read before changing any agent's settings
 - `docs/capabilities/` — One file per capability domain (workspace, network, development, git, delegation, context, integrations, session, interaction), each with expected behavior, safety boundary, per-platform implementation, and verification. Indexed by `docs/agent-config.md`
 - `docs/agent-commits.md` — Commit types and the `agents/<sub-scope>` and `<agent name>` scope convention for agent-facing changes
 - `.utils/AGENTS.md` — Internal Deno tooling sandbox, with a reference doc per tool under `.utils/docs/`

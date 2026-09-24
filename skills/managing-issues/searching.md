@@ -49,7 +49,7 @@ linear-cli api query -o json 'query($q: String!) {
 
 - Default to `searchIssues` for duplicate checks (filters + comment search); use `semanticSearch` when phrasing is uncertain or non-issue types matter.
 - Search family rate limit is ~30 req/min.
-- `linear-cli` must run unsandboxed — inside the bash sandbox its network stack panics (`SCDynamicStore` proxy lookup is blocked).
+- `linear-cli` reads run inside the agent sandbox; writes go to the harness reviewer.
 
 ## Synced repos
 

@@ -26,7 +26,7 @@ Delegation does not expand the user's authority or the task's scope. Helpers do 
 | Platform | Mechanism | Coverage |
 | --- | --- | --- |
 | Claude Code | Agent teams, subagents, role templates, teammate mode, and Git-write hook | Broadest collaboration surface and strongest helper Git enforcement. |
-| Codex | Multi-agent feature, agent limits, role templates, and collaboration tools | Explicit concurrency and depth limits; lead ownership comes from shared rules. |
+| Codex | Multi-agent feature, agent limits, role templates, and collaboration tools | Explicit concurrency and depth limits; lead ownership comes from shared rules. Nested `codex exec` and `claude -p` runs go to the reviewer. |
 | OpenCode | Named subagents, agent modes, child sessions, and TUI child navigation | Role coverage is present; shared-tree and Git ownership rely primarily on guidance and default asks. |
 
 ## Verification

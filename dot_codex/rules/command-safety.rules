@@ -1,78 +1,69 @@
+# open: routine host operations the sandbox cannot run (writes to PATH directories,
+# setuid process tools).
 prefix_rule(
-    pattern = [["op", "dd", "mkfs"]],
-    decision = "forbidden",
-    justification = "Do not expose credentials or overwrite disks; use the owning authenticated integration and non-destructive inspection.",
-    match = ["op read op://example/item/password", "dd if=example of=output", "mkfs example"],
-    not_match = ["file example"],
-)
-
-prefix_rule(
-    pattern = ["agent-browser", ["screenshot", "snapshot", "pdf", "close"]],
+    pattern = [["brew", "mise"], ["update", "upgrade", "up"]],
     decision = "allow",
-    justification = "Routine browser capture and cleanup run on the host because Chromium cannot launch reliably inside the Codex sandbox.",
-    match = ["agent-browser screenshot page.png", "agent-browser snapshot -i", "agent-browser pdf page.pdf", "agent-browser close"],
-    not_match = ["agent-browser open https://example.com", "agent-browser cookies get"],
+    justification = "Configured tool upgrades are routine and write PATH directories on the host; pins and supply-chain checks stay on.",
+    match = ["brew upgrade", "brew update", "mise up", "mise upgrade node"],
+    not_match = ["brew install jq", "mise use -g node"],
 )
 
 prefix_rule(
-    pattern = ["agent-browser", "--profile", "Default", ["screenshot", "snapshot", "pdf", "close"]],
+    pattern = ["mise", "install"],
     decision = "allow",
-    justification = "Pre-approved capture and cleanup operations remain routine when the Default profile is explicitly selected.",
-    match = ["agent-browser --profile Default screenshot page.png", "agent-browser --profile Default pdf page.pdf"],
-    not_match = ["agent-browser --profile Default open https://example.com", "agent-browser --profile Default cookies get"],
+    justification = "Installing a project's pinned tools writes mise installs on the host.",
+    match = ["mise install", "mise install node"],
+    not_match = ["mise use -g node"],
 )
 
 prefix_rule(
-    pattern = ["rm", "-rf"],
-    decision = "forbidden",
-    justification = "Use recoverable rip for authorized file deletion.",
-    match = ["rm -rf example"],
-    not_match = ["rip example"],
+    pattern = ["uv", ["tool", "python"], "upgrade"],
+    decision = "allow",
+    justification = "Configured tool upgrades are routine and write PATH directories on the host.",
+    match = ["uv tool upgrade --all", "uv python upgrade"],
+    not_match = ["uv tool install ruff"],
 )
 
 prefix_rule(
-    pattern = ["rip", "-d"],
-    decision = "forbidden",
-    justification = "Keep deletion recoverable; do not purge the graveyard.",
-    match = ["rip -d example"],
-    not_match = ["rip example"],
+    pattern = [["rustup", "deno"], ["update", "upgrade"]],
+    decision = "allow",
+    justification = "Configured toolchain upgrades are routine and write PATH directories on the host.",
+    match = ["rustup update", "deno upgrade"],
+    not_match = ["rustup toolchain install nightly"],
 )
 
 prefix_rule(
-    pattern = ["sudo", "rm"],
-    decision = "forbidden",
-    justification = "Do not perform privileged deletion; inspect the target and ask the user to handle system cleanup.",
-    match = ["sudo rm example"],
+    pattern = ["cargo", "install-update"],
+    decision = "allow",
+    justification = "Upgrading installed Cargo tools is routine and writes ~/.cargo/bin on the host.",
+    match = ["cargo install-update -a"],
+    not_match = ["cargo install ripgrep"],
 )
 
 prefix_rule(
-    pattern = ["chmod", "-R", "777"],
-    decision = "forbidden",
-    justification = "Use narrowly scoped ownership or permission changes instead of recursive mode 777.",
-    match = ["chmod -R 777 example"],
-    not_match = ["chmod 755 example"],
+    pattern = [["ps", "pgrep", "lsof"]],
+    decision = "allow",
+    justification = "Process inspection needs host access (setuid ps, sysmond).",
+    match = ["ps aux", "pgrep -fl node", "lsof -i :3000"],
+    not_match = ["pkill node"],
 )
 
 prefix_rule(
-    pattern = ["terraform", "destroy"],
-    decision = "forbidden",
-    justification = "Infrastructure destruction is blocked; present the target and plan for user handling.",
-    match = ["terraform destroy"],
+    pattern = ["docker", ["ps", "images", "logs", "inspect", "version", "info", "stats", "top"]],
+    decision = "allow",
+    justification = "Read-only Docker inspection reaches the daemon socket on the host.",
+    match = ["docker ps -a", "docker logs web"],
+    not_match = ["docker run alpine", "docker push repo/image"],
 )
 
+# review-open / review-request-open: these would succeed in the sandbox, so they are
+# routed to the reviewer explicitly.
 prefix_rule(
-    pattern = ["kubectl", "delete"],
-    decision = "forbidden",
-    justification = "Cluster deletion is blocked; present the resources for user handling.",
-    match = ["kubectl delete pod example"],
-)
-
-prefix_rule(
-    pattern = [["npm", "pnpm", "aube", "bun", "cargo", "uv", "deno"], "publish"],
-    decision = "forbidden",
-    justification = "Publish only through the reviewed project release task on explicit request; do not invoke raw registry publication.",
-    match = ["npm publish", "cargo publish", "uv publish"],
-    not_match = ["cargo test", "npm run build"],
+    pattern = ["defaults", ["write", "delete", "import", "rename"]],
+    decision = "prompt",
+    justification = "macOS preference changes outside chezmoi apply need the user's request.",
+    match = ["defaults write com.apple.dock autohide -bool true"],
+    not_match = ["defaults read com.apple.dock"],
 )
 
 prefix_rule(
@@ -92,9 +83,156 @@ prefix_rule(
 )
 
 prefix_rule(
-    pattern = ["chezmoi", ["apply", "update", "init", "state", "manage", "unmanage"]],
+    pattern = ["op", ["read", "inject", "run"]],
     decision = "prompt",
-    justification = "A real chezmoi apply rewrites the whole home directory (exact_ dirs, run scripts, shell config) and a half-finished source tree can break the machine. Approve only when the user explicitly asked to apply after the changes; verifying an edit uses chezmoi --dry-run --no-pager apply and chezmoi diff instead.",
-    match = ["chezmoi apply", "chezmoi apply ~/.config/fish", "chezmoi update", "chezmoi init --apply", "chezmoi state delete-bucket --bucket=scriptState"],
-    not_match = ["chezmoi --dry-run --no-pager apply", "chezmoi -n --no-pager apply ~/.agents", "chezmoi diff", "chezmoi cat ~/.bashrc", "chezmoi doctor"],
+    justification = "1Password secrets flow only to the item and destination the user named, never into output or files. Request escalation with this command.",
+    match = ["op read op://vault/item/field", "op run -- ./deploy.sh"],
+    not_match = ["op item list"],
+)
+
+# user-open: the user runs these.
+prefix_rule(
+    pattern = ["sudo"],
+    decision = "forbidden",
+    justification = "Privileged commands are the user's to run; give them the exact command.",
+    match = ["sudo rm example", "sudo launchctl bootout system/x"],
+)
+
+prefix_rule(
+    pattern = [["fly", "flyctl"], "auth"],
+    decision = "forbidden",
+    justification = "Logins and tokens are the user's; give them the exact command to run. Tokens are never printed.",
+    match = ["fly auth login", "fly auth token"],
+)
+
+prefix_rule(
+    pattern = ["wrangler", ["login", "logout"]],
+    decision = "forbidden",
+    justification = "Logins are the user's; give them the exact command to run.",
+    match = ["wrangler login"],
+    not_match = ["wrangler whoami"],
+)
+
+prefix_rule(
+    pattern = ["gcloud", "auth", ["login", "application-default", "activate-service-account", "revoke"]],
+    decision = "forbidden",
+    justification = "Logins are the user's; give them the exact command to run.",
+    match = ["gcloud auth login", "gcloud auth application-default login"],
+    not_match = ["gcloud auth list"],
+)
+
+# deny
+prefix_rule(
+    pattern = [["dd", "mkfs"]],
+    decision = "forbidden",
+    justification = "Do not overwrite disks; use non-destructive inspection.",
+    match = ["dd if=example of=output", "mkfs example"],
+    not_match = ["file example"],
+)
+
+prefix_rule(
+    pattern = ["rm", ["-r", "-R", "-rf", "-fr", "-Rf", "-fR", "-rF", "--recursive"]],
+    decision = "forbidden",
+    justification = "Recursive deletion goes through recoverable rip.",
+    match = ["rm -rf example", "rm -fr example", "rm -r example", "rm --recursive example"],
+    not_match = ["rm example.txt", "rip example"],
+)
+
+prefix_rule(
+    pattern = ["rm", "-f", ["-r", "-R"]],
+    decision = "forbidden",
+    justification = "Recursive deletion goes through recoverable rip.",
+    match = ["rm -f -r example"],
+    not_match = ["rm -f example.txt"],
+)
+
+prefix_rule(
+    pattern = ["rip", "-d"],
+    decision = "forbidden",
+    justification = "Keep deletion recoverable; do not purge the graveyard.",
+    match = ["rip -d example"],
+    not_match = ["rip example"],
+)
+
+prefix_rule(
+    pattern = ["chmod", "-R", "777"],
+    decision = "forbidden",
+    justification = "Use narrowly scoped ownership or permission changes instead of recursive mode 777.",
+    match = ["chmod -R 777 example"],
+    not_match = ["chmod 755 example"],
+)
+
+prefix_rule(
+    pattern = ["terraform", "destroy"],
+    decision = "forbidden",
+    justification = "Infrastructure destruction is blocked; present the target and plan for the user.",
+    match = ["terraform destroy"],
+)
+
+prefix_rule(
+    pattern = ["kubectl", "delete"],
+    decision = "forbidden",
+    justification = "Cluster deletion is blocked; present the resources for the user.",
+    match = ["kubectl delete pod example"],
+)
+
+prefix_rule(
+    pattern = ["op", ["item", "vault", "account", "document", "user", "group", "connect", "service-account", "events-api", "signin", "signout", "plugin"]],
+    decision = "forbidden",
+    justification = "Never list, reveal, or administer 1Password items; secrets flow only through op read/inject/run on the user's request.",
+    match = ["op item get Example --reveal", "op account list", "op vault list"],
+    not_match = ["op read op://vault/item/field"],
+)
+
+prefix_rule(
+    pattern = ["gcloud", "auth", ["print-access-token", "print-identity-token"]],
+    decision = "forbidden",
+    justification = "Never print authentication tokens.",
+    match = ["gcloud auth print-access-token"],
+    not_match = ["gcloud auth list"],
+)
+
+prefix_rule(
+    pattern = ["rclone", "config", ["show", "dump", "password", "reconnect"]],
+    decision = "forbidden",
+    justification = "Never print rclone credentials; token changes are the user's.",
+    match = ["rclone config show", "rclone config dump"],
+    not_match = ["rclone listremotes"],
+)
+
+prefix_rule(
+    pattern = [["npm", "pnpm", "aube", "bun", "cargo", "uv", "deno", "poetry", "hatch", "luarocks"], ["publish", "upload"]],
+    decision = "forbidden",
+    justification = "Publish only through the reviewed project release task on explicit request; raw registry publication is never run.",
+    match = ["npm publish", "cargo publish", "uv publish", "luarocks upload x.rockspec"],
+    not_match = ["cargo test", "npm run build"],
+)
+
+prefix_rule(
+    pattern = ["pnpm", ["-r", "--recursive"], "publish"],
+    decision = "forbidden",
+    justification = "Publish only through the reviewed project release task on explicit request.",
+    match = ["pnpm -r publish"],
+)
+
+prefix_rule(
+    pattern = [["npm", "pnpm", "aube"], ["unpublish", "deprecate", "dist-tag"]],
+    decision = "forbidden",
+    justification = "Registry metadata changes run only through the reviewed project release task.",
+    match = ["npm unpublish pkg@1.0.0", "npm dist-tag add pkg@1 latest"],
+)
+
+prefix_rule(
+    pattern = ["cargo", ["yank", "owner"]],
+    decision = "forbidden",
+    justification = "Registry ownership and yanks run only through the reviewed project release task.",
+    match = ["cargo yank --version 1.0.0"],
+)
+
+prefix_rule(
+    pattern = [["twine", "gem", "docker"], ["upload", "push"]],
+    decision = "forbidden",
+    justification = "Package and image publication run only through the reviewed project release task.",
+    match = ["twine upload dist/*", "gem push x.gem", "docker push repo/image"],
+    not_match = ["docker ps"],
 )

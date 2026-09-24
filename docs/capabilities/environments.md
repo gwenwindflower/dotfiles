@@ -14,6 +14,15 @@ Agents can run in disposable Linux environments that carry the same dotfiles, to
 
 Remote environments are ephemeral: nothing durable lives only there. Work is pushed to its repository before the environment is discarded, and the notes vault is not reachable from them. Credentials arrive through the platform's own integration (exe.dev GitHub integrations, Fly.io auth), never by copying keys or tokens from the workstation.
 
+## Levels
+
+| Family | Level | Notes |
+| --- | --- | --- |
+| Create, exec into, or deploy exe.dev, Sprites, Fly.io, Cloudflare, or Railway environments | `review-request-open` | Their API hosts are unlisted, so calls fail in the sandbox and reach review. Codex also prompts on `wrangler`, `fly`, and `railway deploy`. |
+| Destroy an environment | `user-open` | Guidance only: no rule matches destroy commands, so a destroy call reaches the reviewer like any other remote call. |
+| Platform logins (`fly auth login`, `wrangler login`) | `user-open` | |
+| Token printing (`fly auth token`, `wrangler auth token`) | `deny` | Both configs block `fly auth token`. No rule matches `wrangler auth token`, which reads a granted config directory and runs sandboxed. |
+
 ## Platform implementations
 
 | Platform | Mechanism | Coverage |

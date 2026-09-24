@@ -1,0 +1,378 @@
+# Permission probes for the agent configs in this repo. `agency` runs every entry.
+#
+# [[sandbox]]: run `cmd` with bash under `codex sandbox -P <default_permissions>`,
+#   using symsources/codex/config.toml. expect = "ok" (exit 0) or "deny" (nonzero).
+#   Write probes remove what they create, so a probe that wrongly succeeds leaves nothing behind.
+# [[rule]]: the strongest decision `codex execpolicy check` returns for `cmd` across
+#   dot_codex/rules/*.rules. expect = "allow", "prompt", "forbidden", or "none".
+#
+# Levels and their mechanisms are defined in docs/agent-config.md.
+
+# ── Codex profile: reads ──────────────────────────────────────────
+
+[[sandbox]]
+name = "sibling repos are readable"
+expect = "ok"
+cmd = "ls $HOME/dev >/dev/null"
+
+[[sandbox]]
+name = "system perl runs (shasum)"
+expect = "ok"
+cmd = "/usr/bin/shasum -a 256 /etc/hosts >/dev/null"
+
+[[sandbox]]
+name = "Command Line Tools run (make)"
+expect = "ok"
+cmd = "make --version >/dev/null"
+
+[[sandbox]]
+name = "git status reads repo metadata"
+expect = "ok"
+cmd = "git status --short >/dev/null"
+
+[[sandbox]]
+name = "macOS preferences are readable"
+expect = "ok"
+cmd = "defaults read com.apple.dock autohide >/dev/null"
+
+[[sandbox]]
+name = "toolchains run"
+expect = "ok"
+cmd = "uv --version && cargo --version && node --version && deno --version && perl -e 1"
+
+[[sandbox]]
+name = "mise runs without sandbox warnings"
+expect = "ok"
+cmd = "! mise ls --current 2>&1 >/dev/null | grep -q 'not permitted'"
+
+# ── Codex profile: writes ─────────────────────────────────────────
+
+[[sandbox]]
+name = "mise cache is writable"
+expect = "ok"
+cmd = "touch $HOME/Library/Caches/mise/.agency && rm $HOME/Library/Caches/mise/.agency"
+
+[[sandbox]]
+name = "mise state is writable"
+expect = "ok"
+cmd = "touch $HOME/.local/state/mise/.agency && rm $HOME/.local/state/mise/.agency"
+
+[[sandbox]]
+name = "agentsview data is writable"
+expect = "ok"
+cmd = "touch $HOME/.local/share/agentsview/.agency && rm $HOME/.local/share/agentsview/.agency"
+
+[[sandbox]]
+name = "linear-cli cache is writable"
+expect = "ok"
+cmd = "d=\"$HOME/Library/Application Support/linear-cli/cache\" && mkdir -p \"$d\" && touch \"$d/.agency\" && rm \"$d/.agency\""
+
+[[sandbox]]
+name = "go env dir is writable"
+expect = "ok"
+cmd = "touch \"$HOME/Library/Application Support/go/.agency\" && rm \"$HOME/Library/Application Support/go/.agency\""
+
+[[sandbox]]
+name = "nvim state is writable"
+expect = "ok"
+cmd = "touch $HOME/.local/state/nvim/.agency && rm $HOME/.local/state/nvim/.agency"
+
+[[sandbox]]
+name = "mise shims are read-only"
+expect = "deny"
+cmd = "touch $HOME/.local/share/mise/shims/.agency && rm $HOME/.local/share/mise/shims/.agency"
+
+[[sandbox]]
+name = "mise trust files are read-only"
+expect = "deny"
+cmd = "touch $HOME/.local/state/mise/trusted-configs/.agency && rm $HOME/.local/state/mise/trusted-configs/.agency"
+
+[[sandbox]]
+name = "deno global bin is read-only"
+expect = "deny"
+cmd = "touch $HOME/.deno/bin/.agency && rm $HOME/.deno/bin/.agency"
+
+[[sandbox]]
+name = "uv tools are read-only"
+expect = "deny"
+cmd = "touch $HOME/.local/share/uv/tools/.agency && rm $HOME/.local/share/uv/tools/.agency"
+
+[[sandbox]]
+name = "symlinked tool configs are read-only"
+expect = "deny"
+cmd = "touch $HOME/.local/share/chezmoi/symsources/mise/.agency && rm $HOME/.local/share/chezmoi/symsources/mise/.agency"
+
+[[sandbox]]
+name = "Git metadata is read-only"
+expect = "deny"
+cmd = "d=\"$(git rev-parse --git-common-dir)\" && touch \"$d/.agency\" && rm \"$d/.agency\""
+
+# ── Codex profile: network, sockets, keychain ─────────────────────
+
+[[sandbox]]
+name = "allowlisted registry is reachable"
+expect = "ok"
+cmd = "curl -fsSI --max-time 8 https://registry.npmjs.org >/dev/null"
+
+[[sandbox]]
+name = "raw GitHub content is reachable"
+expect = "ok"
+cmd = "curl -fsSI --max-time 8 https://raw.githubusercontent.com/openai/codex/main/README.md >/dev/null"
+
+[[sandbox]]
+name = "unlisted host is blocked"
+expect = "deny"
+cmd = "curl -fsSI --max-time 8 https://example.com >/dev/null"
+
+[[sandbox]]
+name = "herdr socket is reachable"
+expect = "ok"
+cmd = "herdr status >/dev/null"
+
+[[sandbox]]
+name = "notesmd-cli reads the vault"
+expect = "ok"
+cmd = "notesmd-cli list --vault \"$OBSIDIAN_DEFAULT_VAULT\" >/dev/null"
+
+[[sandbox]]
+name = "agentsview reads its archive"
+expect = "ok"
+cmd = "agentsview projects >/dev/null"
+
+[[sandbox]]
+name = "gh authenticates through the keychain"
+expect = "ok"
+cmd = "gh api user --jq .login >/dev/null"
+
+[[sandbox]]
+name = "linear-cli authenticates through the keychain"
+expect = "ok"
+cmd = "linear-cli whoami >/dev/null"
+
+# ── Codex rules: open (allow) ─────────────────────────────────────
+
+[[rule]]
+cmd = "git status --short"
+expect = "allow"
+
+[[rule]]
+cmd = "git commit -m fix"
+expect = "allow"
+
+[[rule]]
+cmd = "git pull --ff-only"
+expect = "allow"
+
+[[rule]]
+cmd = "wt switch -c feat/x"
+expect = "allow"
+
+[[rule]]
+cmd = "chezmoi --dry-run --no-pager apply"
+expect = "allow"
+
+[[rule]]
+cmd = "agent-browser screenshot page.png"
+expect = "allow"
+
+[[rule]]
+cmd = "brew upgrade"
+expect = "allow"
+
+[[rule]]
+cmd = "mise install"
+expect = "allow"
+
+[[rule]]
+cmd = "rem list -o json"
+expect = "allow"
+
+# ── Codex rules: no rule (sandboxed, or escalation reaches review) ─
+
+[[rule]]
+cmd = "git push origin topic"
+expect = "none"
+
+[[rule]]
+cmd = "git push --force-with-lease origin topic"
+expect = "none"
+
+[[rule]]
+cmd = "gh pr view 12"
+expect = "none"
+
+[[rule]]
+cmd = "gh run view 5"
+expect = "none"
+
+[[rule]]
+cmd = "gh label list"
+expect = "none"
+
+[[rule]]
+cmd = "linear-cli issues get ENG-1"
+expect = "none"
+
+[[rule]]
+cmd = "linear-cli api query x"
+expect = "none"
+
+[[rule]]
+cmd = "lightdash config get-project"
+expect = "none"
+
+[[rule]]
+cmd = "herdr pane list"
+expect = "none"
+
+[[rule]]
+cmd = "mise trust"
+expect = "none"
+
+# ── Codex rules: review (prompt) ──────────────────────────────────
+
+[[rule]]
+cmd = "git reset --hard origin/main"
+expect = "prompt"
+
+[[rule]]
+cmd = "git stash drop"
+expect = "prompt"
+
+[[rule]]
+cmd = "git switch -c topic"
+expect = "prompt"
+
+[[rule]]
+cmd = "git commit --no-verify -m x"
+expect = "prompt"
+
+[[rule]]
+cmd = "gh pr create --draft"
+expect = "prompt"
+
+[[rule]]
+cmd = "gh api repos/o/r/pulls"
+expect = "prompt"
+
+[[rule]]
+cmd = "gh run rerun 5"
+expect = "prompt"
+
+[[rule]]
+cmd = "gh secret set TOKEN"
+expect = "prompt"
+
+[[rule]]
+cmd = "linear-cli issues create Fix --team ENG"
+expect = "prompt"
+
+[[rule]]
+cmd = "linear-cli api mutate x"
+expect = "prompt"
+
+[[rule]]
+cmd = "herdr agent prompt 2 go"
+expect = "prompt"
+
+[[rule]]
+cmd = "chezmoi apply"
+expect = "prompt"
+
+[[rule]]
+cmd = "op read op://v/i/f"
+expect = "prompt"
+
+[[rule]]
+cmd = "defaults write com.apple.dock autohide -bool true"
+expect = "prompt"
+
+[[rule]]
+cmd = "obsidian eval code=1"
+expect = "prompt"
+
+[[rule]]
+cmd = "rem delete X"
+expect = "prompt"
+
+# ── Codex rules: user-open and deny (forbidden) ───────────────────
+
+[[rule]]
+cmd = "git push --force origin topic"
+expect = "forbidden"
+
+[[rule]]
+cmd = "git push --delete origin topic"
+expect = "forbidden"
+
+[[rule]]
+cmd = "git commit -S -m x"
+expect = "forbidden"
+
+[[rule]]
+cmd = "git branch -D topic"
+expect = "forbidden"
+
+[[rule]]
+cmd = "gh repo delete o/r"
+expect = "forbidden"
+
+[[rule]]
+cmd = "gh auth token"
+expect = "forbidden"
+
+[[rule]]
+cmd = "gh auth login"
+expect = "forbidden"
+
+[[rule]]
+cmd = "gh skill install --force owner/repo x"
+expect = "forbidden"
+
+[[rule]]
+cmd = "wt -y switch topic"
+expect = "forbidden"
+
+[[rule]]
+cmd = "wt merge --no-hooks"
+expect = "forbidden"
+
+[[rule]]
+cmd = "chezmoi state dump"
+expect = "forbidden"
+
+[[rule]]
+cmd = "rm -rf build"
+expect = "forbidden"
+
+[[rule]]
+cmd = "rm -r build"
+expect = "forbidden"
+
+[[rule]]
+cmd = "sudo rm x"
+expect = "forbidden"
+
+[[rule]]
+cmd = "op item get x --reveal"
+expect = "forbidden"
+
+[[rule]]
+cmd = "pnpm -r publish"
+expect = "forbidden"
+
+[[rule]]
+cmd = "npm publish"
+expect = "forbidden"
+
+[[rule]]
+cmd = "docker push repo/image"
+expect = "forbidden"
+
+[[rule]]
+cmd = "gcloud auth print-access-token"
+expect = "forbidden"
+
+[[rule]]
+cmd = "notesmd-cli set-default-vault x"
+expect = "forbidden"

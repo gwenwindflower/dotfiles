@@ -21,17 +21,16 @@ Agents read, reconcile, organize, and schedule Obsidian Tasks and Apple Reminder
 
 `rem` initializes EventKit even for some help invocations. macOS privacy permission and sandbox service lookup are separate checks. Do not reset TCC or expand Apple container access to diagnose a command failure.
 
-## Command policy
+## Levels
 
-| Operation | Intended policy |
-| --- | --- |
-| rem reads and add/create | Routine; prefer JSON for reconciliation |
-| rem update/edit/complete/done/uncomplete/flag/unflag | Routine within the requested task, including a move between established lists |
-| rem delete/rm/remove | Review-capable because these commands support destructive multi-ID operations; assess an individual requested deletion without requiring a separate planning exercise |
-| rem import/export and list-mgmt/lm | Review bulk data movement and list administration |
-| Obsidian task changes and individual note edits | Routine after vault/record identity checks |
-| Obsidian eval/command, plugin changes | Review actual code, authority, and aggregate effects |
-| Vault creation/removal/registration/default changes | Manual-only |
+| Family | Level | Notes |
+| --- | --- | --- |
+| `rem` reads, add, and individual update, complete, flag, and list moves | `open` | EventKit needs the host. Prefer JSON for reconciliation. |
+| `rem delete`/`rm`/`remove` | `review-open` | An individual requested deletion is routine; multi-ID deletion is judged as a batch. |
+| `rem import`/`export`, `list-mgmt`/`lm` | `review-request-open` | Batches and list administration. |
+| `rem interactive`, `rem skills` | `review-open` | |
+| Obsidian task changes and individual note edits | `sandboxed` | After vault and record identity checks; see [Obsidian notes](notes.md#levels). |
+| `obsidian eval`/`command`/`plugin` and vault administration | See [Obsidian notes](notes.md#levels) | |
 
 Moving across a shared-list boundary can recreate a reminder with a different ID. If the user has already requested that specific move, preserve its fields, use the tool's documented confirmation mechanism, and update the stored mapping. Ask only if the destination or sharing scope is unresolved; routine project moves do not require a second approval solely because they are moves.
 
@@ -39,13 +38,13 @@ Moving across a shared-list boundary can recreate a reminder with a different ID
 
 | Harness | Mechanism and limits |
 | --- | --- |
-| Claude Code | `rem` host exclusion, routine mutation allows, bulk/destructive asks, and classifier guidance. `allowAppleEvents` does not establish EventKit access. |
+| Claude Code | `rem` and `rem *` are excluded; routine subcommands have allows, and the rest reach the classifier. `allowAppleEvents` does not establish EventKit access. |
 | Codex | `reminders.rules` allows routine reads and mutations on the host, with review for deletion, import/export, list administration, interactive use, and skill installation. Both `rem` and `/opt/homebrew/bin/rem` are covered. |
 | OpenCode 1.x | Ordered `permission.bash` patterns; routine updates/moves are allowed and bulk operations ask. Shell already runs on the host. |
 
 Prefix rules cannot count IDs or identify every option position. A host allow for `rem complete` also matches multi-ID completion; there is no claim of automatic batch detection. The agent reviews scope across calls before executing a batch. Do not add a universal `rem *` host allow.
 
-Codex uses workspace-write with networking enabled and no profile socket allowlist. Verify live Obsidian IPC in the harness launch context; configuration alone is not proof the app connection works.
+Both sandboxes grant `~/.obsidian-cli.sock`. Verify live Obsidian IPC in the harness launch context; configuration alone is not proof the app connection works.
 
 ## Verification
 

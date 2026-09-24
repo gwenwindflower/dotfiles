@@ -1,121 +1,57 @@
-# Codex Permission Profiles
+# Codex permission profiles
 
-Use this reference when changing Codex sandbox access, approval behavior, or managed permission policy. Permission profiles are beta; refresh official Codex permissions and managed-configuration docs before editing real config.
+Use this reference when changing Codex sandbox access, approval behavior, execution rules, or reviewer policy. Permission profiles are beta; refresh the official docs and the source files below before editing real config.
 
-Source references:
+Source references (rust-v0.156.1):
 
-- Seatbelt sandbox builder: <https://github.com/openai/codex/blob/rust-v0.139.0/codex-rs/sandboxing/src/seatbelt.rs>
-- `:minimal` platform defaults: <https://github.com/openai/codex/blob/rust-v0.139.0/codex-rs/sandboxing/src/restricted_read_only_platform_defaults.sbpl>
+- Unsandboxed execution gate: <https://github.com/openai/codex/blob/rust-v0.156.1/codex-rs/core/src/tools/sandboxing.rs>
+- Rule decisions: <https://github.com/openai/codex/blob/rust-v0.156.1/codex-rs/core/src/exec_policy.rs>
+- Reviewer prompt and default policy: <https://github.com/openai/codex/tree/rust-v0.156.1/codex-rs/prompts/templates/guardian>
 
-## Model Boundary
+## Model boundary
 
-Permission profiles use `default_permissions` and `[permissions.<name>]`.
+Permission profiles use `default_permissions` and `[permissions.<name>]`. Legacy sandboxing uses `sandbox_mode` and `[sandbox_workspace_write]`. If any loaded layer sets `sandbox_mode`, or the user passes `--sandbox`, Codex uses legacy sandboxing instead of `default_permissions`.
 
-Legacy sandboxing uses `sandbox_mode` and `[sandbox_workspace_write]`. If any loaded layer sets `sandbox_mode`, or the user passes `--sandbox`, Codex uses legacy sandboxing instead of `default_permissions`.
+Approvals decide when an action needs review. The profile decides what sandboxed commands can read, write, and reach. Execution rules decide whether a command runs sandboxed, runs on the host, goes to review, or is blocked.
 
-Managed rollout exception: `allowed_permission_profiles` selects the profile model. `allowed_sandbox_modes` is only a mixed-version compatibility constraint until every managed client supports Codex 0.138.0 or later.
+## Deny entries disable host execution
 
-## Scope
+A profile with any filesystem `deny` entry, including `":root" = "deny"`, never runs a command outside the sandbox. `unsandboxed_execution_allowed()` returns false whenever the profile has a denied read, so:
 
-Approvals decide when an action needs review. Permission profiles decide what sandboxed local commands can read, write, and reach.
+- `prefix_rule` `allow` rules run sandboxed instead of on the host.
+- Escalations (`sandbox_permissions = "require_escalated"`) fall back to a sandboxed attempt.
+- Nothing that needs the host works: SSH agent sockets, EventKit, Chrome, nested Seatbelt, or writes outside the grants.
 
-Built-ins:
+Pick one per profile:
 
-| Profile | Use |
-| --- | --- |
-| `:read-only` | Inspect files and run read-only local commands |
-| `:workspace` | Write effective workspace roots and temp dirs |
-| `:danger-full-access` | Remove local sandbox restrictions; requires explicit broad-access intent |
+| Choice | Profile shape | Credential protection |
+| --- | --- | --- |
+| Host commands work | `":root" = "read"`, no `deny` entries, purpose-listed writes | Reviewer policy and guidance; credential stores are readable to sandboxed commands |
+| Full containment | `deny` entries for credential stores and secret globs | Enforced by the sandbox; every host need must be granted inside it or given up |
 
-Custom profile tables:
+The dotfiles profile `dev` takes the first choice.
 
-| Table | Purpose |
-| --- | --- |
-| `[permissions.<name>]` | Metadata and `extends` |
-| `[permissions.<name>.workspace_roots]` | Extra roots that receive `:workspace_roots` rules |
-| `[permissions.<name>.filesystem]` | Global filesystem rules |
-| `[permissions.<name>.filesystem.":workspace_roots"]` | Rules inside runtime and profile workspace roots |
-| `[permissions.<name>.network]` | Sandboxed command networking |
-| `[permissions.<name>.network.domains]` | Host allow/deny rules |
-| `[permissions.<name>.network.unix_sockets]` | Narrow socket exceptions |
+## Filesystem rules
 
-Higher-precedence config layers can add or replace entries under the same profile name.
-
-## Filesystem Rules
-
-Values are `read`, `write`, or `deny`. More specific paths override broader paths; for identical paths, `deny` beats `write`, and `write` beats `read`.
-
-Prefer special roots before broad absolute paths:
+Values are `read`, `write`, and `deny` (`none` is an alias for `deny`). More specific paths override broader ones, so a `read` entry inside a `write` grant makes that subtree read-only; for identical paths, `deny` beats `write`, and `write` beats `read`. Glob keys work only with `deny`; a glob with `read` or `write` is ignored.
 
 | Path | Meaning |
 | --- | --- |
 | `:root` | Filesystem root |
-| `:minimal` | Platform/runtime paths common tools need |
-| `:workspace_roots` | Session roots plus profile-defined roots |
+| `:minimal` | Platform and runtime paths common tools need; on macOS it also makes `/tmp`, `/private/tmp`, and `/var/tmp` writable |
+| `:workspace_roots` | Session roots plus profile-defined roots (alias `:project_roots`) |
 | `:tmpdir` | `$TMPDIR` when available |
 | `:slash_tmp` | `/tmp` when available |
-| `~/path` | Current user's home-relative path |
-| `/absolute/path` | Platform absolute path |
+| `~/path` | Home-relative path |
+| `/absolute/path` | Absolute path |
 
-Workspace-editing baseline:
+The built-in `:workspace` profile keeps `.git`, `.agents`, and `.codex` read-only inside each workspace root. Linked worktrees also keep their Git common dir in the main checkout, outside the roots. Git metadata writes therefore run on the host through execution rules.
 
-```toml
-default_permissions = "workspace-scoped"
+Keep directories that host `PATH` lookups resolve into (mise shims and installs, uv tools and pythons, `~/.deno/bin`, Mason, bun globals) and trust files (mise `trusted-configs`) read-only. A sandboxed write there turns into code the next host command runs.
 
-[permissions.workspace-scoped]
-extends = ":workspace"
+## Network rules
 
-[permissions.workspace-scoped.filesystem]
-glob_scan_max_depth = 3
-":root" = "deny"
-":minimal" = "read"
-":tmpdir" = "write"
-":slash_tmp" = "write"
-"~/.ssh" = "deny"
-"~/.aws" = "deny"
-"~/.config/gcloud" = "deny"
-"~/.gnupg" = "deny"
-
-[permissions.workspace-scoped.filesystem.":workspace_roots"]
-"." = "write"
-"**/.env" = "deny"
-"**/.env.*" = "deny"
-"**/*.key" = "deny"
-"**/*.pem" = "deny"
-"**/secrets/**" = "deny"
-```
-
-Set `glob_scan_max_depth` for unbounded deny globs on Linux, WSL, or native Windows, or enumerate bounded depths.
-
-For Git worktrees, prefer a tracked project `.codex/config.toml` over broad global project access. Keep `GIT_OPTIONAL_LOCKS=0` in user config, then grant read access to the primary checkout's Git common dir:
-
-```toml
-[permissions.workspace-winnie.filesystem]
-"/Users/winnie/dev/org/repo/.git" = "read"
-```
-
-Tracked project config is copied into Codex-created worktrees, preserving normal `:workspace_roots` write access while Git can read shared metadata reached through `.git` and `commondir`.
-
-## Network Rules
-
-Set `features.network_proxy = true` to enforce profile domain rules. `network.enabled = true` permits networking but does not start the proxy; without it, the domain table does not restrict direct egress. Unix-socket entries must be absolute paths: the proxy rejects `~/...` entries.
-
-Keep `[permissions.<name>.network] enabled = false` unless sandboxed command networking is required. When enabled, prefer domain allowlists over `"*"`.
-
-```toml
-[permissions.workspace-scoped.network]
-enabled = true
-allow_local_binding = false
-
-[permissions.workspace-scoped.network.domains]
-"api.github.com" = "allow"
-"github.com" = "allow"
-"registry.npmjs.org" = "allow"
-"**.openai.com" = "allow"
-"ads.example.com" = "deny"
-```
-
-Domain syntax:
+Set `features.network_proxy = true` to enforce profile domain rules. `network.enabled = true` permits networking but does not start the proxy; without the proxy, the domain table does not restrict egress. With it, unlisted hosts go to the reviewer. Unix-socket entries must be absolute paths: the proxy refuses to start on a `~/...` entry and every sandboxed command fails.
 
 | Pattern | Meaning |
 | --- | --- |
@@ -124,128 +60,63 @@ Domain syntax:
 | `**.example.com` | Apex and subdomains |
 | `*` | All public destinations |
 
-Deny rules narrow allow rules. Local/private destinations are guarded by default; allowlist exact literals such as `localhost` or `127.0.0.1`. Set `allow_local_binding = true` only for explicit local/private-network access.
+Deny rules narrow allow rules. Allowlist local literals such as `localhost` and `127.0.0.1` exactly, and set `allow_local_binding = true` only for local servers. Network profiles cover sandboxed commands only; MCP servers, connectors, browser tools, web search, and approved escalations have separate controls.
 
-Unix socket rules are escape hatches. Use absolute socket paths and keep proxy listeners bound to loopback addresses.
+## Execution rules and review
 
-```toml
-[permissions.workspace-scoped.network.unix_sockets]
-"/Users/winnie/.agent-browser/default.sock" = "allow"
-"/var/run/docker.sock" = "deny"
-```
+`prefix_rule` decisions, strongest wins (`forbidden` > `prompt` > `allow`):
 
-Network profiles affect sandboxed local commands only. MCP servers, app connectors, browser/computer-use tools, Codex cloud internet, web search, and approved escalations have separate controls.
+| Decision | Effect |
+| --- | --- |
+| No match | Runs sandboxed without review. A sandbox failure returns to the model, which can escalate; the escalation goes to the reviewer |
+| `allow` | Runs on the host without review, only when every segment of a compound command matches an allow (and the profile has no `deny` entries) |
+| `prompt` | Goes to the reviewer (`approvals_reviewer = "auto_review"`); after approval it still runs sandboxed unless the model also requested escalation |
+| `forbidden` | Blocked; the justification is returned to the agent |
 
-## Claude Mapping
+So a rule is needed only when the default is wrong:
+
+- `allow` for routine host commands.
+- `prompt` for reviewed commands that would otherwise succeed sandboxed or run through an `allow`.
+- `forbidden` for commands the user runs or nobody runs.
+
+Commands that cannot work sandboxed reach the reviewer through escalation without a rule. There is no per-command route to a person while auto-review is on.
+
+Rules match literal tokens at fixed positions, with single-token unions (`["git", ["add", "commit"]]`); a union cannot hold a token sequence. Every rule can carry `match`/`not_match` examples, which are checked when the file loads.
+
+## Auto-review policy
+
+`[auto_review] policy` replaces the whole built-in security policy, which is the upstream `policy.md` inserted into `policy_template.md`. AGENTS.md reaches the reviewer as trusted user instructions, not as policy. The dotfiles config holds a fork: the upstream file with its `## Environment Profile` replaced and three sections appended (`Routine work`, `Requested-only actions`, `Never allowed`) ported from `docs/agent-review-policy.md`. A comment above `[auto_review]` records the release tag the fork is based on.
+
+Refresh the fork on every Codex upgrade:
+
+1. Read the recorded tag and the installed version (`codex --version`; tags are `rust-v<version>`).
+2. Diff upstream between them: `gh api "repos/openai/codex/compare/rust-v<old>...rust-v<new>" --jq '.files[] | select(.filename | test("templates/guardian/policy")) | .patch'`. The files have moved before, so a missing result means locating them at the new tag first.
+3. Fold changes to the upstream risk sections into the fork verbatim; keep our environment profile and appended sections.
+4. Check `policy_template.md` for a changed `{{ tenant_policy_config }}` contract, and `config/src/config_toml.rs` for a renamed `[auto_review]` key.
+5. Update the tag comment, load the config with a temp `CODEX_HOME` (`codex features list`), and commit.
+
+## Claude mapping
 
 | Claude setting | Codex equivalent |
 | --- | --- |
-| `sandbox.filesystem.allowRead` | `read` rules in `[permissions.<name>.filesystem]` |
-| `sandbox.filesystem.allowWrite` | `write` rules in `[permissions.<name>.filesystem]` |
-| `permissions.deny` for `Read(...)` / `Edit(...)` | `deny` rules, usually repo globs under `:workspace_roots` and credential dirs globally |
-| `sandbox.network.allowedDomains` | `"domain" = "allow"` in `[permissions.<name>.network.domains]` |
-| `sandbox.network.allowLocalBinding` | `allow_local_binding = true`, only with explicit intent |
-| `sandbox.network.allowUnixSockets` | `"absolute/socket/path" = "allow"` in `[permissions.<name>.network.unix_sockets]` |
+| `sandbox.filesystem.allowWrite` / `denyWrite` | `write` / `read` entries in `[permissions.<name>.filesystem]` |
+| `permissions.deny` for `Read(...)` | `deny` entries, which also disable host execution (see above) |
+| `sandbox.network.allowedDomains` | `"domain" = "allow"` with `features.network_proxy = true` |
+| `sandbox.network.allowUnixSockets` | absolute paths in `[permissions.<name>.network.unix_sockets]` |
+| `sandbox.excludedCommands` + `permissions.allow` | `prefix_rule` `allow` |
+| `sandbox.excludedCommands` without an allow | `prefix_rule` `prompt`, or no rule when the sandboxed attempt fails |
+| `permissions.ask` | `forbidden` with a hand-off justification |
+| `autoMode` prose | `[auto_review] policy` |
 
-Claude `permissions.allow` / `permissions.deny` entries for `Bash(...)`, `WebFetch(...)`, `Read(...)`, or `Edit(...)` are not one-for-one Codex keys. Translate filesystem and network intent; use approval policy, managed rules, hooks, MCP config, or instructions for workflow behavior.
+## Managed requirements
 
-## Personal Template
+Use `requirements.toml` or cloud-managed requirements for organization constraints. `allowed_permission_profiles` is a complete allowlist, including built-ins added later, and a managed `guardian_policy_config` overrides `[auto_review] policy`. Every allowed custom profile must be defined in a loaded config or requirements source; names must not start with `:` or reuse reserved table names such as `filesystem`.
 
-Use this shape for workspace writes, selected tool caches, package registries, and sensitive-file denies. Prune extras; writable caches, local binding, sockets, and broad registries are access grants.
+## Verification
 
-```toml
-approval_policy = "on-request"
-approvals_reviewer = "auto_review"
-default_permissions = "personal-workspace-net"
+In the dotfiles repo, add a probe to `.utils/agency.toml` and run `agency` from a host terminal; it performs steps 2 and 3 for every probe (`.utils/docs/agency.md`). By hand:
 
-[permissions.personal-workspace-net]
-extends = ":workspace"
-
-[permissions.personal-workspace-net.filesystem]
-glob_scan_max_depth = 3
-":root" = "deny"
-":minimal" = "read"
-":tmpdir" = "write"
-":slash_tmp" = "write"
-"~/.agents" = "read"
-"~/.claude" = "read"
-"~/.cache/pnpm" = "write"
-"~/.cache/uv" = "write"
-"~/.local/share/pnpm" = "write"
-"~/.local/share/uv" = "write"
-"~/.ssh" = "deny"
-"~/.aws" = "deny"
-"~/.config/gcloud" = "deny"
-"~/.gnupg" = "deny"
-
-[permissions.personal-workspace-net.filesystem.":workspace_roots"]
-"." = "write"
-"**/.env" = "deny"
-"**/.env.*" = "deny"
-"**/*.key" = "deny"
-"**/*.p12" = "deny"
-"**/*.pem" = "deny"
-"**/*.pfx" = "deny"
-"**/credentials/**" = "deny"
-"**/secrets/**" = "deny"
-"**/id_ed25519" = "deny"
-"**/id_rsa" = "deny"
-
-[permissions.personal-workspace-net.network]
-enabled = true
-allow_local_binding = true
-
-[permissions.personal-workspace-net.network.domains]
-"api.github.com" = "allow"
-"github.com" = "allow"
-"registry.npmjs.org" = "allow"
-"pypi.org" = "allow"
-"pythonhosted.org" = "allow"
-"proxy.golang.org" = "allow"
-"sum.golang.org" = "allow"
-"storage.googleapis.com" = "allow"
-"workers.cloudflare.com" = "allow"
-
-[permissions.personal-workspace-net.network.unix_sockets]
-"/Users/winnie/.agent-browser/default.sock" = "allow"
-```
-
-## Managed Requirements
-
-Use `requirements.toml` or cloud-managed requirements for organization constraints. `allowed_permission_profiles` is a complete allowlist, including built-ins added later.
-
-```toml
-default_permissions = "org-workspace"
-
-[allowed_permission_profiles]
-":read-only" = true
-org-workspace = true
-
-[permissions.org-workspace]
-extends = ":workspace"
-
-[permissions.org-workspace.filesystem]
-glob_scan_max_depth = 3
-
-[permissions.org-workspace.filesystem.":workspace_roots"]
-"**/*.env" = "deny"
-```
-
-Every allowed custom profile must be defined in a loaded config or requirements source. Use organization-specific names that do not start with `:` and do not use reserved table names such as `filesystem`.
-
-## Checklist
-
-1. Choose the target layer: `symsources/codex/config.toml`, trusted `.codex/config.toml`, selected `~/.codex/<profile>.config.toml`, or managed `requirements.toml`.
-2. Search loaded layers for `sandbox_mode`, `[sandbox_workspace_write]`, selected `--profile` files, and `--sandbox` usage.
-3. Use a built-in profile for simple cases; define custom profiles only for reusable filesystem/network carveouts.
-4. Translate filesystem access first: workspace writes, temp access, cache/tool access, credential denies.
-5. Translate network access second: default off; use allowlists when on.
-6. Keep approvals separate: `approval_policy` and `approvals_reviewer` set review posture, not filesystem or network shape.
-7. Parse TOML and dry-run chezmoi:
-
-```bash
-python3 -c 'import sys,tomllib; tomllib.load(open(sys.argv[1], "rb"))' symsources/codex/config.toml
-chezmoi --dry-run --no-pager diff
-```
-
-Start a fresh Codex session after changing loaded permission keys. If behavior still looks legacy, re-check loaded layers for `sandbox_mode` or `--sandbox`.
+1. Load the config with a temp home: copy `symsources/codex/config.toml` to `$TMPDIR/<dir>/config.toml` and run `CODEX_HOME=$TMPDIR/<dir> codex features list`.
+2. Probe the profile with `codex sandbox -P <profile> -- <cmd>` under the same temp home. It runs outside Claude's sandbox, because Seatbelt cannot nest. `codex sandbox` always sandboxes, so it checks grants, not rules.
+3. Validate rules together: `codex execpolicy check -r <file> -r <file> <cmd…>` prints the strongest decision.
+4. Start a fresh Codex session after changing loaded keys. If behavior still looks legacy, check loaded layers for `sandbox_mode` or `--sandbox`.

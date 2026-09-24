@@ -2,15 +2,27 @@
 
 Agents inspect history and complete task-authorized source-control work while the lead owns Git mutations and shared state.
 
-## Command intent
+## Levels
 
-| Operation | Policy |
-| --- | --- |
-| Inspection | Status, diff, log, reflog inspection, branch listing, remotes, and worktree listing are routine. A broad `git branch *` or `git worktree *` grant also permits mutations and is not an inspection rule. |
-| Local changes | The lead may stage, commit, and delete integrated local branches with lowercase `git branch -d`. New branches are Worktrunk worktrees (`wt switch -c` or a global branching alias such as `wt shift`/`wt copy`, which share its permissions); plain `git switch -c`/`checkout -b` is reserved for an explicit user request. Helpers report edits and findings without mutating Git state. |
-| Pull and rebase | Prefer `git pull --ff-only`. A clean rebase of an owned, non-shared feature branch onto inspected `main` or `origin/main` is routine with no operation in progress and a recovery ref recorded. Continue after understood conflicts are resolved, or abort to recover. Complex rebases need contextual review; never rewrite shared/protected history or skip unresolved work. |
-| Push and merge | Task-authorized normal pushes to verified non-protected branches on the intended remote should pass automatic evaluation without another user confirmation. Resolve refspecs and push configuration; names alone do not establish branch protection. Shared/protected targets need explicit task or repo authority, including `main` in trunk workflows. Guarded merges follow repo policy. `--force-with-lease` needs review and is reserved for an owned feature branch; unrestricted force and shared-branch rewrites are blocked. |
-| Cleanup | Prefer `wt merge`/`wt remove`; retain their clean-worktree, integration, and hook checks. Forced deletion (`git branch -D`, `wt remove -D`/`--force`) is manual. Remote ref deletion and mirror pushes are blocked; GitHub handles head-branch cleanup after merge. |
+Levels are defined in [agent configuration](../agent-config.md#permission-levels); reviewer judgment follows [the review policy](../agent-review-policy.md).
+
+| Family | Level | Notes |
+| --- | --- | --- |
+| Inspection (`status`, `diff`, `log`, `show`, `reflog`, branch and worktree listing) | `sandboxed` | `open` in Codex, where `.git` is read-only inside workspace roots. |
+| Local writes (`add`, `commit`, `stash`, `switch` to an existing branch, `branch -d`, a clean rebase onto `main`, `merge --ff-only`) | `sandboxed` | `open` in Codex for the same reason. |
+| Remote sync (`fetch`, `pull`, `clone`, `ls-remote`, `submodule update`, `gh repo clone`, `gh pr checkout`) | `open` | SSH runs through the 1Password agent on the host. |
+| Worktrunk lifecycle (`wt switch`, `shift`, `copy`, `list`, `status`, `merge`, `remove`, `step`, `config show`, `hook show`) | `open` | Sibling worktrees, shared `.git`, hooks, and approvals live on the host. |
+| Normal push to a non-protected branch | `review-open` | The reviewer resolves the real destination from refspecs and push config. |
+| Complex rebase (`-i`, `--onto`, `--root`, `--exec`), plain branch creation (`switch -c`, `checkout -b`), direct `git worktree add`/`move`/`remove`/`prune`, remote edits | `review-open` | Branches start as worktrees through `wt switch -c`. |
+| `push --force-with-lease` to the session's own branch, push to `main` or a protected branch | `review-request-open` | |
+| Discarding work (`reset --hard`, `clean`, `checkout --`, `restore`, `stash drop`/`clear`), `rebase --skip`, `--no-verify` | `review-request-open` | These also need a preserved backup. |
+| Bare force push (`--force`, `-f`, `+refspec`), `git config --global`, `wt config approvals` | `user-open` | |
+| Remote ref deletion, mirror push, `branch -D`/`--force`, forced worktree removal, Worktrunk `--yes`/`--no-hooks`/force flags, `commit -S` | `deny` | GitHub deletes merged head branches. |
+| `gh` reads | `sandboxed` | The keychain token works in both sandboxes. Codex routes every `gh api` call, reads included, to the reviewer. |
+| `gh` PR and issue writes, `gh api` mutations, workflow rerun and cancel, `gh extension` installs | `review-open` | Read before write. |
+| `gh pr merge`, PR approvals, repository create/fork/rename/archive/edit, secret and variable writes, release workflow dispatch | `review-request-open` | |
+| `gh auth login`/`logout`/`refresh`/`switch`/`setup-git` | `user-open` | |
+| `gh auth token`, `gh repo delete`, `gh release` mutations | `deny` | Releases run through the reviewed project release task. |
 
 ## Recoverable history
 
@@ -22,44 +34,42 @@ Keep history linear: fast-forward integration or squash/rebase merging, never a 
 
 ## Worktrunk
 
-Worktrunk is the agent-facing surface for branching. Every branch is a worktree, so parallel workstreams are always one `wt switch -c` away, and the harness can keep raw `git branch`/`git switch`/`git worktree` mutations under review while `wt` commands carry the day-to-day flow with their own hooks, checks, and per-branch state. Use `wt switch`, `wt merge`, and `wt remove` for normal worktree workflows. Direct `git worktree add/move/remove/prune/repair` calls require review. Worktrunk's project hook approvals are independent of harness permission; do not use `--yes`, `--no-hooks`, or config changes to skip them. Take time to set up per-project configs to make the workflow as easy as possible, and use Worktrunk aliases to package up complex or multi-step git operations into easy commands.
+Worktrunk is the agent-facing surface for branching. Every branch is a worktree, so parallel workstreams are always one `wt switch -c` away, and `wt` commands carry the day-to-day flow with their own hooks, checks, and per-branch state. Worktrunk's project hook approvals are independent of harness permission; never skip them with `--yes`, `--no-hooks`, or config changes. Set up per-project configs and use Worktrunk aliases to package complex or multi-step git operations.
 
-Global branching aliases are `wt switch [-c]` wrapped for a particular starting state, so they share its permission treatment. Renamed or added aliases in `symsources/worktrunk/config.toml` (a stacking alias is a likely addition) inherit the same treatment until a rule says otherwise. Current aliases:
+Global branching aliases wrap `wt switch [-c]` for a particular starting state:
 
 - `wt copy [-c] <branch>` copies staged, unstaged, and untracked changes to the destination and switches to it, preserving the source.
 - `wt shift [-c] <branch>` moves those changes to the destination and switches to it, leaving the source clean after success.
 
-Use `-c`/`--create` to create a branch, or omit it for an existing branch/worktree. `--base @` creates from the current HEAD; Worktrunk otherwise uses the default branch. The aliases use Git stash and reserve `--execute` for restoring changes. If switching or applying fails, the stash remains available for manual recovery.
+Use `-c`/`--create` to create a branch, or omit it for an existing branch or worktree. `--base @` creates from the current HEAD; Worktrunk otherwise uses the default branch. The aliases use Git stash and reserve `--execute` for restoring changes. If switching or applying fails, the stash remains available for manual recovery.
 
-## Authentication
+An alias added to `symsources/worktrunk/config.toml` reaches review until both configs list it beside `shift` and `copy`.
 
-SSH authentication uses 1Password. Claude's remote-Git and Worktrunk host exclusions address SSH and sibling-worktree access; they do not grant task authority. Codex grants host execution to Git `add`, `commit`, `fetch`, and `pull` across repositories. Other commands retain contextual review and their specific rules.
+## Authentication and metadata
 
-Codex's workspace sandbox protects `.git`; command-scoped host permissions let routine Git work across checkouts without per-repository path exceptions. Prefix rules match canonical commands, so global options such as `git -C <path>` and wrappers may still need contextual review. Worktrunk's native project-hook approval remains required. Other sandboxed tools needing linked-worktree metadata must resolve `git rev-parse --absolute-git-dir --git-common-dir`; a `.git` pointer alone does not grant its external target.
+SSH authentication uses 1Password's agent on the host. User terminal commits remain signed; agent sessions use a hook-provided unsigned identity, so never change signing settings or pass `-S` in response to a failure.
 
-User terminal commits remain signed. Existing harness-provided session identity/signing overrides remain valid; never change global signing settings or disable signing in response to a failure.
+Sandboxed tools that need linked-worktree metadata resolve `git rev-parse --absolute-git-dir --git-common-dir`; a `.git` pointer alone does not grant its external target.
 
 ## GitHub and publication
 
-Use `gh`, read before writing, and verify changed destinations. Confidential project material follows repository-local policy; credentials and unrelated personal data do not belong in commits.
-
-Repository deletion, archival, visibility changes, transfers, and destructive issue changes receive review. Package publication and release creation/mutation/deletion use a reviewed project release task on explicit request. Raw publication commands are blocked; a normal push or merge is not equivalent to publication unless the project's automation makes it so.
+Use `gh`, read before writing, and verify changed destinations. Confidential project material follows repository-local policy; credentials and unrelated personal data do not belong in commits. A normal push or merge is not publication unless the project's automation makes it so.
 
 ## Native enforcement
 
 | Harness | Mechanism and limits |
 | --- | --- |
-| Claude Code | Routine pushes/rebases have no blanket Bash ask or allow, so auto mode can evaluate scope and state. Classifier guidance describes destination, ownership, and recovery checks. Explicit asks cover force-with-lease and canonical complex rebase flags; destructive denies, SSH/Worktrunk exclusions, and helper Git hooks remain. |
-| Codex | Git add/commit/fetch/pull have command-scoped host allows across repositories. Other operations retain contextual policy and `auto_review`. `git.rules` gates canonical force-with-lease, complex rebase, and direct worktree mutations and blocks immediate force/delete flags and raw release commands. Stronger prompt/forbidden matches override allows; prefix rules cannot inspect every argument position. |
+| Claude Code | `open` families are excluded with a matching allow. `git push`, discard forms, complex rebase, branch creation, `git worktree` mutations, remote edits, and `gh` write subcommands are excluded without an allow, so they reach the classifier. Bare force, auth, and global config are `ask`; deletion, forced cleanup, and signing are `deny`, including `git -C` forms. |
+| Codex | `git.rules` allows inspection, local writes, remote sync, and Worktrunk lifecycle; prompts on discard forms, complex rebase, branch creation, `--no-verify`, worktree and remote mutations, `gh` writes, and `gh api`; forbids user-open and deny families. `git push` has no allow, so it fails in the sandbox and escalates to the reviewer. |
 | OpenCode | Ordered Bash patterns allow exact `git rebase main`, `git rebase origin/main`, `git rebase --continue`, and `git rebase --abort`; shared guidance requires ownership and recovery checks. Other rebases and pushes retain ask: this harness has no automatic evaluator or branch-protection-aware pattern. A broad push allow cannot express the target-dependent contract. Agent overrides preserve global safety rules; no process sandbox is supplied by command policy. |
 
-For Codex, `git push origin --delete topic` requires contextual rejection, while `git push --delete origin topic` matches a prohibition. Later flags, `--flag=value` forms, leading `git -C`/`-c`, executable paths, wrappers, and `gh api` payloads require contextual inspection. Do not reshape a command to evade a rule. Static rules cannot determine branch protection or ownership, so automatic evaluation must resolve these before approval; absence of a rule is not unconditional authorization.
+Prefix rules match canonical forms only. Later flags, `--flag=value` forms, leading `git -C`/`-c`, executable paths, wrappers, and `gh api` payloads need the reviewer's judgment, and static rules cannot see branch protection or ownership. Never reshape a command to avoid a rule; a non-match is not authorization.
 
 ## Verification
 
-- Inspection and lowercase local branch cleanup retain the intended path.
-- Forced local cleanup and remote deletion hit prohibitions in supported command forms.
-- Routine push/rebase commands have no matching Claude ask or Codex prefix rule; contextual evaluation checks destination, protection, ownership, dirty state, and the recovery point.
+- `codex execpolicy check` passes every `match` and `not_match` case in `git.rules`.
+- Inspection and lowercase local branch cleanup run without review.
+- A requested push to a feature branch is approved; an unrequested push to `main` is declined.
+- A requested `--force-with-lease` is approved; an unrequested one is declined; a bare `--force` is handed to the user.
+- Forced local cleanup, remote deletion, and `gh repo delete` are blocked in both harnesses.
 - OpenCode's exact common rebase forms resolve to allow; additional arguments and complex variants retain ask, as do pushes without a branch-aware evaluator.
-- Guarded Worktrunk integration keeps its checks and approvals.
-- Raw publishing is blocked while an explicitly requested, project-authorized release task remains usable.

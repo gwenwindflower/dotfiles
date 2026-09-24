@@ -58,6 +58,7 @@ you improve it; copy back to keep this dir in sync.
 
 One reference doc per tool in `.utils/docs/` — load only what's relevant to the task:
 
+- `agency.md` — probe the Codex sandbox profile and execution rules declared in `agency.toml`
 - `fix-md-tables.md` — markdown table spacing fixer
 - `generate-logo.md` — text-to-SVG with per-glyph `<path>` for animation
 - `git-wash.md` — back up, classify, and delete SHA-verified remote branch targets
