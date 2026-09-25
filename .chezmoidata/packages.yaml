@@ -25,7 +25,6 @@ packages:
           - yakitrak/yakitrak
         personal: []
         work:
-          - lzhgus/tap
           - withgraphite/tap
       formulae:
         core:
@@ -235,7 +234,6 @@ packages:
           - signal
         work:
           - canario
-          - capso
           - fathom
           - google-chrome
           - kimi
