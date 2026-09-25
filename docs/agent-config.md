@@ -113,6 +113,10 @@ Refresh the Codex fork on every Codex upgrade; the `agent-config` skill has the 
 
 <!-- markdownlint-disable MD038 -->
 A trailing ` *` in a `Bash(...)` rule matches either more characters or the end of the command after the last non-whitespace character, so one stem rule covers both the bare command and every argument form. `Bash(notesmd-cli create * -o *)` already matches `notesmd-cli create "Note" -o`; a second `Bash(notesmd-cli create * -o)` rule is redundant. Rules without a trailing wildcard (`Bash(pwd)`, `Bash(git remote -v)`) match only that exact command. A wildcard glued to a token (`--dry-run*`) matches that token with any suffix, which is how flags that take `=value` are covered.
+
+Write every wildcard as a bare `*`, in settings, skill `allowed-tools`, and agent frontmatter alike. Never use the legacy `:*` suffix (`Bash(zg:*)`): a rule ending in `:*` is read as a literal prefix, so a `*` earlier in it stops expanding. When the pattern needs a literal colon before the final wildcard, close it with ` *`: `Bash(git push * :* *)` catches `git push origin :branch`.
+
+In an allow rule, put `*` only after the full subcommand. A wildcard before it (`Bash(gh skill* install *)`) also matches options inserted at that spot and approves them silently, so Claude Code warns at launch. Cover a command alias with its own rules (`gh skill install *` and `gh skills install *`). Deny and ask rules may place `*` mid-command, because matching more there only blocks more.
 <!-- markdownlint-enable MD038 -->
 
 ## Capabilities

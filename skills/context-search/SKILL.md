@@ -1,7 +1,7 @@
 ---
 name: context-search
 description: Searching context - zg semantic code search, ast-grep structural search and outlines, qmd markdown and girlOS vault, agentsview past sessions via its CLI help, ctx7 library docs.
-allowed-tools: Bash(zg:*), Bash(qmd:*), mcp__qmd__*
+allowed-tools: Bash(zg *), Bash(qmd *), mcp__qmd__*
 ---
 
 # Context search
