@@ -40,6 +40,8 @@ local bookmarks = {
 	{ key = { "v", "v" }, path = "~/Movies", desc = " Video" },
 	{ key = { "a", "p" }, path = "/Applications", desc = " Applications" },
 	{ key = { "a", "s" }, path = "~/Library/Application Support", desc = " Application Support" },
+	{ key = { "u", "c" }, path = "~/Library/Caches", desc = " Library Caches" },
+	{ key = { "u", "l" }, path = "~/Library", desc = " User Library" },
 	{
 		key = { "c", "d" },
 		path = "/Users/winnie/Library/Application Support/Claude",
