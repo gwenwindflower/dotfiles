@@ -326,8 +326,9 @@ abbr --add got go test
 abbr --add gotv go test -v
 abbr --add gob go build
 ## rust
-abbr --add ruu rustup up
 abbr --add cg cargo
+### cargo script, still unstable on nightly
+abbr --add cgx cargo +nightly -Zscript
 abbr --add cgn cargo init
 abbr --add cgi cargo install
 abbr --add cgii cargo bininstall
@@ -336,11 +337,13 @@ abbr --add cgiup cargo install-update
 abbr --add cgiupa cargo install-update -a
 abbr --add cga cargo add
 abbr --add cgrm cargo remove
-abbr --add cgx cargo run
-abbr --add cgc cargo rustc
-abbr --add cgch cargo check
-abbr --add cgfm cargo fmt
-abbr --add cgfx cargo fix
+abbr --add cgr cargo run
+abbr --add cgc cargo check
+abbr --add cgfmt cargo fmt
+abbr --add cgfix cargo fix
+abbr --add rst rustc
+abbr --add rsup rustup
+abbr --add rsupup rustup up
 ## typescript
 ### mise
 abbr --add m mise
