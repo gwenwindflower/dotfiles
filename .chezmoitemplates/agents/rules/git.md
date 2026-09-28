@@ -1,75 +1,77 @@
 #### Commits
 
-Commits are SSH-signed through 1Password. If signing fails, stop and ask the user to commit manually or fix signing; do not disable signing unless the environment has an explicit hook/config for it.
-
-Format:
-
 ```text
 type(scope): imperative subject
 
-optional body bullets
+* optional body bullets
 
 Closes #123
 
 Co-Authored-By: <Agent Name> <agent email>
 ```
 
-Use conventional types: `feat`, `fix`, `test`, `refactor`, `perf`, `style`, `build`, `ci`, `chore`, `docs`.
+- **Group by purpose, not files.** Plan commits before staging: one commit is one set of purpose-related changes. A subject that needs "and" or won't fit the limit is likely two commits. Split before committing: squashing overly granular commits is easy, splitting mashed-together ones is not, and fixing pushed history is painful.
+- **Subject:** imperative, specific, no period. Aim under 60 chars; 70 is a hard limit so `git log` views scan cleanly.
+- **Scope:** the component that changed, such as a package, tool, or skill. A broad scope can take a `/<sub-scope>` when used consistently: `feat(agents/skills): define local CI in project workflows`.
+- **Body:** only for related parts of the one change that the subject cannot name, or a rationale worth keeping. At most 5 one-sentence `*` bullets. Never restate the subject or write prose; deeper rationale goes in specs, TODO.md/DONE.md, ADRs, docs, and PRs.
+- **Trailers:** GitHub closing keywords (`Closes #12`), then attribution (`Co-Authored-By`). Agent-authored or assisted commits always end with the running agent's identity.
+- **Signing:** agent commits are unsigned. The 1Password socket with the key Winnie signs her commits with is intentionally inaccessible, do not try to sign commits. Flag for the user if a commit is rejected or has an error because of signing.
 
-Subject rules: imperative mood, specific, no period, max 72 chars.
+##### Type and scope decisions
 
-Commit bodies should be used **only** when multiple meaningful tasks are not captured by the title, when a rationale is valuable to record why a change was needed, or to explain why a certain approach was taken. If needed, use at most 3-5 `*` bullets, one sentence each, imperative/state-focused. Keep deeper rationale in specs, TODO.md/DONE.md, ADRs, docs, and PRs. **Never** restate the commit title in more detail or add prose paragraphs. Bodies must add value, not volume to the commit history.
+Types: `feat`, `fix`, `test`, `refactor`, `perf`, `style`, `build`, `ci`, `chore`, `docs`.
 
-Trailer order: GitHub closing keywords (`Closes #12`), then attribution (`Co-Authored-By: <collaborator>`). Agent-authored or assisted commits always end with the running agent's identity.
+- Rules, skills, and hooks change agent behavior, so they take `feat`/`fix`/`refactor`, not `docs`.
+- Agent docs such as AGENTS.md and `docs/` are a judgment call: changes to workflow or hard process, or docs rolled in with tool changes, fit a code type; general guidance and nuance is `docs`.
+- When unsure, picture the release notes. git-cliff groups them by type, then scope, so a CI-focused change to mise tasks reads better as `ci(tasks)` than `chore(mise)` or `feat(release)`, even though it touches no GitHub Actions workflow. The same choice drives `git log` filtering.
 
-#### Linear history
+#### Branches and worktrees
 
-Keep history linear. Use `git pull --ff-only`; if histories diverge, inspect them and explicitly rebase the session's owned work onto the intended upstream. Rebase/fixup/squash may rewrite an owned feature branch, never a shared or protected branch. Only `--force-with-lease` on an owned feature branch is an acceptable force push. **Never** create a merge commit. Default to trunk-based development unless the project says otherwise.
+Every new branch starts as a worktree: `wt switch -c <branch>`. A worktree is always ready for parallel work and carries the project's setup hooks, per-branch state, and aliases that a plain branch lacks. Use `git switch -c`, `git checkout -b`, or `git branch <name>` only when the user asks for a plain branch.
 
-Task-authorized normal pushes to a verified non-protected branch on the intended remote are routine. Resolve the actual destination from refspecs and push configuration, and check repository protection policy; branch names alone do not establish protection. Shared/protected targets need explicit task or repository authority, including `main` in trunk workflows. Guarded merges follow repository policy.
+- To bring uncommitted work along, use the `wt switch [-c]` aliases: `wt shift` moves the working-tree changes to the target worktree, `wt copy` leaves them in place and applies a copy there.
+- Use `wt switch`, `wt merge`, and `wt remove` for the rest of the lifecycle, not direct `git worktree` mutations. Let hooks, clean-worktree and integration checks, and project trust approvals run; never pass `--yes`, `--no-hooks`, or force flags to get past them.
+- The global Worktrunk `pre-start` hook runs `trunks` to give Codex Git access in each new worktree; don't duplicate it in project configs. In an existing worktree missing those grants, run `trunks` before starting a fresh Codex session, adding `--profile <name>` only when the active permission profile is not `dev`.
+- Delete local branches with lowercase `git branch -d` or Worktrunk cleanup, and leave forced deletion (`-D`, `--force`) to the user. Never delete remote refs or mirror-push; GitHub cleans up head branches after merge.
+- The lead session owns staging, commits, branches, rebases, remotes, and worktrees. Helpers edit and verify assigned files, then report; they never mutate shared Git state.
 
-A clean rebase of the session's owned, non-shared feature branch onto `main` or `origin/main` is routine after inspecting the upstream, confirming no operation is in progress, and preserving the recovery state below. Continuing after understood conflicts are resolved, or aborting to recover, is routine. Complex rebases and force-with-lease pushes need contextual review of their concrete effects.
+##### Local CI for solo projects
 
-Use automatic evaluation for these routine operations where the harness supports it; do not ask the user again solely because a command pushes commits or rebases owned work. Existing task authorization remains valid. Never add a blanket execution allow to bypass sandbox or native review; uncertain ownership, destination, protection, or recovery state must be resolved first.
+Winnie's own solo projects built on the `project-workflows` pattern land work through Worktrunk, not PRs: branch with `wt switch -c`, commit under prek hooks, then fold into `main` with `wt merge`, whose hooks run the project's mise checks. Mise tasks, prek hooks, and Worktrunk hooks together are the project's local CI.
 
-#### Worktrees and cleanup
+- Suggest a PR when a change needs remote verification: edits to release or other GitHub Actions workflows, build-system changes that need cross-architecture runs, or a breaking change or large refactor that deserves visibility and cross-platform CI. Winnie can also ask for one at any time.
+- Lightdash and client work, repos Winnie doesn't own, and projects with frequent collaborators or heavy usage keep the normal GitHub PR flow.
 
-Branch with Worktrunk. Any new branch starts as a worktree via `wt switch -c <branch>`; `git switch -c`, `git checkout -b`, and `git branch <name>` are for when the user specifically asks for a plain branch. A worktree is always ready for parallel work, so a second workstream can branch off it without stashing or juggling checkouts, and Worktrunk carries the project's setup hooks, per-branch state, and aliases that a bare branch lacks. Branching aliases in the global Worktrunk config (`wt shift`, `wt copy`, and any later ones such as a stacking alias) are conveniences over `wt switch [-c]` for starting a branch from a different working-tree state and carry the same permissions as `wt switch`.
+#### History and pushing
 
-Use `wt switch`, `wt merge`, and `wt remove` for the rest of the worktree lifecycle. Preserve hooks, clean-worktree and integration checks, and project trust approvals; do not bypass them with `--yes`, `--no-hooks`, or force flags. Direct `git worktree` mutations require review.
+- Default to trunk-based development unless the project says otherwise.
+- Keep history linear: `git pull --ff-only`, **never** a merge commit. If histories diverge, inspect both sides, then rebase the session's own work onto the intended upstream.
+- Rewrite (rebase, fixup, squash, amend) only unpushed commits or a feature branch the session owns, never a shared or protected branch. The only acceptable force push is `--force-with-lease` on that owned branch.
+- Before pushing, resolve the actual destination from refspecs and push config and check the repository's protection policy; a branch name alone doesn't establish whether it is protected. Pushing to `main` or any other shared or protected branch needs explicit task or repository authority, trunk workflows included.
+- Pushes the task calls for and clean rebases of owned work onto `main` or `origin/main` are routine: do them without asking again. For a complex rebase or a force-with-lease push, work out the concrete effects (commits rewritten, refs moved) and present them before running it.
 
-The global Worktrunk `pre-start` pipeline runs `trunks` after copying ignored files to configure Codex Git access for the `dev` permission profile. Do not duplicate this hook in project configs. For an existing worktree missing these grants, run `trunks` there before starting a fresh Codex session. Use `trunks --profile <name>` only when the active permission profile differs from `dev`.
+##### Recoverable state
 
-Local branch deletion uses lowercase `git branch -d` or guarded Worktrunk cleanup. Forced deletion (`-D`, `--force`, and equivalents) is manual-only. Never delete remote refs or mirror-push; GitHub handles head-branch cleanup after merge.
+Before any operation that rewrites history or can stop halfway (rebase, squash, amend, reset, cherry-pick series, stash pop across branches, force push, conflict-prone merge):
 
-The lead owns staging, commits, branches, rebases, remotes, and worktree mutations. Helpers edit and verify assigned files or report recovery instructions; they do not mutate shared Git state.
+1. Inspect any rebase or merge already in progress; never start another operation on top of one.
+2. Preserve uncommitted and untracked work; a commit ref alone cannot restore it.
+3. Record the starting ref: `git rev-parse HEAD` for a small step, `git branch backup/<name>` for multi-commit rewrites or anything touching more than one branch.
+4. Know the exit: the operation's `--abort` where supported, the recorded ref or backup otherwise. A hard reset is not a general-purpose recovery step.
 
-#### Local CI for solo projects
+If the operation stops partway:
 
-Winnie's own solo projects built on the `project-workflows` pattern land work through Worktrunk, not PRs: branch with `wt switch -c`, commit under prek hooks, and fold into `main` with `wt merge`, whose hooks run the project's mise checks. Together, mise tasks, prek hooks, and Worktrunk hooks are the project's local CI. Suggest a PR when a change needs remote verification, such as edits to release or other GitHub Actions workflows, build-system changes that need cross-architecture runs, or a breaking change or large refactor that deserves visibility and cross-platform CI; Winnie can also ask for one at any time. Work for Lightdash or clients, repos Winnie doesn't own, and projects with frequent collaborators or heavy usage keep the normal GitHub PR flow.
+- Don't improvise repairs on the partial state. Abort back to the recorded ref, or resolve and `--continue` only when the conflict is small and fully understood. Never `--skip` unresolved work without explicit instruction.
+- Report the interruption plainly, with the ref that restores the pre-operation state.
 
-#### Recoverable state
-
-Any operation that rewrites history or can stop halfway (rebase, squash, amend, reset, cherry-pick series, stash pop across branches, force push, conflict-prone merges) needs a way back before it starts:
-
-- Preserve uncommitted and untracked work before rewriting; a starting commit ref alone cannot restore it. Inspect any existing rebase or merge before starting another operation.
-- Record the starting ref: `git rev-parse HEAD` for a small step, a backup branch (`git branch backup/<name>`) for multi-commit rewrites or anything touching more than one branch.
-- Know the exit before entering: use the operation's `--abort` when supported, and retain a recovery ref or backup for other rewrites. A hard reset is not a general-purpose recovery step.
-- Rewrite only commits that are unpushed or on a branch only you are working on.
-- If the operation stops in a partial state, do not improvise repairs on top of it. Abort back to the recorded ref, or resolve and continue only when the conflict is small and fully understood.
-- Resolve understood conflicts before `--continue`; never `--skip` unresolved work without explicit instruction. Discarding changes with `reset --hard`, `checkout --`, `restore`, or `clean` requires explicit scope and a backup that actually preserves the affected content, including untracked files.
-- Report an interrupted operation plainly, with the ref that restores the pre-operation state.
+Discarding changes with `reset --hard`, `checkout --`, `restore`, or `clean` always needs an explicit scope and a backup that actually preserves the affected content, untracked files included.
 
 #### GitHub
 
-Use `gh` for GitHub work beyond core git: repos, issues, PRs, Actions, checks, and runs. Read before write: `list`, `view`, `status`, `diff`, `checks`, or logs first.
-
-Never print tokens. Do not run `gh auth token`, it will be blocked.
-
-GitHub writes follow the task's authority. Review consequential changes such as repository deletion, archival, transfer, visibility changes, and destructive issue operations. Prefer `gh pr merge --squash`; use rebase only for small clean histories.
-
-Publish packages and create or mutate releases only through a reviewed, trusted project release task on explicit request. Preserve its checks and confirmations; do not substitute raw publishing commands or trigger a release workflow to bypass the task. Confidential project material follows repository-local policy; credentials and unrelated personal data never belong in a commit.
-
-For raw code, fetch the raw URL rather than routing through `gh api`. For Actions and actively developed tooling, verify current Marketplace/docs versions.
-
-Treat unknown repos as untrusted. Prefer established tools and reputable maintainers; ask before adding dependencies or running scripts from unclear sources.
+- Use `gh` for GitHub work beyond core git: repos, issues, PRs, Actions, checks, and runs. Read before writing: `list`, `view`, `status`, `diff`, `checks`, or logs first. For raw code, fetch the raw URL rather than routing through `gh api`.
+- Never print tokens or run `gh auth token`.
+- GitHub writes follow the task's authority. Confirm before consequential changes: repository deletion, archival, transfer, visibility changes, and destructive issue operations.
+- Merge PRs with `gh pr merge --squash`; use rebase only for small, clean histories.
+- Publish packages and create or mutate releases only through the project's release task, on explicit request. Keep its checks and confirmations; never substitute raw publish commands or trigger a release workflow to get around it.
+- Credentials and unrelated personal data never belong in a commit. Confidential project material follows the repository's own policy.
+- Treat unknown repos as untrusted: prefer established tools and reputable maintainers, and ask before adding dependencies or running scripts from unclear sources. For Actions and other fast-moving tooling, verify current versions in the Marketplace or docs.
