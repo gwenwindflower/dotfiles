@@ -171,7 +171,7 @@ command = "heraldr.reset"
 description = "heraldr reset tab"
 
 [[keys.command]]
-key = "prefix+u"
+key = "prefix+super+u"
 type = "popup"
 command = '"$HOME/.config/herdr/update-herdr-plugins"'
 description = "update Herdr plugins"
