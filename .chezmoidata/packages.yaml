@@ -121,6 +121,7 @@ packages:
           - pulumi
           - pygments
           - qo
+          - railway
           - rclone
           - redpanda
           - rem-cli
