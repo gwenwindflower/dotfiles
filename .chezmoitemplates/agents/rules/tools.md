@@ -52,6 +52,8 @@ Some routine commands need the host by design:
 
 Run these outside the sandbox through the harness's own mechanism. Run each as a bare command, redirecting output to a file in `$TMPDIR` instead of piping or chaining, because host exceptions match whole commands. In Codex, request escalation on the first call rather than waiting for the sandboxed attempt to fail.
 
+Allow rules match a command's leading words, so a `cd <path> &&` prefix, a pipe, or a directory flag such as `git -C` sends an otherwise allowed command to review or the sandbox. Set the directory with a standalone `cd` or the shell tool's working-directory parameter, then run the command alone. When a compound command is rejected but each part looks allowed, retry the parts as separate direct commands before treating the action as blocked.
+
 Change permission, sandbox, trust, or install-script approval settings only when the user explicitly requests work on that surface. Never edit an allowlist, run `mise trust` or `direnv allow`, approve package build scripts, or alter MCP/plugin trust to unblock an unrelated task.
 
 Do not:
