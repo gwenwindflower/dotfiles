@@ -499,13 +499,16 @@ abbr --add wtspr wt switch --prs
 abbr --add wtsm wt switch main
 abbr --add wtmain wt switch main
 abbr --add wtm wt merge
-abbr --add wtmc wt merge --no-squash
+abbr --add wtms wt merge --squash
 abbr --add wtt wt step
 abbr --add wtrb wt step rebase
 abbr --add wtrbm wt step rebase main
 abbr --add wtd wt step diff
 abbr --add wtp wt step push
 abbr --add wtls wt list
+abbr --add wtcf wt config
+abbr --add wtcfa wt config approvals
+abbr --add wtcfaa wt config approvals add
 abbr --add wtrm wt remove
 abbr --add wtrm! wt remove --force
 abbr --add wtrm!! wt remove --force -D
