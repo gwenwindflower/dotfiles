@@ -2,7 +2,12 @@
 brsf = "brew search {{1}} | fzf --multi --prompt='Filter results: ' --preview='brew info {1}'"
 ccp = "cat {{1}} | fish_clipboard_copy"
 clm = "claude --model {{1}} --effort {{2}}"
-cxsol = """codex -m gpt-5.6-sol -c 'model_reasoning_effort="{{1}}"'"""
+cxastra = """codex -m gpt-6-astra -c 'model_reasoning_effort="{{1}}"'"""
+cxsol = """codex -m gpt-6-sol -c 'model_reasoning_effort="{{1}}"'"""
+cxluna = """codex -m gpt-6-luna -c 'model_reasoning_effort="{{1}}"'"""
+clfable = "claude --model fable --effort {{1}}"
+clopus = "claude --model opus --effort {{1}}"
+clsonnet = "claude --model sonnet --effort {{1}}"
 gcliff = 'git cliff --unreleased --tag "{{1}}" --strip all'
 ghscr = 'gh search code "{{1}} repo:{{2}}"'
 ghsld = 'gh search code "{{1}} repo:lightdash/lightdash"'
