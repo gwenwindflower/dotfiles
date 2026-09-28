@@ -33,7 +33,7 @@ The default `zg` model for new indexes is `local/potion-code-16m-v2`, exported a
 | --- | --- | --- |
 | `zg` query, status, and index | `sandboxed` | Workspace writes cover `.zvec-grep/`; `~/.zvec-grep` holds daemon state. |
 | `zg index --drop` | `sandboxed` | Guidance keeps it to requested cleanup; no reviewer sees it. |
-| `zg install`, `zg auth grant` | `review-request-open` | Trust surfaces; see [workspace access](workspace.md#levels). |
+| `zg install`, `zg auth grant` | `review` (on request) | Trust surfaces; see [workspace access](workspace.md#levels). |
 | `qmd` search, `update`, and collection reads | `sandboxed` | `~/.cache/qmd` is writable. |
 | `qmd embed`, `qmd query`, `qmd vsearch` | `open` | They load models on the GPU, which both sandboxes block. |
 | `agentsview` search and session reads | `sandboxed` | Both sandboxes grant write on `~/.local/share/agentsview`. |

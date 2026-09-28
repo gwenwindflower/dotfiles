@@ -26,9 +26,9 @@ Agents read, reconcile, organize, and schedule Obsidian Tasks and Apple Reminder
 | Family | Level | Notes |
 | --- | --- | --- |
 | `rem` reads, add, and individual update, complete, flag, and list moves | `open` | EventKit needs the host. Prefer JSON for reconciliation. |
-| `rem delete`/`rm`/`remove` | `review-open` | An individual requested deletion is routine; multi-ID deletion is judged as a batch. |
-| `rem import`/`export`, `list-mgmt`/`lm` | `review-request-open` | Batches and list administration. |
-| `rem interactive`, `rem skills` | `review-open` | |
+| `rem delete`/`rm`/`remove` | `review` | An individual requested deletion is routine; multi-ID deletion is judged as a batch. |
+| `rem import`/`export`, `list-mgmt`/`lm` | `review` (on request) | Batches and list administration. |
+| `rem interactive`, `rem skills` | `review` | |
 | Obsidian task changes and individual note edits | `sandboxed` | After vault and record identity checks; see [Obsidian notes](notes.md#levels). |
 | `obsidian eval`/`command`/`plugin` and vault administration | See [Obsidian notes](notes.md#levels) | |
 
@@ -38,7 +38,7 @@ Moving across a shared-list boundary can recreate a reminder with a different ID
 
 | Harness | Mechanism and limits |
 | --- | --- |
-| Claude Code | `rem` and `rem *` are excluded; routine subcommands have allows, and the rest reach the classifier. `allowAppleEvents` does not establish EventKit access. |
+| Claude Code | `rem` and `rem *` are excluded, since EventKit needs the host; routine subcommands have allows, and the rest reach the classifier. `allowAppleEvents` does not establish EventKit access. |
 | Codex | `reminders.rules` allows routine reads and mutations on the host, with review for deletion, import/export, list administration, interactive use, and skill installation. Both `rem` and `/opt/homebrew/bin/rem` are covered. |
 | OpenCode 1.x | Ordered `permission.bash` patterns; routine updates/moves are allowed and bulk operations ask. Shell already runs on the host. |
 

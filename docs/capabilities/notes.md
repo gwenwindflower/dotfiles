@@ -21,14 +21,14 @@ A loop of individual commands is still a batch. Incidental capture does not auth
 | `notesmd-cli` reads, captures, and individual edits, moves, and deletions | `sandboxed` | Through the vault write grant. |
 | Routine `obsidian` CLI reads and task changes | `sandboxed` | Through the granted `~/.obsidian-cli.sock`. |
 | Vault batches (imports, exports, mass deletion, loops) | `sandboxed` | The review policy treats batches as requested-only, but sandboxed calls never reach a reviewer, so guidance holds the scope. |
-| `obsidian eval`, `command`, `plugin` | `review-request-open` | The reviewer checks the actual code and scope. |
-| Vault administration (`notesmd-cli add-vault`, `remove-vault`, `set-default-vault`) | `deny` | Manual-only, even during an authorized note-editing task. |
+| `obsidian eval`, `command`, `plugin` | `review` (on request) | The reviewer checks the actual code and scope. |
+| Vault administration (`notesmd-cli add-vault`, `remove-vault`, `set-default-vault`) | `user-open` | Manual-only, even during an authorized note-editing task. |
 
 ## Platform implementations
 
 | Harness | Mechanism |
 | --- | --- |
-| Claude Code | Vault write grant and socket; `obsidian eval`/`command`/`plugin` excluded without an allow; vault-administration denies. |
+| Claude Code | Vault write grant and socket; `obsidian eval`/`command`/`plugin` reach the classifier; vault-administration denies. |
 | Codex | Vault write grant and absolute socket path in the `dev` profile; `OBSIDIAN_DEFAULT_VAULT` set through `shell_environment_policy.set`; `notes.rules` prompts on app-side code and forbids vault administration. |
 | OpenCode | Ordered Bash rules plus `external_directory` access for girlOS. File tools and shell permissions are separate; the shell has no OS sandbox here. |
 

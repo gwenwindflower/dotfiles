@@ -1,13 +1,13 @@
 # Agent review policy
 
-This is the prose both automatic reviewers apply: Claude Code's auto-mode classifier and Codex's auto-reviewer. A reviewer only sees actions that reach it. [Agent configuration](agent-config.md) defines which commands reach review at each permission level.
+This is the prose both automatic reviewers apply: Claude Code's auto-mode classifier and Codex's auto-reviewer. Every action without an explicit carve-out reaches review in Claude Code; in Codex, families that change remote or shared state are routed by rule. [Agent configuration](agent-config.md) defines the levels and routing.
 
 | Section | Claude Code (`symsources/claude/settings.json`) | Codex (`symsources/codex/config.toml`) |
 | --- | --- | --- |
-| Environment | `autoMode.environment` | `## Environment Profile` in `[auto_review] policy` |
-| Routine | `autoMode.allow` | `### Routine work`: allow outcome rules |
-| Requested only | `autoMode.soft_deny` | `### Requested-only actions`: deny unless requested |
-| Never | `autoMode.hard_deny` | `### Never allowed`: deny outcome rules |
+| Environment | `autoMode.environment` | `## Environment` in `[auto_review] extra_policy` |
+| Routine | `autoMode.allow` | `## Routine`: approve in task scope |
+| Requested only | `autoMode.soft_deny` | `## Requested only`: deny unless requested |
+| Never | `autoMode.hard_deny` | `## Never`: deny |
 
 The configs port each entry below by hand, with the same labels. Change this file first, then both configs.
 
@@ -20,7 +20,7 @@ The configs port each entry below by hand, with the same labels. Change this fil
 - **Secrets:** 1Password holds them. The user's terminal commits are SSH-signed through it. Agent sessions get a hook-provided, unsigned session identity, so agents never pass `-S`/`--gpg-sign` and never edit signing config.
 - **Branches:** `main` is the default and protected branch unless the repo says otherwise. Work lands through feature branches and pull requests; push directly to `main` only when the user asked for it or the repo documents a trunk workflow. History is linear: rebase, never merge commits. `--force-with-lease` on the session's own feature branch is the only force push.
 - **Environment names:** `prod` (or `production`) is production, `staging` is a long-lived shared environment, and `dev` is development. Each matches as a whole word or a `-`/`_`/`.`-delimited segment: `prod-db` matches, `producer` does not. Production targets and IaC scopes covering IAM, RBAC, networking, quota, and node pools are sensitive; `staging` warrants care, not a block. Short-lived per-PR and CI-gated environments are the norm.
-- **Sandbox model:** routine work runs inside the harness sandbox without review. Actions reach review when they leave the sandbox or change shared state. Retrying outside the sandbox is expected for nested sandboxes, keychain or IPC access, SSH, and GPU work. A retry whose purpose is to get past a sandbox block on a credential store or a trust surface is not routine.
+- **Sandbox model:** reads and routine inspection run inside the harness sandbox without review. Other actions reach review, and most still run sandboxed after approval; the sandbox bounds local effects, and review judges remote and shared-state effects. Some Never actions (forced branch or worktree deletion, vault administration) are the user's to run: deny them and hand the exact command to the user. Retrying outside the sandbox is expected for nested sandboxes, keychain or IPC access, SSH, and GPU work. A retry whose purpose is to get past a sandbox block on a credential store or a trust surface is not routine.
 - **Dotfiles:** the chezmoi source tree is `~/.local/share/chezmoi`. It deploys to `~` only through a `chezmoi apply` the user asked for.
 - **Personal CLIs:** `herdr`, `wt`, `chezmoi`, `linear-cli`, `agent-browser`, `agentsview`, `notesmd-cli`, `rem`, `qmd`, `zg`, `rclone`, `mise`, `uv`, `deno`, `mint`, `lightdash`, plus the modern replacements `rip`, `fd`, `rg`, `bat`, `lsd`, and `sd`.
 

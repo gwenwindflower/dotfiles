@@ -20,15 +20,15 @@ Command families are placed by purpose, not because a binary is globally trusted
 | --- | --- | --- |
 | Inspection, format, lint, typecheck, test, and build loops | `sandboxed` | Caches and package stores are granted in [workspace access](workspace.md#paths-by-purpose). |
 | Project dependency installs | `sandboxed` | Lifecycle scripts stay sandboxed. |
-| Task runners (`mise run`, `deno task`, `make`, `npm`/`aube run`) | `sandboxed` | An unsandboxed retry is `review-open` after the task definition is inspected; release-shaped tasks are `review-request-open`. |
+| Task runners (`mise run`, `deno task`, `make`, `npm`/`aube run`) | `sandboxed` | In Claude they reach the classifier; in Codex they run unreviewed. An unsandboxed retry is `review` after the task definition is inspected; release-shaped tasks are `review` (on request). |
 | Configured upgrades (`brew update`/`upgrade`, `mise up`, `uv tool upgrade`, `uv python upgrade`, `rustup update`, `deno upgrade`, `cargo install-update`) and project `mise install` | `open` | They write `PATH` directories, which no sandbox may. Pins, cooldowns, and checksum checks stay on. |
-| New global installs and uninstalls (`brew install`, `uv tool install`, `cargo install`, `mise use -g`) | `review-open` | They fail in the sandbox for the same reason and reach review. A tool the user named is routine. |
+| New global installs and uninstalls (`brew install`, `uv tool install`, `cargo install`, `mise use -g`) | `review` | They fail in the sandbox for the same reason and reach review. A tool the user named is routine. |
 | Process inspection (`ps`, `pgrep`) | `open` | Codex also runs `lsof` and read-only `docker` subcommands on the host. |
 | Raw registry publishing, unpublish, yank, dist-tag, `docker push` | `deny` | Releases run through the reviewed project release task. |
-| Project release task | `review-request-open` | |
-| Deploys and infrastructure apply (`wrangler`/`fly`/`railway deploy`, `terraform apply`, `kubectl apply`) | `review-request-open` | Claude also denies `kubectl apply` to a `prod` namespace. |
+| Project release task | `review` (on request) | |
+| Deploys and infrastructure apply (`wrangler`/`fly`/`railway deploy`, `terraform apply`, `kubectl apply`) | `review` (on request) | Claude also denies `kubectl apply` to a `prod` namespace. |
 | `terraform destroy`, `kubectl delete` | `deny` | |
-| macOS host administration (`defaults write`/`delete`/`import`, `launchctl`, `killall`, `osascript`) | `review-request-open` | |
+| macOS host administration (`defaults write`/`delete`/`import`, `launchctl`, `killall`, `osascript`) | `review` (on request) | |
 | `sudo` | `user-open` | |
 
 ## CI/CD

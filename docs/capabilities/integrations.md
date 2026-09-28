@@ -21,24 +21,24 @@ Tools whose tokens live in the keychain work in both sandboxes. Tools whose conf
 | Family | Level | Notes |
 | --- | --- | --- |
 | `agent-browser` capture (`screenshot`, `snapshot`, `pdf`, `close`), any profile | `open` | Chromium cannot launch inside either sandbox. |
-| `agent-browser` interaction with a named non-Default profile | `review-open` | |
-| `agent-browser` Default profile beyond capture; `cookies`, `storage`, `state` | `review-request-open` | The Default profile reaches Keychain-backed signed-in state. |
+| `agent-browser` interaction with a named non-Default profile | `review` | |
+| `agent-browser` Default profile beyond capture; `cookies`, `storage`, `state` | `review` (on request) | The Default profile reaches Keychain-backed signed-in state. |
 | `herdr` reads (lists, `pane read`, `status`) | `sandboxed` | Through the granted `herdr.sock`. |
-| `herdr` pane, tab, and agent control; server, config, and integration administration | `review-open` | Control covers panes and agents the session created or the user named. |
+| `herdr` pane, tab, and agent control; server, config, and integration administration | `review` | Control covers panes and agents the session created or the user named. |
 | `linear-cli` reads | `sandboxed` | Its cache directory is writable and the keychain works in both sandboxes. |
-| `linear-cli` issue, comment, bulk, and `api mutate` writes | `review-open` | Lightdash workspace. |
+| `linear-cli` issue, comment, bulk, and `api mutate` writes | `review` | Lightdash workspace. |
 | `linear-cli auth`/`config` | `user-open` | |
 | `lightdash` compile, validate, SQL, and reads | `sandboxed` | The CLI rewrites `~/.config/lightdash` on every run. |
-| `lightdash` upload, deploy, preview, refresh, set-warehouse, rename | `review-open` | Production projects are `review-request-open`. |
+| `lightdash` upload, deploy, preview, refresh, set-warehouse, rename | `review` | Production projects are `review` (on request). |
 | `lightdash login`, `lightdash config set-project` | `user-open` | |
-| `op read`, `op inject`, `op run` | `user-open` | Codex: `review-request-open`, approved only when the user named the item and destination. |
+| `op read`, `op inject`, `op run` | `user-open` | Codex: `review` (on request), approved only when the user named the item and destination. |
 | `op` listing, reveal, and administration | `deny` | |
 | Service logins (`gcloud auth login`, `wrangler login`, `fly auth login`, `codex`/`claude login`) | `user-open` | |
 | Token printing (`gh auth token`, `gcloud auth print-*-token`, `fly auth token`, `rclone config show`/`dump`) | `deny` | `wrangler` token commands are covered in [remote environments](environments.md#levels). |
-| Warehouse reads (`bq query`, `dbt run`/`build`) against non-production targets | `review-open` | Warehouse hosts are unlisted, so these reach review. |
-| Warehouse mutations (DDL, DML, `bq rm`/`mk`/`load`) | `review-request-open` | |
-| `rclone` listing and copy | `review-open` | Remote hosts are unlisted. |
-| `rclone sync`, `move`, `delete`, `purge` | `review-request-open` | |
+| Warehouse reads (`bq query`, `dbt run`/`build`) against non-production targets | `review` | Warehouse hosts are unlisted, so these reach review. |
+| Warehouse mutations (DDL, DML, `bq rm`/`mk`/`load`) | `review` (on request) | |
+| `rclone` listing and copy | `review` | Remote hosts are unlisted. |
+| `rclone sync`, `move`, `delete`, `purge` | `review` (on request) | |
 
 Remote environment CLIs are covered in [remote environments](environments.md#levels).
 
@@ -50,7 +50,7 @@ Remote environment CLIs are covered in [remote environments](environments.md#lev
 
 | Platform | Mechanism | Coverage |
 | --- | --- | --- |
-| Claude Code | Plugins, marketplaces, optional Claude.ai MCP servers, CLI tools, and agent-browser | `open` families are excluded with an allow; service writes are excluded without one and reach the classifier; logins and `op` secrets are `ask`. |
+| Claude Code | Plugins, marketplaces, optional Claude.ai MCP servers, CLI tools, and agent-browser | `open` families are excluded with an allow; service writes have no rule and reach the classifier; logins and `op` secrets are `ask`. |
 | Codex | Plugins, apps, MCP servers, browser integration, artifact skills, and command rules | `services.rules` allows capture, prompts on service writes and Default-profile use, and forbids logins; `command-safety.rules` prompts on `op` secrets and forbids token printing. Families that fail in the sandbox escalate to the reviewer with no rule. |
 | OpenCode | Plugins, configured language tooling, and shell CLIs | Ordered rules ask by default, allow named profiles, ask again for Default, then allow safe operations. OpenCode `--auto` approves every ask without an intent-sensitive review. |
 

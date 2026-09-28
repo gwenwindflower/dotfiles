@@ -23,26 +23,27 @@ The foundation owns these cross-cutting rules, the permission levels, and harnes
 
 ## Permission levels
 
-Every command family sits at one level. The level decides where the command runs and who decides. It is expressed natively in each harness:
+Every command family sits at one level. The level decides where the command runs and who decides. Anything without an explicit carve-out goes to the automatic reviewer, which judges target, task scope, authorization, and recovery from the full action; configs route families and never enumerate flag-position variants. Each level is expressed natively in each harness:
 
 | Level | Runs | Decided by | Claude Code | Codex |
 | --- | --- | --- | --- | --- |
-| `sandboxed` | In the sandbox | Nobody; the sandbox bounds it | Sandbox auto-allow; no rule | No rule; `[permissions.dev]` grants cover it |
+| `sandboxed` | In the sandbox | Nobody; the sandbox bounds it | Built-in read-only check; no rule | No rule; `[permissions.dev]` grants cover it |
 | `open` | Outside the sandbox | Nobody; a narrow carve-out | `sandbox.excludedCommands` + `permissions.allow` | `prefix_rule` `allow` |
-| `review-open` | Outside, after review | Reviewer: approve in task scope, always when requested | `excludedCommands` with no allow → classifier; `autoMode.allow` | `prefix_rule` `prompt`, or an escalation → auto-review |
-| `review-request-open` | Outside, after review | Reviewer: approve only when the current request names it | Same trigger; `autoMode.soft_deny` | Same trigger; a requested-only outcome rule |
+| `review` | Sandboxed unless it needs the host | Reviewer, by the Routine and Requested only sections of [the review policy](agent-review-policy.md) | No rule: the default for every other command | `prefix_rule` `prompt` over the family's write verbs, or an escalation |
 | `user-open` | Outside, by the user | The user approves, or runs it | Content-scoped `permissions.ask` | `forbidden`, with a justification that hands the exact command to the user |
-| `deny` | Never | Config; the user overrides it temporarily | `permissions.deny` + `autoMode.hard_deny` | `forbidden` + a never-allowed outcome rule |
+| `deny` | Never | Config; the user overrides it temporarily | `permissions.deny` + `autoMode.hard_deny` | `forbidden` + the Never section |
+
+Whether a `review` command needs a request is reviewer policy, not routing: Routine actions are approved in task scope, and Requested only actions only when the user's current request names them.
 
 These principles keep the configs small:
 
-- **The sandbox is the allow.**
-  - Sandboxed commands need grants, not rules. A Claude `Bash(...)` allow exists only to pair with an exclusion, because allows also approve unsandboxed retries.
+- **Review is the default.**
+  - Claude sets `autoAllowBashIfSandboxed: false`, so every Bash command without a rule reaches the classifier unless its built-in read-only check passes, and approved commands still run sandboxed. A Claude `Bash(...)` allow exists only for the `open` level, because allows skip the classifier and also approve unsandboxed retries.
+  - Codex runs unmatched commands sandboxed without review, and an allowed network host does not trigger review. Every family that changes remote or shared state needs a `prompt` rule, including families that run fine in the sandbox (publishers, service CLIs, `gh api`).
   - Codex allows run unsandboxed and unreviewed, and only when every segment of a compound command matches.
-- **Review needs a trigger.**
-  - A reviewer sees only what leaves the sandbox: Claude excluded commands and sandbox-disabled retries, and Codex `prompt` rules and escalations.
-  - Reviewer prose cannot gate a command that runs sandboxed. A `review-*` family is routed out on purpose, even when it would run fine inside.
-  - Claude exclusions do not apply inside pipelines or `&&` chains, so host commands run bare, with output redirected to `$TMPDIR` rather than piped.
+- **`sandboxed` families that write reach the Claude classifier.** Its read-only check covers inspection only, so a `sandboxed` family such as local git writes or a test run is reviewed in Claude as Routine, while Codex runs it unreviewed.
+- **Standard forms only.** `ask`, `deny`, and `forbidden` rules cover each command's standard form. Other shapes (flags after positional arguments, `git -C`, refspec deletion) fall through to the reviewer, whose prose names them.
+- **Host commands run bare.** Claude exclusions do not apply inside pipelines or `&&` chains, so host commands run alone, with output redirected to `$TMPDIR` rather than piped.
 - **Grants are by purpose.** Workspace, caches, and tool state are listed once in [workspace access](capabilities/workspace.md); both sandboxes express that list. The directory list itself is kept tight:
   - No sandbox writes a directory a host `PATH` lookup resolves into (mise shims and installs, `~/.deno/bin`, `~/.bun/bin`, uv tools and pythons, `.rustup`, Mason).
   - No sandbox writes a trust surface (mise trust files, symlinked tool configs whose settings run code).
@@ -68,12 +69,12 @@ These principles keep the configs small:
 | --- | --- | --- | --- |
 | Configuration | JSON settings at user, project, local, and managed scopes; hooks and agent definitions add controls | TOML user and trusted project layers, CLI overrides, managed constraints, hooks, and execution rules | JSONC global/project config and agent overrides |
 | Command decisions | `permissions.allow`/`ask`/`deny`; deny takes precedence over ask, then allow | `prefix_rule` over argument tokens; strongest match wins: `forbidden` > `prompt` > `allow`; unmatched commands run sandboxed without review | Ordered `permission.bash` patterns; last match wins, so catch-all ask precedes exceptions |
-| Automatic review | `defaultMode = auto`; the classifier reads `autoMode` prose and CLAUDE.md. A content-scoped `ask` still prompts the user | `approval_policy = on-request`, `approvals_reviewer = auto_review`; the reviewer reads `[auto_review] policy` and treats AGENTS.md as user authorization. No per-command route to a person | No automatic reviewer |
+| Automatic review | `defaultMode = auto` with `autoAllowBashIfSandboxed = false`: every Bash command without a rule reaches the classifier unless its built-in read-only check passes. The classifier reads `autoMode` prose and CLAUDE.md. A content-scoped `ask` still prompts the user | `approval_policy = on-request`, `approvals_reviewer = auto_review`: only `prompt` rules, the built-in dangerous check (`rm -f`, `sudo`), escalations, and blocked network destinations reach the reviewer. It reads the built-in policy plus `[auto_review] extra_policy`, the matching rule's justification, and AGENTS.md as user authorization. No per-command route to a person | No automatic reviewer |
 | Process containment | Native Bash filesystem/network sandbox; `excludedCommands` run on the host | Permission profile `dev` (`default_permissions = "dev"`): read everywhere, scoped writes, domain-listed network through `network_proxy`, listed Unix sockets | No process sandbox from this config; shell runs with host access |
 | Sensitive files | `Read`/`Edit` denies cover file tools and merge into the Bash sandbox; excluded commands lose the process boundary | No read denies (a `deny` entry disables host execution); reviewer policy governs credential reads. `.git`, `.agents`, and `.codex` inside workspace roots stay read-only | `read`/`edit` denies protect file tools only |
 | Host exceptions | Excluded commands keep permission evaluation | An `allow` rule runs outside the sandbox with no review | Shell is already on the host |
 
-Claude's `autoAllowBashIfSandboxed = true` substitutes containment for a whole-tool Bash ask; operation-specific asks and denies still apply. Read/Edit denies merge into its filesystem sandbox, and WebFetch domain rules combine with sandbox network lists. A `dangerouslyDisableSandbox` retry goes to the classifier in auto mode unless an allow rule matches it first. OpenCode's last-match behavior makes ordering significant, unlike Claude's decision precedence. Sources: [Claude permissions](https://code.claude.com/docs/en/permissions), [Claude sandbox](https://code.claude.com/docs/en/sandboxing), [OpenCode permissions](https://opencode.ai/docs/permissions/).
+Claude's `autoAllowBashIfSandboxed = false` keeps the sandbox as containment but stops it standing in for review; `autoMode.classifyAllShell` is not used, because it also suspends every Bash allow rule. Read/Edit denies merge into its filesystem sandbox, and WebFetch domain rules combine with sandbox network lists. A `dangerouslyDisableSandbox` retry goes to the classifier in auto mode unless an allow rule matches it first. OpenCode's last-match behavior makes ordering significant, unlike Claude's decision precedence. Sources: [Claude permissions](https://code.claude.com/docs/en/permissions), [Claude sandbox](https://code.claude.com/docs/en/sandboxing), [OpenCode permissions](https://opencode.ai/docs/permissions/).
 
 Codex runs the permission-profile system from the single `symsources/codex/config.toml`. The profile extends the built-in `:workspace` profile: `":root" = "read"`, `:tmpdir` and `:slash_tmp` writable, purpose-listed writes, and `read` entries that keep PATH and trust directories read-only inside those writes. The profile has no `deny` entries: Codex refuses to run anything outside the sandbox while one exists, including `allow` rules and escalations. Codex writes project trust, plugin, and hook state into the same file, so hand edits preserve those tables. When the profile blocks priority work, `sandbox_mode = "workspace-write"` in place of `default_permissions` is Codex's built-in fallback; start a fresh session after any change. [Codex configuration reference](https://developers.openai.com/codex/config-reference).
 
@@ -91,7 +92,7 @@ Codex rules are executable Starlark policy, not Markdown instructions. They matc
 
 Validate them together with `codex execpolicy check`, including every inline `match`/`not_match` case.
 
-Prefix rules cannot enforce target-dependent policy or recognize flags at every position. `git push origin --force` differs from `git push --force`, `git -C path push` does not match a `git push` prefix, and a script with `$(…)` substitution is one opaque command. Canonical forms get explicit rules. Commands that fail in the sandbox, such as every SSH `git push`, reach the reviewer through escalation, and its prose covers what prefixes cannot. Never treat a non-match as authorization.
+Prefix rules cannot enforce target-dependent policy or recognize flags at every position, and the strongest matching decision wins regardless of specificity or order (`not_match` is only a load-time test). So a family's `prompt` rule lists its write verbs as a union at the narrowest prefix, such as `["gh", "pr", ["create", "edit", "merge"]]`, and read verbs stay unmatched; a broad `["gh"]` prompt could not be narrowed for reads. `gh api` is one family, since its method and GraphQL effects vary. A rule's `justification` reaches the reviewer as the approval reason, so it says why the command was routed; approval conditions live in the review policy. Commands that fail in the sandbox, such as every SSH `git push`, reach the reviewer through escalation. Never treat a non-match as authorization.
 
 ### Automatic reviewer policy
 
@@ -101,22 +102,16 @@ Prefix rules cannot enforce target-dependent policy or recognize flags at every 
   - `"$defaults"` in `allow`, `soft_deny`, and `hard_deny` keeps Anthropic's built-in rules; `environment` replaces them.
   - The built-in allow treats a normal push to any branch of the session's repository as ordinary, and allow entries override `soft_deny`. So "push to `main` only on request" is guidance in Claude and a reviewer rule in Codex; repository rulesets are the hard guard.
   - `autoMode` is read only from user, managed, or `--settings` scope.
-- **Codex:** `[auto_review] policy` replaces the whole built-in security policy, so the config holds a fork of upstream [`policy.md`](https://github.com/openai/codex/blob/main/codex-rs/prompts/templates/guardian/policy.md).
-  - Its `## Environment Profile` is replaced with ours.
-  - The upstream risk sections are kept verbatim.
-  - Our routine, requested-only, and never-allowed sections are appended as outcome rules.
-  - A comment above the table records the Codex release tag the fork is based on.
-
-Refresh the Codex fork on every Codex upgrade; the `agent-config` skill has the procedure.
+- **Codex:** `[auto_review] extra_policy` carries our four sections after Codex's built-in policy, which stays in force. `[auto_review] policy` would replace the built-in policy and is not used. A comment above the table records the Codex release the syntax was verified against; check it on Codex upgrades.
 
 ### Claude Code permission patterns
 
 <!-- markdownlint-disable MD038 -->
-A trailing ` *` in a `Bash(...)` rule matches either more characters or the end of the command after the last non-whitespace character, so one stem rule covers both the bare command and every argument form. `Bash(notesmd-cli create * -o *)` already matches `notesmd-cli create "Note" -o`; a second `Bash(notesmd-cli create * -o)` rule is redundant. Rules without a trailing wildcard (`Bash(pwd)`, `Bash(git remote -v)`) match only that exact command. A wildcard glued to a token (`--dry-run*`) matches that token with any suffix, which is how flags that take `=value` are covered.
+Write every wildcard as a bare `*`, in settings, skill `allowed-tools`, and agent frontmatter alike. Never use `:*`: a rule ending in it is legacy prefix syntax, and one containing it anywhere else warns at launch. A pattern that would need a colon before a wildcard (`git push origin :branch`) belongs to reviewer prose instead.
 
-Write every wildcard as a bare `*`, in settings, skill `allowed-tools`, and agent frontmatter alike. Never use the legacy `:*` suffix (`Bash(zg:*)`): a rule ending in `:*` is read as a literal prefix, so a `*` earlier in it stops expanding. When the pattern needs a literal colon before the final wildcard, close it with ` *`: `Bash(git push * :* *)` catches `git push origin :branch`.
+A trailing ` *` also matches the bare command only when it is the rule's only wildcard: `Bash(git fetch *)` matches `git fetch`. With more than one wildcard, the trailing ` *` needs a space and more text, so `Bash(git push * --force *)` misses `git push origin main --force`. That is why `ask` and `deny` rules cover standard forms only and leave other shapes to the reviewer. Rules without a wildcard (`Bash(pwd)`) match only that exact command. A wildcard glued to a token (`--dry-run*`) matches that token with any suffix, which covers flags that take `=value`.
 
-In an allow rule, put `*` only after the full subcommand. A wildcard before it (`Bash(gh skill* install *)`) also matches options inserted at that spot and approves them silently, so Claude Code warns at launch. Cover a command alias with its own rules (`gh skill install *` and `gh skills install *`). Deny and ask rules may place `*` mid-command, because matching more there only blocks more.
+In an allow rule, put `*` only after the full subcommand. A wildcard before it (`Bash(gh skill* install *)`) also matches options inserted at that spot and approves them silently, so Claude Code warns at launch. Cover a command alias with its own rules (`gh skill install *` and `gh skills install *`).
 <!-- markdownlint-enable MD038 -->
 
 ## Capabilities

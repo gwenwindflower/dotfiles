@@ -41,12 +41,12 @@ Levels are defined in [agent configuration](../agent-config.md#permission-levels
 | Family | Level | Notes |
 | --- | --- | --- |
 | Dotfiles inspection and dry run (`chezmoi diff`, `status`, `verify`, `doctor`, `--dry-run --no-pager apply`) | `open` | They read every managed target and chezmoi's state database. Codex also runs `cat`, `data`, and `managed` on the host; Claude runs those sandboxed. |
-| `chezmoi add`, `re-add`, `forget` | `review-open` | Files the task changed. |
-| Real `chezmoi apply`, `update`, `init` | `review-request-open` | Approved only when the user's message asked to apply after the changes. |
+| `chezmoi add`, `re-add`, `forget` | `review` | Files the task changed. |
+| Real `chezmoi apply`, `update`, `init` | `review` (on request) | Approved only when the user's message asked to apply after the changes. |
 | `chezmoi state`, `purge`, `manage`, `unmanage`, `destroy` | `user-open` | |
 | Recoverable deletion (`rip`, single-file `rm`) | `sandboxed` | |
 | Unrecoverable deletion (recursive `rm` in any flag order, `rip -d`, `sudo rm`, `dd`, `mkfs`, `chmod -R 777`) | `deny` | `rip` is the recoverable path. |
-| Trust and permission surfaces (`mise trust`, `direnv allow`, build-script approvals, agent permission or sandbox config, `ctx7 setup`/`remove`, `zg install`, `zg auth grant`, agent MCP and plugin changes) | `review-request-open` | Only on a direct request about that surface. Trust files are read-only in both sandboxes, so these fail there and reach review. |
+| Trust and permission surfaces (`mise trust`, `direnv allow`, build-script approvals, agent permission or sandbox config, `ctx7 setup`/`remove`, `zg install`, `zg auth grant`, agent MCP and plugin changes) | `review` (on request) | Only on a direct request about that surface. Trust files are read-only in both sandboxes, so these fail there and reach review. |
 
 ## Dotfiles deployment
 
