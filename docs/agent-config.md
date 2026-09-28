@@ -28,7 +28,7 @@ Every command family sits at one level. The level decides where the command runs
 | Level | Runs | Decided by | Claude Code | Codex |
 | --- | --- | --- | --- | --- |
 | `sandboxed` | In the sandbox | Nobody; the sandbox bounds it | Built-in read-only check; no rule | No rule; `[permissions.dev]` grants cover it |
-| `open` | Outside the sandbox | Nobody; a narrow carve-out | `sandbox.excludedCommands` + `permissions.allow` | `prefix_rule` `allow` |
+| `open` | Outside the sandbox | Nobody; a narrow carve-out | `sandbox.excludedCommands` + `permissions.allow` + an `autoMode.allow` bullet | `prefix_rule` `allow` |
 | `review` | Sandboxed unless it needs the host | Reviewer, by the Routine and Requested only sections of [the review policy](agent-review-policy.md) | No rule: the default for every other command | `prefix_rule` `prompt` over the family's write verbs, or an escalation |
 | `user-open` | Outside, by the user | The user approves, or runs it | Content-scoped `permissions.ask` | `forbidden`, with a justification that hands the exact command to the user |
 | `deny` | Never | Config; the user overrides it temporarily | `permissions.deny` + `autoMode.hard_deny` | `forbidden` + the Never section |
@@ -43,7 +43,7 @@ These principles keep the configs small:
   - Codex allows run unsandboxed and unreviewed, and only when every segment of a compound command matches.
 - **`sandboxed` families that write reach the Claude classifier.** Its read-only check covers inspection only, so a `sandboxed` family such as local git writes or a test run is reviewed in Claude as Routine, while Codex runs it unreviewed.
 - **Standard forms only.** `ask`, `deny`, and `forbidden` rules cover each command's standard form. Other shapes (flags after positional arguments, `git -C`, refspec deletion) fall through to the reviewer, whose prose names them.
-- **Host commands run bare.** Claude exclusions do not apply inside pipelines or `&&` chains, so host commands run alone, with output redirected to `$TMPDIR` rather than piped.
+- **Host commands run bare.** Claude exclusions do not apply inside pipelines or `&&` chains, so host commands run alone, with output redirected to `$TMPDIR` rather than piped. A shape that misses the allow rule reaches the classifier, so each `open` family also has an `autoMode.allow` bullet that names it.
 - **Grants are by purpose.** Workspace, caches, and tool state are listed once in [workspace access](capabilities/workspace.md); both sandboxes express that list. The directory list itself is kept tight:
   - No sandbox writes a directory a host `PATH` lookup resolves into (mise shims and installs, `~/.deno/bin`, `~/.bun/bin`, uv tools and pythons, `.rustup`, Mason).
   - No sandbox writes a trust surface (mise trust files, symlinked tool configs whose settings run code).
@@ -80,9 +80,9 @@ Codex runs the permission-profile system from the single `symsources/codex/confi
 
 ### Codex worktree permissions
 
-Codex's base permission set is `dev`. The global Worktrunk `pre-start` pipeline in `symsources/worktrunk/config.toml` runs `trunks` after `wt step copy-ignored` and before agent launch. Trunks resolves the shared repository and private worktree Git directories, then grants those exact paths `write` under `[permissions.dev.filesystem]` in the worktree's `.codex/config.toml`. This gives sibling worktrees explicit Git metadata access without granting their parent directory write access.
+Codex's base permission set is `dev`. The Fish `codex` function supports launches from sibling worktree roots named `<project>.<branch>`, splitting at the first dot. When the directory contains a `.git` file and its sibling `<project>/.git` exists, it passes the current directory through `--add-dir` and grants write access to `<project>/.git` and `<project>/.git/worktrees/<project>.<branch>` through invocation-only `-c` overrides. User arguments follow those defaults. Other directories pass through unchanged to `command codex`.
 
-Trunks preserves unrelated settings and does not select a profile, establish project trust, or change approvals and networking. The project layer must be trusted and loaded in a fresh Codex session. Existing worktrees can be prepared by running `trunks` in them; project hooks must not duplicate the global hook. Hook ordering and failure behavior are documented in [Worktrunk agent guidance](../symsources/worktrunk/AGENTS.md).
+The launcher writes no config files and assumes the `dev` permission profile and Worktrunk's sibling naming pattern. Start it from the worktree root; it does not track later directory changes or interpret `--cd`. `command codex` bypasses the function. The global Worktrunk `trunks` pre-start step is disabled.
 
 ### Codex execution rules
 
