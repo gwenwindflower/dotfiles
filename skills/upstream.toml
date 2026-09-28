@@ -30,3 +30,10 @@ skill = "qmd"
 files = ["qmd.md"]
 baseline = "facd35e01359e59d938bc9418e93fb9318addee3"
 tree = "cfe2aef5f41452c0697447287a1598cb98b7ca9d"
+
+[[project-workflows.upstream]]
+repo = "j178/prek"
+skill = "prek"
+files = ["prek.md"]
+baseline = "77c4056ce76b600de77d5d425e52844a76652a58"
+tree = "6032680b95ac73c5604c2a44e2e041b9098242de"
