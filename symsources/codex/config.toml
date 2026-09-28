@@ -130,6 +130,9 @@ extends = ":workspace"
 "/Users/winnie/.local/share/chezmoi/symsources/nvim/lazy-lock.json" = "read"
 "/Users/winnie/.local/share/chezmoi/symsources/yazi/package.toml" = "read"
 
+[permissions.dev.filesystem.":workspace_roots"]
+".git" = "write"
+
 [permissions.dev.filesystem."~"]
 # tool caches and state
 ".cache" = "write"
