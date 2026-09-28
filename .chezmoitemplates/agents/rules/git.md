@@ -38,12 +38,7 @@ Branch with Worktrunk. Any new branch starts as a worktree via `wt switch -c <br
 
 Use `wt switch`, `wt merge`, and `wt remove` for the rest of the worktree lifecycle. Preserve hooks, clean-worktree and integration checks, and project trust approvals; do not bypass them with `--yes`, `--no-hooks`, or force flags. Direct `git worktree` mutations require review.
 
-Configure Codex Git permissions before launching agents in new worktrees with this hook in `.config/wt.toml`. Trunks defaults to the `dev` permission profile; use `trunks --profile <name>` if the active Codex profile differs.
-
-```toml
-[pre-start]
-trunks-agent-config = "trunks"
-```
+The global Worktrunk `pre-start` pipeline runs `trunks` after copying ignored files to configure Codex Git access for the `dev` permission profile. Do not duplicate this hook in project configs. For an existing worktree missing these grants, run `trunks` there before starting a fresh Codex session. Use `trunks --profile <name>` only when the active permission profile differs from `dev`.
 
 Local branch deletion uses lowercase `git branch -d` or guarded Worktrunk cleanup. Forced deletion (`-D`, `--force`, and equivalents) is manual-only. Never delete remote refs or mirror-push; GitHub handles head-branch cleanup after merge.
 

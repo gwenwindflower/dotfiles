@@ -78,6 +78,12 @@ Claude's `autoAllowBashIfSandboxed = false` keeps the sandbox as containment but
 
 Codex runs the permission-profile system from the single `symsources/codex/config.toml`. The profile extends the built-in `:workspace` profile: `":root" = "read"`, `:tmpdir` and `:slash_tmp` writable, purpose-listed writes, and `read` entries that keep PATH and trust directories read-only inside those writes. The profile has no `deny` entries: Codex refuses to run anything outside the sandbox while one exists, including `allow` rules and escalations. Codex writes project trust, plugin, and hook state into the same file, so hand edits preserve those tables. When the profile blocks priority work, `sandbox_mode = "workspace-write"` in place of `default_permissions` is Codex's built-in fallback; start a fresh session after any change. [Codex configuration reference](https://developers.openai.com/codex/config-reference).
 
+### Codex worktree permissions
+
+Codex's base permission set is `dev`. The global Worktrunk `pre-start` pipeline in `symsources/worktrunk/config.toml` runs `trunks` after `wt step copy-ignored` and before agent launch. Trunks resolves the shared repository and private worktree Git directories, then grants those exact paths `write` under `[permissions.dev.filesystem]` in the worktree's `.codex/config.toml`. This gives sibling worktrees explicit Git metadata access without granting their parent directory write access.
+
+Trunks preserves unrelated settings and does not select a profile, establish project trust, or change approvals and networking. The project layer must be trusted and loaded in a fresh Codex session. Existing worktrees can be prepared by running `trunks` in them; project hooks must not duplicate the global hook. Hook ordering and failure behavior are documented in [Worktrunk agent guidance](../symsources/worktrunk/AGENTS.md).
+
 ### Codex execution rules
 
 Codex rules are executable Starlark policy, not Markdown instructions. They match literal argument prefixes and unions at fixed positions, not globbed suffixes. `allow` runs outside the sandbox without review, so it is reserved for the `open` level; `prompt` routes to the auto-reviewer; `forbidden` blocks and returns its justification to the agent. Sources: [Codex rules](https://developers.openai.com/codex/rules), [Codex permissions](https://developers.openai.com/codex/permissions).

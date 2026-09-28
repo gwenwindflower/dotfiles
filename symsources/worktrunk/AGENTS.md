@@ -6,7 +6,7 @@ Load the `worktrunk` skill for hook types, template variables, and `wt step copy
 
 ## Worktree population
 
-`pre-start` runs a two-step pipeline: `wt step copy-ignored`, then `depop`.
+`pre-start` runs a three-step pipeline: `wt step copy-ignored`, `trunks`, then `depop`.
 
 The split follows one rule — **copy what nothing can regenerate, install what a package manager owns.** Reflink makes copying free, so the exclude list is only `.venv/` and `venv/`: virtualenvs bake absolute paths into `pyvenv.cfg` and script shebangs, so they break at a new path, and `uv sync` rebuilds them faster than a copy would.
 
@@ -17,6 +17,12 @@ The pipeline runs before `wt switch --execute`, so commands start with dependenc
 ### Hook failure semantics
 
 Verified, and narrower than the docs' "failure aborts the operation": a failing `pre-start` step still creates the worktree but **cancels `--execute`**. A missing binary therefore costs the agent launch silently, which is why the `depop` step is guarded by a `command -v` check.
+
+## Codex Git permissions
+
+`trunks` is installed globally from `~/dev/tools/trunks`. It updates the created worktree's `.codex/config.toml` with write access to the shared and private Git directories under `permissions.dev.filesystem`. Codex's base permission profile is `dev`; Trunks extends it without selecting a profile or changing trust, approvals, or networking.
+
+Keep Trunks after `copy-ignored` in a separate pipeline step so a copied config cannot overwrite its changes. Do not duplicate the global hook in project configs. Trunks failures, including a missing binary, stop the pipeline and cancel `--execute`; fix the reported problem before launching Codex. The project config must be trusted and loaded in a fresh Codex session.
 
 ## Project merge gates
 
