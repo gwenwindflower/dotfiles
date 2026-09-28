@@ -22,7 +22,7 @@ What `assets/rust/` installs and the contract a Rust tool keeps with the templat
 - `[lints.clippy] pedantic = "warn"` with `lint:clippy` passing `-D warnings`, so pedantic lints fail CI. Allow individual lints at the crate root when they fight the code; do not drop the group.
 - `[profile.release]` sets `lto`, `strip`, and `codegen-units = 1`.
 - `Cargo.toml` is the version's source of truth. `version:write` rewrites it and runs `cargo update --workspace --offline`; `version:verify` fails when `Cargo.lock` disagrees. Never hand-edit the lockfile version.
-- `build` leaves the binary at `dist/bin/<binary>`; `release:package` tars it from there.
+- Adapt the generated `build` task to leave the binary at `target/release/<binary>` and `release:package` to read it there. Remove the kit's `dist/bin` copy; an explicit Cargo target uses `target/<triple>/release` instead. Release archives may still go in `dist/`.
 
 ## Distribution
 

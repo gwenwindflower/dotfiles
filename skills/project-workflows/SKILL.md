@@ -19,6 +19,7 @@ Load `git-branching` first: the local CI below depends on how `wt switch`, `wt m
 - The language toolchain is never a mise tool. Rust comes from rustup on `PATH`, declared by `rust-toolchain.toml`; CI uses the runner image's rustup.
 - The version has one source of truth read through `version:read`; kits provide `read`, `write`, `files`, and optionally `verify`.
 - Release archives are `<name>-<target>-v<version>.tgz` with Rust-style target triples for every language.
+- Prefer language conventions over template directory layouts. Adapt build, packaging, and workflow artifact paths together; do not copy outputs solely to fit `dist/bin`. Keep `dist/` where conventional or useful for release archives.
 
 ## Docs
 

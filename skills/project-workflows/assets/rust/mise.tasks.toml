@@ -1,13 +1,16 @@
 # Rust
 
 [tasks.build]
-description = "Compile the optimized binary into dist/bin"
-alias = "b"
+description = "Compile the optimized binary into target/release"
 run = [
   "cargo build --locked --release",
-  "mkdir -p dist/bin",
-  "cp target/release/@@TOOL_BINARY@@ dist/bin/@@TOOL_BINARY@@",
 ]
+
+[tasks."dev:build"]
+description = "Run standard build with pretty interactive output"
+alias = "b"
+run = "cargo pretty build --locked"
+raw = true
 
 [tasks.install]
 description = "Install the checkout's binary on your PATH"
@@ -24,3 +27,9 @@ run = "cargo clippy --all-targets --all-features --locked -- -D warnings"
 [tasks."test:rust"]
 description = "Run the Rust test suite"
 run = "cargo test --all-features --locked"
+
+[tasks."dev:test"]
+description = "Run the Rust tests with pretty interactive output"
+alias = "t"
+run = "cargo pretty test --all-features --locked"
+raw = true

@@ -45,4 +45,4 @@ Nothing is overwritten. Files the template has and the repo lacks are copied in 
 
 ## Language kits
 
-`assets/<lang>/` holds real files the script copies and splices at the template's `LANG_TOOLS`, `LANG_TASKS`, `LANG_IGNORES`, and `LANG_HOOKS` markers. A kit must provide `build` (binary at `dist/bin/<binary>`), `lint:*` for semantic linters, `test:*`, the version hooks, and its formatter as a prek hook. [rust](rust.md) describes the Rust kit and the Cargo contract. Adding a kit means adding a directory with the same shape, never editing the template.
+`assets/<lang>/` holds real files the script copies and splices at the template's `LANG_TOOLS`, `LANG_TASKS`, `LANG_IGNORES`, and `LANG_HOOKS` markers. A kit must provide `build`, `lint:*` for semantic linters, `test:*`, the version hooks, and its formatter as a prek hook. Adapt the generated tasks to the language's conventional output paths, updating packaging and workflow artifact paths together. [rust](rust.md) describes the Rust kit and the Cargo contract. Adding a kit means adding a directory with the same shape, never editing the template.
