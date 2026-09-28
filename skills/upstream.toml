@@ -3,6 +3,13 @@
 # folded in) and `accept` records a new baseline once the change is distilled
 # into every spine-relative doc in `files`.
 
+[[browser-automation.upstream]]
+repo = "vercel-labs/agent-browser"
+skill = "agent-browser"
+files = ["agent-browser.md"]
+baseline = "aff6125c023b810ea3f2e5deec5379e9a4270bdc"
+tree = "82def67855a0d2aad7794207951820fa5422fdb0"
+
 [[clean-python.upstream]]
 repo = "pydantic/skills"
 skill = "pydantic"
