@@ -56,8 +56,8 @@ prefix_rule(
     not_match = ["docker run alpine", "docker push repo/image"],
 )
 
-# review-open / review-request-open: these would succeed in the sandbox, so they are
-# routed to the reviewer explicitly.
+# review: these would succeed in the sandbox, so they are routed to the reviewer explicitly.
+# The review policy decides in-scope vs. on request.
 prefix_rule(
     pattern = ["defaults", ["write", "delete", "import", "rename"]],
     decision = "prompt",
@@ -88,6 +88,14 @@ prefix_rule(
     justification = "1Password secrets flow only to the item and destination the user named, never into output or files. Request escalation with this command.",
     match = ["op read op://vault/item/field", "op run -- ./deploy.sh"],
     not_match = ["op item list"],
+)
+
+prefix_rule(
+    pattern = ["rclone", ["sync", "move", "moveto", "delete", "deletefile", "purge", "rmdir", "rmdirs", "copy", "copyto", "mkdir"]],
+    decision = "prompt",
+    justification = "rclone writes to remote storage; route to review so the target and scope are checked.",
+    match = ["rclone sync src remote:dst", "rclone purge remote:dst"],
+    not_match = ["rclone ls remote:dst", "rclone lsf remote:dst"],
 )
 
 # user-open: the user runs these.

@@ -32,8 +32,8 @@ prefix_rule(
     not_match = ["qmd collection remove notes"],
 )
 
-# review-open / review-request-open: these would succeed in the sandbox (network, socket,
-# or granted state), so they are routed to the reviewer explicitly.
+# review: these would succeed in the sandbox (network, socket, or granted state), so they
+# are routed to the reviewer explicitly. The review policy decides in-scope vs. on request.
 prefix_rule(
     pattern = ["chezmoi", ["apply", "update", "init"]],
     decision = "prompt",

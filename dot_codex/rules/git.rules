@@ -50,8 +50,8 @@ prefix_rule(
     not_match = ["wt config approvals add"],
 )
 
-# review-open / review-request-open: these would succeed in the sandbox, or run on the
-# host through the allow above, so they are routed to the reviewer explicitly.
+# review: these would succeed in the sandbox, or run on the host through the allow above,
+# so they are routed to the reviewer explicitly. The review policy decides in-scope vs. on request.
 prefix_rule(
     pattern = ["git", ["clean", "restore"]],
     decision = "prompt",
@@ -213,6 +213,30 @@ prefix_rule(
     not_match = ["wt config show"],
 )
 
+prefix_rule(
+    pattern = ["git", "branch", ["-D", "-f", "--force"]],
+    decision = "forbidden",
+    justification = "Forced branch deletion is the user's to run; use git branch -d or guarded wt remove, or give them the exact command.",
+    match = ["git branch -D topic", "git branch --force topic"],
+    not_match = ["git branch -d topic"],
+)
+
+prefix_rule(
+    pattern = ["git", "worktree", ["add", "remove", "move"], ["--force", "-f"]],
+    decision = "forbidden",
+    justification = "Forced worktree cleanup is the user's to run; use guarded wt remove, or give them the exact command.",
+    match = ["git worktree remove --force ../x"],
+    not_match = ["git worktree remove ../x"],
+)
+
+prefix_rule(
+    pattern = ["wt", "remove", ["-D", "--force-delete", "-f", "--force"]],
+    decision = "forbidden",
+    justification = "Forced Worktrunk cleanup is the user's to run; use wt remove, or give them the exact command.",
+    match = ["wt remove --force topic", "wt remove -D topic"],
+    not_match = ["wt remove topic"],
+)
+
 # deny
 prefix_rule(
     pattern = ["gh", "auth", "token"],
@@ -246,22 +270,6 @@ prefix_rule(
 )
 
 prefix_rule(
-    pattern = ["git", "branch", ["-D", "-f", "--force"]],
-    decision = "forbidden",
-    justification = "Use git branch -d or guarded wt remove; forced branch cleanup is manual.",
-    match = ["git branch -D topic", "git branch --force topic"],
-    not_match = ["git branch -d topic"],
-)
-
-prefix_rule(
-    pattern = ["git", "worktree", ["add", "remove", "move"], ["--force", "-f"]],
-    decision = "forbidden",
-    justification = "Forced worktree cleanup is manual; use guarded wt remove.",
-    match = ["git worktree remove --force ../x"],
-    not_match = ["git worktree remove ../x"],
-)
-
-prefix_rule(
     pattern = ["gh", "release", ["create", "upload", "edit", "delete", "delete-asset"]],
     decision = "forbidden",
     justification = "Release publication, artifact mutation, and deletion run through the reviewed project release task on explicit request.",
@@ -286,10 +294,10 @@ prefix_rule(
 )
 
 prefix_rule(
-    pattern = ["wt", "remove", ["-D", "--force-delete", "-f", "--force", "--no-hooks", "--yes", "-y"]],
+    pattern = ["wt", "remove", ["--no-hooks", "--yes", "-y"]],
     decision = "forbidden",
-    justification = "Keep Worktrunk's clean-worktree, integration, hook, and trust checks; forced cleanup is manual.",
-    match = ["wt remove --force topic", "wt remove -D topic"],
+    justification = "Keep Worktrunk's hook and trust checks on.",
+    match = ["wt remove --no-hooks topic", "wt remove -y topic"],
     not_match = ["wt remove topic"],
 )
 

@@ -11,7 +11,7 @@ Runtime settings for coding agent harnesses in this dotfiles repo. `docs/agent-c
 | --- | --- |
 | Claude Code hooks, helpers, JSON output | [claude-code-hooks](claude-code-hooks.md) |
 | Codex layers, sources, workflow, guardrails | [codex](codex.md) |
-| Codex sandbox profiles, execution rules, and the auto-review policy fork | [codex-permission-profiles](codex-permission-profiles.md) |
+| Codex sandbox profiles, execution rules, and auto-review policy | [codex-permission-profiles](codex-permission-profiles.md) |
 
 ## Permission changes
 

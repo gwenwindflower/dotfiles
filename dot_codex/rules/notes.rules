@@ -1,7 +1,7 @@
 prefix_rule(
     pattern = ["notesmd-cli", ["add-vault", "remove-vault", "set-default-vault"]],
     decision = "forbidden",
-    justification = "Vault registration and default-vault changes are manual; keep operations scoped to girlOS.",
+    justification = "Vault registration and default-vault changes are the user's to run; give them the exact command.",
     match = ["notesmd-cli add-vault Example", "notesmd-cli remove-vault Example", "notesmd-cli set-default-vault Example"],
     not_match = ["notesmd-cli delete Example", "notesmd-cli move Example Elsewhere"],
 )

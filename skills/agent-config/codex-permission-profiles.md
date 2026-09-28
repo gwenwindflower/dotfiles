@@ -85,15 +85,11 @@ Rules match literal tokens at fixed positions, with single-token unions (`["git"
 
 ## Auto-review policy
 
-`[auto_review] policy` replaces the whole built-in security policy, which is the upstream `policy.md` inserted into `policy_template.md`. AGENTS.md reaches the reviewer as trusted user instructions, not as policy. The dotfiles config holds a fork: the upstream file with its `## Environment Profile` replaced and three sections appended (`Routine work`, `Requested-only actions`, `Never allowed`) ported from `docs/agent-review-policy.md`. A comment above `[auto_review]` records the release tag the fork is based on.
+`[auto_review] extra_policy` appends our guidance after the built-in reviewer policy, which stays in force; `[auto_review] policy` would replace it and is not used. The config ports the four sections of `docs/agent-review-policy.md` (Environment, Routine, Requested only, Never). AGENTS.md reaches the reviewer as trusted user instructions, and a matching `prompt` rule's `justification` arrives as the approval reason unless a retry reason replaces it, so justifications say why a command was routed and the policy says when to approve.
 
-Refresh the fork on every Codex upgrade:
+The reviewer sees only rule matches, escalations, the built-in dangerous check (`rm -f`, `sudo`), and blocked network destinations. An unmatched command reaching an allowed host is never reviewed, so every family that changes remote or shared state needs a `prompt` rule. The strongest decision wins regardless of specificity, so route a family's write verbs as a union (`["gh", "pr", ["create", "edit", "merge"]]`) and leave reads unmatched.
 
-1. Read the recorded tag and the installed version (`codex --version`; tags are `rust-v<version>`).
-2. Diff upstream between them: `gh api "repos/openai/codex/compare/rust-v<old>...rust-v<new>" --jq '.files[] | select(.filename | test("templates/guardian/policy")) | .patch'`. The files have moved before, so a missing result means locating them at the new tag first.
-3. Fold changes to the upstream risk sections into the fork verbatim; keep our environment profile and appended sections.
-4. Check `policy_template.md` for a changed `{{ tenant_policy_config }}` contract, and `config/src/config_toml.rs` for a renamed `[auto_review]` key.
-5. Update the tag comment, load the config with a temp `CODEX_HOME` (`codex features list`), and commit.
+On a Codex upgrade, check `config/src/config_toml.rs` for a renamed `[auto_review]` key, load the config with a temp `CODEX_HOME` (`codex features list`), and update the verified-release comment above `[auto_review]`.
 
 ## Claude mapping
 
@@ -104,13 +100,13 @@ Refresh the fork on every Codex upgrade:
 | `sandbox.network.allowedDomains` | `"domain" = "allow"` with `features.network_proxy = true` |
 | `sandbox.network.allowUnixSockets` | absolute paths in `[permissions.<name>.network.unix_sockets]` |
 | `sandbox.excludedCommands` + `permissions.allow` | `prefix_rule` `allow` |
-| `sandbox.excludedCommands` without an allow | `prefix_rule` `prompt`, or no rule when the sandboxed attempt fails |
+| No rule (Claude's classifier default) | `prefix_rule` `prompt` over the family's write verbs, or no rule when the sandboxed attempt fails |
 | `permissions.ask` | `forbidden` with a hand-off justification |
-| `autoMode` prose | `[auto_review] policy` |
+| `autoMode` prose | `[auto_review] extra_policy` |
 
 ## Managed requirements
 
-Use `requirements.toml` or cloud-managed requirements for organization constraints. `allowed_permission_profiles` is a complete allowlist, including built-ins added later, and a managed `guardian_policy_config` overrides `[auto_review] policy`. Every allowed custom profile must be defined in a loaded config or requirements source; names must not start with `:` or reuse reserved table names such as `filesystem`.
+Use `requirements.toml` or cloud-managed requirements for organization constraints. `allowed_permission_profiles` is a complete allowlist, including built-ins added later, and a managed `guardian_extra_policy` overrides `[auto_review] extra_policy`. Every allowed custom profile must be defined in a loaded config or requirements source; names must not start with `:` or reuse reserved table names such as `filesystem`.
 
 ## Verification
 
