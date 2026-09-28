@@ -2,6 +2,8 @@
 
 External skills are source material, never shipped content. `skills/upstream.toml` lists upstream skills under the spine they belong to (`[[<spine>.upstream]]`), each with the spine-relative `files` it folds into, and records the upstream commit last folded in as its `baseline`. `skillet` (fish wrapper over `.utils/skillet.ts`) does the mechanical steps; the agent does the distilling.
 
+Every external skill maps to a spine, even when that means a new spine that starts as a thin placeholder. The only external installs are the exceptions listed in the manifest's header comment.
+
 ## Loop
 
 1. `skillet check` lists entries whose upstream moved, or that were never distilled.

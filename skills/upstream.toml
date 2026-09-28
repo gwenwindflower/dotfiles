@@ -2,6 +2,10 @@
 # upstream skill: `skillet` diffs it against `baseline` (the upstream commit last
 # folded in) and `accept` records a new baseline once the change is distilled
 # into every spine-relative doc in `files`.
+#
+# Installed as-is, with no spine: cloudflare and wrangler (cloudflare/skills).
+# They span dozens of rarely used products, so they stay external until a
+# spine for the parts in use is worth the distilling.
 
 [[browser-automation.upstream]]
 repo = "vercel-labs/agent-browser"
