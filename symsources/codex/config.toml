@@ -492,8 +492,8 @@ BROWSER_USE_TINYSKY_ENABLED = "1"
 NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.917.51856"
-NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/winnie/.codex/plugins/cache/openai-bundled/browser/26.917.51856/scripts/browser-service.mjs"}'
+BROWSER_USE_CODEX_APP_VERSION = "26.917.71314"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/winnie/.codex/plugins/cache/openai-bundled/browser/26.917.71314/scripts/browser-service.mjs"}'
 CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
 
 # [mcp_servers.indi]
@@ -738,6 +738,24 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/Users/winnie/dev/tools/_tool"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-09-24/th"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-09-24/c"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-09-25/ch"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-09-25/how-would-you-recommend-a-customer"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/dev/_work/lightdash"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Documents/Codex/2026-09-25/c"]
 trust_level = "trusted"
 
 [apps._default]
