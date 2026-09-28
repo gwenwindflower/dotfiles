@@ -498,6 +498,7 @@ abbr --add wtspr wt switch --prs
 abbr --add wtsm wt switch main
 abbr --add wtmain wt switch main
 abbr --add wtm wt merge
+abbr --add wtmc wt merge --no-squash
 abbr --add wtt wt step
 abbr --add wtrb wt step rebase
 abbr --add wtrbm wt step rebase main
