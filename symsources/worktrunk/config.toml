@@ -47,10 +47,6 @@ fi
 [[pre-start]]
 copy = "wt step copy-ignored"
 
-# Copied Codex config must receive this worktree's Git paths before agent launch.
-[[pre-start]]
-trunks-agent-config = "trunks"
-
 # A failing pre-start step cancels --execute, so a machine without depop would
 # create the worktree but never launch the agent. Degrade to skipping instead.
 [[pre-start]]
