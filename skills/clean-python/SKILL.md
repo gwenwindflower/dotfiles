@@ -1,6 +1,6 @@
 ---
 name: clean-python
-description: Typed modern Python on uv, ruff, and ty - pyproject, lint and type config, style, CI. Pydantic modeling uses pydantic; dbt Python uses analytics-engineering.
+description: Typed modern Python on uv, ruff, and ty - pyproject, lint and type config, style, Pydantic models, CI. dbt Python uses analytics-engineering.
 metadata:
   inspired-by: dagster-io/skills dignified-python v1.13.20
 ---
@@ -21,6 +21,7 @@ Readable, explicit Python for the latest stable CPython. Great names carry meani
 - **Async**: use `asyncio` structured concurrency for I/O-bound work. Never block the event loop. See [async](async.md).
 - **Testing**: pytest, red-green TDD, fakes over mocks, tests named for the behavior they prove. See [testing](testing.md).
 - **CLI and subprocess**: patterns in [cli](cli.md).
+- **Validation at boundaries**: Pydantic models for untrusted input. See [pydantic](pydantic.md).
 
 ## Style Rules
 

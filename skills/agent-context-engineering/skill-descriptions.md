@@ -28,7 +28,7 @@ At startup the agent sees only a list of names and descriptions, and the harness
 
 Examples in this collection:
 
-- `clean-python` routes Pydantic modeling to `pydantic` and dbt Python to `analytics-engineering`
+- `clean-python` routes dbt Python to `analytics-engineering`
 - `map-project` skips projects whose AGENTS.md and docs already cover them
 - `writing-prose` excludes agent context, READMEs, and CLI help
 

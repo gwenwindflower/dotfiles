@@ -3,6 +3,13 @@
 # folded in) and `accept` records a new baseline once the change is distilled
 # into every spine-relative doc in `files`.
 
+[[clean-python.upstream]]
+repo = "pydantic/skills"
+skill = "pydantic"
+files = ["pydantic.md"]
+baseline = "238d97102650c1caa51f35027aee13c469c59542"
+tree = "177519a6580cd617767ca75c9d53c69ab15ffd14"
+
 [[context-search.upstream]]
 repo = "ast-grep/agent-skill"
 skill = "ast-grep"
