@@ -1,3 +1,0 @@
-# Git Signing Disabled in Claude Code Sessions
-
-Commit signing is disabled for every command Claude Code runs, sandboxed or not, via a `SessionStart` hook (`~/.claude/hooks/set-git-nosign.sh`). The global gitconfig requires SSH signing through 1Password's agent, which the sandbox can't reach. The hook writes `GIT_CONFIG_COUNT` env vars into the session environment, which every Bash command inherits including those excluded from the sandbox, so `git commit`, `git rebase`, and `git pull --rebase` never need a sandbox drop for signing. The overrides set `commit.gpgsign` and `tag.gpgsign` to `false` and the author name to `Claude Code (winnie)`. Winnie's normal terminal commits remain signed. Do not attempt to re-enable signing or use `--gpg-sign` flags.

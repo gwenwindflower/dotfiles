@@ -5,7 +5,7 @@ description: Obsidian vault work - notesmd-cli notes, Obsidian Flavored Markdown
 
 # Obsidian
 
-The girlOS vault lives at `$OBSIDIAN_DEFAULT_VAULT`. When and where to write in it comes from the global notes-vault rules; these docs cover how.
+The girlOS vault lives at `$OBSIDIAN_DEFAULT_VAULT`. When and where to write in it comes from the global notes vault rules; these docs cover how.
 
 | Job | Doc |
 | --- | --- |

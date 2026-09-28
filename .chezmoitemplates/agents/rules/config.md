@@ -4,10 +4,14 @@ Machine configuration is declared in the chezmoi source tree at `~/.local/share/
 
 #### Dotfiles
 
-- **Never run a real `chezmoi apply`.** That includes `chezmoi apply -R`, `chezmoi update`, and `chezmoi init --apply`. Always dry-run, with the flags before the subcommand so every harness recognizes it: `chezmoi --dry-run --no-pager apply`. The `chezmoi apply -n` form prompts instead. A real apply reconciles the whole home directory at once, including `exact_` directories, run scripts, and the shell config, so a half-finished workstream in the source tree can break the shell or other basics of the machine. Verify with the dry run and `chezmoi diff --no-pager`, then tell the user what to apply.
+- **Never run a real `chezmoi apply`.** That includes `chezmoi apply -R`, `chezmoi update`, and `chezmoi init --apply`. Always dry-run with the flags before the subcommand: `chezmoi --dry-run --no-pager apply`, never `chezmoi apply -n`. A real apply reconciles the whole home directory at once, including `exact_` directories, run scripts, and the shell config, so a half-finished workstream in the source tree can break the shell or other basics of the machine. Verify with the dry run and `chezmoi diff --no-pager`, then tell the user what to apply.
 - **Always `--no-pager`** on `chezmoi diff`, `cat`, `managed`, and `data`; they hang a subshell otherwise.
 - **Edit the source, not the deployed file.** Changes made under `~` are overwritten on the next apply. The one exception is a symlinked file that an external tool writes (`symsources/`), where the deployed path and the source are the same file.
 - **Name source files by attribute.** `dot_` adds the leading dot, `private_` sets 0600/0700, `executable_` sets +x, `symlink_` makes a symlink whose content is the target path, `exact_` makes a directory delete anything not in source on apply, and `.tmpl` renders a Go template and strips the suffix. Never use `.tmpl` as a literal suffix for non-chezmoi templates.
 - **Copy by default.** Symlink only files that external tools edit; a script only for a side effect no file can express. Every script is an action that can fail.
 - **`exact_` deletes.** Adding the prefix to a directory that other tools also write into removes their files on apply. Check before adding it.
 - Load the `chezmoi` skill before touching templates, scripts, `.chezmoiignore`, or anything beyond a plain source-file edit.
+
+#### Fish variables
+
+Never create fish universal variables (`set -U` / `set -Ux`). They persist in machine-local `fish_variables` state, invisible to the dotfiles repo, and silently shadow config values — impossible to reason about or track across machines. Always export with `set -gx` in the right config location (in the dotfiles repo, a `.chezmoitemplates/fish/` fragment). If an existing universal shadows a config value, erase it with `set -eU <name>` and set it properly.

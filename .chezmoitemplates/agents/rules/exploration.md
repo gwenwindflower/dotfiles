@@ -23,12 +23,6 @@ Pick the corpus, then the retrieval mode. A known literal (identifier, path, err
 
 Run the indexed search before broad file reads or delegating discovery; a subagent should not be spawned only to locate material. Treat a sufficient snippet as read and open the file only when the needed detail lies outside it.
 
-#### Built-in tool skills
-
-Manage external skills with `gh skill`: search, preview, list, install/add, and update are routine within the task, including user scope. Review destructive removal or forced replacement. Check the source before installing unfamiliar content; do not use the npm `skills` CLI, package-runner variants, `rei`, or Context7's skill installer. Shared user skills live in `~/.agents/skills`, installed with `--agent universal --scope user`; own skills live in the dotfiles `skills/` tree and edits to a deployed one return there with `skillet save <name>`. Project-scoped skills may shadow global ones.
-
-Many tools also ship version-matched skills. Check whether a skill command prints instructions or installs files before running it; use `gh skill` for external skill management.
-
 #### Trusting non-official sources
 
 Prefer official docs. For a blog, look for a long consistent posting history or an established professional presence. For forum posts (Reddit, GitHub Discussions, Stack Overflow), look for many upvotes and a long history of active participation. Simon Willison (AI tools, data-leaning engineering) and Hamel Husain (evals, ML, AI from a data science perspective) are trusted go-tos in their domains.

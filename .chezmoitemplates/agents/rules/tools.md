@@ -2,7 +2,7 @@
 
 Built-in tools already cover grep, ls, `fd`-style finding, editing, and web fetching without `curl`; reserve shell for exploration and editing they cannot do. In the shell, prefer the modern tools below and reach for language-specific validators and formatters before writing one-off scripts.
 
-Task runners (`mise run`, `deno task`, `task`, and `make`) require review unless project policy authorizes the specific task. Inspect the task and preserve the runner's trust checks; repository trust alone does not authorize every task. Package-manager upgrades of configured tools are routine: retain configured pins, release-age controls, and supply-chain checks without adding a separate approval ceremony.
+Before running a task through a task runner (`mise run`, `deno task`, `task`, `make`), read what the task does, and let the runner's trust checks stand; a trusted repository does not make every task in it safe to run. Package-manager upgrades of configured tools are routine: keep the configured pins, release-age controls, and supply-chain checks in place.
 
 #### Language-specific tools
 
@@ -28,4 +28,50 @@ Neovim's Mason installs put language tools on `PATH`: `tombi` for TOML, `biome` 
 
 Use `agent-browser` with an isolated named session. Its browser binaries, sockets, sessions, and encryption state live under `~/.agent-browser`; Puppeteer fallback binaries live under `~/.cache/puppeteer`.
 
-Screenshot, snapshot, PDF, and close operations may run without review, including with `--profile Default`. Other commands using a named non-Default profile are routine for in-scope development work. Because Default can access Keychain-backed signed-in browser state, use it for other commands only when the user's current request explicitly authorizes that access; otherwise require approval. Never send browser data to another origin without explicit user authorization.
+Screenshot, snapshot, PDF, and close operations are fine on any profile, including `--profile Default`. Run everything else on a named non-Default profile. Default can access Keychain-backed signed-in browser state, so use it for other commands only when the user's current request explicitly asks for that access. Never send browser data to another origin without explicit user authorization.
+
+#### Skills
+
+Manage external skills with `gh skill`: search, preview, list, install/add, and update are routine within the task, including user scope. Confirm before removing a skill or force-replacing one. Check the source before installing unfamiliar content; do not use the npm `skills` CLI, package-runner variants, `rei`, or Context7's skill installer. Shared user skills live in `~/.agents/skills`, installed with `--agent universal --scope user`; own skills live in the dotfiles `skills/` tree and edits to a deployed one return there with `skillet save <name>`. Project-scoped skills may shadow global ones.
+
+Many tools also ship version-matched skills. Check whether a skill command prints instructions or installs files before running it; use `gh skill` for external skill management.
+
+### Tool failures
+
+#### Sandbox failures
+
+Inside a sandbox, blocked paths, hosts, env vars, caches, logs, and lockfiles are configuration signals. Surface the block; do not route around it.
+
+Some routine commands need the host by design:
+
+- SSH Git remotes, Git metadata writes in Codex, and Worktrunk.
+- chezmoi inspection and dry runs, and `rem`.
+- `agent-browser`, and local GPU model work.
+- Nested sandboxes, such as mise tasks that sandbox themselves.
+- Tool installs and upgrades.
+
+Run these outside the sandbox through the harness's own mechanism. Run each as a bare command, redirecting output to a file in `$TMPDIR` instead of piping or chaining, because host exceptions match whole commands. In Codex, request escalation on the first call rather than waiting for the sandboxed attempt to fail.
+
+Change permission, sandbox, trust, or install-script approval settings only when the user explicitly requests work on that surface. Never edit an allowlist, run `mise trust` or `direnv allow`, approve package build scripts, or alter MCP/plugin trust to unblock an unrelated task.
+
+Do not:
+
+- Invent one-off flags/env vars such as `--cache-dir`, `--log-file`, `TMPDIR`, `HOME`, or `XDG_CACHE_HOME` just to pass.
+- Move global stores, caches, or state directories.
+- Disable logging, telemetry, checksums, signatures, or safety features.
+- Retry the same blocked operation hoping it slips through.
+- Switch to offline mode, alternate registries, vendored mirrors, or cache rebuilds to dodge network blocks.
+
+Instead, identify the exact blocked path/host/env var and the tool that needed it. Offer the user two options: update the sandbox allowlist, or run the exact command outside the sandbox and share results.
+
+First-class project-local knobs can be legitimate, such as checked-in tool config or conventional per-project cache dirs. Use them only with explicit buy-in.
+
+Package managers are high stakes. Always stop before changing global package-manager settings, rebuilding global stores, relocating caches, or bypassing checksum/signature verification.
+
+#### Edit failures
+
+When an Edit/Write/apply patch fails to match the current content, re-read the affected file and correct the patch against what is actually there. Retry with the edit tool without asking when the intended change is clear and surrounding work can be preserved.
+
+Do not force a failed edit through a shell command, one-off script, whole-file replacement, or alternate write path. If the edit tool still fails after a corrected retry, the file is locked, or the intended change cannot be reconciled safely with the current content, pause, explain the problem, and ask how to proceed.
+
+Nerd Font/devicon files are especially risky: direct edits can corrupt glyph bytes. If a file contains those icons, give the user a precise snippet to apply, or copy the file whole with `cp`.

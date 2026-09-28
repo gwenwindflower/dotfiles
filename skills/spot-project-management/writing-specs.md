@@ -153,7 +153,7 @@ Format rules:
 - **Objectives** are `### <description>` — declarative. "Provider integration", not "Integrate the provider".
 - **Tasks** are `- [ ] <imperative step>` under their Objective. Sequential within an Objective; Objectives run in whatever order execution warrants and each lands as one commit.
 
-Phase titles and Objective wording are what the executing session and its helpers work from. Don't carry casual user phrasing — "the OAuth thing" — into either. Propose a real name that reads cleanly out of context, confirm with the user, then build on it. See [naming](../../rules/naming.md).
+Phase titles and Objective wording are what the executing session and its helpers work from. Don't carry casual user phrasing — "the OAuth thing" — into either. Propose a real name that reads cleanly out of context, confirm with the user, then build on it. See [naming](../../rules/output.md).
 
 ## Phase dependencies
 

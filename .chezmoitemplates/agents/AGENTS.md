@@ -4,26 +4,13 @@
 
 {{ joinPath .chezmoi.sourceDir ".chezmoitemplates/agents/rules/primary-user.md.age" | include | decrypt }}
 {{ template "agents/rules/communication.md" . }}
-{{ template "agents/rules/naming.md" . }}
-{{ template "agents/rules/current-state.md" . }}
-{{ template "agents/rules/task-restraint.md" . }}
-## Workflow
+## Work
 
-{{ template "agents/rules/use-tdd.md" . }}
-{{ template "agents/rules/projects.md" . }}
+{{ template "agents/rules/workflow.md" . }}
 {{ template "agents/rules/exploration.md" . }}
 {{ template "agents/rules/tools.md" . }}
-{{ template "agents/rules/fish-variables.md" . }}
-{{ template "agents/rules/config.md" . }}
-### Failures
-
-{{ template "agents/rules/sandbox-failures.md" . }}
-{{ template "agents/rules/edit-failures.md" . }}
-### Git
-
 {{ template "agents/rules/git.md" . }}
+{{ template "agents/rules/config.md" . }}
 ## Output
 
-{{ template "agents/rules/notes-vault.md" . }}
-{{ template "agents/rules/markdown-editing.md" . }}
-{{ template "agents/rules/code-comments.md" . }}
+{{ template "agents/rules/output.md" . }}

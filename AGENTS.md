@@ -139,6 +139,8 @@ The env var is the only knob — no config-file flag, no template detection. Set
 
 Shared agent rules live in `.chezmoitemplates/agents/rules/`. The platform root files (`~/.agents/AGENTS.md`, `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`, and `~/.config/opencode/AGENTS.md`) render `.chezmoitemplates/agents/AGENTS.md`, which includes those fragments with native `{{ template }}` calls.
 
+The template holds only the `##` groups (Foundations, Work, Output). Each fragment owns its `###` headings and everything below, so it reads correctly when loaded alone. One fragment covers one domain: `communication`, `workflow`, `exploration`, `tools`, `git`, `config`, `output`, plus the encrypted `primary-user`. A rule that fits an existing domain goes in that fragment as a section; a fragment is added only for a domain none of them cover, with a matching wrapper.
+
 `dot_agents/exact_rules/*.md.tmpl` are generated wrappers for tools and skill docs that still read `~/.agents/rules/*.md` directly. Edit the `.chezmoitemplates/agents/rules/` fragments, not the wrappers.
 
 #### Skills

@@ -32,7 +32,7 @@ A loop of individual commands is still a batch. Incidental capture does not auth
 | Codex | Vault write grant and absolute socket path in the `dev` profile; `OBSIDIAN_DEFAULT_VAULT` set through `shell_environment_policy.set`; `notes.rules` prompts on app-side code and forbids vault administration. |
 | OpenCode | Ordered Bash rules plus `external_directory` access for girlOS. File tools and shell permissions are separate; the shell has no OS sandbox here. |
 
-Shared behavior lives in `.chezmoitemplates/agents/rules/notes-vault.md`. The vault environment variable supplies the CLI path; sandbox grants contain the literal path because they do not expand arbitrary environment variables.
+Shared behavior lives in `.chezmoitemplates/agents/rules/workflow.md` under Notes vault; commands and note conventions live in the `obsidian` skill. The vault environment variable supplies the CLI path; sandbox grants contain the literal path because they do not expand arbitrary environment variables.
 
 ## Verification
 

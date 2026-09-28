@@ -1,0 +1,3 @@
+[permissions.dev.filesystem]
+"/Users/winnie/.local/share/chezmoi/.git" = "write"
+"/Users/winnie/.local/share/chezmoi/.git/worktrees/chezmoi.refactor-agent-rules-consolidation" = "write"
