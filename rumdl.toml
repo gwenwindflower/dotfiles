@@ -5,7 +5,7 @@
 # so relative links look broken but are correct in the target directory
 disable = ["line-length", "no-duplicate-heading", "first-line-h1", "no-inline-html", "MD057"]
 exclude = [
-  "./.chezmoitemplates/agents/AGENTS.md,",
+  ".chezmoitemplates/agents/AGENTS.md",
   "skills/developing-in-lightdash",
 ]
 flavor = "github"
