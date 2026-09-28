@@ -67,6 +67,7 @@ packages:
           - freeze
           - fx
           - fzf
+          - gallery-dl
           - gh
           - gifski
           - git
@@ -166,7 +167,6 @@ packages:
         personal:
           - exercism
           - fennel
-          - gallery-dl
           - snitch
           - yt-dlp
         work:
