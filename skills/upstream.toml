@@ -58,3 +58,10 @@ skill = "prek"
 files = ["prek.md"]
 baseline = "77c4056ce76b600de77d5d425e52844a76652a58"
 tree = "6032680b95ac73c5604c2a44e2e041b9098242de"
+
+[[review-changes.upstream]]
+repo = "fallow-rs/fallow-skills"
+skill = "fallow-review"
+files = ["SKILL.md", "fallow.md", "tradeoffs.md"]
+baseline = "306f9bb78bdce7055eef8f077476faa9e139d789"
+tree = "c2b0c3ff71fcaadf0bbaee5bf489f575d5e1a1aa"
