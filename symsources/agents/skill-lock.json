@@ -15,9 +15,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/gwenwindflower/dotfiles.git",
       "skillPath": "skills/agent-config/SKILL.md",
-      "skillFolderHash": "3686c5fa043995899248fae256436666275e1c9b",
+      "skillFolderHash": "3f927fbd01d84f77bc47cf700c3a6857424b797e",
       "installedAt": "2026-09-23T05:13:04Z",
-      "updatedAt": "2026-09-23T23:53:21Z"
+      "updatedAt": "2026-09-24T02:23:48Z"
     },
     "agent-context-engineering": {
       "source": "gwenwindflower/dotfiles",
@@ -96,9 +96,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/gwenwindflower/dotfiles.git",
       "skillPath": "skills/context-search/SKILL.md",
-      "skillFolderHash": "602455081169fce324d99547e6037929843c66fc",
+      "skillFolderHash": "19924f697aa346c615d024b61a3efe07f2bf8838",
       "installedAt": "2026-09-23T06:10:54Z",
-      "updatedAt": "2026-09-23T23:53:22Z"
+      "updatedAt": "2026-09-28T00:25:30Z"
     },
     "deno-tools": {
       "source": "gwenwindflower/dotfiles",
@@ -213,9 +213,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/gwenwindflower/dotfiles.git",
       "skillPath": "skills/managing-issues/SKILL.md",
-      "skillFolderHash": "f4287b4b9c97c95840b14101e2b54413476d9a63",
+      "skillFolderHash": "aebb6895c70cdd630841d639413b3fb643045aec",
       "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-09-23T05:18:29Z"
+      "updatedAt": "2026-09-24T02:23:50Z"
     },
     "map-project": {
       "source": "gwenwindflower/dotfiles",
@@ -384,9 +384,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/max-sixty/worktrunk.git",
       "skillPath": "skills/worktrunk/SKILL.md",
-      "skillFolderHash": "39a2cf64395363b9e5f96e1a01405f015eabb3f3",
+      "skillFolderHash": "cb9c3b33e01809b146b28f8a06a91ab5cf3dc96d",
       "installedAt": "2026-09-03T13:23:59Z",
-      "updatedAt": "2026-09-22T13:47:20Z"
+      "updatedAt": "2026-09-28T00:25:34Z"
     },
     "wrangler": {
       "source": "cloudflare/skills",
