@@ -26,7 +26,6 @@ qmd multi-get "#abc123,#def432" --format md
   | `hyde:` | A description of the document that would answer the request |
 
   Write `intent:` plus at least one of `lex:` or `vec:`. Add `--format json --explain` to inspect ranking.
-
 - Scope with `-c <collection>` (repeatable) when results drift into the wrong corpus; `qmd collection list`, `qmd ls`, and `qmd status` show what's indexed.
 
 ## Retrieve

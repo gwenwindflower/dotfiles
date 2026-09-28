@@ -63,6 +63,7 @@ pattern: console.log($ARG)
 **Object Pattern**: Offers granular control for ambiguous patterns or specific contexts.
 
 * `selector`: Pinpoints a specific part of the parsed pattern to match.
+
   ```yaml
   pattern:
     selector: field_definition
@@ -72,6 +73,7 @@ pattern: console.log($ARG)
 * `context`: Provides surrounding code context for correct parsing.
 
 * `strictness`: Modifies the pattern's matching algorithm (`cst`, `smart`, `ast`, `relaxed`, `signature`).
+
   ```yaml
   pattern:
     context: foo($BAR)
