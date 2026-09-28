@@ -357,6 +357,7 @@ abbr --add mr mise run
 abbr --add mc mise config
 abbr --add mcs mise config set
 abbr --add mcg mise config get
+abbr --add mtu mise trust
 abbr --add mx mise x
 ### aube
 abbr --add au aube
