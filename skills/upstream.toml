@@ -31,6 +31,20 @@ files = ["qmd.md"]
 baseline = "facd35e01359e59d938bc9418e93fb9318addee3"
 tree = "cfe2aef5f41452c0697447287a1598cb98b7ca9d"
 
+[[git-branching.upstream]]
+repo = "github/gh-stack"
+skill = "gh-stack"
+files = ["gh-stack.md"]
+baseline = "2bd699a544a09cb5c45a013d03416e0894b0454e"
+tree = "6bfe555e89a6b264e09d5ece7c4040226458c8e5"
+
+[[git-branching.upstream]]
+repo = "max-sixty/worktrunk"
+skill = "worktrunk"
+files = ["worktrunk.md", "worktrunk-config.md"]
+baseline = "b49ca7eea9b03145791a5b94eccaf9c59412ed37"
+tree = "cb9c3b33e01809b146b28f8a06a91ab5cf3dc96d"
+
 [[project-workflows.upstream]]
 repo = "j178/prek"
 skill = "prek"

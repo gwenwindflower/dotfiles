@@ -7,6 +7,8 @@ name: project-workflows
 
 Every tool project follows one pattern. The template (`gwenwindflower/_tool`) carries everything language-neutral: GitHub surfaces, mise-driven CI and release build, the human-gated release pipeline, repo provisioning tasks, SPOT planning files, and the agent hub. A language kit from `assets/` adds the toolchain; Rust is the only kit today. Variants such as Herdr plugins layer on top without changing the base.
 
+Load `git-branching` first: the local CI below depends on how `wt switch`, `wt merge`, and Worktrunk hooks behave.
+
 ## Guarantees
 
 - `mise run check` is the local gate and the only place a check is defined; CI runs the same tasks.

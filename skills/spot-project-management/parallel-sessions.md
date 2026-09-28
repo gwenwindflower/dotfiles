@@ -25,7 +25,7 @@ Before the first `wt switch --create` in a project, confirm the repo is worktree
 - Project hooks are approved — `wt config approvals add`, run interactively by the user once. Never `--yes` through approval prompts in a session.
 - Anything env-shaped a build needs (local config, generated files) is covered by copy-ignored or a post-start hook.
 
-If any of this is missing, set it up or surface it before splitting. The worktrunk skill covers the mechanics; this check is the gate.
+If any of this is missing, set it up or surface it before splitting. The `git-branching` skill covers the mechanics; this check is the gate.
 
 ## Handing off
 
@@ -48,7 +48,7 @@ The parent session stays the judge of done:
 - Verify readiness with worktrunk: clean tree, branch ahead of its base.
 
   ```bash
-  wt list --format=json | jq '.[] | select(.branch == "feat/<slug>")'
+  wt list --format=json | jq '.items[] | select(.branch == "feat/<slug>")'
   ```
 
 - Idle with a dirty tree or no commits means blocked or waiting on input — check the pane; don't assume done.
