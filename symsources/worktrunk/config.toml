@@ -18,6 +18,9 @@ template-append = """
 [list]
 summary = true
 
+[merge]
+squash = false
+
 # Virtualenvs bake absolute paths into pyvenv.cfg and script shebangs, so they
 # break at a new path. Everything else is reflink-cloned and costs no disk.
 [step.copy-ignored]
