@@ -65,3 +65,10 @@ skill = "fallow-review"
 files = ["SKILL.md", "fallow.md", "tradeoffs.md"]
 baseline = "306f9bb78bdce7055eef8f077476faa9e139d789"
 tree = "c2b0c3ff71fcaadf0bbaee5bf489f575d5e1a1aa"
+
+[[tasks.upstream]]
+repo = "BRO3886/rem"
+skill = "rem-cli"
+files = ["rem.md"]
+baseline = "9a788845ff232e838a28316973d7b57cbe38e03a"
+tree = "bc9d5e8928ace95d018f97734b11db83a188e23c"

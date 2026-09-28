@@ -1,18 +1,12 @@
----
-name: sync-tasks
-description: Reconcile Obsidian Tasks with Apple Reminders via rem - identity-safe sync, conflict review, priority and schedule planning.
-argument-hint: "[topic or project] [sync, review, reconcile, or plan]"
----
+# Syncing Obsidian Tasks and Reminders
 
-# Sync Tasks
-
-Treat data integrity as the primary outcome. Use `rem` for Reminders, the Obsidian CLI's `tasks` command for the vault task inventory interpreted through the Tasks plugin's settings, and `notesmd-cli` for reading and writing notes. Read [reconciliation](reconciliation.md) before syncing and [recipes](recipes.md) before accessing either system. Load `rem-cli` for Reminders mutations and `obsidian-cli` for the app-backed commands.
+Treat data integrity as the primary outcome. Use `rem` for Reminders, the Obsidian CLI's `tasks` command for the vault task inventory interpreted through the Tasks plugin's settings, and `notesmd-cli` for reading and writing notes. Read [reconciliation](reconciliation.md) before syncing and [recipes](recipes.md) before accessing either system. [rem](rem.md) is the Reminders command reference; the `obsidian` skill's `obsidian-cli.md` covers the app-backed commands.
 
 A sync session requires a nonempty `OBSIDIAN_DEFAULT_VAULT` and the Obsidian app focused on that vault, confirmed through the preflight in the recipes before any read or write. Never name the vault in a command; the environment variable is the only vault identity.
 
 ## Invocation
 
-- `/sync-tasks` or `$sync-tasks`: inventory both systems, reconcile established mappings, organize unambiguous items under the preferences below, and add missing eligible counterparts. Report conflicts while continuing independent safe work. This authorizes routine sync writes, not deletion, speculative merging, or invented scheduling.
+- `/tasks sync` or `$tasks sync`: inventory both systems, reconcile established mappings, organize unambiguous items under the preferences below, and add missing eligible counterparts. Report conflicts while continuing independent safe work. This authorizes routine sync writes, not deletion, speculative merging, or invented scheduling.
 - A topic such as `dev tackle`, `cleaning kitchen`, or `writing` narrows mutations to that area. Inspect adjacent records to detect overlap, but do not reorganize unrelated areas. Match scope through mappings, note paths, headings, tags, and context; title keywords alone are insufficient.
 - `review` previews without writes. `plan` or conversational input adds collaborative grouping, priority, dependency, and scheduling work; apply decisions the user actually makes. Preserve the active scope through follow-up messages.
 

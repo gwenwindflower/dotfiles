@@ -6,7 +6,7 @@ Agents read, reconcile, organize, and schedule Obsidian Tasks and Apple Reminder
 
 - Use `notesmd-cli` for contextual notes, the Obsidian CLI for the Tasks inventory, and `rem` for Reminders. Interpret Tasks settings and custom/completed statuses; checkbox search is not an equivalent inventory.
 - Preserve IDs, notes, dates, alarms, recurrence, and project/list membership. Distinguish an incomplete inventory from an empty collection.
-- Follow `sync-tasks` for matching, field-level conflicts, checkpoints, and verification. Explicit sync authorizes resolved changes within its scope.
+- Follow the `tasks` skill's sync docs for matching, field-level conflicts, checkpoints, and verification. Explicit sync authorizes resolved changes within its scope.
 - Individual completion, reopening, scheduling, flags, content edits, and moves between established projects/lists are routine when requested. Ambiguous identity, recipients, or destinations still require clarification.
 - Review the aggregate change set for imports/exports, list administration, mass deletion, and scripted batches. Native multi-ID calls and loops have the same scope boundary.
 

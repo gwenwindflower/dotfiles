@@ -1,6 +1,6 @@
 ---
 name: managing-issues
-description: Linear and GitHub issues - search, create, clarify, triage, label, close, organize into projects; Linear-GitHub synced repos.
+description: Linear and GitHub issues - search, create, clarify, triage, label, close, organize into projects; Linear-GitHub synced repos. Personal to-dos use tasks.
 ---
 
 # Managing Issues

@@ -1,4 +1,4 @@
-# Tool Recipes
+# Sync recipes
 
 These are capability-checked recipes, not an unattended sync engine. Read installed help before using flags and inspect actual JSON keys instead of assuming capitalization. Pass task text as structured arguments; never interpolate note or reminder contents into shell code.
 
@@ -15,7 +15,7 @@ obsidian help
 
 Require a nonempty `OBSIDIAN_DEFAULT_VAULT`; it is the allowed vault path and the only vault identity the skill knows. Use it on every notesmd-cli call and never spell the vault name or path in a command. If Reminders access fails, report the exact macOS/EventKit or sandbox error and continue only independent work. Do not change privacy settings, disable checks, or treat an access error as zero reminders.
 
-The Obsidian CLI is the task inventory tool; `notesmd-cli` is the note reader and writer. The CLI needs the app: the first command launches Obsidian if it is not running, so run `open -a Obsidian` explicitly, wait for the vault to finish indexing, and never rely on whichever vault is focused. Load the `obsidian-cli` skill and read `obsidian help` for the installed command surface. Remote Linux environments have no app, so inventory there is limited to the file-based partial audit below.
+The Obsidian CLI is the task inventory tool; `notesmd-cli` is the note reader and writer. The CLI needs the app: the first command launches Obsidian if it is not running, so run `open -a Obsidian` explicitly, wait for the vault to finish indexing, and never rely on whichever vault is focused. The `obsidian` skill's `obsidian-cli.md` covers the general command surface; `obsidian help` shows the installed one. Remote Linux environments have no app, so inventory there is limited to the file-based partial audit below.
 
 ```bash
 obsidian vault info=path
@@ -90,7 +90,7 @@ rem list --incomplete -o json
 rem show "$reminder_id" -o json
 ```
 
-Use full-list inventory plus explicit completed/incomplete reads to check coverage when defaults are uncertain. Deduplicate repeated results by full ID. Inspect detailed records for mapped or conflicting reminders. Read list account/sharing information; identical list names across accounts must be disambiguated before any command that accepts a name.
+Use full-list inventory plus explicit completed/incomplete reads to check coverage when defaults are uncertain. Deduplicate repeated results by full ID. Inspect detailed records for mapped or conflicting reminders.
 
 After identity resolution, these are targeted mutation shapes; variables represent validated values from the change set:
 
@@ -102,13 +102,13 @@ rem complete "$reminder_id"
 rem show "$reminder_id" -o json
 ```
 
-Capture creation output before any subsequent write. Never use `rem import` as an upsert or replay an export to repair a failed run; importing may create duplicates. Export affected records with `rem export --format json --output-file <explicit-backup-path>` when a backup is needed, and inspect its coverage rather than assuming every Apple field round-trips.
+Creation IDs, import, export, and date defaults follow [rem](rem.md#safety); a failed run is never repaired by replaying an export.
 
-Check installed date flags before mapping deadlines. `rem add --due` can introduce a default time and notification. For a Tasks date-only deadline, require supported date-only behavior or an established explicit time/alarm convention; otherwise create the undated counterpart with the exact source date preserved in sync metadata and mark deadline mapping pending. `--silent` suppresses an alarm but does not prove the due value is date-only. Never map a Tasks scheduled date to the reminder deadline just because that is the available flag.
+For a Tasks date-only deadline, require an established explicit time/alarm convention, since no `--due` form stays date-only; otherwise create the undated counterpart with the exact source date preserved in sync metadata and mark deadline mapping pending. Never map a Tasks scheduled date to the reminder deadline just because that is the available flag.
 
 ### Native sections
 
-The [published rem commands](https://rem.sidv.dev/docs/commands/) do not document native section management. Inspect installed help for actual support. When available, verify section identities and membership after changes. When unavailable, maintain the intended list/section mapping in the sync record and report a concrete native-section action for the user. Continue supported list and task sync; do not pretend tags, title prefixes, or extra lists are sections. Do not edit Apple's database or call undocumented Apple APIs to bridge this gap. Any alternative adapter needs verified capabilities and authorization within the session.
+rem has no section commands. When installed help shows section support, verify section identities and membership after changes. Otherwise maintain the intended list/section mapping in the sync record and report a concrete native-section action for the user. Continue supported list and task sync; do not pretend tags, title prefixes, or extra lists are sections. Do not edit Apple's database or call undocumented Apple APIs to bridge this gap. Any alternative adapter needs verified capabilities and authorization within the session.
 
 ## Growing programmatic support
 
