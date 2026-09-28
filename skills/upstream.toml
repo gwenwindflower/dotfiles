@@ -52,6 +52,34 @@ files = ["worktrunk.md", "worktrunk-config.md"]
 baseline = "b49ca7eea9b03145791a5b94eccaf9c59412ed37"
 tree = "cb9c3b33e01809b146b28f8a06a91ab5cf3dc96d"
 
+[[obsidian.upstream]]
+repo = "kepano/obsidian-skills"
+skill = "obsidian-markdown"
+files = ["markdown.md"]
+baseline = "3ccff5338ea700537839b21900aa5358a0402c98"
+tree = "4723197c6dc59abc29819da87863b1ac20b96095"
+
+[[obsidian.upstream]]
+repo = "kepano/obsidian-skills"
+skill = "obsidian-bases"
+files = ["bases.md"]
+baseline = "3ccff5338ea700537839b21900aa5358a0402c98"
+tree = "f3330f27de4d7907ead57d0f48672f4d3280bb77"
+
+[[obsidian.upstream]]
+repo = "kepano/obsidian-skills"
+skill = "json-canvas"
+files = ["canvas.md"]
+baseline = "3ccff5338ea700537839b21900aa5358a0402c98"
+tree = "9df7971db7ffebf96f2a207840b9f4765aa11b04"
+
+[[obsidian.upstream]]
+repo = "kepano/obsidian-skills"
+skill = "obsidian-cli"
+files = ["obsidian-cli.md"]
+baseline = "3ccff5338ea700537839b21900aa5358a0402c98"
+tree = "96254a554e480359de7b685571876f2e7f9ba57d"
+
 [[project-workflows.upstream]]
 repo = "j178/prek"
 skill = "prek"

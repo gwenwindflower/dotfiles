@@ -1,30 +1,11 @@
----
-name: obsidian-frontmatter-sync
-description: rematter CLI for bulk frontmatter work - schema validation, sync to Astro and other targets, field renames, filenames.
----
+# rematter
 
-# Obsidian Frontmatter Sync with rematter
+rematter validates, transforms, and syncs frontmatter across a vault directory in bulk. It installs from Homebrew (`g15r/tap/rematter`, self-contained) or as a uv tool (`uv tool install rematter --reinstall` repairs it after a Python upgrade). Never run it from a capture session; single-note frontmatter edits use [notesmd-cli](notesmd-cli.md).
 
-rematter is a CLI tool for transforming and syncing Obsidian vault frontmatter.
-
-## Quick Start
+## Quick start
 
 ```bash
-# Install
-uv tool install rematter
-# or with Homebrew
-brew install g15r/tap/rematter
-
-# Update
-uv tool upgrade rematter
-# or
-brew upgrade rematter
-
-# Update for new Python version or to clear issues
-uv tool install rematter --reinstall
-# not necessary with Homebrew, as it is self-contained via PyInstaller
-
-# Validate frontmatter against .rematter schema
+# Validate frontmatter against the .rematter.yaml schema
 rematter validate ~/vault/sky
 # Will give you a report of any issues
 
@@ -35,7 +16,7 @@ rematter sync ~/vault/sky --dest ~/site/src/content/sky
 rematter sync -n ~/vault/sky
 ```
 
-## Config File (`.rematter.yaml`)
+## Config file (`.rematter.yaml`)
 
 Lives in the vault subdirectory being operated on. Combines sync config and frontmatter schema in one file.
 
@@ -94,7 +75,7 @@ properties:
     sync: false
 ```
 
-### Property Spec Fields
+### Property spec fields
 
 | Field | Purpose |
 | --- | --- |
@@ -157,7 +138,7 @@ rematter transform <directory> --field OLD --to NEW [--recursive] [--dry-run]
 
 Renames a field across all markdown files. Key order preserved. Skips files where the target name already exists.
 
-## Key Behaviors
+## Key behaviors
 
 - **Wikilink resolution**: `[[Target]]` and `[[Target|Label]]` resolve to markdown links for known files (source + dest corpus). Broken links become plain text. Image refs (`![[img.png]]`) are handled separately and never mangled.
 - **Media sync**: When `media` config is present, `![[img.png]]` and `![alt](_media/img.png)` refs are rewritten with the dest link prefix. Only referenced files are copied, not the entire media directory.
