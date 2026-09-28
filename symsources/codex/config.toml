@@ -118,6 +118,17 @@ extends = ":workspace"
 "/Users/winnie/dev/lightdash/gtm" = "write"
 "/Users/winnie/dev/lightdash/dlt-pro" = "write"
 "/Users/winnie/.local/share/chezmoi/symsources/agents/skill-lock.json" = "write"
+# agent settings, trust surfaces, and plugin locks stay read-only inside the dotfiles workspace
+"/Users/winnie/.local/share/chezmoi/symsources/claude" = "read"
+"/Users/winnie/.local/share/chezmoi/symsources/codex" = "read"
+"/Users/winnie/.local/share/chezmoi/symsources/opencode" = "read"
+"/Users/winnie/.local/share/chezmoi/symsources/mise" = "read"
+"/Users/winnie/.local/share/chezmoi/symsources/aube" = "read"
+"/Users/winnie/.local/share/chezmoi/symsources/git" = "read"
+"/Users/winnie/.local/share/chezmoi/symsources/worktrunk" = "read"
+"/Users/winnie/.local/share/chezmoi/symsources/amoxide" = "read"
+"/Users/winnie/.local/share/chezmoi/symsources/nvim/lazy-lock.json" = "read"
+"/Users/winnie/.local/share/chezmoi/symsources/yazi/package.toml" = "read"
 
 [permissions.dev.filesystem."~"]
 # tool caches and state

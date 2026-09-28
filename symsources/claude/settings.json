@@ -546,7 +546,17 @@
 				"~/.local/share/uv/python/**",
 				"~/.local/share/uv/tools/**",
 				"~/.local/state/mise/ignored-configs/**",
-				"~/.local/state/mise/trusted-configs/**"
+				"~/.local/state/mise/trusted-configs/**",
+				"~/.local/share/chezmoi/symsources/claude/**",
+				"~/.local/share/chezmoi/symsources/codex/**",
+				"~/.local/share/chezmoi/symsources/opencode/**",
+				"~/.local/share/chezmoi/symsources/mise/**",
+				"~/.local/share/chezmoi/symsources/aube/**",
+				"~/.local/share/chezmoi/symsources/git/**",
+				"~/.local/share/chezmoi/symsources/worktrunk/**",
+				"~/.local/share/chezmoi/symsources/amoxide/**",
+				"~/.local/share/chezmoi/symsources/nvim/lazy-lock.json",
+				"~/.local/share/chezmoi/symsources/yazi/package.toml"
 			],
 			"allowRead": ["~/.ssh/allowed_signers", "~/.readwise-cli.json"]
 		},

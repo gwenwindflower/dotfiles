@@ -98,9 +98,19 @@ expect = "deny"
 cmd = "touch $HOME/.local/share/uv/tools/.agency && rm $HOME/.local/share/uv/tools/.agency"
 
 [[sandbox]]
-name = "symlinked tool configs are read-only"
+name = "trust-surface configs are read-only in the dotfiles workspace"
 expect = "deny"
 cmd = "touch $HOME/.local/share/chezmoi/symsources/mise/.agency && rm $HOME/.local/share/chezmoi/symsources/mise/.agency"
+
+[[sandbox]]
+name = "agent settings are read-only in the dotfiles workspace"
+expect = "deny"
+cmd = "touch $HOME/.local/share/chezmoi/symsources/codex/.agency && rm $HOME/.local/share/chezmoi/symsources/codex/.agency"
+
+[[sandbox]]
+name = "other symlinked tool configs are writable"
+expect = "ok"
+cmd = "touch $HOME/.local/share/chezmoi/symsources/herdr/.agency && rm $HOME/.local/share/chezmoi/symsources/herdr/.agency"
 
 [[sandbox]]
 name = "Git metadata is read-only"
