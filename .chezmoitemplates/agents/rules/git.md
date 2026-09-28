@@ -44,6 +44,10 @@ Local branch deletion uses lowercase `git branch -d` or guarded Worktrunk cleanu
 
 The lead owns staging, commits, branches, rebases, remotes, and worktree mutations. Helpers edit and verify assigned files or report recovery instructions; they do not mutate shared Git state.
 
+#### Local CI for solo projects
+
+Winnie's own solo projects built on the `project-workflows` pattern land work through Worktrunk, not PRs: branch with `wt switch -c`, commit under prek hooks, and fold into `main` with `wt merge`, whose hooks run the project's mise checks. Together, mise tasks, prek hooks, and Worktrunk hooks are the project's local CI. Suggest a PR when a change needs remote verification, such as edits to release or other GitHub Actions workflows, build-system changes that need cross-architecture runs, or a breaking change or large refactor that deserves visibility and cross-platform CI; Winnie can also ask for one at any time. Work for Lightdash or clients, repos Winnie doesn't own, and projects with frequent collaborators or heavy usage keep the normal GitHub PR flow.
+
 #### Recoverable state
 
 Any operation that rewrites history or can stop halfway (rebase, squash, amend, reset, cherry-pick series, stash pop across branches, force push, conflict-prone merges) needs a way back before it starts:

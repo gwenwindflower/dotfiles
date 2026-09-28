@@ -23,13 +23,13 @@ bash ~/.agents/skills/project-workflows/scripts/bootstrap.sh new \
   --name <name> --owner gwenwindflower --description "<one line>" [--binary <bin>] [--author "<name>"]
 ```
 
-The script creates the repo from the template with `gh`, clones it, fills every `{{...}}` and `@@...@@` placeholder it knows, installs the language kit, writes `mise.local.toml` disabling every declared tool (the core set is installed globally; delete a line to let mise own a tool), runs `mise trust && mise install` and `mise run hooks:install`, pins the workflows with `pinact run -update`, and prints what remains. Pass `--dry-run` to see the plan without creating anything.
+The script creates the repo from the template with `gh`, clones it, fills every `{{...}}` and `@@...@@` placeholder it knows, installs the language kit, writes `mise.local.toml` disabling every declared tool (the core set is installed globally; delete a line to let mise own a tool), runs `mise trust && mise install` and `mise run hooks:install`, pins the workflows with `pinact run --update`, and prints what remains. Pass `--dry-run` to see the plan without creating anything.
 
 Then, in order:
 
 1. Fill the prose placeholders it lists (README tagline, quick start, AGENTS.md summary, SPEC.md goals). `docs/bootstrap.md` in the repo is the checklist; delete it when done.
 2. Commit and push `main`.
-3. `mise run repo:settings --description "<one line>" --topics "<a,b>"` (add `--homebrew` for a standalone CLI) and `mise run repo:labels`.
+3. `mise run repo:settings --description "<one line>" --topics "<a,b>"` (add `--homebrew` for a standalone CLI), `mise run repo:labels`, and `mise run repo:environments`.
 4. Load `spot-project-management` and turn `SPEC.md`, `specs/`, and `TODO.md` into the real plan. `specs/dev-release.md` is already real; prune it rather than restating it.
 5. `mise run check`, then push a throwaway branch with a deliberate lint failure to confirm annotations land on the PR diff.
 6. `mise run repo:rulesets` after CI has reported on `main` once.

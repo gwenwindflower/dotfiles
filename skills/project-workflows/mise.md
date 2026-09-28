@@ -38,13 +38,13 @@ Every task carries a `description`; `mise tasks` is the discovery surface, so th
 
 ## Hooks and merge gates
 
-Three runners, one definition each:
+Three runners, one definition each. Together they are the project's local CI, so a solo project can land work with `wt merge` and save PRs for remote-dependent changes.
 
 | Moment | Runner | Runs | Never runs |
 | --- | --- | --- | --- |
 | Every `git commit`, any tool | prek (`prek.toml`) | File hygiene, formatters, config validators, `commit-msg` Conventional Commit check, on staged files | Tests, clippy, anything whole-repo |
 | `mise run check` and CI | mise tasks | `lint:hooks` (`prek run --all-files`), `lint:*` semantic linters, `version:check`, `test:*` | — |
-| `wt merge` (`.config/wt.toml`) | worktrunk | `lint:*` before the squash, `release:check` after the rebase | Formatters or file checks |
+| `wt merge` (`.config/wt.toml`) | worktrunk | One `pre-merge` gate after the rebase: `release:check` into the default branch, `check` into any other (a stacked parent) | Formatters or file checks, or a separate lint hook (`check` already runs `lint:*`) |
 
 Worktrunk hooks fire only inside `wt merge`, so prek is the only guard on agent commits. `mise run hooks:install` wires prek into a clone; the bootstrap does it.
 
@@ -57,7 +57,7 @@ mise.toml            tools, one-liners, pipelines, aliases
 mise-tasks/
   version/           read, write, files, verify (kit hooks); check, next, bump, sync (neutral)
   release/           _default, preflight, commit, notes, create, rehearse, package, formula
-  repo/              settings, labels, rulesets
+  repo/              settings, labels, rulesets, environments
   ci-audit/          pinact
 tests/*.sh           shell suites that call task scripts directly by path
 ```

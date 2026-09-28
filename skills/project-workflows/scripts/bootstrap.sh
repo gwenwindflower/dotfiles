@@ -57,7 +57,7 @@ if [[ "$mode" == new ]]; then
 	[[ ! -e "$dir" ]] || die "target already exists: $dir"
 else
 	[[ -n "$dir" ]] || dir="$PWD"
-	[[ -d "$dir/.git" ]] || die "not a git repository: $dir"
+	[[ -e "$dir/.git" ]] || die "not a git repository: $dir"
 fi
 
 log() { printf '%s\n' "$*"; }
@@ -154,7 +154,7 @@ install_tools() {
 			mise exec -- bash "$kit/post-install" || plan "kit post-install failed; see $kit/post-install"
 		fi
 		mise run hooks:install || plan "prek install failed; run mise run hooks:install by hand"
-		GITHUB_TOKEN="${GITHUB_TOKEN:-$(gh auth token 2>/dev/null || true)}" pinact run -update || plan "pinact update failed; run mise run ci-audit:pinact later"
+		GITHUB_TOKEN="${GITHUB_TOKEN:-$(gh auth token 2>/dev/null || true)}" pinact run --update || plan "pinact update failed; run mise run ci-audit:pinact later"
 	)
 }
 
@@ -173,7 +173,7 @@ if [[ "$mode" == new ]]; then
 		plan "gh repo create $owner/$name --template $TEMPLATE_REPO --public --clone"
 		plan "fill placeholders: TOOL_NAME=$name TOOL_BINARY=$binary GH_OWNER=$owner AUTHOR=$author YEAR=$year"
 		plan "install kit from $kit (mise tools and tasks, version hooks, matchers, root files, src/)"
-		plan "write mise.local.toml disabling every declared tool; mise trust; mise install; kit post-install; mise run hooks:install; pinact run -update"
+		plan "write mise.local.toml disabling every declared tool; mise trust; mise install; kit post-install; mise run hooks:install; pinact run --update"
 		plan "report remaining placeholders"
 		exit 0
 	fi
