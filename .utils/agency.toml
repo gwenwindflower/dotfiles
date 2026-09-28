@@ -190,6 +190,23 @@ expect = "allow"
 # ── Codex rules: no rule (sandboxed, or escalation reaches review) ─
 
 [[rule]]
+cmd = "gh issue view 3"
+expect = "none"
+
+[[rule]]
+cmd = "rclone ls remote:dst"
+expect = "none"
+
+# Option-position variants fall through; git push fails in the sandbox and escalates.
+[[rule]]
+cmd = "git push origin --force"
+expect = "none"
+
+[[rule]]
+cmd = "git push origin :topic"
+expect = "none"
+
+[[rule]]
 cmd = "git push origin topic"
 expect = "none"
 
@@ -230,6 +247,14 @@ cmd = "mise trust"
 expect = "none"
 
 # ── Codex rules: review (prompt) ──────────────────────────────────
+
+[[rule]]
+cmd = "gh pr merge 12 --squash"
+expect = "prompt"
+
+[[rule]]
+cmd = "rclone sync src remote:dst"
+expect = "prompt"
 
 [[rule]]
 cmd = "git reset --hard origin/main"
@@ -296,6 +321,18 @@ cmd = "rem delete X"
 expect = "prompt"
 
 # ── Codex rules: user-open and deny (forbidden) ───────────────────
+
+[[rule]]
+cmd = "wt remove --force topic"
+expect = "forbidden"
+
+[[rule]]
+cmd = "wt remove --no-hooks topic"
+expect = "forbidden"
+
+[[rule]]
+cmd = "git worktree remove --force ../x"
+expect = "forbidden"
 
 [[rule]]
 cmd = "git push --force origin topic"
