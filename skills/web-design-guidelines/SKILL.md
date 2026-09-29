@@ -10,9 +10,6 @@ metadata:
 
 Review a set of files for compliance with Web Interface Guidelines.
 
-> [!NOTE]
-> This Skill is maintained by Vercel. As I am not a frontend expert, I rely on there work keeping the fetchable list of guidelines up to date.
-
 ## How It Works
 
 1. Fetch the latest guidelines from the source URL below (in the vercel-labs/web-interface-guidelines repo) - these are continually updated by Vercel
