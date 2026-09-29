@@ -231,18 +231,18 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/gwenwindflower/dotfiles.git",
       "skillPath": "skills/obsidian/SKILL.md",
-      "skillFolderHash": "38ab480e6b5bdec17cf7b7c34474bd8182b4e0b2",
+      "skillFolderHash": "e9d9ccb3213eb60e4356965bcb237339bf165392",
       "installedAt": "2026-09-28T17:44:42Z",
-      "updatedAt": "2026-09-28T17:44:42Z"
+      "updatedAt": "2026-09-28T23:29:14Z"
     },
     "project-workflows": {
       "source": "gwenwindflower/dotfiles",
       "sourceType": "github",
       "sourceUrl": "https://github.com/gwenwindflower/dotfiles.git",
       "skillPath": "skills/project-workflows/SKILL.md",
-      "skillFolderHash": "11e053519443470dc7b32fb5554da709c8d18c8a",
+      "skillFolderHash": "b664855d93fc24c03de2a3de1f464f1e3f048e59",
       "installedAt": "2026-09-23T05:13:04Z",
-      "updatedAt": "2026-09-28T17:45:54Z"
+      "updatedAt": "2026-09-28T23:29:20Z"
     },
     "review-changes": {
       "source": "gwenwindflower/dotfiles",
@@ -267,9 +267,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/gwenwindflower/dotfiles.git",
       "skillPath": "skills/spot-project-management/SKILL.md",
-      "skillFolderHash": "405a4ed78ed23370d9c45b1fb6aaf5919e92fb44",
+      "skillFolderHash": "8aab1e45b7da58f9da08a7001cb20824cccfb611",
       "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-09-28T17:45:56Z"
+      "updatedAt": "2026-09-28T23:29:22Z"
     },
     "tasks": {
       "source": "gwenwindflower/dotfiles",
