@@ -369,9 +369,13 @@ exclude = [
 
 [shell_environment_policy.set]
 AGENTSVIEW_DATA_DIR = "/Users/winnie/.local/share/agentsview"
-GIT_OPTIONAL_LOCKS = "0"
+XDG_DATA_HOME = "/Users/winnie/.local/share"
+XDG_STATE_HOME = "/Users/winnie/.local/state"
+XDG_CACHE_HOME = "/Users/winnie/.cache"
+XDG_CONFIG_HOME = "/Users/winnie/.config"
 OBSIDIAN_DEFAULT_VAULT = "/Users/winnie/Library/Mobile Documents/iCloud~md~obsidian/Documents/girlOS"
 ZVEC_GREP_EMBEDDING = "local/potion-code-16m-v2"
+GIT_OPTIONAL_LOCKS = "0"
 GIT_CONFIG_COUNT = "3"
 GIT_CONFIG_KEY_0 = "commit.gpgsign"
 GIT_CONFIG_VALUE_0 = "false"
