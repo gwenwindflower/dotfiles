@@ -5,8 +5,8 @@
     "version": "0.0.1",
     "min_herdr_version": "0.7.5",
     "description": "Dress herdr tabs as [N] <icon> <program> and feed sidebar rows composable tokens: $jump (workspace jump number) plus $space/$worktree (repo + nested worktree names for agent rows). Labels stay bare for the agents panel and navigator; manual renames win. Icons reload from icons.conf with a compiled fallback.",
-    "manifest_path": "/Users/winnie/dev/herdr/heraldr/herdr-plugin.toml",
-    "plugin_root": "/Users/winnie/dev/herdr/heraldr",
+    "manifest_path": "/Users/winnie/.config/herdr/plugins/github/heraldr-263bee430f10/herdr-plugin.toml",
+    "plugin_root": "/Users/winnie/.config/herdr/plugins/github/heraldr-263bee430f10",
     "enabled": true,
     "platforms": [
       "linux",
@@ -82,7 +82,12 @@
       }
     ],
     "source": {
-      "kind": "local"
+      "kind": "github",
+      "owner": "gwenwindflower",
+      "repo": "heraldr",
+      "resolved_commit": "5d4930a8894bd12066e603cbbe277eda9ed3adb8",
+      "managed_path": "/Users/winnie/.config/herdr/plugins/github/heraldr-263bee430f10",
+      "installed_unix_ms": 1790642921679
     }
   },
   {
