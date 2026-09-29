@@ -1,43 +1,7 @@
--- The Markdown LazyVim Extra supplies conform.nvim (running markdownlint-cli2), marksman, and nvim-lint (running markdownlint-cli2)
--- for formatting, LSP, and linting Markdown files.
--- We add logic to use the global ~/.markdownlint.yaml config file if no local config is found.
--- Otherwise, use the local config file found in the current working directory or any parent directory.
-local markdownlint_config_names = {
-  ".markdownlint-cli2.jsonc",
-  ".markdownlint-cli2.yaml",
-  ".markdownlint-cli2.cjs",
-  ".markdownlint-cli2.mjs",
-  ".markdownlint.jsonc",
-  ".markdownlint.json",
-  ".markdownlint.yaml",
-  ".markdownlint.yml",
-  ".markdownlint.cjs",
-  ".markdownlint.mjs",
-}
-local default_markdownlint_config = vim.fs.normalize("~/.markdownlint.yaml")
-local markdownlint_config_by_dir = {}
 local marksman_link_diagnostic_codes = {
   ["1"] = true,
   ["2"] = true,
 }
-
-local function markdownlint_config(dirname)
-  local config = markdownlint_config_by_dir[dirname]
-  if not config then
-    config = vim.fs.find(markdownlint_config_names, { path = dirname, upward = true })[1] or default_markdownlint_config
-    markdownlint_config_by_dir[dirname] = config
-  end
-  return config
-end
-
-local function markdownlint_config_args(_, ctx)
-  local config = markdownlint_config(ctx.dirname)
-  return { "--config", config }
-end
-
-local function current_markdownlint_config()
-  return markdownlint_config(vim.fs.dirname(vim.api.nvim_buf_get_name(0)))
-end
 
 local function is_chezmoi_source_root(root)
   if not root then
@@ -68,8 +32,11 @@ return {
     optional = true,
     opts = function(_, opts)
       opts.formatters = opts.formatters or {}
-      opts.formatters["markdownlint-cli2"] = opts.formatters["markdownlint-cli2"] or {}
-      opts.formatters["markdownlint-cli2"].append_args = markdownlint_config_args
+      opts.formatters["markdown-toc"] = opts.formatters["markdown-toc"] or {}
+      opts.formatters["markdown-toc"].append_args = { "--bullets", "-" }
+      opts.formatters_by_ft = opts.formatters_by_ft or {}
+      opts.formatters_by_ft.markdown = { "rumdl", "markdown-toc" }
+      opts.formatters_by_ft["markdown.mdx"] = { "rumdl", "markdown-toc" }
       return opts
     end,
   },
@@ -77,10 +44,21 @@ return {
     "mfussenegger/nvim-lint",
     optional = true,
     opts = function(_, opts)
+      opts.linters_by_ft = opts.linters_by_ft or {}
+      opts.linters_by_ft.markdown = { "rumdl" }
+      opts.linters_by_ft["markdown.mdx"] = { "rumdl" }
       opts.linters = opts.linters or {}
-      opts.linters["markdownlint-cli2"] = opts.linters["markdownlint-cli2"] or {}
-      opts.linters["markdownlint-cli2"].args = { "--config", current_markdownlint_config, "-" }
+      opts.linters.rumdl = { stream = "stdout" }
       return opts
+    end,
+  },
+  {
+    "mason-org/mason.nvim",
+    opts = function(_, opts)
+      opts.ensure_installed = vim.tbl_filter(function(tool)
+        return tool ~= "markdownlint-cli2"
+      end, opts.ensure_installed or {})
+      table.insert(opts.ensure_installed, "rumdl")
     end,
   },
   {
@@ -129,6 +107,10 @@ return {
       opts.modules = opts.modules or {}
       opts.modules.folds = false
 
+      opts.to_do = opts.to_do or {}
+      opts.to_do.status_order = { "not_started", "complete" }
+      opts.to_do.statuses = { complete = { marker = "x" } }
+
       opts.mappings = opts.mappings or {}
       local mappings = opts.mappings
       mappings.MkdnEnter = { { "i", "n", "v" }, "<M-CR>" }
@@ -175,6 +157,20 @@ return {
           on_attach(bufnr)
         end
 
+        vim.keymap.set("n", "<M-CR>", function()
+          local mkdnflow = require("mkdnflow")
+          local list_type = mkdnflow.lists.hasListType(vim.api.nvim_get_current_line())
+          local row = vim.api.nvim_win_get_cursor(0)[1]
+          if
+            (list_type == "ultd" or list_type == "oltd")
+            and not require("mkdnflow.utils").cursorInCodeBlock(row)
+            and not mkdnflow.links.getLinkUnderCursor()
+          then
+            vim.cmd.MkdnToggleToDo()
+          else
+            vim.cmd.MkdnEnter()
+          end
+        end, { buffer = bufnr, desc = "Follow link or toggle checkbox" })
         vim.keymap.set({ "n", "x", "i" }, "<D-CR>", "<M-CR>", {
           buffer = bufnr,
           desc = "Contextual enter",

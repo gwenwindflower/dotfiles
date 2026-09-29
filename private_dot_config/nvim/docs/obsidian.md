@@ -16,7 +16,7 @@ How Neovim edits the girlOS Obsidian vault: two editing plugins and three LSP se
 | Link follow/create, nav | mkdnflow (`<M-CR>`, `<M-Tab>`) | obsidian.nvim smart_action / oxide `gd` |
 | Completion (`[[`, `#`, `[^`) | none (blink menu manual-only) | markdown-oxide, auto-popup |
 | References/backlinks, rename | marksman | markdown-oxide (`grr`, `grn`) |
-| Checkboxes | none | obsidian.nvim, cycle `[ ] → [/] → [x]` |
+| Checkboxes | mkdnflow, `<M-CR>` cycles `[ ] → [x]`; links under the cursor take priority | obsidian.nvim, cycle `[ ] → [/] → [x]` |
 | Note rename/move | mkdnflow `MkdnMoveSource` | obsidian.nvim rename → oxide (backlink-safe) |
 | Rendering | render-markdown.nvim | render-markdown.nvim |
 | Dailies, templates, quick-switch, tags UI, paste_img | — | obsidian.nvim commands |
