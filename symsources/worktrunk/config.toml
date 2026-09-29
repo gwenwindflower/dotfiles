@@ -46,6 +46,16 @@ else
 fi
 '''
 
+# replay updates refs by default; --ref-action=print keeps this a read-only check.
+check = '''
+git replay --ref-action=print --linearize --onto={{ default_branch }} {{ default_branch }}..{{ branch }} >/dev/null
+case $? in
+    0) echo "✓ {{ branch }} rebases cleanly onto {{ default_branch }}" ;;
+    1) echo "✗ {{ branch }} conflicts with {{ default_branch }}" >&2; exit 1 ;;
+    *) exit 2 ;;
+esac
+'''
+
 # pre-start rather than post-start: --execute agents must land on installed deps.
 [[pre-start]]
 copy = "wt step copy-ignored"
