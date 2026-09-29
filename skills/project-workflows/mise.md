@@ -59,7 +59,7 @@ mise-tasks/
   release/           _default, preflight, commit, notes, create, rehearse, package, formula
   repo/              settings, labels, rulesets, environments
   ci-audit/          pinact
-tests/*.sh           shell suites that call task scripts directly by path
+tests/*.sh           project contract suites that call task scripts directly by path
 ```
 
 `_default` in a group directory is the group's bare task (`mise run release`).
@@ -72,3 +72,4 @@ tests/*.sh           shell suites that call task scripts directly by path
 4. Side effects that leave the machine get `confirm`.
 5. Add it to the right `depends` group (`check`, `ci-audit`, `release:check`) or CI never runs it.
 6. `shellcheck` clean; the prek shellcheck hook covers every file with a shell shebang.
+7. Change behavior and regression tests together; consider upstreaming reusable tasks with their tests. Shared suites live in `_tool/template/tests/`, while project contracts stay local. See [task maintenance](task-maintenance.md).

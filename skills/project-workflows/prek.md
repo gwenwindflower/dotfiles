@@ -4,6 +4,8 @@ prek is a Rust reimplementation of pre-commit. In tool projects it runs on every
 
 ## Config
 
+Use `{ id = "check-shebang-scripts-are-executable", exclude_types = ["rust"] }` for the built-in shebang hook. Rust's `#![...]` crate attributes are not executable-script shebangs. Preserve this exclusion when adopting or updating template hooks.
+
 New setups use `prek.toml`. A repo that already has `.pre-commit-config.yaml` keeps it unless asked to convert; `prek util yaml-to-toml` does the conversion, and `prek install -f` replaces pre-commit's shims.
 
 | `repo` | Holds |

@@ -95,6 +95,11 @@ install_kit() {
 	splice "$root/mise.toml" "# >>> LANG_TASKS <<<" "$kit/mise.tasks.toml"
 	splice "$root/.gitignore" "# >>> LANG_IGNORES <<<" "$kit/gitignore"
 	splice "$root/prek.toml" "# >>> LANG_HOOKS <<<" "$kit/prek.hooks.toml"
+	if [[ "$lang" == rust ]]; then
+		local hooks
+		hooks="$(sed 's/{ id = "check-shebang-scripts-are-executable" }/{ id = "check-shebang-scripts-are-executable", exclude_types = ["rust"] }/' "$root/prek.toml")"
+		printf '%s\n' "$hooks" >"$root/prek.toml"
+	fi
 	mkdir -p "$root/mise-tasks/version" "$root/.github/matchers"
 	for hook in read write files verify; do
 		[[ -f "$kit/mise-tasks/version/$hook" ]] || continue
@@ -171,6 +176,7 @@ if [[ "$mode" == new ]]; then
 	if [[ "$dry_run" -eq 1 ]]; then
 		log "Dry run for $owner/$name ($lang) in $dir"
 		plan "gh repo create $owner/$name --template $TEMPLATE_REPO --public --clone"
+		plan "remove template/ and .github/workflows/template.yml from the generated project"
 		plan "fill placeholders: TOOL_NAME=$name TOOL_BINARY=$binary GH_OWNER=$owner AUTHOR=$author YEAR=$year"
 		plan "install kit from $kit (mise tools and tasks, version hooks, matchers, root files, src/)"
 		plan "write mise.local.toml disabling every declared tool; mise trust; mise install; kit post-install; mise run hooks:install; pinact run --update"
@@ -180,6 +186,7 @@ if [[ "$mode" == new ]]; then
 	log "Creating $owner/$name from $TEMPLATE_REPO"
 	gh repo create "$owner/$name" --template "$TEMPLATE_REPO" --public --clone --description "$description"
 	[[ "$dir" == "$PWD/$name" ]] || mv "$PWD/$name" "$dir"
+	rm -rf "$dir/template" "$dir/.github/workflows/template.yml"
 	fill_tree "$dir"
 	install_kit "$dir"
 	install_tools "$dir"
@@ -196,6 +203,7 @@ fi
 log "Aligning $dir with the template at $template_dir"
 missing=() differing=()
 while IFS= read -r rel; do
+	case "$rel" in template/* | .github/workflows/template.yml) continue ;; esac
 	src="$template_dir/$rel"
 	dst="$dir/$rel"
 	if [[ ! -e "$dst" ]]; then

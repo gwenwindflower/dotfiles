@@ -24,6 +24,8 @@ Load `git-branching` first: the local CI below depends on how `wt switch`, `wt m
 
 ## Docs
 
+Treat `_tool` as a bidirectional source of project learning. Update regression tests with inherited task changes; upstream reusable fixes and useful generic tasks with their tests. Keep project-specific contracts local. During workflow maintenance and release preparation after a long gap, compare upstream changes and adopt applicable patterns without overwriting intentional differences. [Task maintenance](task-maintenance.md) defines ownership and the review loop.
+
 | Job | Doc |
 | --- | --- |
 | Create a repo from the template, or audit one against it | [bootstrap](bootstrap.md) |

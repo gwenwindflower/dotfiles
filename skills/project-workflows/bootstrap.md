@@ -45,6 +45,8 @@ bash ~/.agents/skills/project-workflows/scripts/bootstrap.sh existing --dir . --
 
 Nothing is overwritten. Files the template has and the repo lacks are copied in with placeholders filled; files both have are listed with a diff summary for you to reconcile by hand. Treat the report as the audit: work through it, keep intentional local differences, and adopt the rest.
 
+Both modes exclude `template/` and `.github/workflows/template.yml`, which own `_tool`'s shared task tests. Existing mode preserves files already in the project; remove obsolete generic suites only after confirming equivalent upstream coverage. For a read-only comparison, use Git history and diffs first: this command also copies missing files and installs tools. See [task maintenance](task-maintenance.md).
+
 ## Language kits
 
 `assets/<lang>/` holds real files the script copies and splices at the template's `LANG_TOOLS`, `LANG_TASKS`, `LANG_IGNORES`, and `LANG_HOOKS` markers. A kit must provide `build`, `lint:*` for semantic linters, `test:*`, the version hooks, and its formatter as a prek hook. Adapt the generated tasks to the language's conventional output paths, updating packaging and workflow artifact paths together. [rust](rust.md) describes the Rust kit and the Cargo contract. Adding a kit means adding a directory with the same shape, never editing the template.
