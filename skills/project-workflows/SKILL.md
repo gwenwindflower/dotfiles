@@ -18,6 +18,7 @@ Load `git-branching` first: the local CI below depends on how `wt switch`, `wt m
 - On solo projects, mise tasks, prek, and worktrunk hooks are local CI: work lands with `wt merge`, and PRs are for changes that need remote verification (workflow edits, cross-architecture builds, breaking changes). The git rule's "Local CI for solo projects" section sets the scope.
 - The language toolchain is never a mise tool. Rust comes from rustup on `PATH`, declared by `rust-toolchain.toml`; CI uses the runner image's rustup.
 - The version has one source of truth read through `version:read`; kits provide `read`, `write`, `files`, and optionally `verify`.
+- Projects are licensed `GPL-3.0-or-later` so derivatives stay open while commercial use stays allowed. Open source network services (hosted APIs, SaaS-style apps) use `AGPL-3.0-or-later`; FSL only on request. [bootstrap](bootstrap.md) covers installing the license.
 - Release archives are `<name>-<target>-v<version>.tgz` with Rust-style target triples for every language.
 - Prefer language conventions over template directory layouts. Adapt build, packaging, and workflow artifact paths together; do not copy outputs solely to fit `dist/bin`. Keep `dist/` where conventional or useful for release archives.
 

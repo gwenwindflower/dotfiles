@@ -12,6 +12,7 @@ Settle these before touching anything. Propose real names; do not carry casual p
 | binary | name | Installed executable, when it differs |
 | owner | `gwenwindflower` | `supermodellabs` for agentic data tools |
 | author | `Gwyneth Windflower` | Copyright holder |
+| license | `GPL-3.0-or-later` | `AGPL-3.0-or-later` when the project mainly runs as a network service (hosted API, SaaS-style app); `FSL-1.1-ALv2` only on request |
 | language | `rust` | Only kit available |
 | description | — | One line; becomes the GitHub description and Cargo description |
 | homebrew | off for Herdr plugins, on for standalone CLIs | Sets the `HOMEBREW_TAP` repo variable |
@@ -28,12 +29,13 @@ The script creates the repo from the template with `gh`, clones it, fills every 
 Then, in order:
 
 1. Fill the prose placeholders it lists (README tagline, quick start, AGENTS.md summary, SPEC.md goals). `docs/bootstrap.md` in the repo is the checklist; delete it when done.
-2. Commit and push `main`.
-3. `mise run repo:settings --description "<one line>" --topics "<a,b>"` (add `--homebrew` for a standalone CLI), `mise run repo:labels`, and `mise run repo:environments`.
-4. Load `spot-project-management` and turn `SPEC.md`, `specs/`, and `TODO.md` into the real plan. `specs/dev-release.md` is already real; prune it rather than restating it.
-5. `mise run check`, then push a throwaway branch with a deliberate lint failure to confirm annotations land on the PR diff.
-6. `mise run repo:rulesets` after CI has reported on `main` once.
-7. `mise run release:rehearse`. Hand the `#user` steps back: `<owner>/.github` community files, the tap PAT when Homebrew is on, and `mise run release` itself.
+2. Install the chosen license as `LICENSE` and delete the other option files, following the repo's `docs/bootstrap.md`. The template bundles GPL 3.0 and FSL; AGPL 3.0 comes verbatim from gnu.org. Set the same SPDX identifier in `Cargo.toml`, the Homebrew formula template, and the README notice. `LICENSE` is the only required community file. If the owner has a `.github` repository, ask whether to delete local community files such as `CONTRIBUTING.md` in favor of its defaults. Whether the project needs a `SECURITY.md` is a project decision, not a bootstrap step.
+3. Commit and push `main`.
+4. `mise run repo:settings --description "<one line>" --topics "<a,b>"` (add `--homebrew` for a standalone CLI), `mise run repo:labels`, and `mise run repo:environments`.
+5. Load `spot-project-management` and turn `SPEC.md`, `specs/`, and `TODO.md` into the real plan. `specs/dev-release.md` is already real; prune it rather than restating it.
+6. `mise run check`, then push a throwaway branch with a deliberate lint failure to confirm annotations land on the PR diff.
+7. `mise run repo:rulesets` after CI has reported on `main` once.
+8. `mise run release:rehearse`. Hand the `#user` steps back: the tap PAT when Homebrew is on, and `mise run release` itself.
 
 ## Existing repository
 
