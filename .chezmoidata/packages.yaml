@@ -243,6 +243,8 @@ packages:
     cargo:
       core:
         - basalt-tui
+        - cargo-audit
+        - cargo-edit
         - cargo-pretty-build
         - cargo-update
         - cloudflare-speed-cli
