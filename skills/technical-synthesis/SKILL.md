@@ -1,6 +1,6 @@
 ---
 name: technical-synthesis
-description: Interactive four-stage synthesis of source material into a technical draft, with feedback gates and pluggable form and tone. Manual-only.
+description: Craft detailed technical prose artifacts for clients by iterating through a four-stage process to build outlines into polished consulting reports. Manual-only.
 disable-model-invocation: true
 ---
 
