@@ -240,9 +240,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/gwenwindflower/dotfiles.git",
       "skillPath": "skills/project-workflows/SKILL.md",
-      "skillFolderHash": "b664855d93fc24c03de2a3de1f464f1e3f048e59",
+      "skillFolderHash": "ab4eeb6f7f7bc44875b08301c71664f63ed864b7",
       "installedAt": "2026-09-23T05:13:04Z",
-      "updatedAt": "2026-09-28T23:29:20Z"
+      "updatedAt": "2026-09-29T19:48:15Z"
     },
     "review-changes": {
       "source": "gwenwindflower/dotfiles",
@@ -285,9 +285,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/gwenwindflower/dotfiles.git",
       "skillPath": "skills/technical-synthesis/SKILL.md",
-      "skillFolderHash": "ceee7488a5ce03ce500c926077843e08b0533c26",
+      "skillFolderHash": "36565ff847af150619d2ef7c8a048c1c852fb024",
       "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-09-23T05:18:39Z"
+      "updatedAt": "2026-09-29T19:48:17Z"
     },
     "vhs-terminal-gifs": {
       "source": "gwenwindflower/dotfiles",
@@ -303,9 +303,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/gwenwindflower/dotfiles.git",
       "skillPath": "skills/web-design-guidelines/SKILL.md",
-      "skillFolderHash": "141039ed0658a5288740417ce5a3acb1ceeca1cd",
+      "skillFolderHash": "1d0b08fe8dd50affea50483bd31335ac11b7bc2f",
       "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-09-23T05:18:40Z"
+      "updatedAt": "2026-09-29T19:48:17Z"
     },
     "wrangler": {
       "source": "cloudflare/skills",
