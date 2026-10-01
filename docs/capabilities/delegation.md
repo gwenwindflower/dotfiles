@@ -4,7 +4,7 @@ Agents can delegate bounded work to specialized helpers while the lead retains s
 
 ## Expected behavior
 
-- Use specialized roles for planning, Git recovery, prose drafting, and prose review when their trigger applies.
+- Use the prose roles for long-form drafting and review; other work goes to general helpers briefed from skills.
 - Give each helper a concrete task, clear file or responsibility ownership, and enough context to work independently.
 - Keep helpers aware that they share a working tree and must preserve one another's changes.
 - Return findings or completed edits to the lead for review and integration.
@@ -16,8 +16,6 @@ Delegation does not expand the user's authority or the task's scope. Helpers do 
 
 ## Shared roles
 
-- `architect` — SPOT specs, plans, requirements, and research synthesis.
-- `medic` — confusing or damaged Git states requiring specialized recovery.
 - `writer` — long-form human-facing prose.
 - `editor` — structured critique of human-facing prose.
 
