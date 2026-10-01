@@ -1,12 +1,12 @@
 ---
 name: tasks
-description: Personal tasks - Apple Reminders via rem, Obsidian Tasks, syncing the two, planning and scheduling. Work issues in Linear or GitHub use managing-issues.
+description: Personal tasks - Apple Reminders via rem, Obsidian Tasks, syncing the two, planning and scheduling. Work issues in Linear or GitHub use project-management.
 argument-hint: "[sync, review, or plan] [topic or project]"
 ---
 
 # Tasks
 
-Tasks are personal to-dos: groceries, chores, errands, learning and writing goals, and personal mirrors of assigned work. They live in Apple Reminders and in Obsidian Tasks checkboxes in the vault. Issues, the work and project tracking in Linear or GitHub, belong to `managing-issues`, even when a task mirrors one.
+Tasks are personal to-dos: groceries, chores, errands, learning and writing goals, and personal mirrors of assigned work. They live in Apple Reminders and in Obsidian Tasks checkboxes in the vault. Issues, the work and project tracking in Linear or GitHub, belong to `project-management`, even when a task mirrors one.
 
 | Job | Doc |
 | --- | --- |

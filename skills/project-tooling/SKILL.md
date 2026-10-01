@@ -5,9 +5,9 @@ name: project-tooling
 
 # Project workflows
 
-Every tool project follows one pattern. The template (`gwenwindflower/_tool`) carries everything language-neutral: GitHub surfaces, mise-driven CI and release build, the human-gated release pipeline, repo provisioning tasks, SPOT planning files, and the agent hub. A language kit from `assets/` adds the toolchain; Rust is the only kit today. Variants such as Herdr plugins layer on top without changing the base.
+Every tool project follows one pattern. The template (`gwenwindflower/_tool`) carries everything language-neutral: GitHub surfaces, mise-driven CI and release build, the human-gated release pipeline, repo provisioning tasks, a starter `SPEC.md`, and the agent hub. A language kit from `assets/` adds the toolchain; Rust is the only kit today. Variants such as Herdr plugins layer on top without changing the base.
 
-Load `git-branching` first: the local CI below depends on how `wt switch`, `wt merge`, and Worktrunk hooks behave.
+The local CI below depends on how `wt switch` and `wt merge` behave; `project-management` covers using them, and [worktrunk-config](worktrunk-config.md) covers the hooks and config.
 
 ## Guarantees
 
@@ -32,10 +32,11 @@ Treat `_tool` as a bidirectional source of project learning. Update regression t
 | Create a repo from the template, or audit one against it | [bootstrap](bootstrap.md) |
 | Design tasks and toolchain, hooks and merge gates, CI wiring | [mise](mise.md) |
 | Write or debug `prek.toml` hooks, prek commands | [prek](prek.md) |
+| Worktrunk hooks, aliases, approvals, and config | [worktrunk-config](worktrunk-config.md) |
 | Cut a release, install paths per language | [releasing](releasing.md) |
 | Set up or debug the Homebrew tap | [homebrew-tap](homebrew-tap.md) |
 | Add ignore rules | [gitignore](gitignore.md) |
 | Rust kit and Cargo contract | [rust](rust.md) |
 | Build a Rust Herdr plugin | [herdr-plugins/workflow](herdr-plugins/workflow.md), with [runtime](herdr-plugins/runtime.md) and [project-shape](herdr-plugins/project-shape.md) |
 
-Planning (specs, Phases) belongs to `spot-project-management`; Herdr CLI control belongs to `herdr`.
+Planning, specs, issues, and branch work belong to `project-management`; Herdr CLI control belongs to `herdr`.

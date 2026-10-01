@@ -1,6 +1,6 @@
 # Worktrunk
 
-Worktrunk (`wt`) owns the worktree lifecycle: every branch starts with `wt switch -c <branch>`, lands with `wt merge`, and is cleaned up with `wt remove`. Never mutate worktrees with `git worktree add`, `move`, or `remove`; those skip the hooks that provision and clean up a worktree. Worktrees sit next to the main checkout as `<repo>.<branch>`, with `/` in the branch sanitized to `-`. Hooks, aliases, and commit generation live in [worktrunk-config.md](worktrunk-config.md). In Claude Code, the plugin's `worktrunk:worktrunk` skill is the full upstream reference.
+Worktrunk (`wt`) owns the worktree lifecycle: every branch starts with `wt switch -c <branch>`, lands with `wt merge`, and is cleaned up with `wt remove`. Never mutate worktrees with `git worktree add`, `move`, or `remove`; those skip the hooks that provision and clean up a worktree. Worktrees sit next to the main checkout as `<repo>.<branch>`, with `/` in the branch sanitized to `-`. Hooks, aliases, and commit generation live in [worktrunk-config.md](../project-tooling/worktrunk-config.md). In Claude Code, the plugin's `worktrunk:worktrunk` skill is the full upstream reference.
 
 ## Which worktree a command acts on
 
@@ -31,7 +31,7 @@ wt -C "$path" merge
 - Branch-addressed commands (`wt remove feat/oauth`, `wt step diff --branch feat/oauth`) need no path.
 - `-x <program>` starts the program inside the selected worktree whether or not the shell moves.
 - To give a subagent its own worktree, create it with `wt switch -c <branch> --no-cd` and name the absolute path in the brief. `isolation: "worktree"` names the branch after Claude Code's internal agent ID (`agent-<id>`), which leaves throwaway branches and fires hooks against the wrong name.
-- Hooks can't prompt in an agent shell, so an unapproved project hook aborts the command. See [approvals](worktrunk-config.md#approvals).
+- Hooks can't prompt in an agent shell, so an unapproved project hook aborts the command. See [approvals](../project-tooling/worktrunk-config.md#approvals).
 
 ## Creating and switching
 
@@ -66,7 +66,7 @@ wt switch pr:123                         # a PR's branch
 | `✗` | Merging into the default branch would conflict |
 | `↑` `↓` `↕` | Ahead of, behind, or diverged from the default branch |
 | `⇡` `⇣` `⇅` | Ahead of, behind, or diverged from the upstream |
-| 🤖 💬 | Agent working or waiting (see [markers](worktrunk-config.md#state-and-markers)) |
+| 🤖 💬 | Agent working or waiting (see [markers](../project-tooling/worktrunk-config.md#state-and-markers)) |
 
 `--format=json` emits schema 2, an envelope with the rows under `.items`:
 

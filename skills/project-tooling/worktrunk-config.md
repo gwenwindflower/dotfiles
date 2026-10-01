@@ -19,7 +19,7 @@ Precedence, highest first: `--config-set '<toml>'`, `WORKTRUNK_*` env vars (`com
 - **Commit generation**: `[commit.generation]` pipes the prompt to headless `claude -p` on Sonnet. `template-append` adds the conventional-commit, trailer, and `Co-Authored-By` rules.
 - **`[list] summary = true`**: LLM branch summaries in `wt list --full` and the switch picker.
 - **`[step.copy-ignored] exclude`**: skips virtualenvs, which break at a new path. Everything else reflink-clones for free.
-- **Aliases** `shift` and `copy`: carry uncommitted changes into the worktree `wt switch` lands on (see [worktrunk.md](worktrunk.md#creating-and-switching)).
+- **Aliases** `shift` and `copy`: carry uncommitted changes into the worktree `wt switch` lands on (see [worktrunk](../project-management/worktrunk.md#creating-and-switching) in `project-management`).
 - **`pre-start` pipeline** on every new worktree, in order: `wt step copy-ignored`, then `trunks` (grants Codex git access to the worktree), then `depop` dependency sync (skipped with a warning when `depop` is missing). It is `pre-start` so an agent launched with `-x` lands on installed dependencies.
 - **`post-start` / `post-remove`**: add and drop the worktree in zoxide.
 

@@ -43,7 +43,7 @@ projects first unless the user scoped the sweep.
    | Convention that always applies, every project | User-level rule fragment |
    | How a system works, one project | Project `docs/` file plus index entry |
    | Triggerable workflow useful across projects | Skill |
-   | Decision plus rationale | ADR or DONE.md entry in the owning project |
+   | Decision plus rationale | ADR or PR description in the owning project |
 
 5. **Propose.** Present the candidate list once — finding, evidence
    citations (session id + ordinal range), target, and cost evidence —
