@@ -1,1 +1,1 @@
-cargo-binstall = "latest"
+# Rust and optional Cargo extensions come from PATH.
