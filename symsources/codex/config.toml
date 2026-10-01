@@ -3,7 +3,7 @@
 # The upstream schema mistypes some keys, so tombi reports errors on valid
 # config. Known false positives are marked "upstream schema" inline.
 
-model = "gpt-6-astra"
+model = "gpt-6.1-sol"
 personality = "friendly"
 approval_policy = "on-request"
 approvals_reviewer = "auto_review"
@@ -11,7 +11,7 @@ default_permissions = "dev"
 web_search = "cached"
 project_doc_max_bytes = 65536
 sqlite_home = "~/.codex/sqlite"
-model_reasoning_effort = "low"
+model_reasoning_effort = "medium"
 suppress_unstable_features_warning = true
 
 notify = ["/Users/winnie/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended"]
