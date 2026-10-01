@@ -13,7 +13,7 @@ uv owns Python versions, environments, dependencies, and tool installs. ruff own
 ```toml
 [project]
 name = "spool"
-version = "0.1.0"
+version = "0.0.1"
 description = "Ordered replay of event logs"
 readme = "README.md"
 requires-python = ">=3.14"

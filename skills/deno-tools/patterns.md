@@ -29,7 +29,7 @@ import { Command } from "@cliffy/command";
 
 const cli = new Command()
   .name("mytool")
-  .version("0.1.0")
+  .version("0.0.1")
   .description("What the tool does");
 
 cli

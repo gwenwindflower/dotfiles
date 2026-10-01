@@ -30,7 +30,7 @@ The manifest build step installs the binary. Runtime entrypoints call the bare b
 ```toml
 id = "example-plugin"
 name = "Example Plugin"
-version = "0.1.0"
+version = "0.0.1"
 min_herdr_version = "<supported-version>"
 platforms = ["linux", "macos"]
 

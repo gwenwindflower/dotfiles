@@ -20,7 +20,7 @@ After assets upload, the `homebrew` job checks out the release tag, runs `mise r
 `release:formula` downloads every `*.tgz.sha256` from the release, renders `.github/homebrew/formula.rb.tmpl` with the four target URLs and checksums, the version, the repo description, and a class name derived from the tool name (`my-tool` becomes `MyTool`), and writes the formula. It runs locally too, which is how to debug a rendering problem:
 
 ```bash
-mise run release:formula v0.1.0 && cat dist/Formula/<name>.rb
+mise run release:formula v0.0.1 && cat dist/Formula/<name>.rb
 brew install --formula dist/Formula/<name>.rb && <binary> --version
 ```
 
