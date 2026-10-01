@@ -35,7 +35,7 @@ Every new branch starts as a worktree: `wt switch -c <branch>`. A worktree is al
 - Use `wt switch`, `wt merge`, and `wt remove` for the rest of the lifecycle, not direct `git worktree` mutations. Let hooks, clean-worktree and integration checks, and project trust approvals run; never pass `--yes`, `--no-hooks`, or force flags to get past them.
 - The global Worktrunk `pre-start` hook runs `trunks` to give Codex Git access in each new worktree; don't duplicate it in project configs. In an existing worktree missing those grants, run `trunks` before starting a fresh Codex session, adding `--profile <name>` only when the active permission profile is not `dev`.
 - Delete local branches with lowercase `git branch -d` or Worktrunk cleanup, and leave forced deletion (`-D`, `--force`) to the user. Never delete remote refs or mirror-push; GitHub cleans up head branches after merge.
-- The lead session owns staging, commits, branches, rebases, remotes, and worktrees. Helpers edit and verify assigned files, then report; they never mutate shared Git state.
+- Only one agent stages and commits in a worktree at a time. Helpers sharing a worktree hand their work back or take turns; a helper given its own worktree commits there.
 
 ##### Local CI for solo projects
 

@@ -366,21 +366,6 @@
   },
   "model": "opus",
   "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.claude/hooks/block-teammate-git-writes.sh"
-          },
-          {
-            "type": "command",
-            "command": "$HOME/.claude/hooks/block-bookkeeping-commits.sh"
-          }
-        ]
-      }
-    ],
     "SessionStart": [
       {
         "matcher": "",

@@ -19,29 +19,13 @@ Reference: [hooks guide](https://code.claude.com/docs/en/hooks-guide), [hooks co
 | `SessionStart` | — | `set-git-nosign.sh` | | Disable SSH commit signing inside the sandbox |
 | `UserPromptSubmit` | `*` | `herdr-agent-state.sh working` | x | Mark agent working in the herdr state daemon |
 | `PreToolUse` | `*` | `herdr-agent-state.sh working` | x | Same — keep state fresh as tools fire |
-| `PreToolUse` | `Bash` | `block-teammate-git-writes.sh` | | Block teammates from git/wt write operations — the session lead commits |
-| `PreToolUse` | `Bash` | `block-bookkeeping-commits.sh` | | In SPOT repos, block commits that only touch plan/spec files |
 | `PermissionRequest` | `*` | `herdr-agent-state.sh blocked` | x | Mark agent blocked on permission prompt |
 | `Stop` | `*` | `herdr-agent-state.sh idle` | x | Mark agent idle |
 | `SessionEnd` | `*` | `herdr-agent-state.sh release` | x | Release agent slot in herdr |
 
-## Shared helpers (`lib/hook-common.sh`)
-
-Source from any hook that reads event input or gates on teammate context:
-
-```bash
-source "$(dirname "$0")/lib/hook-common.sh"
-```
-
-| Function | Purpose |
-| --- | --- |
-| `hook_read_input` | Slurp stdin once into `$HOOK_INPUT` (call before any extractor) |
-| `hook_field <jq-path>` | Echo a field from `$HOOK_INPUT`. Empty if missing. e.g. `hook_field '.cwd'` |
-| `gate_teammate` | Exit 0 if `.teammate_name` is unset (not in a teammate context) |
-
 ## Conventions
 
-- **Gate early.** Hooks fire on every matching tool call — return fast when irrelevant. The standard prologue is `hook_read_input` → gates (`gate_teammate`, repo checks) → tool-specific logic.
+- **Gate early.** Hooks fire on every matching tool call — return fast when irrelevant: read the event input once, check whether the hook applies, then run the tool-specific logic.
 - **Exit 2 to block.** stderr becomes feedback to Claude. Use it for genuine policy violations the agent should see and correct.
 - **Exit 0 to pass.** Any "this doesn't apply to me" path returns 0. Never block on missing context (no `teammate_name`, no `cwd`, etc.) — that's how non-team sessions get poisoned.
 - **PostToolUseFailure does not fire when a PreToolUse hook blocks.** If the tool never executed, there's no failure to post-process. Don't try to chain block-then-explain across the two events.
