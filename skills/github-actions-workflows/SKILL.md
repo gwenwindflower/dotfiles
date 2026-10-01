@@ -29,7 +29,7 @@ Then read the repo's releases or tags page for breaking changes. **Confirm the m
 
 ## Rule 3: Audit with zizmor, pin with pinact
 
-- **[zizmor](https://docs.zizmor.sh)** audits for template injection, excessive permissions, `pull_request_target` misuse, cache poisoning, unpinned actions. `zizmor .` from the repo root; `--format github` in CI emits annotations.
+- **[zizmor](https://docs.zizmor.sh)** audits for template injection, excessive permissions, `pull_request_target` misuse, cache poisoning, unpinned actions. Commit hooks use `zizmor --offline`; a dedicated CI audit job supplies a read-only `GH_TOKEN` and runs `zizmor --format github .`. Without a token, online checks such as known vulnerabilities are skipped. For the mise task's cache write allowance, see [project-workflows/mise](../project-workflows/mise.md).
 - **[pinact](https://github.com/suzuki-shunsuke/pinact)** rewrites `uses:` to full commit SHAs with a version comment. `pinact run` edits in place, `pinact run --check --verify-comment` reports, `pinact run -update` bumps. Export `GITHUB_TOKEN` (fall back to `gh auth token`); anonymous callers get 60 API calls an hour.
 
 Policy: hash-pin everything; ref-pin is acceptable only for `actions/*`. [`assets/zizmor.yml`](assets/zizmor.yml) and [`assets/pinact.yml`](assets/pinact.yml) encode it; they live in `.github/` next to the workflows. Every tool repo has `mise run ci-audit` running both.
@@ -38,7 +38,7 @@ Policy: hash-pin everything; ref-pin is acceptable only for `actions/*`. [`asset
 
 The template (`gwenwindflower/_tool`) ships two workflows; `project-workflows` installs them and explains the task layer they call.
 
-**`ci.yml`** on push to `main` and every PR. Jobs `check` (register problem matchers, `mise run version:check`, `mise run 'lint:*'`), `test` (`mise run 'test:*'` on Ubuntu and macOS), and `audit` (`zizmor --format github .`, `mise run ci-audit:pinact`). Every job carries `if: ${{ !github.event.repository.is_template }}` so the template repository itself never runs them.
+**`ci.yml`** on push to `main` and every PR. Job `audit` runs zizmor and `mise run ci-audit:pinact`; `check` uses `needs: audit` and runs problem matchers, `mise run version:check`, and `mise run 'lint:*'`; `test` uses `needs: check` and runs `mise run 'test:*'` on Ubuntu and macOS. Audit failures skip downstream checks and tests. Keep the audit in the same workflow so `needs` enforces ordering. Every job carries `if: ${{ !github.event.repository.is_template }}` so the template repository itself never runs them.
 
 **`release-build.yml`** on `release: published` (and `workflow_dispatch` with a tag to build without uploading). A four-leg matrix of native runners maps to Rust-style target triples, runs `mise run version:check "$RELEASE_TAG"` and `mise run release:package "$TARGET"`, uploads artifacts; `publish` attaches them to the release; `homebrew` renders and pushes the formula when `vars.HOMEBREW_TAP == 'true'` (a job-level `if` cannot read `secrets`, which is why a variable gates it).
 
