@@ -27,25 +27,6 @@ squash = false
 exclude = [".venv/", "venv/"]
 
 [aliases]
-shift = '''
-if test -z "$(git status --porcelain)"; then
-    wt switch {{ args }}
-else
-    git stash push --include-untracked --quiet &&
-    wt switch {{ args }} --execute git -- stash pop --index
-fi
-'''
-
-copy = '''
-if test -z "$(git status --porcelain)"; then
-    wt switch {{ args }}
-else
-    git stash push --include-untracked --quiet &&
-    git stash apply --index --quiet &&
-    wt switch {{ args }} --execute git -- stash pop --index
-fi
-'''
-
 # replay updates refs by default; --ref-action=print keeps this a read-only check.
 check = '''
 git replay --ref-action=print --linearize --onto={{ default_branch }} {{ default_branch }}..{{ branch }} >/dev/null

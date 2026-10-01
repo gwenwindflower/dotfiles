@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+mode='shift'
+if [[ ${1:-} == --copy ]]; then
+  mode=copy
+  shift
+fi
+
+if [[ ${1:-} == --apply-stash ]]; then
+  stash=$2
+  git stash apply --index "$stash"
+  while read -r oid ref; do
+    if [[ $oid == "$stash" ]]; then
+      git stash drop "$ref"
+      exit 0
+    fi
+  done < <(git stash list --format='%H %gd')
+  printf 'Applied %s; no matching stash entry remains.\n' "$stash" >&2
+  exit 0
+fi
+
+for arg in "$@"; do
+  case "$arg" in
+    -h|--help)
+      printf 'Usage: wt %s [wt switch options] [branch]\n' "$mode"
+      printf 'Carry staged, unstaged, and untracked changes to another worktree.\n'
+      printf 'copy also keeps the changes in the source worktree.\n'
+      printf 'Use wt -C <path> %s to select a source repository.\n' "$mode"
+      printf '%s\n' '--execute and arguments after -- are not supported.'
+      exit 0
+      ;;
+    -x*|--execute|--execute=*|--|-C*)
+      printf 'wt %s: unsupported option %s; see --help.\n' "$mode" "$arg" >&2
+      exit 64
+      ;;
+  esac
+done
+
+status=$(git status --porcelain --untracked-files=all)
+if [[ -z $status ]]; then
+  exec wt switch "$@"
+fi
+
+tag="wt-$mode-$(date +%s)-$$-$RANDOM-$RANDOM"
+git stash push --include-untracked --quiet --message "$tag"
+stash=
+while read -r oid subject; do
+  if [[ $subject == *": $tag" ]]; then
+    stash=$oid
+    break
+  fi
+done < <(git stash list --format='%H %gs')
+
+if [[ -z $stash ]]; then
+  printf 'wt %s: no stash found for %s; stopping.\n' "$mode" "$tag" >&2
+  exit 1
+fi
+
+printf 'Saved changes as %s (%s).\n' "$tag" "$stash" >&2
+printf 'If interrupted, recover with: git stash apply --index %s\n' "$stash" >&2
+
+if [[ $mode == copy ]]; then
+  git stash apply --index --quiet "$stash"
+fi
+
+script="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/$(basename -- "${BASH_SOURCE[0]}")"
+exec wt switch "$@" --execute bash -- "$script" --apply-stash "$stash"
