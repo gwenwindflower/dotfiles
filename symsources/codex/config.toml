@@ -437,6 +437,9 @@ enabled = true
 [plugins."worktrunk@worktrunk"]
 enabled = true
 
+[plugins."code-review@openai-bundled"]
+enabled = true
+
 [mcp_servers.node_repl]
 args = []
 command = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl"
@@ -448,14 +451,14 @@ NODE_REPL_NODE_MODULE_DIRS = "/Applications/ChatGPT.app/Contents/Resources/cua_n
 NODE_REPL_NODE_PATH = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node"
 NODE_REPL_TRUSTED_CODE_PATHS = "/Users/winnie/.codex:/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
 CODEX_HOME = "/Users/winnie/.codex"
-BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab,mcpapps"
 BROWSER_USE_TINYSKY_ENABLED = "1"
 NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.917.71314"
-NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/winnie/.codex/plugins/cache/openai-bundled/browser/26.917.71314/scripts/browser-service.mjs"}'
-CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
+BROWSER_USE_CODEX_APP_VERSION = "26.928.21956"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/winnie/.codex/plugins/cache/openai-bundled/browser/26.928.21956/scripts/browser-service.mjs"}'
+CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex"
 
 # [mcp_servers.indi]
 # command = "indi"
@@ -503,7 +506,7 @@ git-show-sidebar-pr-icons = true
 git-always-force-push = true
 git-branch-prefix = "winnie-cdx/"
 appearanceTheme = "dark"
-selected-avatar-id = "custom:kero"
+selected-avatar-id = "pet_6abe9987329c819188c6145423e0b2ce"
 hotkey-window-projectless-default-enabled = true
 avatar-overlay-mascot-width-px = 99
 dock-icon-preference = "codex-system"
@@ -819,4 +822,8 @@ enabled = false
 
 [[skills.config]]
 name = "openai-templates:artifact-template-three-statement-forecast"
+enabled = false
+
+[[skills.config]]
+path = "/Users/winnie/.codex/skills/hatch-pet/SKILL.md"
 enabled = false
