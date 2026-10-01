@@ -162,33 +162,73 @@ prefix_rule(
     not_match = ["chezmoi status"],
 )
 
+# review: authentication and non-secret configuration are routine in task scope.
 prefix_rule(
     pattern = [["codex", "claude"], ["login", "logout"]],
-    decision = "forbidden",
-    justification = "Agent logins are the user's; give them the exact command to run.",
+    decision = "prompt",
+    justification = "Authentication through the owning agent CLI is routine in task scope; trust and permission changes still need a direct request.",
     match = ["codex login", "claude logout"],
 )
 
 prefix_rule(
-    pattern = ["linear-cli", ["auth", "config", "setup"]],
+    pattern = ["linear-cli", "auth", ["login", "logout", "migrate", "oauth", "revoke"]],
+    decision = "prompt",
+    justification = "Authentication through Linear is routine in task scope; never extract or print API keys.",
+    match = ["linear-cli auth login", "linear-cli auth oauth"],
+    not_match = ["linear-cli auth status"],
+)
+
+prefix_rule(
+    pattern = ["linear-cli", "config", ["set-key", "set", "workspace-add", "workspace-switch", "workspace-remove"]],
+    decision = "prompt",
+    justification = "Linear workspace and non-secret config changes are routine in task scope; credentials stay in the owning store.",
+    match = ["linear-cli config set-key", "linear-cli config set default-team ENG"],
+    not_match = ["linear-cli config show", "linear-cli config workspace-list"],
+)
+
+prefix_rule(
+    pattern = ["linear-cli", "setup"],
+    decision = "prompt",
+    justification = "Linear's guided setup is routine in task scope; the user completes interactive prompts.",
+    match = ["linear-cli setup"],
+)
+
+prefix_rule(
+    pattern = ["linear-cli", "config", "get"],
+    decision = "prompt",
+    justification = "Approve masked or non-secret config reads; deny api-key with --raw in any flag position.",
+    match = ["linear-cli config get api-key", "linear-cli config get api-key --output json --raw"],
+    not_match = ["linear-cli config show"],
+)
+
+prefix_rule(
+    pattern = ["linear-cli", "config", "get", ["api-key", "api_key"], "--raw"],
     decision = "forbidden",
-    justification = "Linear API keys and workspace config are the user's; give them the exact command to run.",
-    match = ["linear-cli auth login", "linear-cli config set-key"],
-    not_match = ["linear-cli whoami"],
+    justification = "Never reveal Linear API keys; use masked config output.",
+    match = ["linear-cli config get api-key --raw"],
+    not_match = ["linear-cli config get api-key"],
+)
+
+prefix_rule(
+    pattern = ["linear-cli", "config", "get", "--raw", ["api-key", "api_key"]],
+    decision = "forbidden",
+    justification = "Never reveal Linear API keys; use masked config output.",
+    match = ["linear-cli config get --raw api-key"],
+    not_match = ["linear-cli config get --raw default-team"],
 )
 
 prefix_rule(
     pattern = ["lightdash", "login"],
-    decision = "forbidden",
-    justification = "Lightdash logins are the user's; give them the exact command to run.",
+    decision = "prompt",
+    justification = "Authentication through Lightdash is routine in task scope; the user completes interactive prompts.",
     match = ["lightdash login https://app.lightdash.cloud"],
     not_match = ["lightdash compile"],
 )
 
 prefix_rule(
     pattern = ["lightdash", "config", "set-project"],
-    decision = "forbidden",
-    justification = "Switching the active Lightdash project is the user's call; give them the exact command to run.",
+    decision = "prompt",
+    justification = "Selecting the task's Lightdash project is routine; project selection does not authorize production writes.",
     match = ["lightdash config set-project --name x"],
     not_match = ["lightdash config get-project"],
 )

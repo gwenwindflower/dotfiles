@@ -197,10 +197,11 @@ prefix_rule(
     not_match = ["git config --get user.name"],
 )
 
+# review: authentication changes stay within the task's scope.
 prefix_rule(
     pattern = ["gh", "auth", ["login", "logout", "refresh", "switch", "setup-git"]],
-    decision = "forbidden",
-    justification = "Authentication changes are the user's; give them the exact command to run.",
+    decision = "prompt",
+    justification = "Authentication through gh is routine in task scope; credentials stay in its store and the user completes interactive prompts.",
     match = ["gh auth login", "gh auth refresh -s repo"],
     not_match = ["gh auth status"],
 )
@@ -237,7 +238,24 @@ prefix_rule(
     not_match = ["wt remove topic"],
 )
 
+# review: status can reveal tokens through flags beyond prefix coverage.
+prefix_rule(
+    pattern = ["gh", "auth", "status"],
+    decision = "prompt",
+    justification = "Approve masked authentication status; deny -t/--show-token in any flag position or short-flag cluster.",
+    match = ["gh auth status", "gh auth status --hostname github.com --show-token", "gh auth status -at"],
+    not_match = ["gh auth login"],
+)
+
 # deny
+prefix_rule(
+    pattern = ["gh", "auth", "status", ["-t", "--show-token"]],
+    decision = "forbidden",
+    justification = "Never reveal authentication tokens; use masked gh auth status.",
+    match = ["gh auth status -t", "gh auth status --show-token"],
+    not_match = ["gh auth status --active"],
+)
+
 prefix_rule(
     pattern = ["gh", "auth", "token"],
     decision = "forbidden",

@@ -31,6 +31,7 @@ Approve these when they serve the task; no separate request is needed.
 - **Git remotes and history:** `fetch`, `pull --ff-only`, `clone`, and `ls-remote` for the task's repositories. A normal (non-force) push to a verified non-protected branch of the session's repository, after resolving the real destination from refspecs and push config. Rebasing the session's own feature branch onto `main` or `origin/main` after recording a recovery ref, plus `--continue` after resolving understood conflicts and `--abort`.
 - **Worktrees:** Worktrunk (`wt switch`, `shift`, `copy`, `list`, `merge`, `remove`, `step`) and direct `git worktree add`/`remove` for the task's repository, with hooks, approvals, and clean-worktree checks intact.
 - **GitHub work in task scope:** creating, editing, and commenting on PRs and issues. Closing issues the task resolved. `gh api` calls equivalent to those. Re-running or cancelling workflow runs. Installing or upgrading `gh` extensions. Read before write.
+- **Authentication and CLI configuration:** account status, interactive login, logout, refresh, account or workspace switching, and non-secret config reads and writes through the owning CLI (`gh`, `linear-cli`, `gcloud`, `fly`/`flyctl`, `wrangler`, `lightdash`, `rclone`, `codex`, `claude`). Let the user complete browser or terminal prompts. Credentials stay in the tool's store; do not extract them into command arguments, output, or artifacts. Authentication does not authorize deployment, production changes, or agent trust changes.
 - **Project tasks and host retries:**
   - Task-runner invocations (`mise run`, `deno task`, `make`, `npm`/`aube run`) whose task definition was inspected and is not release-shaped.
   - Retrying a routine command outside the sandbox: after a nested-sandbox failure (`sandbox_apply: Operation not permitted`), for tools that need the keychain, EventKit, or Chrome, for SSH remotes, and for local GPU model work (`qmd embed`, `qmd query`).
@@ -66,7 +67,7 @@ Approve these only when the user's current request names the action or its exact
 - **Trust and permission surfaces:**
   - Agent permission and sandbox settings.
   - Trust files and approvals: `mise trust`, `direnv allow`, build-script approvals, MCP or plugin trust.
-  - Agent config changes: `ctx7 setup`/`remove`, `zg install`, `zg auth grant`, `codex`/`claude` MCP, feature, and login changes.
+  - Agent config changes: `ctx7 setup`/`remove`, `zg install`, `zg auth grant`, `codex`/`claude` MCP and feature changes.
   - Package-runner skill installers; skills come from `gh skill`.
   - These change only on a direct request about that surface, never as a step toward another goal. Creating fish universal variables (`set -U`) is never a fix; config exports use `set -gx`.
 - **macOS and app state:**
@@ -84,7 +85,7 @@ Approve these only when the user's current request names the action or its exact
 
 Deny these whatever the request; the user changes config to allow one.
 
-- **Credential exposure:** printing, copying, or sending tokens and keys. That covers `gh auth token`, `gcloud auth print-*-token`, `op item get --reveal`, `op` listing, `rclone config show`, and `fly`/`wrangler` token commands. Reading a credential store to get around a failed authentication counts too.
+- **Credential exposure:** printing, copying, or sending tokens and keys. That covers `gh auth token`, `gh auth status -t`/`--show-token` in any flag position or short-flag cluster, `linear-cli config get api-key --raw` in any flag position, `gcloud auth print-*-token` (including `application-default` and beta/alpha forms), `op item get --reveal`, `op` listing, `rclone config show`/`dump`, `fly`/`flyctl auth token`, Fly token creation/attenuation/third-party output, and `wrangler auth token`. Reading a credential store to get around a failed authentication counts too. Masked status and config output, token metadata listing, and interactive login are routine.
 - **Irreversible remote deletion:**
   - Deleting a repository by any route (`gh repo delete`, REST, GraphQL).
   - Deleting remote refs (`push --delete`, `push origin :ref`, `DELETE …/git/refs`) and mirror pushes.

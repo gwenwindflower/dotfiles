@@ -21,7 +21,7 @@ Levels are defined in [agent configuration](../agent-config.md#permission-levels
 | `gh` reads | `sandboxed` | The keychain token works in both sandboxes. Codex routes every `gh api` call, reads included, to the reviewer. |
 | `gh` PR and issue writes, `gh api` mutations, workflow rerun and cancel, `gh extension` installs | `review` | Read before write. |
 | `gh pr merge`, PR approvals, repository create/fork/rename/archive/edit, secret and variable writes, release workflow dispatch | `review` (on request) | |
-| `gh auth login`/`logout`/`refresh`/`switch`/`setup-git` | `user-open` | |
+| `gh auth login`/`logout`/`refresh`/`switch`/`setup-git`, `gh auth status` | `review` | Routine authentication; status is denied with `-t`/`--show-token`. Codex routes all status flags to review because prefix rules cannot detect flags in every position. |
 | `gh auth token`, `gh repo delete`, `gh release` mutations | `deny` | Releases run through the reviewed project release task. |
 
 ## Recoverable history

@@ -27,14 +27,15 @@ Tools whose tokens live in the keychain work in both sandboxes. Tools whose conf
 | `herdr` pane, tab, and agent control; server, config, and integration administration | `review` | Control covers panes and agents the session created or the user named. |
 | `linear-cli` reads | `sandboxed` | Its cache directory is writable and the keychain works in both sandboxes. |
 | `linear-cli` issue, comment, bulk, and `api mutate` writes | `review` | Lightdash workspace. |
-| `linear-cli auth`/`config` | `user-open` | |
+| `linear-cli auth status`, masked `config show`/`get`, workspace reads | `sandboxed` | Codex routes `config get` to review to check `api-key --raw` in any flag position. |
+| `linear-cli` authentication, setup, and config writes | `review` | Routine in task scope; interactive prompts remain with the user. |
 | `lightdash` compile, validate, SQL, and reads | `sandboxed` | The CLI rewrites `~/.config/lightdash` on every run. |
 | `lightdash` upload, deploy, preview, refresh, set-warehouse, rename | `review` | Production projects are `review` (on request). |
-| `lightdash login`, `lightdash config set-project` | `user-open` | |
+| `lightdash login`, `lightdash config set-project` | `review` | Routine in task scope; project selection does not authorize production writes. |
 | `op read`, `op inject`, `op run` | `user-open` | Codex: `review` (on request), approved only when the user named the item and destination. |
 | `op` listing, reveal, and administration | `deny` | |
-| Service logins (`gcloud auth login`, `wrangler login`, `fly auth login`, `codex`/`claude login`) | `user-open` | |
-| Token printing (`gh auth token`, `gcloud auth print-*-token`, `fly auth token`, `rclone config show`/`dump`) | `deny` | `wrangler` token commands are covered in [remote environments](environments.md#levels). |
+| Service logins, logout, refresh, and account switching (`gcloud`, `wrangler`, `fly`/`flyctl`, `codex`/`claude`); `rclone config password`/`reconnect` | `review` | Routine through the owning CLI; no credential extraction. |
+| Token printing and unmasked config reads | `deny` | Includes `gh auth status -t`/`--show-token`, `linear-cli config get api-key --raw`, gcloud ADC token printing, `fly`/`flyctl auth token`, and `rclone config show`/`dump`. See [remote environments](environments.md#levels) for Fly and Wrangler token output. |
 | Warehouse reads (`bq query`, `dbt run`/`build`) against non-production targets | `review` | Warehouse hosts are unlisted, so these reach review. |
 | Warehouse mutations (DDL, DML, `bq rm`/`mk`/`load`) | `review` (on request) | |
 | `rclone` listing and copy | `review` | Remote hosts are unlisted. |
@@ -50,9 +51,9 @@ Remote environment CLIs are covered in [remote environments](environments.md#lev
 
 | Platform | Mechanism | Coverage |
 | --- | --- | --- |
-| Claude Code | Plugins, marketplaces, optional Claude.ai MCP servers, CLI tools, and agent-browser | `open` families are excluded with an allow; service writes have no rule and reach the classifier; logins and `op` secrets are `ask`. |
-| Codex | Plugins, apps, MCP servers, browser integration, artifact skills, and command rules | `services.rules` allows capture, prompts on service writes and Default-profile use, and forbids logins; `command-safety.rules` prompts on `op` secrets and forbids token printing. Families that fail in the sandbox escalate to the reviewer with no rule. |
-| OpenCode | Plugins, configured language tooling, and shell CLIs | Ordered rules ask by default, allow named profiles, ask again for Default, then allow safe operations. OpenCode `--auto` approves every ask without an intent-sensitive review. |
+| Claude Code | Plugins, marketplaces, optional Claude.ai MCP servers, CLI tools, and agent-browser | `open` families are excluded with an allow; service writes and authentication reach the classifier; `op` secrets are `ask`. Token output has narrow denies plus reviewer coverage for alternate forms. |
+| Codex | Plugins, apps, MCP servers, browser integration, artifact skills, and command rules | Service writes and authentication reach review; token output is forbidden. `gh auth status` and `linear-cli config get` reach review for flags beyond literal-prefix coverage. Families that fail in the sandbox escalate to the reviewer with no rule. |
+| OpenCode | Plugins, configured language tooling, and shell CLIs | Ordered rules allow masked auth/config reads and deny standard token-output forms. Other commands use the existing permission defaults. Alternate global-flag placement and arbitrary short-flag clusters lack reviewer coverage: OpenCode `--auto` approves every ask without an intent-sensitive review. |
 
 ## Verification
 

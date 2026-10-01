@@ -50,7 +50,7 @@ These principles keep the configs small:
 - **Credentials stay out of reach where the harness allows it.**
   - Claude read-denies credential stores in its sandbox.
   - Codex cannot: any profile `deny` entry keeps every command sandboxed, which would break the `open` and escalation paths. Its credential stores are readable to sandboxed commands and governed by the reviewer policy.
-  - In both harnesses, logins and token changes are `user-open`, and credential dumps are `deny`.
+  - Authentication and non-secret config changes reach automatic review in task scope; credential dumps and token-revealing flags are `deny`.
 
 ## Configuration surfaces
 

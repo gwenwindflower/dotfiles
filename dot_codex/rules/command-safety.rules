@@ -106,27 +106,68 @@ prefix_rule(
     match = ["sudo rm example", "sudo launchctl bootout system/x"],
 )
 
+# review: authentication uses the owning CLI without exposing credentials.
 prefix_rule(
-    pattern = [["fly", "flyctl"], "auth"],
-    decision = "forbidden",
-    justification = "Logins and tokens are the user's; give them the exact command to run. Tokens are never printed.",
-    match = ["fly auth login", "fly auth token"],
+    pattern = [["fly", "flyctl"], "auth", ["login", "logout", "signup", "docker"]],
+    decision = "prompt",
+    justification = "Authentication through Fly is routine in task scope; do not extract credentials or print tokens.",
+    match = ["fly auth login", "flyctl auth logout"],
+    not_match = ["fly auth whoami", "fly auth token"],
 )
 
 prefix_rule(
     pattern = ["wrangler", ["login", "logout"]],
-    decision = "forbidden",
-    justification = "Logins are the user's; give them the exact command to run.",
+    decision = "prompt",
+    justification = "Authentication through Wrangler is routine in task scope; the user completes interactive prompts.",
     match = ["wrangler login"],
     not_match = ["wrangler whoami"],
 )
 
 prefix_rule(
-    pattern = ["gcloud", "auth", ["login", "application-default", "activate-service-account", "revoke"]],
-    decision = "forbidden",
-    justification = "Logins are the user's; give them the exact command to run.",
-    match = ["gcloud auth login", "gcloud auth application-default login"],
+    pattern = ["gcloud", "auth", ["login", "activate-service-account", "revoke"]],
+    decision = "prompt",
+    justification = "Authentication through gcloud is routine in task scope; credentials stay in its store.",
+    match = ["gcloud auth login", "gcloud auth revoke"],
     not_match = ["gcloud auth list"],
+)
+
+prefix_rule(
+    pattern = ["gcloud", "auth", "application-default", ["login", "revoke", "set-quota-project"]],
+    decision = "prompt",
+    justification = "Application Default Credentials setup is routine in task scope; never print the resulting tokens.",
+    match = ["gcloud auth application-default login"],
+    not_match = ["gcloud auth application-default print-access-token"],
+)
+
+prefix_rule(
+    pattern = ["gcloud", ["alpha", "beta"], "auth"],
+    decision = "prompt",
+    justification = "Review alternate gcloud authentication forms; masked status and logins are routine, token output is denied.",
+    match = ["gcloud beta auth login"],
+)
+
+prefix_rule(
+    pattern = ["wrangler", "auth", ["create", "delete", "activate", "deactivate", "keyring"]],
+    decision = "prompt",
+    justification = "Authentication profile changes are routine in task scope; credentials stay in Wrangler's store.",
+    match = ["wrangler auth create work"],
+    not_match = ["wrangler auth list", "wrangler auth token"],
+)
+
+prefix_rule(
+    pattern = [["fly", "flyctl"], "tokens", "revoke"],
+    decision = "prompt",
+    justification = "Review token revocation against the task's account and scope; token metadata reads remain available.",
+    match = ["fly tokens revoke example"],
+    not_match = ["fly tokens list"],
+)
+
+prefix_rule(
+    pattern = ["rclone", "config", ["password", "reconnect"]],
+    decision = "prompt",
+    justification = "Authentication through rclone is routine in task scope; never dump credentials.",
+    match = ["rclone config reconnect remote:"],
+    not_match = ["rclone config show"],
 )
 
 # deny
@@ -201,9 +242,56 @@ prefix_rule(
 )
 
 prefix_rule(
-    pattern = ["rclone", "config", ["show", "dump", "password", "reconnect"]],
+    pattern = ["gcloud", "auth", "application-default", "print-access-token"],
     decision = "forbidden",
-    justification = "Never print rclone credentials; token changes are the user's.",
+    justification = "Never print Application Default Credentials tokens.",
+    match = ["gcloud auth application-default print-access-token"],
+    not_match = ["gcloud auth application-default login"],
+)
+
+prefix_rule(
+    pattern = ["gcloud", ["alpha", "beta"], "auth", ["print-access-token", "print-identity-token"]],
+    decision = "forbidden",
+    justification = "Never print authentication tokens.",
+    match = ["gcloud beta auth print-identity-token"],
+    not_match = ["gcloud beta auth login"],
+)
+
+prefix_rule(
+    pattern = ["gcloud", ["alpha", "beta"], "auth", "application-default", "print-access-token"],
+    decision = "forbidden",
+    justification = "Never print Application Default Credentials tokens.",
+    match = ["gcloud beta auth application-default print-access-token"],
+)
+
+prefix_rule(
+    pattern = [["fly", "flyctl"], "auth", "token"],
+    decision = "forbidden",
+    justification = "Never print Fly authentication tokens.",
+    match = ["fly auth token", "flyctl auth token"],
+    not_match = ["fly auth whoami", "flyctl auth login"],
+)
+
+prefix_rule(
+    pattern = [["fly", "flyctl"], "tokens", ["create", "attenuate", "3p", "third-party"]],
+    decision = "forbidden",
+    justification = "These commands output credential material; use authenticated Fly commands without extracting tokens.",
+    match = ["fly tokens create deploy", "flyctl tokens attenuate", "fly tokens 3p discharge"],
+    not_match = ["fly tokens list", "fly tokens revoke example"],
+)
+
+prefix_rule(
+    pattern = ["wrangler", "auth", "token"],
+    decision = "forbidden",
+    justification = "Never print Wrangler authentication credentials.",
+    match = ["wrangler auth token"],
+    not_match = ["wrangler auth list"],
+)
+
+prefix_rule(
+    pattern = ["rclone", "config", ["show", "dump"]],
+    decision = "forbidden",
+    justification = "Never print rclone credentials; use authenticated remote commands.",
     match = ["rclone config show", "rclone config dump"],
     not_match = ["rclone listremotes"],
 )

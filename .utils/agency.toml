@@ -370,7 +370,7 @@ expect = "forbidden"
 
 [[rule]]
 cmd = "gh auth login"
-expect = "forbidden"
+expect = "prompt"
 
 [[rule]]
 cmd = "gh skill install --force owner/repo x"
@@ -423,3 +423,140 @@ expect = "forbidden"
 [[rule]]
 cmd = "notesmd-cli set-default-vault x"
 expect = "forbidden"
+
+# Authentication stays useful; secret output is blocked or routed to review.
+[[rule]]
+cmd = "gh auth status"
+expect = "prompt"
+
+[[rule]]
+cmd = "gh auth status --show-token"
+expect = "forbidden"
+
+[[rule]]
+cmd = "gh auth status -t"
+expect = "forbidden"
+
+[[rule]]
+cmd = "gh auth status --hostname github.com --show-token"
+expect = "prompt"
+
+[[rule]]
+cmd = "gh auth status -at"
+expect = "prompt"
+
+[[rule]]
+cmd = "gh auth refresh -s repo"
+expect = "prompt"
+
+[[rule]]
+cmd = "linear-cli auth status"
+expect = "none"
+
+[[rule]]
+cmd = "linear-cli auth oauth"
+expect = "prompt"
+
+[[rule]]
+cmd = "linear-cli config show --output json"
+expect = "none"
+
+[[rule]]
+cmd = "linear-cli config get api-key"
+expect = "prompt"
+
+[[rule]]
+cmd = "linear-cli config get api-key --raw"
+expect = "forbidden"
+
+[[rule]]
+cmd = "linear-cli config get --raw api-key"
+expect = "forbidden"
+
+[[rule]]
+cmd = "linear-cli config get api_key --raw"
+expect = "forbidden"
+
+[[rule]]
+cmd = "linear-cli config get --raw default-team"
+expect = "prompt"
+
+[[rule]]
+cmd = "linear-cli config get api-key --output json --raw"
+expect = "prompt"
+
+[[rule]]
+cmd = "linear-cli config set default-team ENG"
+expect = "prompt"
+
+[[rule]]
+cmd = "linear-cli setup"
+expect = "prompt"
+
+[[rule]]
+cmd = "fly auth whoami"
+expect = "none"
+
+[[rule]]
+cmd = "flyctl auth login"
+expect = "prompt"
+
+[[rule]]
+cmd = "fly auth token"
+expect = "forbidden"
+
+[[rule]]
+cmd = "flyctl tokens create deploy -a example"
+expect = "forbidden"
+
+[[rule]]
+cmd = "fly tokens attenuate"
+expect = "forbidden"
+
+[[rule]]
+cmd = "fly tokens list"
+expect = "none"
+
+[[rule]]
+cmd = "gcloud auth login"
+expect = "prompt"
+
+[[rule]]
+cmd = "gcloud auth application-default login"
+expect = "prompt"
+
+[[rule]]
+cmd = "gcloud auth application-default print-access-token"
+expect = "forbidden"
+
+[[rule]]
+cmd = "gcloud beta auth print-identity-token"
+expect = "forbidden"
+
+[[rule]]
+cmd = "gcloud auth list"
+expect = "none"
+
+[[rule]]
+cmd = "wrangler login"
+expect = "prompt"
+
+[[rule]]
+cmd = "wrangler auth token"
+expect = "forbidden"
+
+[[rule]]
+cmd = "rclone config reconnect remote:"
+expect = "prompt"
+
+[[rule]]
+cmd = "rclone config dump"
+expect = "forbidden"
+
+[[rule]]
+cmd = "codex login"
+expect = "prompt"
+
+[[rule]]
+cmd = "lightdash login https://app.lightdash.cloud"
+expect = "prompt"
