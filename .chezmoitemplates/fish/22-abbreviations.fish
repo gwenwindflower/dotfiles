@@ -104,6 +104,10 @@ abbr --add hrds herdr session
 abbr --add hrdsa herdr session attach
 abbr --add hrdsrm herdr session delete
 abbr --add hrdsls herdr session list
+abbr --add hrdss herdr session stop
+abbr --add hrdssld herdr session stop lightdash
+abbr --add hrdsrs "herdr session stop; and herdr"
+abbr --add hrdsrsld "herdr session stop lightdash; and herdr --session lightdash"
 abbr --add hrdp herdr plugin
 abbr --add hrdpi herdr plugin install
 abbr --add hrdpls herdr plugin list
