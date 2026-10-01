@@ -11,4 +11,4 @@ node = ["lts", "latest"]
 
 [settings]
 npm.package_manager = "pnpm"
-idiomatic_version_file_enable_tools = ["node"]
+idiomatic_version_file_enable_tools = ["node", "ruby"]

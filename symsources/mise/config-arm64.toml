@@ -13,5 +13,5 @@ aube = "latest"
 "npm:@zvec/zvec-grep" = "latest"
 
 [settings]
-idiomatic_version_file_enable_tools = ["node"]
+idiomatic_version_file_enable_tools = ["node", "ruby"]
 minimum_release_age_excludes = ["aube"]
