@@ -3,7 +3,7 @@ brsf = "brew search {{1}} | fzf --multi --prompt='Filter results: ' --preview='b
 ccp = "cat {{1}} | fish_clipboard_copy"
 clm = "claude --model {{1}} --effort {{2}}"
 cxastra = """codex -m gpt-6-astra -c 'model_reasoning_effort="{{1}}"'"""
-cxsol = """codex -m gpt-6-sol -c 'model_reasoning_effort="{{1}}"'"""
+cxsol = """codex -m gpt-6.1-sol -c 'model_reasoning_effort="{{1}}"'"""
 cxluna = """codex -m gpt-6-luna -c 'model_reasoning_effort="{{1}}"'"""
 clfable = "claude --model fable --effort {{1}}"
 clopus = "claude --model opus --effort {{1}}"
