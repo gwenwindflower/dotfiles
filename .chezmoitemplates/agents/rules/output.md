@@ -20,7 +20,7 @@ When editing code, tests, specs, docs, comments, docstrings, or agent context, d
 
 Use current domain language in names, examples, assertions, requirements, and test descriptions. Avoid `new`, `old`, `previous`, `now`, `renamed`, `updated`, `legacy`, and before/after framing unless multiple modes, migration behavior, or a compatibility contract remain part of the supported system.
 
-Keep change history, decision rationale, rejected alternatives, and rollout context in artifacts designed to preserve them: commits, PRs, ADRs, changelogs, DONE.md, or dedicated migration documents.
+Keep change history, decision rationale, rejected alternatives, and rollout context in artifacts designed to preserve them: commits, PRs, ADRs, changelogs, or dedicated migration documents.
 
 Before finalizing, ask: would this make sense to someone who knows only the intended current project? If not, rewrite it as current-state guidance or remove it.
 
@@ -38,7 +38,7 @@ Use comments only for one-line current-state constraints:
 
 Never comment what code does. Fix the name, boundary, or structure instead. Avoid task references, ownerless TODOs, dead-code notes, argument history, and parenthetical agent asides.
 
-Config files and scripts follow the same rule. Section dividers that label current structure are fine; justifications and "we chose X" notes are not. In SPOT projects: specs hold what, the ledger (DONE.md or the parent issue) holds why, code holds how.
+Config files and scripts follow the same rule. Section dividers that label current structure are fine; justifications and "we chose X" notes are not. Specs hold what, PRs and ADRs hold why, code holds how.
 
 ### Markdown editing
 

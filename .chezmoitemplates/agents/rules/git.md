@@ -15,7 +15,7 @@ Co-Authored-By: <Agent Name> <agent email>
 - **Group by purpose, not files.** Plan commits before staging: one commit is one set of purpose-related changes. A subject that needs "and" or won't fit the limit is likely two commits. Split before committing: squashing overly granular commits is easy, splitting mashed-together ones is not, and fixing pushed history is painful.
 - **Subject:** imperative, specific, no period. Aim under 60 chars; 70 is a hard limit so `git log` views scan cleanly.
 - **Scope:** the component that changed, such as a package, tool, or skill. A broad scope can take a `/<sub-scope>` when used consistently: `feat(agents/skills): define local CI in project workflows`.
-- **Body:** only for related parts of the one change that the subject cannot name, or a rationale worth keeping. At most 5 one-sentence `*` bullets. Never restate the subject or write prose; deeper rationale goes in specs, TODO.md/DONE.md, ADRs, docs, and PRs.
+- **Body:** only for related parts of the one change that the subject cannot name, or a rationale worth keeping. At most 5 one-sentence `*` bullets. Never restate the subject or write prose; deeper rationale goes in specs, ADRs, docs, and PRs.
 - **Trailers:** GitHub closing keywords (`Closes #12`), then attribution (`Co-Authored-By`). Agent-authored or assisted commits always end with the running agent's identity.
 - **Signing:** agent commits are unsigned. The 1Password socket with the key Winnie signs her commits with is intentionally inaccessible, do not try to sign commits. Flag for the user if a commit is rejected or has an error because of signing.
 

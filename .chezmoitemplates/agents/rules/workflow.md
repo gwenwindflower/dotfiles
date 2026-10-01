@@ -4,7 +4,7 @@ Scale end-of-task rituals to the change. A targeted docs edit, a backlog entry, 
 
 ### Use TDD
 
-Default to red-green TDD for behavior changes: features, bug fixes, API changes, and user-facing workflows. Skip only for tiny non-behavior edits or when the project says otherwise; SPOT's exceptions live in the `spot-project-management` skill.
+Default to red-green TDD for behavior changes: features, bug fixes, API changes, and user-facing workflows. Skip only for tiny non-behavior edits or when the project says otherwise.
 
 Loop:
 
@@ -22,74 +22,25 @@ If you find a major unrelated coverage gap, report it before filling it. Use des
 
 ### Projects
 
-Serious projects use SPOT project management; smaller or early projects borrow parts of it without the full ceremony. Specs are the same everywhere. The plan lives in one of two places: markdown in the repo, or Linear.
+Plans live in Linear; specs live in the repo. Load `project-management` before planning work, writing specs, reading or writing an issue, or running work across helpers or parallel sessions.
 
-| File | Job |
+| Home | Holds |
 | --- | --- |
-| `SPEC.md` | Project-level what and why; indexes domain specs |
-| `specs/<dom>-<slug>.md` | Durable domain requirements with stable IDs |
+| Linear | What to do and in what order: issues, sub-issues, projects |
+| `SPEC.md`, `specs/` | Requirements, when the project uses specs; how much to invest is a judgment call per project |
 | `docs/` | How the system works now |
-| `TODO.md` | Repo plan: active Phases, Objectives, and Tasks |
-| `DONE.md` | Repo plan: shipped work and rationale |
+| PR description | What shipped, the calls made, and `Closes`/`Part of` magic words |
 
-Detect the plan home before planning or picking up work: `TODO.md` at the root means the repo plan; a Linear team, project, or issue named in the brief or the project context means Linear, and `TODO.md`/`DONE.md` do not exist. Load the `spot-project-management` skill before authoring specs, planning work, or when briefed to run a Phase or parent issue. Otherwise this context is enough to work within the system.
+An issue is a task written in plain language; it usually maps to one PR. Parents and projects don't repeat their children. Branch names and commit subjects describe the work, never the planning system.
 
-#### Shape
-
-Work is planned in three tiers. The repo plan names them; Linear maps them onto its own objects without the numbering.
-
-| Tier | Repo plan | Linear | Meaning |
-| --- | --- | --- | --- |
-| Phase | `## Phase N: Description` | Parent issue | One branch's worth of work; a context boundary |
-| Objective | `### Description` | Sub-issue (or a checklist item when small) | One reviewable unit; lands as one conventional commit |
-| Task | `- [ ] description` | Checklist item in the issue body | Sequential step |
-
-A Linear project groups several related parent issues when the work is big enough to need shared framing, ownership, or reporting; otherwise parent issues stand alone. Do not force every level: a small piece of work is one issue with a checklist.
-
-Repo plan: Phases are independent unless a `**Dependencies**: <N>` line says otherwise, and dependencies chain (if Phase 7 depends on 6 and 6 on 5, Phase 7 is also blocked by 5). Phase numbers are stable IDs, not ordering; update Phase content in place, append new Phases. `**Requirements**: <id>` lines tie a Phase to spec IDs.
-
-Linear: no numbering. Sequencing is a `blocks` relation only when one issue's output is another's required input; otherwise state the intended order in the parent description. Spec references are links to the spec file on GitHub with the ID and its one-sentence wording quoted inline, because a bare `au-R007` means nothing inside Linear.
-
-When the plan and the specs disagree, specs win — flag the mismatch.
-
-#### Execution
-
-- A session runs a Phase or parent issue on one branch in one worktree. Helpers (teammates, subagents) work in that same tree and report done; the owning session reviews, then commits or sends back.
-- An Objective closes as one well-named conventional commit. Branch names and commit subjects describe the work (`feat/oauth`, `feat(auth): add GCP oauth`) — the planning system stays out of them.
-- No bookkeeping-only commits. Repo plan: fold the TODO checkoff into the Objective's commit and amend the final TODO→DONE move into the Phase's last commit. Linear: put the issue's magic word (`Closes ENG-123`) in the commit trailer or PR description so status moves on its own.
-- Requirement changes are planning work: pause, edit the spec deliberately, resume. Don't bend requirements to match output mid-Phase.
-- A Phase is complete when every Task is done, listed requirements are met, the ledger is updated (`DONE.md`, or a closing comment on the parent issue), and the branch is clean.
-- Truly unrelated Phases or parent issues can run as parallel sessions on worktrees (worktrunk + herdr); the parent session creates, briefs, and folds them. Decide on parallelization in planning, weighing the speed gain against the cost of folding the changes in cleanly.
-
-##### Plan details in commits
-
-Plan details go after any body bullets, before the trailers. The last Objective of Phase 3 in a repo plan:
-
-```text
-fix(auth): patch pkce loophole
-
-* optional body bullets
-
-Completes `Fix PKCE vulnerability` in Phase 3
-Closes Phase 3
-
-Closes #456
-
-Co-Authored-By: <Agent Name> <agent email>
-```
-
-Every Objective's commit carries its `Completes` line; only the last adds `Closes Phase N`. In Linear the closing keywords are the plan details: `Closes ENG-312` for the sub-issue, then `Closes ENG-310` when it also finishes the parent. Never a separate commit like `chore(spot): close Phase 3`.
-
-#### Stops
-
-- `#user` marks Tasks needing human credentials, judgment, installs, or deployments. Stop when blocked.
-- Surface ambiguous wording, risky approaches, and requirement concerns before building.
+- `#user` marks work needing human credentials, judgment, installs, or deployments. Stop when blocked.
+- Make reasonable calls, write them down, and flag them in the PR. Stop for choices with irreversible or external effects, or ones that change what's being built.
 
 #### Issues and tasks
 
-Issues are work and project tracking in Linear or GitHub. Tasks are Winnie's personal to-dos in Reminders and the vault, even when one mirrors an issue assigned to her. A capitalized Task is neither: it is a step in a SPOT plan.
+Issues are work and project tracking in Linear or GitHub. Tasks are Winnie's personal to-dos in Reminders and the vault, even when one mirrors an issue assigned to her.
 
-- Load `managing-issues` before reading or writing any issue.
+- Load `project-management` before reading or writing any issue.
 - Load `tasks` before reading or changing any task or reminder.
 - A request about "my tasks" or "to-dos" means tasks; a request about tickets, the backlog, or a named issue means issues. Changing one never implies changing the other.
 
