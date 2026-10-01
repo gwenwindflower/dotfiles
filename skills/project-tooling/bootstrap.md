@@ -20,7 +20,7 @@ Settle these before touching anything. Propose real names; do not carry casual p
 ## New repository
 
 ```bash
-bash ~/.agents/skills/project-workflows/scripts/bootstrap.sh new \
+bash ~/.agents/skills/project-tooling/scripts/bootstrap.sh new \
   --name <name> --owner gwenwindflower --description "<one line>" [--binary <bin>] [--author "<name>"]
 ```
 
@@ -40,7 +40,7 @@ Then, in order:
 ## Existing repository
 
 ```bash
-bash ~/.agents/skills/project-workflows/scripts/bootstrap.sh existing --dir . --name <name> --owner <owner> [--lang rust]
+bash ~/.agents/skills/project-tooling/scripts/bootstrap.sh existing --dir . --name <name> --owner <owner> [--lang rust]
 ```
 
 Nothing is overwritten. Files the template has and the repo lacks are copied in with placeholders filled; files both have are listed with a diff summary for you to reconcile by hand. Treat the report as the audit: work through it, keep intentional local differences, and adopt the rest.

@@ -39,7 +39,7 @@ Every new branch starts as a worktree: `wt switch -c <branch>`. A worktree is al
 
 ##### Local CI for solo projects
 
-Winnie's own solo projects built on the `project-workflows` pattern land work through Worktrunk, not PRs: branch with `wt switch -c`, commit under prek hooks, then fold into `main` with `wt merge`, whose hooks run the project's mise checks. Mise tasks, prek hooks, and Worktrunk hooks together are the project's local CI.
+Winnie's own solo projects built on the `project-tooling` pattern land work through Worktrunk, not PRs: branch with `wt switch -c`, commit under prek hooks, then fold into `main` with `wt merge`, whose hooks run the project's mise checks. Mise tasks, prek hooks, and Worktrunk hooks together are the project's local CI.
 
 - Suggest a PR when a change needs remote verification: edits to release or other GitHub Actions workflows, build-system changes that need cross-architecture runs, or a breaking change or large refactor that deserves visibility and cross-platform CI. Winnie can also ask for one at any time.
 - Lightdash and client work, repos Winnie doesn't own, and projects with frequent collaborators or heavy usage keep the normal GitHub PR flow.

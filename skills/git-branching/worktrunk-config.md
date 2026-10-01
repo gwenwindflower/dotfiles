@@ -41,7 +41,7 @@ Don't repeat these hooks in a project's `.config/wt.toml`.
 - Prefer `post-start` for slow setup unless `-x` or a later hook needs the result first.
 - User and project hooks both run. For `pre-*`, user commands run first and a failure skips the project's. For `post-*`, the two sources run in parallel with no ordering, so commands that depend on each other belong in one source.
 
-Tool projects gate `wt merge` with one project `pre-merge` hook after the rebase: `mise run release:check` into the default branch, `mise run check` into any other. [project-workflows/mise.md](../project-workflows/mise.md#hooks-and-merge-gates) owns that pattern.
+Tool projects gate `wt merge` with one project `pre-merge` hook after the rebase: `mise run release:check` into the default branch, `mise run check` into any other. [project-tooling/mise.md](../project-tooling/mise.md#hooks-and-merge-gates) owns that pattern.
 
 ### Forms
 

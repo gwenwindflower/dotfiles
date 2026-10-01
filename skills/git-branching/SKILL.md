@@ -15,7 +15,7 @@ Every branch lives in its own worktree, created and retired through Worktrunk (`
 
 ## Landing work
 
-- **Solo projects on the `project-workflows` pattern** land with `wt merge`: the project's `pre-merge` gate is the local CI, and a PR is only for changes that need remote verification.
+- **Solo projects on the `project-tooling` pattern** land with `wt merge`: the project's `pre-merge` gate is the local CI, and a PR is only for changes that need remote verification.
 - **Everything else** (Lightdash, repos Winnie doesn't own, collaborator-heavy projects) goes through a GitHub PR, merged with `gh pr merge --squash`.
 - `wt merge` squashes by default. A SPOT Phase branch whose commits are one-per-Objective lands with `wt merge --no-squash`.
 

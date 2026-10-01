@@ -29,14 +29,14 @@ Then read the repo's releases or tags page for breaking changes. **Confirm the m
 
 ## Rule 3: Audit with zizmor, pin with pinact
 
-- **[zizmor](https://docs.zizmor.sh)** audits for template injection, excessive permissions, `pull_request_target` misuse, cache poisoning, unpinned actions. Commit hooks use `zizmor --offline`; a dedicated CI audit job supplies a read-only `GH_TOKEN` and runs `zizmor --format github .`. Without a token, online checks such as known vulnerabilities are skipped. For the mise task's cache write allowance, see [project-workflows/mise](../project-workflows/mise.md).
+- **[zizmor](https://docs.zizmor.sh)** audits for template injection, excessive permissions, `pull_request_target` misuse, cache poisoning, unpinned actions. Commit hooks use `zizmor --offline`; a dedicated CI audit job supplies a read-only `GH_TOKEN` and runs `zizmor --format github .`. Without a token, online checks such as known vulnerabilities are skipped. For the mise task's cache write allowance, see [project-tooling/mise](../project-tooling/mise.md).
 - **[pinact](https://github.com/suzuki-shunsuke/pinact)** rewrites `uses:` to full commit SHAs with a version comment. `pinact run` edits in place, `pinact run --check --verify-comment` reports, `pinact run -update` bumps. Export `GITHUB_TOKEN` (fall back to `gh auth token`); anonymous callers get 60 API calls an hour.
 
 Policy: hash-pin everything; ref-pin is acceptable only for `actions/*`. [`assets/zizmor.yml`](assets/zizmor.yml) and [`assets/pinact.yml`](assets/pinact.yml) encode it; they live in `.github/` next to the workflows. Every tool repo has `mise run ci-audit` running both.
 
 ## The standard pipeline
 
-The template (`gwenwindflower/_tool`) ships two workflows; `project-workflows` installs them and explains the task layer they call.
+The template (`gwenwindflower/_tool`) ships two workflows; `project-tooling` installs them and explains the task layer they call.
 
 **`ci.yml`** on push to `main` and every PR. Job `audit` runs zizmor and `mise run ci-audit:pinact`; `check` uses `needs: audit` and runs problem matchers, `mise run version:check`, and `mise run 'lint:*'`; `test` uses `needs: check` and runs `mise run 'test:*'` on Ubuntu and macOS. Audit failures skip downstream checks and tests. Keep the audit in the same workflow so `needs` enforces ordering. Every job carries `if: ${{ !github.event.repository.is_template }}` so the template repository itself never runs them.
 
@@ -72,4 +72,4 @@ Failures must land on the diff as file-and-line annotations. See [references/ann
 
 ## Auditing a repo
 
-Read each workflow, then check: runner labels current, actions pinned with comments, `permissions` present and minimal, `concurrency` set, `persist-credentials: false`, no job-level secrets, `cache: false` on publishing workflows, `fail-fast: false` where the matrix should finish, matchers registered. Run `mise run ci-audit`. Compare against the template's two workflows; the `project-workflows` bootstrap script's `existing` mode reports the diff.
+Read each workflow, then check: runner labels current, actions pinned with comments, `permissions` present and minimal, `concurrency` set, `persist-credentials: false`, no job-level secrets, `cache: false` on publishing workflows, `fail-fast: false` where the matrix should finish, matchers registered. Run `mise run ci-audit`. Compare against the template's two workflows; the `project-tooling` bootstrap script's `existing` mode reports the diff.

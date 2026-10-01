@@ -1,6 +1,6 @@
 ---
 description: Tool project pattern from scaffold to release - gwenwindflower/_tool template, mise toolchain and tasks, prek hooks, release pipeline, install paths, gitignore, Rust and Herdr plugin variants.
-name: project-workflows
+name: project-tooling
 ---
 
 # Project workflows

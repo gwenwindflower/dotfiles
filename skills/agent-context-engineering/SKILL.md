@@ -104,7 +104,7 @@ CLAUDE.md -> AGENTS.md     symlink
 docs/                      how the system works now, indexed from AGENTS.md
 ```
 
-Agent-specific directories hold only what that agent needs; shared content lives once under `.agents/` or `docs/`. The `project-workflows` bootstrap lays this down.
+Agent-specific directories hold only what that agent needs; shared content lives once under `.agents/` or `docs/`. The `project-tooling` bootstrap lays this down.
 
 ## File locations
 
