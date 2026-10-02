@@ -259,6 +259,7 @@ packages:
         - dbc
         - ipython
         - marimo
+        - modal
         - nbpreview
         - rematter
       personal:
