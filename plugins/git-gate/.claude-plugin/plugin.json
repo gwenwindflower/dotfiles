@@ -1,0 +1,5 @@
+{
+  "name": "git-gate",
+  "version": "0.1.0",
+  "description": "Reviews core git operations across sibling worktrees and routes branch creation through Worktrunk"
+}

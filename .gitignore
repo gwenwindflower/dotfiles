@@ -16,3 +16,6 @@ private_dot_config/nvim/**/.repro
 private_dot_config/nvim/**/debug
 private_dot_config/nvim/**/data
 private_dot_config/nvim/doc/tags
+
+# Claude plugin generated types
+plugins/*/.claude-plugin/types/
