@@ -25,7 +25,7 @@ docs/                             # Repo-level reference docs (chezmoi-ignored);
 wip/                              # Scratch space (git- and chezmoi-ignored); plans, reviews, references
 skills/                           # Own agent skills (chezmoi-ignored); a `gh skill` source installed into ~/.agents/skills from gwenwindflower/dotfiles
 .claude-plugin/marketplace.json   # `supermodel` plugin marketplace (chezmoi-ignored): supermodel-skills (skills/ for Cowork) + conditional LSP plugins
-plugins/                          # LSP router plugins (chezmoi-ignored); marketplace commands are absolute paths into this dir
+plugins/                          # LSP router plugins and Claude Code mods (chezmoi-ignored); marketplace commands are absolute paths into this dir
 
 private_dot_config/               # → ~/.config/
   fish/                           #   config.fish.tmpl + exact_functions/ + exact_completions/ + exact_conf.d/
@@ -152,6 +152,12 @@ Editing an own skill: work on the deployed copy in `~/.agents/skills/<name>`, ru
 External skills are source material, never shipped, apart from the exceptions named in `skills/upstream.toml`'s header: a spine holds only our own docs and exactly one `SKILL.md`, since harnesses such as Codex hoist any nested `SKILL.md` into a top-level skill. `skills/upstream.toml` groups upstream skills by spine (`[[<spine>.upstream]]`), names the spine-relative `files` each folds into (one entry and one baseline per upstream skill), and records the upstream commit last distilled as its `baseline`. `skillet` (`.utils/skillet.ts`, docs in `.utils/docs/skillet.md`) fetches upstream versions through `gh skill install --dir` into temp dirs, diffs baseline against current, and records new baselines; an agent distills each diff following `agent-context-engineering`'s `upstream-fold.md`. gh resolves a repo with release tags to its latest tag and an untagged repo to its default branch.
 
 gh writes every installed file as 0644, so a skill that ships scripts runs them through `bash`, never by path. `gh skill` records its manifest in the symlinked `~/.agents/.skill-lock.json`; `run_onchange_19-install-agent-skills.sh.tmpl` replays that manifest on a fresh machine and re-runs whenever it changes.
+
+#### Mods
+
+Claude Code mods (plugins of function hooks) live in `plugins/<name>/` beside the LSP routers and are listed in the `supermodel` marketplace for others. Locally, `enabledPlugins` disables the marketplace copy and `CLAUDE_CODE_PLUGIN_DIRS` in `symsources/claude/settings.json` loads the repo folder, which every session watches and hot-reloads.
+
+A new mod starts where the `plugin-authoring` skill writes it, `~/.claude/dev-mods/<session>/<name>/`, since only that folder hot-reloads within the session that creates it. Once it works, it graduates: copy it to `plugins/<name>/` without `.claude-plugin/types/` (engine-generated per build and gitignored), add the folder to `CLAUDE_CODE_PLUGIN_DIRS` and to the marketplace with its local disable, delete the dev-mods copy so it never loads twice, and run `claude plugin test` and `claude plugin validate` on the new path. A session already working in the repo edits a graduated mod in place. `.utils/itch.ts` builds a scratch repo for trying mods end to end.
 
 ### `exact_` dirs: full reconciliation for churn-prone collections
 
