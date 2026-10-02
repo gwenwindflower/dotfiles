@@ -63,6 +63,7 @@ One reference doc per tool in `.utils/docs/` — load only what's relevant to th
 - `generate-logo.md` — text-to-SVG with per-glyph `<path>` for animation
 - `git-wash.md` — back up, classify, and delete SHA-verified remote branch targets
 - `herdr-agent-picker.md` — Gum-based agent/model launcher and local plugin evolution boundary
+- `itch.md` — throwaway git repo with a bare origin and sibling worktrees, for testing mods and git tooling
 - `lscolors-to-toml.md` — `$LS_COLORS` → yazi TOML rules
 - `packy.md` — declaratively manage `.chezmoidata/packages.yaml` (formula/cask/tap/cargo/uv)
 - `provision-repo.md` — reconcile GitHub labels + Discussion categories for a Supermodel Labs repo

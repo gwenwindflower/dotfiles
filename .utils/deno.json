@@ -23,6 +23,7 @@
     "git-wash": "deno run --allow-read --allow-write --allow-run=git,gh git-wash.ts",
     "termshot": "deno run --allow-read --allow-write --allow-env=HOME --allow-run=termframe,resvg termshot.ts",
     "skillet": "deno run --allow-read --allow-write --allow-env --allow-run=gh,git skillet.ts",
+    "itch": "deno run --allow-read --allow-write --allow-run=git itch.ts",
     "test": "deno run --allow-read --allow-run=deno scripts/test.ts",
     "test:tables": "deno test --allow-read fix-md-tables_test.ts",
     "test:logo": "deno test --allow-read --allow-env generate-logo_test.ts",
@@ -33,6 +34,7 @@
     "test:git-wash": "deno test --allow-read --allow-write --allow-run=git git-wash_test.ts",
     "test:termshot": "deno test termshot_test.ts",
     "test:skillet": "deno test --allow-read skillet_test.ts",
+    "test:itch": "deno test --allow-read --allow-write --allow-run=git itch_test.ts",
     "test:agency": "deno test --allow-read --allow-write --allow-env --allow-run=codex agency_test.ts"
   }
 }
