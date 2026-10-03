@@ -611,7 +611,7 @@
   {
     "plugin_id": "wtherdr",
     "name": "wtherdr",
-    "version": "0.1.0",
+    "version": "0.0.3",
     "min_herdr_version": "0.7.5",
     "description": "Run Worktrunk's native worktree workflows in Herdr popups and keep nested workspaces in sync.",
     "manifest_path": "/Users/winnie/dev/herdr/wtherdr/herdr-plugin.toml",
