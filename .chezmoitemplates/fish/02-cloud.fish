@@ -11,6 +11,7 @@ fish_add_path $GCLOUD_HOME/bin
 ## AI
 ### Claude
 set -gx CLAUDE_HOME $HOME/.claude
+set -gx --path CLAUDE_CODE_PLUGIN_DIRS $DOTFILES/plugins/git-gate
 ### OpenCode
 set -gx OPENCODE_ENABLE_EXA 1
 ### AGENTSVIEW

@@ -1,5 +1,6 @@
 {
   "name": "git-gate",
   "version": "0.1.0",
+  "author": { "name": "Gwyneth Windflower" },
   "description": "Reviews core git operations across sibling worktrees and routes branch creation through Worktrunk"
 }

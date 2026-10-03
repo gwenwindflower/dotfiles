@@ -155,7 +155,7 @@ gh writes every installed file as 0644, so a skill that ships scripts runs them 
 
 #### Mods
 
-Claude Code mods (plugins of function hooks) live in `plugins/<name>/` beside the LSP routers and are listed in the `supermodel` marketplace for others. Locally, `enabledPlugins` disables the marketplace copy and `CLAUDE_CODE_PLUGIN_DIRS` in `symsources/claude/settings.json` loads the repo folder, which every session watches and hot-reloads.
+Claude Code mods (plugins of function hooks) live in `plugins/<name>/` beside the LSP routers and are listed in the `supermodel` marketplace for others. Locally, `enabledPlugins` disables the marketplace copy and `CLAUDE_CODE_PLUGIN_DIRS` (a `--path` list in `.chezmoitemplates/fish/02-cloud.fish`, one entry per mod folder) loads the repo copies, which every session launched from fish watches and hot-reloads.
 
 A new mod starts where the `plugin-authoring` skill writes it, `~/.claude/dev-mods/<session>/<name>/`, since only that folder hot-reloads within the session that creates it. Once it works, it graduates: copy it to `plugins/<name>/` without `.claude-plugin/types/` (engine-generated per build and gitignored), add the folder to `CLAUDE_CODE_PLUGIN_DIRS` and to the marketplace with its local disable, delete the dev-mods copy so it never loads twice, and run `claude plugin test` and `claude plugin validate` on the new path. A session already working in the repo edits a graduated mod in place. `.utils/itch.ts` builds a scratch repo for trying mods end to end.
 

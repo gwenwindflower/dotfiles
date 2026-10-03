@@ -63,6 +63,15 @@
 					}
 				}
 			}
+		},
+		{
+			"name": "git-gate",
+			"description": "Claude Code mod that decides core git operations per worktree (reads, commits, pushes, destructive commands) while settings denies still win, and routes branch creation through Worktrunk or wtherdr into a new worktree.",
+			"author": {
+				"name": "Gwyneth Windflower"
+			},
+			"source": "./plugins/git-gate",
+			"category": "Git"
 		}
 	]
 }
