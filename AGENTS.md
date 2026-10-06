@@ -151,7 +151,7 @@ Editing an own skill: work on the deployed copy in `~/.agents/skills/<name>`, ru
 
 External skills are source material, never shipped, apart from the exceptions named in `skills/upstream.toml`'s header: a spine holds only our own docs and exactly one `SKILL.md`, since harnesses such as Codex hoist any nested `SKILL.md` into a top-level skill. `skills/upstream.toml` groups upstream skills by spine (`[[<spine>.upstream]]`), names the spine-relative `files` each folds into (one entry and one baseline per upstream skill), and records the upstream commit last distilled as its `baseline`. `skillet` (`.utils/skillet.ts`, docs in `.utils/docs/skillet.md`) fetches upstream versions through `gh skill install --dir` into temp dirs, diffs baseline against current, and records new baselines; an agent distills each diff following `agent-context-engineering`'s `upstream-fold.md`. gh resolves a repo with release tags to its latest tag and an untagged repo to its default branch.
 
-gh writes every installed file as 0644, so a skill that ships scripts runs them through `bash`, never by path. `gh skill` records its manifest in the symlinked `~/.agents/.skill-lock.json`; `run_onchange_19-install-agent-skills.sh.tmpl` replays that manifest on a fresh machine and re-runs whenever it changes.
+gh writes every installed file as 0644, so a skill that ships scripts runs them through `bash`, never by path. `gh skill` records its manifest in the symlinked `~/.agents/.skill-lock.json`; `run_onchange_19-install-agent-skills.sh.tmpl` reconciles `~/.agents/skills` against that manifest: it installs missing skills by exact path and runs `gh skill update <names> --all` only for skills whose installed tree SHA differs from the manifest, so an up-to-date machine makes no network calls. It re-runs when a skill's source, path, or tree SHA changes, never on the timestamps gh bumps. `gh skill` never prunes a removed skill from the manifest, so delete its entry by hand after removing the skill, or the script will keep trying to install it.
 
 #### Mods
 
@@ -219,7 +219,7 @@ Plugin file extraction matches Fisher's: top-level files in `functions/`, `compl
   run_onchange_17-install-cargo-tools.sh.tmpl     # install OS/profile Cargo tools with cargo-binstall
   run_onchange_18-mise-install.sh.tmpl            # `mise install` to materialize node + npm-backend package manager + CLI globals; re-runs on active arch's mise config change
   run_onchange_19-sync-gh-extensions.sh.tmpl      # install/update GitHub CLI extensions (gh-dash); monthly refresh stamp
-  run_onchange_19-install-agent-skills.sh.tmpl    # replay the gh skill manifest into ~/.agents/skills; re-runs when skill-lock.json changes
+  run_onchange_19-install-agent-skills.sh.tmpl    # reconcile ~/.agents/skills with the gh skill manifest; re-runs when a skill's source, path, or tree SHA changes
   run_onchange_19-sync-luarocks-tools.sh.tmpl     # darwin: install/update LuaRocks tools (busted, luacheck); monthly refresh stamp
   run_once_20-configure-shell.sh.tmpl            # Fish → /etc/shells, chsh
   run_once_30-yazi-plugins.sh.tmpl               # ya pkg install (yazi plugin sync)

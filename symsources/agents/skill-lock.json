@@ -8,7 +8,7 @@
       "skillPath": "skills/agent-config/SKILL.md",
       "skillFolderHash": "ef0c4eb66a44bcb14360ae19eeae3789c7ff98cc",
       "installedAt": "2026-09-23T05:13:04Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "agent-context-engineering": {
       "source": "gwenwindflower/dotfiles",
@@ -17,7 +17,7 @@
       "skillPath": "skills/agent-context-engineering/SKILL.md",
       "skillFolderHash": "ddae9b532b717fbf90384419894079a4810b4ea7",
       "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "analytics-engineering": {
       "source": "gwenwindflower/dotfiles",
@@ -26,7 +26,7 @@
       "skillPath": "skills/analytics-engineering/SKILL.md",
       "skillFolderHash": "401f1a3dc4a3f06237a8fc788b7979243ae86a3b",
       "installedAt": "2026-09-23T05:13:04Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "ascii-animations": {
       "source": "gwenwindflower/dotfiles",
@@ -35,7 +35,7 @@
       "skillPath": "skills/ascii-animations/SKILL.md",
       "skillFolderHash": "8baf1f8de27cda72c468546571126b2df389ed12",
       "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "browser-automation": {
       "source": "gwenwindflower/dotfiles",
@@ -44,7 +44,7 @@
       "skillPath": "skills/browser-automation/SKILL.md",
       "skillFolderHash": "48d9cb3aaa63b9a09ca367938054d6c70759c03b",
       "installedAt": "2026-09-28T17:44:44Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "bun-development": {
       "source": "gwenwindflower/dotfiles",
@@ -53,7 +53,7 @@
       "skillPath": "skills/bun-development/SKILL.md",
       "skillFolderHash": "19eb331f7f3b4d9f083f9e270546fbbc41729605",
       "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "caveman-speak": {
       "source": "gwenwindflower/dotfiles",
@@ -62,7 +62,7 @@
       "skillPath": "skills/caveman-speak/SKILL.md",
       "skillFolderHash": "5f5fbf4e7e20fc9911982860a79db0b467cdf441",
       "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "chezmoi": {
       "source": "gwenwindflower/dotfiles",
@@ -71,7 +71,7 @@
       "skillPath": "skills/chezmoi/SKILL.md",
       "skillFolderHash": "912a143733c222a43d3be4af5c9fa3addd7a8b70",
       "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "clean-python": {
       "source": "gwenwindflower/dotfiles",
@@ -80,7 +80,7 @@
       "skillPath": "skills/clean-python/SKILL.md",
       "skillFolderHash": "f70889a31d9ee2b7f8eab72048e2ba4ef9b51631",
       "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "cloudflare": {
       "source": "cloudflare/skills",
@@ -98,7 +98,7 @@
       "skillPath": "skills/context-search/SKILL.md",
       "skillFolderHash": "3007fa981073e02b6ee66f387b5c2a3132fdb420",
       "installedAt": "2026-09-23T06:10:54Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "deno-tools": {
       "source": "gwenwindflower/dotfiles",
@@ -107,7 +107,7 @@
       "skillPath": "skills/deno-tools/SKILL.md",
       "skillFolderHash": "82a307d052654efaf2b41256cccf3100bf174814",
       "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "developing-in-lightdash": {
       "source": "gwenwindflower/dotfiles",
@@ -116,7 +116,7 @@
       "skillPath": "skills/developing-in-lightdash/SKILL.md",
       "skillFolderHash": "8046998ba7eb62d28ee12016b8ac610af45bb62f",
       "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "diagramming": {
       "source": "gwenwindflower/dotfiles",
@@ -125,7 +125,7 @@
       "skillPath": "skills/diagramming/SKILL.md",
       "skillFolderHash": "ce87ca25f747d98d655540723e7f668b822d3028",
       "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "fish-shell": {
       "source": "gwenwindflower/dotfiles",
@@ -134,16 +134,7 @@
       "skillPath": "skills/fish-shell/SKILL.md",
       "skillFolderHash": "2470ab143a3c6f9d1d09bacf619cf512e3a78790",
       "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
-    },
-    "git-branching": {
-      "source": "gwenwindflower/dotfiles",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/gwenwindflower/dotfiles.git",
-      "skillPath": "skills/git-branching/SKILL.md",
-      "skillFolderHash": "192d43a22878823a4972ce990b73acb233fb748a",
-      "installedAt": "2026-09-28T17:44:34Z",
-      "updatedAt": "2026-10-01T14:13:21Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "github-actions-workflows": {
       "source": "gwenwindflower/dotfiles",
@@ -152,7 +143,7 @@
       "skillPath": "skills/github-actions-workflows/SKILL.md",
       "skillFolderHash": "5d4643ad2af7773dba97ae7d17007822835b637b",
       "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "herdr": {
       "source": "gwenwindflower/dotfiles",
@@ -161,7 +152,7 @@
       "skillPath": "skills/herdr/SKILL.md",
       "skillFolderHash": "1a307b9e81b4636860ffd8a0dbb66090e07be72d",
       "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "lazygit-custom-commands": {
       "source": "gwenwindflower/dotfiles",
@@ -170,7 +161,7 @@
       "skillPath": "skills/lazygit-custom-commands/SKILL.md",
       "skillFolderHash": "507f3a13bdb20935a2917f1e757e777d4970e519",
       "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "learning-opportunities": {
       "source": "gwenwindflower/dotfiles",
@@ -179,16 +170,7 @@
       "skillPath": "skills/learning-opportunities/SKILL.md",
       "skillFolderHash": "33f0376836f1e697b83b437ce7520881927c1004",
       "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
-    },
-    "managing-issues": {
-      "source": "gwenwindflower/dotfiles",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/gwenwindflower/dotfiles.git",
-      "skillPath": "skills/managing-issues/SKILL.md",
-      "skillFolderHash": "5f495e9b3e92776a396432babd132363ebdfa682",
-      "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-10-01T14:13:21Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "map-project": {
       "source": "gwenwindflower/dotfiles",
@@ -197,7 +179,7 @@
       "skillPath": "skills/map-project/SKILL.md",
       "skillFolderHash": "48f2c5dbdabbf64dc560557d3e7936207838fc17",
       "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "markdown-interactive-docs": {
       "source": "gwenwindflower/dotfiles",
@@ -206,7 +188,7 @@
       "skillPath": "skills/markdown-interactive-docs/SKILL.md",
       "skillFolderHash": "00ee6a576010c56f3b6de8a841b29b34bc84756f",
       "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "neovim": {
       "source": "gwenwindflower/dotfiles",
@@ -215,16 +197,7 @@
       "skillPath": "skills/neovim/SKILL.md",
       "skillFolderHash": "8e82e56411a26786bf48810d4b7d5ccea3014ded",
       "installedAt": "2026-09-23T05:13:04Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
-    },
-    "notion-cli": {
-      "source": "gwenwindflower/dotfiles",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/gwenwindflower/dotfiles.git",
-      "skillPath": "skills/notion-cli/SKILL.md",
-      "skillFolderHash": "2496dd38e78f0b109ae6060db433efa80029622c",
-      "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-09-23T05:18:33Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "obsidian": {
       "source": "gwenwindflower/dotfiles",
@@ -233,7 +206,7 @@
       "skillPath": "skills/obsidian/SKILL.md",
       "skillFolderHash": "e9d9ccb3213eb60e4356965bcb237339bf165392",
       "installedAt": "2026-09-28T17:44:42Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "project-management": {
       "source": "gwenwindflower/dotfiles",
@@ -242,7 +215,7 @@
       "skillPath": "skills/project-management/SKILL.md",
       "skillFolderHash": "2689db3c8a5736313acbb89803fc1cdda7657554",
       "installedAt": "2026-10-01T17:52:35Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "project-tooling": {
       "source": "gwenwindflower/dotfiles",
@@ -251,16 +224,7 @@
       "skillPath": "skills/project-tooling/SKILL.md",
       "skillFolderHash": "f09aaa0c62209ab829aef459a05f1d57a18376c3",
       "installedAt": "2026-10-01T17:52:35Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
-    },
-    "project-workflows": {
-      "source": "gwenwindflower/dotfiles",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/gwenwindflower/dotfiles.git",
-      "skillPath": "skills/project-workflows/SKILL.md",
-      "skillFolderHash": "6d1ebb11251b927a264d036d5ff3cd716f14d11b",
-      "installedAt": "2026-09-23T05:13:04Z",
-      "updatedAt": "2026-10-01T14:13:21Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "review-changes": {
       "source": "gwenwindflower/dotfiles",
@@ -269,7 +233,7 @@
       "skillPath": "skills/review-changes/SKILL.md",
       "skillFolderHash": "fac4cdf0bfdc90d88085e484da504aa1e249764d",
       "installedAt": "2026-09-28T17:44:47Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "shadcn-ui": {
       "source": "gwenwindflower/dotfiles",
@@ -278,16 +242,7 @@
       "skillPath": "skills/shadcn-ui/SKILL.md",
       "skillFolderHash": "41bc6ce3d69a847538ccf932fa0f483d26efcc89",
       "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
-    },
-    "spot-project-management": {
-      "source": "gwenwindflower/dotfiles",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/gwenwindflower/dotfiles.git",
-      "skillPath": "skills/spot-project-management/SKILL.md",
-      "skillFolderHash": "8aab1e45b7da58f9da08a7001cb20824cccfb611",
-      "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-10-01T14:13:21Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "tasks": {
       "source": "gwenwindflower/dotfiles",
@@ -296,7 +251,7 @@
       "skillPath": "skills/tasks/SKILL.md",
       "skillFolderHash": "c98a1a79c91ed31faabde9e3199b5b6f97d78159",
       "installedAt": "2026-09-28T17:44:37Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "technical-synthesis": {
       "source": "gwenwindflower/dotfiles",
@@ -305,7 +260,7 @@
       "skillPath": "skills/technical-synthesis/SKILL.md",
       "skillFolderHash": "36565ff847af150619d2ef7c8a048c1c852fb024",
       "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "vhs-terminal-gifs": {
       "source": "gwenwindflower/dotfiles",
@@ -314,7 +269,7 @@
       "skillPath": "skills/vhs-terminal-gifs/SKILL.md",
       "skillFolderHash": "0c86a4ce8c30818c7bd865657d2c5e4d0a1bf271",
       "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "web-design-guidelines": {
       "source": "gwenwindflower/dotfiles",
@@ -323,7 +278,7 @@
       "skillPath": "skills/web-design-guidelines/SKILL.md",
       "skillFolderHash": "1d0b08fe8dd50affea50483bd31335ac11b7bc2f",
       "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     },
     "wrangler": {
       "source": "cloudflare/skills",
@@ -341,7 +296,7 @@
       "skillPath": "skills/writing-prose/SKILL.md",
       "skillFolderHash": "63985391ad975aa51112663e2c265fd382ffccfc",
       "installedAt": "2026-09-22T13:43:31Z",
-      "updatedAt": "2026-10-06T03:48:40Z"
+      "updatedAt": "2026-10-06T03:49:36Z"
     }
   }
 }
