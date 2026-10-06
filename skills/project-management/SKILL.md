@@ -8,7 +8,7 @@ description: Planning and doing the work - Linear and GitHub issues, specs, ADRs
 Plans live in Linear; specs live in the repo; work happens on a branch in its own worktree and lands as a PR or `wt merge`. Everything here serves the project's goals, not the process. Adapt to how a project already works, and move it toward one consistent way of working over time rather than front-loading structure.
 
 - **An issue is a task in plain language.** It usually maps to one PR; treat that as a guidepost, not a rule.
-- **Each fact lives in one place.** Parents don't repeat their children, and issues link specs and docs instead of restating them.
+- **Each fact lives in one place.** Parents don't repeat their children, and issues link specs and docs instead of restating them, and an issue's brief and comments add to its summary rather than recap it.
 - **Make calls.** Pick the reasonable option, write it down, and flag it in the PR. Stop only for choices with irreversible or external effects, or ones that change what's being built.
 
 | Job | Doc |

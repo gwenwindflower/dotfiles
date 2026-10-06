@@ -16,15 +16,17 @@ A good issue is graspable by a human in 30 seconds and executable by a coding ag
 
 ## Description format
 
-Two parts: a tight human summary, then a blank line and `# Additional agent context` written as a delegation brief. Neither part has a section list. A short issue is a paragraph and a few bullets; add a header only when a block of content needs one to stay scannable. Two headers carry a contract: `## Repro` (status marker) and `## Open decisions` (calls a named owner will make). State each fact once; delete empty-value lines ("Version: unknown"). The description is sufficient to act on without opening every link; deep detail lives in the links.
+Two parts: a tight human summary, then a blank line and `# Additional agent context` written as a delegation brief. That shape is the only fixed structure. Everything else should mold to the issue. Any common, useful section or paradigm can be acceptable, except for 'user stories' framing, e.g. `Impact` when priority is critical, `Expected` vs `Actual` when a bug needs the contrast, etc. This is not a comprehensive list. Pick what this issue needs and skip the rest, using plain task language. A short issue is a paragraph and a few bullets; add a header only when a block of content needs one to stay scannable. Two headers carry a contract: `## Repro` (status marker) and `## Open decisions` (calls a named owner will make). The description is sufficient to act on without opening every link; deep detail lives in the links.
+
+Every fact appears once across the title, summary, brief, and comments. Each line tells the reader something they haven't read yet: the brief adds evidence and boundaries the summary lacks, and a clear summary outcome is already the definition of done. An issue ends when its last new fact is stated.
 
 ### Part 1 — human summary
 
 Bug:
 
 ```text
-Grouped bar charts with value labels set to "Top" only label the taller series; shorter bars get no label (value still visible on hover). Regression — this worked previously.
-- Display-only: values readable via tooltip; workaround is label position "Inside"
+Grouped bar charts with value labels set to "Top" only label the taller series; shorter bars get no label. Regression — this worked previously.
+- Display-only: values still show on hover, and label position "Inside" works around it
 - Exec reporting charts are unreadable; a second report suggests stacked bars share the fault
 ## Repro
 ✅ Reproduced internally
@@ -36,17 +38,15 @@ Grouped bar charts with value labels set to "Top" only label the taller series; 
 Feature:
 
 ```text
-Parameter options render alphabetically regardless of YAML order. Modelers want the YAML order preserved so option lists follow business logic, mirroring `order_fields_by` table config.
-- Option order carries meaning (defaults first, hierarchies grouped); alphabetical sorting scrambles it
-- Small, well-bounded change
+Parameter options render alphabetically regardless of YAML order. Modelers order options deliberately (defaults first, hierarchies grouped), and sorting scrambles that.
 ## Open decisions
-- Preserve YAML order always, or opt-in via config mirroring `order_fields_by`?
+- Preserve YAML order always, or opt in via config mirroring the `order_fields_by` table setting?
 ```
 
 Rules:
 
-- Tight bullets over prose paragraphs; expected vs actual in one or two lines, never mirrored paragraphs.
-- Impact is never cut: who is affected, how badly, what a fix changes for them.
+- Tight bullets over prose paragraphs; expected vs actual, when used, fits in one or two lines.
+- Impact, when used, says who is affected, how badly, and what a fix changes for them.
 - Separate the requested outcome from proposed solutions; mark unvalidated ideas as proposals. `## Open decisions` lists only calls a named owner will actually make; a call the implementer can reasonably make belongs in the PR, flagged for review.
 - Repro carries a status marker: ✅ Reproduced (and by whom); 📸 Corroborated — reported evidence (screenshot, recording, error output) matches a code read that explains it, no live run; or ⚠️ Unreproduced. Never present unverified steps as confirmed.
 - No cause-guessing in the summary — root-cause evidence belongs in the agent brief, marked hypothesis or confirmed.
@@ -62,11 +62,10 @@ Brief a capable colleague, not a keystroke script. Give verified evidence and bo
 - Value-label overlap handling lives in the ECharts series config: `packages/frontend/src/components/Echarts/series.ts` (`labelLayout`)
 - Prior art: PR #26679 fixed grouped bars but regressed for stacked bars — see issue comment 2026-08-04
 - Hypothesis (unconfirmed): overlap detection treats same-x labels across series as colliding and drops the shorter bar's label
-- Done when every bar in grouped and stacked charts shows its value label at "Top", "Inside" behavior is unchanged, and a two-series grouped chart passes a visual check at both positions; tooltips and legend untouched
+- Must hold: stacked bars get the same fix; "Inside" labels, tooltips, and legend render as they do today
 ```
 
 - Entry points and prior art are evidence, not instructions. Anchor with file + symbol, not line numbers — lines rot.
 - Root-cause theories are marked hypothesis or confirmed; a well-grounded hypothesis from reading the code is usually enough.
-- Say what must hold when the work is done — behaviors, not test design. Never add "PR references this issue"; the link back to itself is noise.
-- Non-goals and invariants only when the implementer can't discover them locally and the done criteria don't already imply them.
+- Done criteria, non-goals, and invariants only for what the summary doesn't already settle and the implementer can't discover locally — behaviors, not test design.
 - Link docs and specs rather than restating them. Repo conventions (commands, test patterns) live in the repo's agent context.
