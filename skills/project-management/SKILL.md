@@ -10,6 +10,7 @@ Plans live in Linear; specs live in the repo; work happens on a branch in its ow
 - **An issue is a task in plain language.** It usually maps to one PR; treat that as a guidepost, not a rule.
 - **Each fact lives in one place.** Parents don't repeat their children, and issues link specs and docs instead of restating them, and an issue's brief and comments add to its summary rather than recap it.
 - **Make calls.** Pick the reasonable option, write it down, and flag it in the PR. Stop only for choices with irreversible or external effects, or ones that change what's being built.
+- **Name the Linear workspace on every command.** Without one, `linear-cli` runs against whichever profile was last switched to, and a search in the wrong workspace returns plausible, irrelevant results instead of an error. Profiles and how to set them: [linear](linear.md).
 
 | Job | Doc |
 | --- | --- |

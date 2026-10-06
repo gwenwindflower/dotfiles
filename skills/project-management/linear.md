@@ -4,7 +4,7 @@ Plans live in Linear: what to do next, how work groups, what blocks what, and wh
 
 ## Workspaces
 
-`linear-cli` keeps one profile per workspace. Pick it per command with `--profile <name>`, or per repo with `LINEAR_CLI_PROFILE` in the project's `mise.toml` `[env]`. Check `linear-cli config workspace-current` before writing; the default profile is not always the right one.
+`linear-cli` keeps one profile per workspace and falls back to the current one, which is whatever was last switched to. Name the profile on every read and write: `--profile <name>` per command, or `LINEAR_CLI_PROFILE` in the project's `mise.toml` `[env]` for a repo that always uses one workspace. Prefer those over `linear-cli config workspace-switch`, which changes the default for every other session too. A Linear MCP connector is bound to the workspace it was authorized for; its result URLs (`linear.app/<workspace>/…`) show which.
 
 | Profile | Used for | Teams | Conventions |
 | --- | --- | --- | --- |

@@ -1,6 +1,6 @@
 # Lightdash workspace
 
-Conventions for the `lightdash` Linear workspace, on top of [writing issues](issues.md).
+Conventions for the `lightdash` Linear workspace (`linear-cli --profile lightdash`), on top of [writing issues](issues.md).
 
 Issues live on two platforms with distinct jobs. GitHub is for customers: they see we understand their problem, check progress, and give feedback there. Linear is for us: prioritizing and executing the work. Synced pairs mirror the shared fields, so title and description serve both audiences at once, while everything surface-specific goes to its surface: customer names, demand records, and exact figures to Linear; public narrative and progress to GitHub. How the sync works: [github-sync](github-sync.md).
 

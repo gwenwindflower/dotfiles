@@ -24,7 +24,7 @@ gh search issues "value labels missing on grouped bar charts" \
 **`searchIssues`** — hybrid (full-text + vector), issues only, supports the full `IssueFilter` and `includeComments`:
 
 ```sh
-linear-cli api query -o json 'query($t: String!) {
+linear-cli --profile lightdash api query -o json 'query($t: String!) {
   searchIssues(term: $t, first: 10) {
     nodes { identifier title url state { name } }
     totalCount
@@ -35,7 +35,7 @@ linear-cli api query -o json 'query($t: String!) {
 **`semanticSearch`** — pure semantic, reaches projects, initiatives, and documents as well as issues. Results are a flat object with a `type` discriminator and one populated field per hit (not a union spread):
 
 ```sh
-linear-cli api query -o json 'query($q: String!) {
+linear-cli --profile lightdash api query -o json 'query($q: String!) {
   semanticSearch(query: $q, maxResults: 10) {
     results {
       type
@@ -49,6 +49,7 @@ linear-cli api query -o json 'query($q: String!) {
 
 - Default to `searchIssues` for duplicate checks (filters + comment search); use `semanticSearch` when phrasing is uncertain or non-issue types matter.
 - Search family rate limit is ~30 req/min.
+- Set `--profile` to the workspace being searched ([linear](linear.md)); hits from another workspace's teams mean the profile is wrong.
 - `linear-cli` reads run inside the agent sandbox; writes go to the harness reviewer.
 
 ## Synced repos
