@@ -9,6 +9,14 @@ prefix_rule(
 )
 
 prefix_rule(
+    pattern = ["mise", ["run", "r"]],
+    decision = "allow",
+    justification = "mise tasks are gated by the user-owned trust file and guarded in the project's mise config; they run on the host so nested sandboxes and PATH writes inside tasks work.",
+    match = ["mise run check", "mise r test -- --watch", "mise run"],
+    not_match = ["mise trust", "mise use -g node", "deno task check"],
+)
+
+prefix_rule(
     pattern = ["mise", "install"],
     decision = "allow",
     justification = "Installing a project's pinned tools writes mise installs on the host.",

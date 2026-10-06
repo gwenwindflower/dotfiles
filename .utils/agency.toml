@@ -194,6 +194,14 @@ cmd = "mise install"
 expect = "allow"
 
 [[rule]]
+cmd = "mise run check"
+expect = "allow"
+
+[[rule]]
+cmd = "mise r test"
+expect = "allow"
+
+[[rule]]
 cmd = "rem list -o json"
 expect = "allow"
 

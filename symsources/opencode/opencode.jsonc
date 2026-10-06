@@ -250,6 +250,10 @@
 			"gh skills list *": "allow",
 			"gh skills preview": "allow",
 			"gh skills preview *": "allow",
+			"mise run": "allow",
+			"mise run *": "allow",
+			"mise r": "allow",
+			"mise r *": "allow",
 			"mise up": "allow",
 			"mise up *": "allow",
 			"mise upgrade": "allow",
@@ -583,9 +587,7 @@
 			"task": "ask",
 			"task *": "ask",
 			"deno task": "ask",
-			"deno task *": "ask",
-			"mise run": "ask",
-			"mise run *": "ask"
+			"deno task *": "ask"
 		},
 		"skill": "allow",
 		"external_directory": {

@@ -20,7 +20,8 @@ Command families are placed by purpose, not because a binary is globally trusted
 | --- | --- | --- |
 | Inspection, format, lint, typecheck, test, and build loops | `sandboxed` | Caches and package stores are granted in [workspace access](workspace.md#paths-by-purpose). |
 | Project dependency installs | `sandboxed` | Lifecycle scripts stay sandboxed. |
-| Task runners (`mise run`, `deno task`, `make`, `npm`/`aube run`) | `sandboxed` | In Claude they reach the classifier; in Codex they run unreviewed. An unsandboxed retry is `review` after the task definition is inspected; release-shaped tasks are `review` (on request). |
+| mise tasks (`mise run`, `mise r`) | `open` | mise's trust file is user-owned and stays read-only to every sandbox, so a task that runs at all is one the user approved; tasks that need guarding are guarded in the project's mise config. The agent still reads a task definition before running it. |
+| Other task runners (`deno task`, `make`, `npm`/`aube run`) | `sandboxed` | In Claude they reach the classifier; in Codex they run unreviewed. An unsandboxed retry is `review` after the task definition is inspected; release-shaped tasks are `review` (on request). |
 | Configured upgrades (`brew update`/`upgrade`, `mise up`, `uv tool upgrade`, `uv python upgrade`, `rustup update`, `deno upgrade`, `cargo install-update`) and project `mise install` | `open` | They write `PATH` directories, which no sandbox may. Pins, cooldowns, and checksum checks stay on. |
 | New global installs and uninstalls (`brew install`, `uv tool install`, `cargo install`, `mise use -g`) | `review` | They fail in the sandbox for the same reason and reach review. A tool the user named is routine. |
 | Process inspection (`ps`, `pgrep`) | `open` | Codex also runs `lsof` and read-only `docker` subcommands on the host. |
@@ -43,14 +44,14 @@ GitHub Actions is the only CI/CD system. The `github-actions-workflows` skill is
 
 | Platform | Mechanism | Coverage |
 | --- | --- | --- |
-| Claude Code | Sandbox grants; exclusions with allows for upgrades and process inspection; exclusions without allows for host administration; language-service plugins | Deploys and infrastructure calls fail on unlisted hosts and reach the classifier through the retry. |
-| Codex | Profile grants; `command-safety.rules` allows upgrades and process inspection, prompts on deploys, infrastructure apply, and macOS preferences, and forbids deletion, publishing, and `sudo` | Families that fail in the sandbox, such as global installs, reach the reviewer through an escalation with no rule. |
+| Claude Code | Sandbox grants; exclusions with allows for mise tasks, upgrades, and process inspection; exclusions without allows for host administration; language-service plugins | Deploys and infrastructure calls fail on unlisted hosts and reach the classifier through the retry. |
+| Codex | Profile grants; `command-safety.rules` allows mise tasks, upgrades, and process inspection, prompts on deploys, infrastructure apply, and macOS preferences, and forbids deletion, publishing, and `sudo` | Families that fail in the sandbox, such as global installs, reach the reviewer through an escalation with no rule. |
 | OpenCode | Bash pattern rules plus configured LSP and formatters | Closely covers the routine command families; arbitrary commands ask by default. |
 
 ## Verification
 
 - A repository's standard format, lint, typecheck, test, and build commands run through a short feedback loop without review.
 - A formatter without the relevant project configuration does not rewrite the project opportunistically.
-- `mise up` runs on the host without review; `uv tool install <tool>` reaches review.
+- `mise run <task>` and `mise up` run on the host without review; `uv tool install <tool>` reaches review.
 - Destructive infrastructure, raw publishing, and unsafe deletion commands are denied in both harnesses.
 - Adding or changing global package-manager configuration is never an automatic recovery step.
