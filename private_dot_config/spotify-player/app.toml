@@ -1,4 +1,4 @@
-client_id_command = "echo $SPOTIFY_PLAYER_CLIENT_ID"
+client_id_command = { command = "env", args = ["OP_ACCOUNT=my.1password.com", "op", "read", "op://Personal/Spotify/API app/client-id"] }
 client_port = 8080
 theme = "Catppuccin-frappe"
 playback_format = """
