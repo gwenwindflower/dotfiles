@@ -19,3 +19,17 @@ Load a specialized guide when the task leaves ordinary web pages:
 `agent-browser skills list` shows every guide the installed version ships. Browser binaries, sockets, sessions, and encryption state live under `~/.agent-browser`.
 
 The observability dashboard runs on port 4848, independent of browser sessions. Session tabs, status, and streams are proxied through the dashboard origin, so session ports never need exposing.
+
+## Running Electron apps: Slack example
+
+Load the `core`, `electron`, and `slack` CLI guides first. A running Electron app must be quit and relaunched for the remote debugging flag to take effect; passing it to an already-running Slack process does not expose CDP.
+
+```bash
+osascript -e 'tell application "Slack" to quit'
+open -a Slack --args --remote-debugging-port=9222
+agent-browser --session slack-desktop connect 9222
+agent-browser --session slack-desktop tab
+agent-browser --session slack-desktop snapshot -i
+```
+
+The desktop webview reuses Slack's signed-in session. If the app already exposes a debugging port, connect directly without relaunching. Use `tab` to select the workspace webview when the app exposes multiple targets.
