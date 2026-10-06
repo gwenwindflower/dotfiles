@@ -185,6 +185,7 @@ packages:
           - claude-code@latest
           - cloudflare-warp
           - codex
+          - descript
           - font-charter
           - font-cormorant
           - font-eb-garamond
