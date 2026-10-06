@@ -22,10 +22,10 @@ gui:
       - "#c6d0f5"
     searchingActiveBorderColor:
       - "#e5c890"
-  authorColors:
-    "winnie": "#f4b8e4"
-    "dependabot[bot]": "#8caaee"
-    "*": "#babbf1"
+    authorColors:
+      "winnie": "#f4b8e4"
+      "dependabot[bot]": "#8caaee"
+      "*": "#babbf1"
   nerdFontsVersion: "3"
 git:
   diffRenderers:
