@@ -6,6 +6,7 @@ packages:
           - anthropics/tap
           - bro3886/tap
           - charmbracelet/tap
+          - crmne/tap
           - databricks/tap
           - dbt-labs/dbt
           - denisotree/tuitab
@@ -224,6 +225,7 @@ packages:
           - orbstack
           - orion
           - postico
+          - spotifast
           - spotify
           - tailscale-app
           - thaw

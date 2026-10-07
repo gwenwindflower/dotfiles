@@ -30,6 +30,7 @@
   ],
   "trustedcasks": [
     "anthropics/tap/ant",
+    "crmne/tap/spotifast",
     "szamowski-dev/tap/hora"
   ]
 }
