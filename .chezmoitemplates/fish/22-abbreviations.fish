@@ -175,6 +175,15 @@ abbr --add bruse brew uses --installed
 abbr --add bruise brew uses --installed
 abbr --add brbg brew services
 abbr --add brsrv brew services
+abbr --add brsrvls brew services list
+# packy
+abbr --add pky packy
+abbr --add pkya packy add
+abbr --add pkyrm packy remove
+abbr --add pkyls packy list
+abbr --add pkyup packy upgrade
+abbr --add pkys packy sync
+abbr --add pkyd packy diff
 # containers
 abbr --add dk docker
 abbr --add dkcu docker compose up
