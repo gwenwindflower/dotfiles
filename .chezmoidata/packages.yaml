@@ -138,6 +138,7 @@ packages:
           - sevenzip
           - sheets
           - slides
+          - slumber
           - spotify_player
           - starship
           - stripe-cli
