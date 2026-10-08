@@ -52,3 +52,21 @@ The girlOS Obsidian vault is Winnie's knowledge base for deep dives and learning
 - Search for an existing note first and append when one already covers the topic.
 - Land a note in `org/_inbox/` by default, `dev/<project>/` when the project already has a folder there, `dev/_seeds` (append) for new project ideas, or `pen/00_ideas/` for writing seeds.
 - Link the note in the reply.
+
+### Herdr
+
+Sessions usually run inside Herdr (`HERDR_ENV=1`), which lets you launch tools and agents where Winnie can watch them. Load the `herdr` skill before any `herdr` command; the CLI's help is the syntax authority.
+
+- Run a server, test watcher, or long command for Winnie in a sibling pane: `herdr pane split --current --direction right --cwd "$PWD" --no-focus`, then `herdr pane run <pane-id> "<command>"`.
+- Start an agent in an idle shell pane with `herdr agent start <name> --kind <kind> --pane <pane-id>`, then hand it work with `herdr agent prompt <name> "<brief>" --wait`. Keep Winnie's focus where it is.
+- Read IDs from JSON responses, and close only the panes and workspaces you created.
+
+#### Dispatching a task to a worktree agent
+
+This is the go-to way to hand a self-contained task to a parallel agent:
+
+1. Create the worktree and open its nested workspace, following Herdr worktree workspaces in the Git rules.
+2. Find the new workspace's root shell pane with `herdr pane list --workspace <workspace-id>`.
+3. Start the agent there, named after the branch: `herdr agent start <name> --kind claude --pane <pane-id>`. Use the kind Winnie asks for when she names one.
+4. Prompt it with a self-contained brief: the task or issue, acceptance criteria, and how the work lands, whether that's `wt merge` or a PR. The agent commits in its own worktree.
+5. Check on it with `herdr agent wait` and `herdr agent read`. If it reports `blocked`, show Winnie the question rather than answering it yourself.

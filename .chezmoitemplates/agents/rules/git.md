@@ -37,6 +37,20 @@ Every new branch starts as a worktree: `wt switch -c <branch>`. A worktree is al
 - Delete local branches with lowercase `git branch -d` or Worktrunk cleanup, and leave forced deletion (`-D`, `--force`) to the user. Never delete remote refs or mirror-push; GitHub cleans up head branches after merge.
 - Only one agent stages and commits in a worktree at a time. Helpers sharing a worktree hand their work back or take turns; a helper given its own worktree commits there.
 
+##### Herdr worktree workspaces
+
+Herdr nests each linked worktree's workspace under its repository's root workspace in the sidebar. When `HERDR_ENV=1`, which is almost always, a worktree you create gets opened as that nested workspace so Winnie can see it:
+
+```bash
+wt switch -c <branch>
+herdr worktree open --workspace <root-workspace-id> --branch <branch> --no-focus
+```
+
+- Find the root workspace with `herdr worktree list --cwd <repo-root>`; it's the `open_workspace_id` of the non-linked checkout. Read the new workspace ID from the `open` response.
+- Create the worktree with `wt`, not `herdr worktree create`. Only `wt` runs the project's Worktrunk hooks.
+- Close the workspace after `wt merge` or `wt remove` with `herdr workspace close <id>`, but only for a workspace you opened.
+- `wt` writes the checkout outside the repo, so run `wt switch -c` on the host. Pass `--trust-repository` only for a repo Winnie has already trusted, never as a retry after a failed `open`.
+
 ##### Local CI for solo projects
 
 Winnie's own solo projects built on the `project-tooling` pattern land work through Worktrunk, not PRs: branch with `wt switch -c`, commit under prek hooks, then fold into `main` with `wt merge`, whose hooks run the project's mise checks. Mise tasks, prek hooks, and Worktrunk hooks together are the project's local CI.
