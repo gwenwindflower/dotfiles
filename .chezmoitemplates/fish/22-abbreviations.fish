@@ -275,7 +275,8 @@ abbr --add ldg lightdash generate
 abbr --add ldup lightdash upload
 abbr --add lddl lightdash download
 abbr --add ldd lightdash deploy
-abbr --add ldl "lightdash deploy; and lightdash upload"
+abbr --add ldl lightdash login
+abbr --add ldlaunch "lightdash deploy; and lightdash upload"
 abbr --add lddb lightdash dbt
 abbr --add lddbbs lightdash dbt build -s
 abbr --add lddbba lightdash dbt build
