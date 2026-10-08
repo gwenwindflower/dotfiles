@@ -11,9 +11,6 @@ dot_agents/CLAUDE.md
 TODO.md
 # In-repo tool configs
 biome.json
-.markdownlint.yaml
-.rumdl_cache
-.rumdl.toml
 rumdl.toml
 pyproject.toml
 pre-commit-config.yaml
