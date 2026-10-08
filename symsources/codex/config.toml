@@ -747,7 +747,7 @@ enabled = false
 enabled = false
 
 [apps.asdk_app_69a1d78e929881919bba0dbda1f6436d]
-enabled = false
+enabled = true
 
 [apps.asdk_app_69a089a326dc8191b32a3f2553f5be2c]
 enabled = true
