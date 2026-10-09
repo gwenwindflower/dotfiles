@@ -1,17 +1,17 @@
 # Writing issues
 
-A good issue is graspable by a human in 30 seconds and executable by a coding agent without follow-up questions. Structure earns its place by carrying information, never by looking complete. Workspace conventions (labels, readiness gates, customer rules) layer on top; see the workspace table in [linear](linear.md).
+A good issue is graspable by a human in 30 seconds and executable by a coding agent without follow-up questions. Structure earns its place by carrying information, never by looking complete. Workspace conventions (labels, readiness gates, customer rules) layer on top; see the workspace table in [linear](linear.md). Use GFM markdown conventions, with the normal markdown style and syntax requirements for codeblocks, tables, etc.
 
 ## Core rules
 
 - [Search](searching.md) for duplicates and read local conventions (labels, statuses, recent similar work) before creating, closing, or restructuring. Enrich or link existing work when it already represents the outcome.
 - Follow explicit direction first, then local convention; ask only when an unresolved choice would materially change the result.
 - An explicit create/update request is write approval. Otherwise propose the structure and get sign-off before calling write tools.
-- Titles name the outcome in plain language — scannable, with no numbering, implementation detail, or bracketed area prefixes such as `[Data App Themes]`. Carry area and other context in labels or metadata.
+- Titles name the outcome in plain language — scannable, with no numbering, implementation detail, or bracketed area prefixes such as `[Data App Themes]`, `AI agents:`, etc. Carry area and other context in labels or metadata.
 - One label per concept. Where near-duplicate labels exist (`✨ feature-request` and `✨ Feature Request`), use the kebab-case one and remove the other.
 - Comments hold the same concision bar as the description: genuinely new information, never an overflow valve for detail the body rightly omitted.
 - Never fabricate. Repro steps, root causes, and entry points are verified firsthand, labeled unverified, or omitted. Static verification (the file exists, the symbol is there, the PR did what the comment says) counts as firsthand.
-- Filing on someone else's behalf: frame the problem as an ask and leave solution ownership with the assignee.
+- Write in the voice of the examples below: plain statements of what happens and what should happen, addressed to no one. An issue is a shared record of a task, not a message, so it neither commands ("the app must never…") nor requests ("please change…"). Describe the problem and the outcome; how to get there belongs to whoever picks it up.
 - Write the issue in this format from its first version. Add the agent brief only from verified evidence; a missing brief beats a fabricated one.
 
 ## Description format
@@ -26,10 +26,15 @@ Bug:
 
 ```text
 Grouped bar charts with value labels set to "Top" only label the taller series; shorter bars get no label. Regression — this worked previously.
+
 - Display-only: values still show on hover, and label position "Inside" works around it
+
 - Exec reporting charts are unreadable; a second report suggests stacked bars share the fault
+
 ## Repro
+
 ✅ Reproduced internally
+
 1. Grouped bar chart, two series with different magnitudes
 2. Chart config → Series → value labels "Top"
 3. Shorter series renders no labels
@@ -39,7 +44,9 @@ Feature:
 
 ```text
 Parameter options render alphabetically regardless of YAML order. Modelers order options deliberately (defaults first, hierarchies grouped), and sorting scrambles that.
+
 ## Open decisions
+
 - Preserve YAML order always, or opt in via config mirroring the `order_fields_by` table setting?
 ```
 
@@ -59,6 +66,7 @@ Brief a capable colleague, not a keystroke script. Give verified evidence and bo
 
 ```text
 # Additional agent context
+
 - Value-label overlap handling lives in the ECharts series config: `packages/frontend/src/components/Echarts/series.ts` (`labelLayout`)
 - Prior art: PR #26679 fixed grouped bars but regressed for stacked bars — see issue comment 2026-08-04
 - Hypothesis (unconfirmed): overlap detection treats same-x labels across series as colliding and drops the shorter bar's label
