@@ -75,6 +75,7 @@ packages:
           - git-cliff
           - git-delta
           - git-secrets
+          - glide
           - glow
           - gnupg
           - go
