@@ -227,6 +227,7 @@ packages:
           - orbstack
           - orion
           - postico
+          - secretive
           - spotifast
           - spotify
           - tailscale-app
