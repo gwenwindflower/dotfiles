@@ -48,7 +48,7 @@ These principles keep the configs small:
   - No sandbox writes a directory a host `PATH` lookup resolves into (mise shims and installs, `~/.deno/bin`, `~/.bun/bin`, uv tools and pythons, `.rustup`, Mason).
   - No sandbox writes a trust surface (mise trust files, symlinked tool configs whose settings run code).
 - **Credentials stay out of reach where the harness allows it.**
-  - Claude read-denies credential stores in its sandbox.
+  - Claude read-denies credential stores in its sandbox. The agent signing key in `~/.ssh` is the one deliberate exception: it is signing-only on GitHub and each harness carries its own narrow read allow for it, never a broader `~/.ssh` grant.
   - Codex cannot: any profile `deny` entry keeps every command sandboxed, which would break the `open` and escalation paths. Its credential stores are readable to sandboxed commands and governed by the reviewer policy.
   - Authentication and non-secret config changes reach automatic review in task scope; credential dumps and token-revealing flags are `deny`.
 

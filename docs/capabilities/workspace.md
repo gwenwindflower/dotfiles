@@ -24,15 +24,15 @@ Claude grants live in `sandbox.filesystem`; Codex grants live in `[permissions.d
 
 | Purpose | Paths | Claude | Codex |
 | --- | --- | --- | --- |
-| Workspace and temp | Session directory and worktrees, `$TMPDIR` | Write | Write (`:workspace`, `:tmpdir`, `:slash_tmp`); `.git`, `.agents`, and `.codex` inside workspace roots stay read-only |
+| Workspace and temp | Session directory and worktrees, `$TMPDIR`, pnpm's store lock dir `/tmp/pnpm-store-operation-locks-<uid>` and its `/private/tmp` alias | Write (the lock dirs are listed explicitly) | Write (`:workspace`, `:tmpdir`, `:slash_tmp`); `.git`, `.agents`, and `.codex` inside workspace roots stay read-only |
 | Darwin user temp dir | `getconf DARWIN_USER_TEMP_DIR` | Write, because `/usr/bin/mktemp` and `diff` ignore `$TMPDIR` | Covered by `:tmpdir` |
 | Caches and package stores | `~/.cache`, `~/.npm`, `~/.bun/install`, `~/.cargo/{git,registry}`, `~/.go/pkg`, `~/.local/share/{aube,mise,pnpm,uv}`, `~/.local/state/mise`, `~/Library/Caches/{Homebrew,deno,go-build,mise,node-gyp,pip,com.apple.python,dev.biomejs.biome,kitty,ms-playwright}` | Write | Write |
-| Tool state | `~/.agent-browser`, `~/.blacksmith`, `~/.context7`, `~/.critique`, `~/.duckdb`, `~/.mintlify`, `~/.zvec-grep`, `~/.dbt/leases`, `~/.local/share/{agentsview,graveyard,nvim}`, `~/.local/state/{herdr,nvim}`, `~/Library/Application Support/go`, `~/Library/Application Support/linear-cli/cache` | Write | Write |
+| Tool state | `~/.agent-browser`, `~/.pm2` (daemon state, logs, and pids for pm2-managed dev services), `~/.blacksmith`, `~/.context7`, `~/.critique`, `~/.duckdb`, `~/.mintlify`, `~/.zvec-grep`, `~/.dbt/leases`, `~/.local/share/{agentsview,graveyard,nvim}`, `~/.local/state/{herdr,nvim}`, `~/Library/Application Support/go`, `~/Library/Application Support/linear-cli/cache` | Write | Write |
 | Tool configs that hold their own token | `~/.config/lightdash`, `~/.config/rclone`, `~/.config/.wrangler` | Write | Write |
 | Agent state | `~/.codex/{tmp,.tmp,sqlite,cache,memories,plugins,skills}`, `~/.agents/skills`, `symsources/agents/skill-lock.json` | `~/.agents/skills` is a protected path in Claude's sandbox (`~/.claude/skills` links to it), so `gh skill` runs `open`; the manifest is writable | Write |
 | Notes vault | `~/Library/Mobile Documents/iCloud~md~obsidian/Documents/girlOS` | Write | Write |
 | PATH and trust directories | `~/.local/share/mise/{installs,shims}`, `~/.local/share/uv/{python,tools}`, `~/.local/share/nvim/{lazy,mason}`, `~/.bun/install/global`, `~/.deno/bin`, `~/.local/state/mise/{trusted-configs,ignored-configs}`; under `symsources/`, agent settings (claude, codex, opencode), trust surfaces (mise, aube, git, worktrunk, amoxide), and plugin locks (`nvim/lazy-lock.json`, `yazi/package.toml`). Other symlinked configs, such as herdr, and the skill-lock manifest stay writable | Read-only: not granted, or `denyWrite` under a granted parent | Read-only: not granted, or a `read` entry under a granted parent |
-| Credential stores | `~/.ssh` (except `allowed_signers`), `~/.aws`, `~/.gnupg`, `~/.config/{gcloud,op,github-copilot}`, `~/.codex/auth.json`, the chezmoi age identity, `~/.fly`, `~/.sprites`, 1Password and browser profile data, `~/Library/Cookies`, `.env` and key files | Read-denied | Readable; reviewer policy and guidance govern access |
+| Credential stores | `~/.ssh` (except `allowed_signers` and the signing-only `agent-signing-key`, which agent commits sign with), `~/.aws`, `~/.gnupg`, `~/.config/{gcloud,op,github-copilot}`, `~/.codex/auth.json`, the chezmoi age identity, `~/.fly`, `~/.sprites`, 1Password and browser profile data, `~/Library/Cookies`, `.env` and key files | Read-denied | Readable; reviewer policy and guidance govern access |
 
 ## Levels
 

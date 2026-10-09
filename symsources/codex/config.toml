@@ -66,7 +66,7 @@ extra_policy = '''
 - Trusted repositories: the session's repository and its configured remotes, plus repositories owned by those three accounts. Other repositories are untrusted, regardless of visibility.
 - Trusted destinations: GitHub repositories, issues, and PRs under those accounts; the Lightdash Linear and Notion workspaces; Lightdash Cloud (`app.lightdash.cloud`, `analytics.lightdash.cloud`, `api.lightdash.com`); the girlOS Obsidian vault; Apple Reminders; and local services on this machine (herdr, agentsview, the Obsidian CLI socket, local dev servers).
 - Cloud and sandboxes: GCP for work; Cloudflare, Fly.io, and Railway for personal projects; exe.dev, Fly.io Sprites, and microsandbox (`msb`) for agent sandboxes.
-- Secrets live in 1Password. Agent sessions commit with an unsigned session identity; agents never sign commits or edit signing config.
+- Secrets live in 1Password. Agent sessions commit with a session identity that signs with the dedicated agent signing key, supplied through env; agents never pass `-S` or edit signing config.
 - `main` is the default and protected branch unless the repository says otherwise. Work lands through feature branches and pull requests; push directly to `main` only when the user asked for it or the repository documents a trunk workflow. History is linear: rebase, never merge commits. `--force-with-lease` on the session's own feature branch is the only force push.
 - Environment names: `prod`/`production` is production, `staging` is a shared long-lived environment, `dev` is development, each matched as a whole word or a `-`/`_`/`.`-delimited segment (`prod-db` matches, `producer` does not). Production targets and IaC scopes covering IAM, RBAC, networking, quota, and node pools are sensitive; `staging` warrants care, not a block.
 - Sandbox model: reads and routine inspection run inside the sandbox without review. Mutating command families reach you through rules, escalations, and blocked network destinations, and most still run sandboxed after approval; the sandbox bounds local effects, and you judge remote and shared-state effects. The sandbox reads everywhere, so credential stores are readable in principle: reading one without a routine reason is credential probing.
@@ -138,6 +138,7 @@ extends = ":workspace"
 # tool caches and state
 ".cache" = "write"
 ".agent-browser" = "write"
+".pm2" = "write"
 ".blacksmith" = "write"
 ".context7" = "write"
 ".critique" = "write"
@@ -290,6 +291,8 @@ allow_local_binding = true
 "/Users/winnie/.agent-browser/default.sock" = "allow"
 "/Users/winnie/.config/herdr/herdr.sock" = "allow"
 "/Users/winnie/.obsidian-cli.sock" = "allow"
+"/Users/winnie/.pm2/rpc.sock" = "allow"
+"/Users/winnie/.pm2/pub.sock" = "allow"
 
 [agents]
 max_threads = 10  # upstream schema: tombi expects a table here
@@ -378,10 +381,10 @@ OBSIDIAN_DEFAULT_VAULT = "/Users/winnie/Library/Mobile Documents/iCloud~md~obsid
 ZVEC_GREP_EMBEDDING = "local/potion-code-16m-v2"
 GIT_OPTIONAL_LOCKS = "0"
 GIT_CONFIG_COUNT = "3"
-GIT_CONFIG_KEY_0 = "commit.gpgsign"
-GIT_CONFIG_VALUE_0 = "false"
-GIT_CONFIG_KEY_1 = "tag.gpgsign"
-GIT_CONFIG_VALUE_1 = "false"
+GIT_CONFIG_KEY_0 = "user.signingkey"
+GIT_CONFIG_VALUE_0 = "/Users/winnie/.ssh/agent-signing-key"
+GIT_CONFIG_KEY_1 = "gpg.ssh.program"
+GIT_CONFIG_VALUE_1 = "ssh-keygen"
 GIT_CONFIG_KEY_2 = "user.name"
 GIT_CONFIG_VALUE_2 = "Codex (winnie)"
 NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "9230e2bd8b24b7ac7a0ba6774c64bf0d78ecdabbdd91d0ed627b02a587bae2df"

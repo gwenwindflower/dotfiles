@@ -62,7 +62,7 @@ dot_agents/                       # → ~/.agents/ (shared agent hub)
 private_dot_config/git/global_ignore  # → ~/.config/git/global_ignore (git core.excludesfile)
 dot_bashrc, dot_zshrc             # Minimal configs (worktrunk init, starship, zoxide)
 dot_profile.tmpl, dot_zprofile.tmpl  # Login shells (SHELL export, darwin SSH agent)
-private_dot_ssh/                  # → ~/.ssh/ (allowed_signers)
+private_dot_ssh/                  # → ~/.ssh/ (allowed_signers, age-encrypted agent signing key + .pub)
 
 # Symlink sources (ignored as `symsources/`, not deployed as ~/symsources)
 symsources/nvim/                  # lazy-lock.json, lazyvim.json, spell/en.utf-8.add{,.spl}

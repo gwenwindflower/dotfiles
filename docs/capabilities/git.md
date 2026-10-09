@@ -47,7 +47,7 @@ An alias added to `symsources/worktrunk/config.toml` reaches review until both c
 
 ## Authentication and metadata
 
-SSH authentication uses 1Password's agent on the host. User terminal commits remain signed; agent sessions use a hook-provided unsigned identity, so never change signing settings or pass `-S` in response to a failure.
+SSH authentication uses 1Password's agent on the host. User terminal commits sign through it; agent sessions sign with the dedicated agent signing key at `~/.ssh/agent-signing-key`, supplied through `GIT_CONFIG_*` env by the Claude SessionStart hook and the Codex environment policy. The key is registered on GitHub as a signing-only key, so commits verify under the user without granting SSH access. `~/.ssh` stays denied to sandboxes; each platform carries a narrow read exception for the key and `allowed_signers` only. Never change signing settings or pass `-S` in response to a failure.
 
 Sandboxed tools that need linked-worktree metadata resolve `git rev-parse --absolute-git-dir --git-common-dir`; a `.git` pointer alone does not grant its external target.
 

@@ -27,7 +27,7 @@ Claude lists sandbox hosts in `sandbox.network.allowedDomains` and documentation
 | Local | `localhost`, `127.0.0.1`, `::1` | `allowLocalBinding` | Listed hosts plus `allow_local_binding` |
 | Deliberately unlisted | Binary payload hosts (`objects.githubusercontent.com`, `release-assets.githubusercontent.com`, `codeload.github.com`, `nodejs.org`), warehouse and Google APIs, Hugging Face | Review | Review |
 
-Unix sockets granted in both harnesses: `~/.agent-browser/default.sock`, `~/.config/herdr/herdr.sock`, and `~/.obsidian-cli.sock`. Codex lists them as absolute paths. The Docker socket is not granted; Codex runs read-only Docker inspection as an `open` rule instead.
+Unix sockets granted in both harnesses: `~/.agent-browser/default.sock`, `~/.config/herdr/herdr.sock`, `~/.obsidian-cli.sock`, and pm2's `~/.pm2/rpc.sock` and `~/.pm2/pub.sock` (the daemon's command and event channels, which every `pm2` subcommand needs). Codex lists them as absolute paths. The Docker socket is not granted; Codex runs read-only Docker inspection as an `open` rule instead.
 
 ## Platform implementations
 
