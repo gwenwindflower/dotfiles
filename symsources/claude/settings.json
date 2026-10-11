@@ -376,6 +376,40 @@
 	},
 	"model": "opus",
 	"hooks": {
+		"Notification": [
+			{
+				"hooks": [
+					{
+						"type": "command",
+						"command": "{ printf '%s ' \"$(date +%s)\"; cat; echo; } >> \"$HOME/Library/Application Support/Crest/claude-events.jsonl\""
+					}
+				]
+			}
+		],
+		"PreToolUse": [
+			{
+				"matcher": "Bash|Edit|Write|MultiEdit|NotebookEdit|WebFetch|WebSearch|AskUserQuestion",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "sh '/Users/winnie/Library/Application Support/Crest/approvals/pretooluse.sh'",
+						"timeout": 86400
+					}
+				]
+			}
+		],
+		"PostToolUse": [
+			{
+				"matcher": "AskUserQuestion",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "sh '/Users/winnie/Library/Application Support/Crest/approvals/posttooluse.sh'",
+						"timeout": 10
+					}
+				]
+			}
+		],
 		"SessionStart": [
 			{
 				"matcher": "",
@@ -400,7 +434,7 @@
 	},
 	"statusLine": {
 		"type": "command",
-		"command": "winline",
+		"command": "sh '/Users/winnie/Library/Application Support/Crest/approvals/statusline.sh'",
 		"padding": 0
 	},
 	"enabledPlugins": {

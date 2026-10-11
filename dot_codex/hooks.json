@@ -1,12 +1,55 @@
 {
-  "hooks": {
-    "SessionStart": [
+  "hooks" : {
+    "PermissionRequest" : [
       {
-        "hooks": [
+        "hooks" : [
           {
-            "command": "bash '/Users/winnie/.codex/herdr-agent-state.sh' session",
-            "timeout": 10,
-            "type": "command"
+            "command" : "sh '\/Users\/winnie\/Library\/Application Support\/Crest\/approvals\/codex-hook.sh'",
+            "statusMessage" : "Answer on the Crest notch",
+            "timeout" : 86400,
+            "type" : "command"
+          }
+        ]
+      }
+    ],
+    "PreToolUse" : [
+      {
+        "hooks" : [
+          {
+            "command" : "sh '\/Users\/winnie\/Library\/Application Support\/Crest\/approvals\/codex-hook.sh'",
+            "timeout" : 30,
+            "type" : "command"
+          }
+        ]
+      }
+    ],
+    "SessionStart" : [
+      {
+        "hooks" : [
+          {
+            "command" : "bash '\/Users\/winnie\/.codex\/herdr-agent-state.sh' session",
+            "timeout" : 10,
+            "type" : "command"
+          }
+        ]
+      },
+      {
+        "hooks" : [
+          {
+            "command" : "sh '\/Users\/winnie\/Library\/Application Support\/Crest\/approvals\/codex-hook.sh'",
+            "timeout" : 20,
+            "type" : "command"
+          }
+        ]
+      }
+    ],
+    "Stop" : [
+      {
+        "hooks" : [
+          {
+            "command" : "sh '\/Users\/winnie\/Library\/Application Support\/Crest\/approvals\/codex-hook.sh'",
+            "timeout" : 20,
+            "type" : "command"
           }
         ]
       }
