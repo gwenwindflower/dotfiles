@@ -38,7 +38,7 @@ private_dot_config/               # → ~/.config/
   yazi/                           #   File manager (package.toml symlinked, rest copied)
   mise/, uv/                      #   Language version managers (mise config.toml symlinked)
   delta/, gh/, gh-dash/, meteor/  #   Git ecosystem
-  git/                            #   symlink_config.tmpl (→ symsources/git/gitconfig) + fragments it includes (os.gitconfig.tmpl, aliases.gitconfig, pretty.gitconfig)
+  git/                            #   symlink_config.tmpl (→ symsources/git/gitconfig) + fragments it includes (os.gitconfig.tmpl, aliases.gitconfig, pretty.gitconfig); agent identity fragments (agent.gitconfig.tmpl, claude.gitconfig, codex.gitconfig) + secretive-sign wrapper, included per harness through GIT_CONFIG_* env
   opencode/                       #   OpenCode config (opencode.jsonc + tui.jsonc + exact_agents/)
   bottom/, cmus/, freeze/, glow/  #   System monitor, music player, code snapshots, markdown viewer
   k9s/, lazydocker/, lazygit/     #   Container/cluster/git TUI tools
@@ -62,7 +62,7 @@ dot_agents/                       # → ~/.agents/ (shared agent hub)
 private_dot_config/git/global_ignore  # → ~/.config/git/global_ignore (git core.excludesfile)
 dot_bashrc, dot_zshrc             # Minimal configs (worktrunk init, starship, zoxide)
 dot_profile.tmpl, dot_zprofile.tmpl  # Login shells (SHELL export, darwin SSH agent)
-private_dot_ssh/                  # → ~/.ssh/ (allowed_signers, age-encrypted agent signing key + .pub)
+private_dot_ssh/                  # → ~/.ssh/ (allowed_signers: user key + Secretive agent signing key)
 
 # Symlink sources (ignored as `symsources/`, not deployed as ~/symsources)
 symsources/nvim/                  # lazy-lock.json, lazyvim.json, spell/en.utf-8.add{,.spl}

@@ -293,6 +293,7 @@ allow_local_binding = true
 "/Users/winnie/.obsidian-cli.sock" = "allow"
 "/Users/winnie/.pm2/rpc.sock" = "allow"
 "/Users/winnie/.pm2/pub.sock" = "allow"
+"/Users/winnie/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh" = "allow"
 
 [agents]
 max_threads = 10  # upstream schema: tombi expects a table here
@@ -380,13 +381,9 @@ XDG_CONFIG_HOME = "/Users/winnie/.config"
 OBSIDIAN_DEFAULT_VAULT = "/Users/winnie/Library/Mobile Documents/iCloud~md~obsidian/Documents/girlOS"
 ZVEC_GREP_EMBEDDING = "local/potion-code-16m-v2"
 GIT_OPTIONAL_LOCKS = "0"
-GIT_CONFIG_COUNT = "3"
-GIT_CONFIG_KEY_0 = "user.signingkey"
-GIT_CONFIG_VALUE_0 = "/Users/winnie/.ssh/agent-signing-key"
-GIT_CONFIG_KEY_1 = "gpg.ssh.program"
-GIT_CONFIG_VALUE_1 = "ssh-keygen"
-GIT_CONFIG_KEY_2 = "user.name"
-GIT_CONFIG_VALUE_2 = "Codex (winnie)"
+GIT_CONFIG_COUNT = "1"
+GIT_CONFIG_KEY_0 = "include.path"
+GIT_CONFIG_VALUE_0 = "/Users/winnie/.config/git/codex.gitconfig"
 NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "9230e2bd8b24b7ac7a0ba6774c64bf0d78ecdabbdd91d0ed627b02a587bae2df"
 
 [plugins."computer-use@openai-bundled"]

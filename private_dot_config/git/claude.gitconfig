@@ -1,0 +1,5 @@
+[include]
+  path = agent.gitconfig
+
+[user]
+  name = Claude Code (winnie)

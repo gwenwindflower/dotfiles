@@ -486,7 +486,8 @@
 				"~/.config/herdr/herdr.sock",
 				"~/.obsidian-cli.sock",
 				"~/.pm2/rpc.sock",
-				"~/.pm2/pub.sock"
+				"~/.pm2/pub.sock",
+				"~/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh"
 			],
 			"allowLocalBinding": true
 		},
@@ -559,11 +560,7 @@
 				"~/.local/share/chezmoi/symsources/nvim/lazy-lock.json",
 				"~/.local/share/chezmoi/symsources/yazi/package.toml"
 			],
-			"allowRead": [
-				"~/.ssh/allowed_signers",
-				"~/.ssh/agent-signing-key",
-				"~/.readwise-cli.json"
-			]
+			"allowRead": ["~/.ssh/allowed_signers", "~/.readwise-cli.json"]
 		},
 		"enableWeakerNetworkIsolation": true,
 		"allowAppleEvents": true,

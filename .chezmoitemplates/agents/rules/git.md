@@ -17,7 +17,7 @@ Co-Authored-By: <Agent Name> <agent email>
 - **Scope:** the component that changed, such as a package, tool, or skill. A broad scope can take a `/<sub-scope>` when used consistently: `feat(agents/skills): define local CI in project workflows`.
 - **Body:** only for related parts of the one change that the subject cannot name, or a rationale worth keeping. At most 5 one-sentence `*` bullets. Never restate the subject or write prose; deeper rationale goes in specs, ADRs, docs, and PRs.
 - **Trailers:** GitHub closing keywords (`Closes #12`), then attribution (`Co-Authored-By`). Agent-authored or assisted commits always end with the running agent's identity.
-- **Signing:** agent commits sign with the dedicated agent signing key, which the harness supplies through `GIT_CONFIG_*` env. The 1Password socket with Winnie's own key is intentionally inaccessible; never pass `-S` or change signing config, and flag a signing error for the user.
+- **Signing:** agent commits sign with the dedicated agent signing key in Secretive (Secure Enclave, Touch ID per signature), selected by a git config fragment the harness includes through `GIT_CONFIG_*` env. The 1Password socket with Winnie's own key is intentionally inaccessible; never pass `-S` or change signing config, and flag a signing error for the user.
 
 ##### Type and scope decisions
 
