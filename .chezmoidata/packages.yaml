@@ -75,7 +75,6 @@ packages:
           - git-cliff
           - git-delta
           - git-secrets
-          - glide
           - glow
           - gnupg
           - go
@@ -212,6 +211,7 @@ packages:
           - font-symbols-only-nerd-font
           - font-typographer-woodcut-initials-one
           - gcloud-cli
+          - glide
           - homerow
           - hora
           - ia-markdown-dictionary
