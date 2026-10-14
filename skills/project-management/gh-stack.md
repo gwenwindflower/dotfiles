@@ -10,7 +10,21 @@ Left is the bottom, right is the top. The bottom merges first. `up` moves toward
 
 ## Worktrees
 
-A stack lives in one worktree, and `gh stack` switches branches inside it. Start the worktree for the bottom layer with `wt switch -c`, then `gh stack init` adopts that branch and `gh stack add` creates each layer above it in the same checkout. Git refuses to check out a branch that is live in another worktree, so a layer checked out elsewhere breaks navigation and cascade rebases. When layers must live in separate worktrees, build the GitHub stack with `gh stack link` (see below) and do the rebases by hand.
+Stack tracking lives in the clone's common git dir, so every `wt` worktree sees the same stacks and a layer can be checked out in any of them. Needs Git 2.36 or later. Pick the shape by how the layers get worked:
+
+| Shape | When | Build |
+| --- | --- | --- |
+| One worktree, all layers | One session works the layers in order | `wt switch -c <bottom>`, then `gh stack init` adopts it and `gh stack add` creates and switches to each layer above |
+| One worktree per layer | Layers run in parallel or go to helpers | `wt switch -c <layer> --base @` from the top layer's worktree, then `gh stack add <layer>` there adopts the branch without switching |
+
+`gh stack init a b c` adopts existing branches whichever worktrees hold them, so the shapes mix. To move the top layer out of a shared worktree, `gh stack down` there first, then `wt switch <top>`; git refuses a worktree for a branch checked out elsewhere.
+
+- `rebase` and `sync` cascade through every worktree that holds a layer, but only clean ones: a dirty, busy, or missing owner stops the run. Commit in each layer's worktree before cascading. `gh stack` never stashes and never creates or removes worktrees.
+- Conflicts resolve in the worktree the error names. `--continue` and `--abort` run from any worktree.
+- `checkout <branch>` and the navigation commands switch the current checkout only when the target is free; a layer held by another worktree is an error. `--print-path` prints that worktree's path instead, or checks out a free target here and prints this path. Stdout is empty on failure, so check the exit status. `wt list --format=json` gives the path without side effects.
+- `add -Am` and `-um` are rejected when the top layer is checked out in another worktree; commit there.
+- `sync --prune` skips branches that have a worktree. After a merge, `wt remove <layer>` removes the worktree and deletes the branch once it is integrated.
+- `wt merge` is for the local worktree stack ([working](working.md)). Folding a gh-stack layer with it squashes the layer into its parent branch and leaves the PR chain on the wrong bases.
 
 ## Non-interactive use
 
@@ -52,7 +66,7 @@ gh stack submit --auto                # push every layer, open draft PRs, link t
 gh stack view --json
 ```
 
-- `init a b c` lays down the whole chain at once: existing branches are adopted, missing ones branch from the one before. `--base` picks a non-default trunk. `init` also enables `git rerere`.
+- `init a b c` lays down the whole chain at once: existing branches are adopted, missing ones branch from the one before. When the last branch is held by another worktree, `init` reports that owner and leaves the current checkout alone. `--base` picks a non-default trunk. `init` also enables `git rerere`.
 - `add -Am` right after `init` commits onto the empty first branch instead of creating a new one.
 - `submit --auto` titles a single-commit PR from the commit subject and body, and a multi-commit PR from the humanized branch name. Edit titles afterward with `gh pr edit`. `--open` marks new and existing PRs ready for review.
 - `push` pushes branches without touching PRs.
@@ -67,6 +81,8 @@ git add <paths> && git commit -m "fix(billing): tighten invoice constraints"
 gh stack rebase --upstack               # replay every layer above onto the change
 gh stack top
 ```
+
+With a worktree per layer, commit in the owner's worktree and run `rebase --upstack` from there; the layers above are rewritten in their own worktrees.
 
 ## Rewrites and force pushes
 
@@ -112,7 +128,7 @@ branches[].pr  number, url, state (OPEN | MERGED | QUEUED); absent when no PR ex
 | 5 | Invalid arguments | Fix the call; `add` off the top branch lands here |
 | 6 | Branch is in several stacks | `gh stack checkout` a branch unique to the intended stack, or pass a stack number |
 | 7 | Rebase already in progress | `gh stack rebase --continue` or `--abort` |
-| 8 | Stack file locked | Another `gh stack` process is writing; retry after about 5s, report if it persists |
+| 8 | Stack locked | Another `gh stack` process holds the catalog or clone-wide mutation lock; `view` still works. Retry after about 5s, report if it persists, never delete the lock files |
 | 9 | Stacked PRs not enabled on the repo | Tell the user |
 | 10 | Interrupted `modify` session | `gh stack modify --abort` |
 
@@ -136,4 +152,4 @@ Stack metadata does not change ancestry. To reorder layers, rewrite ancestry fir
 
 ## Linking without local tracking
 
-`gh stack link` builds or extends a GitHub stack through the API with no local state, for branches in separate worktrees or managed by another tool. Arguments run bottom to top as branch names or PR numbers; a leading number that matches an existing stack appends the rest to it (`gh stack link 7 feat/d`). It pushes branches (non-force), creates missing PRs, fixes wrong bases, and never removes a PR from a stack. Navigation commands don't work on a linked stack until `gh stack checkout <stack-number>` sets up tracking.
+`gh stack link` builds or extends a GitHub stack through the API with no local state, for branches managed by another tool such as jj or git-town. Worktrees don't need it. Arguments run bottom to top as branch names or PR numbers; a leading number that matches an existing stack appends the rest to it (`gh stack link 7 feat/d`). It pushes branches (non-force), creates missing PRs, fixes wrong bases, and never removes a PR from a stack. Navigation commands don't work on a linked stack until `gh stack checkout <stack-number>` sets up tracking.

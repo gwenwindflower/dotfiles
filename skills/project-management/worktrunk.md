@@ -88,7 +88,7 @@ wt list --format=json | jq -r '.items[] | select(.display.state == "integrated" 
 7. **`post-remove` and `post-merge` hooks** in the background.
 
 - Squash is the default. Pass `--no-squash` when the branch's commits are the record, such as one commit per Objective.
-- A stacked branch folds into its parent with `wt merge <parent-branch>`.
+- A stacked branch folds into its parent with `wt merge <parent-branch>`. The rebase runs with `--no-update-refs`, so branches stacked above stay where they are until their own merge.
 - `--stage all` (the default) sweeps untracked files into the commit. Commit or clean deliberately before merging.
 - A rebase conflict stops the merge with the rebase open in the worktree. Resolve and `git rebase --continue`, or `git rebase --abort`; every `wt step` and `wt merge` refuses to run until it settles.
 - Never pass `--no-hooks` or `-y`/`--yes` to get past a failing gate or an approval prompt; that is the user's call.

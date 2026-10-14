@@ -24,10 +24,10 @@ Two kinds of stack, one per stack:
 
 | Stack | Shape | Lands with |
 | --- | --- | --- |
-| Local worktree stack | Each layer in its own worktree, created with `wt switch -c <child> --base @` | `wt merge <parent>` folds a layer down, then the bottom merges into the default branch |
-| GitHub stacked PRs ([gh-stack](gh-stack.md)) | All layers as branches in one worktree | `gh stack merge <pr> --yes --squash`, bottom-up on GitHub |
+| Local worktree stack | Each layer in its own worktree, created with `wt switch -c <child> --base @`; `wt` rebases one branch at a time | `wt merge <parent>` folds a layer down, then the bottom merges into the default branch |
+| GitHub stacked PRs ([gh-stack](gh-stack.md)) | Layers in one worktree or one each, as the work needs; `gh stack` cascades rebases across them | `gh stack merge <pr> --yes --squash`, bottom-up on GitHub, then `wt remove` per layer |
 
-`gh stack` switches branches inside a single checkout, so it can't navigate layers checked out in other worktrees; `gh stack link` covers that case.
+The two don't mix on one stack: `wt merge` squashes a layer into its parent, which breaks a chain of PRs.
 
 ## Helpers
 
