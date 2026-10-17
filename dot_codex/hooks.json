@@ -1,55 +1,98 @@
 {
-  "hooks" : {
-    "PermissionRequest" : [
+  "hooks": {
+    "Interrupt": [
       {
-        "hooks" : [
+        "hooks": [
           {
-            "command" : "sh '\/Users\/winnie\/Library\/Application Support\/Crest\/approvals\/codex-hook.sh'",
-            "statusMessage" : "Answer on the Crest notch",
-            "timeout" : 86400,
-            "type" : "command"
+            "command": "'/Users/winnie/dev/lightdash/sanctuary/.build/dev/Shrine Dev.app/Contents/Helpers/shrine-hook' --report codex",
+            "timeout": 2,
+            "type": "command"
           }
         ]
       }
     ],
-    "PreToolUse" : [
+    "PermissionRequest": [
       {
-        "hooks" : [
+        "hooks": [
           {
-            "command" : "sh '\/Users\/winnie\/Library\/Application Support\/Crest\/approvals\/codex-hook.sh'",
-            "timeout" : 30,
-            "type" : "command"
+            "command": "'/Users/winnie/dev/lightdash/sanctuary/.build/dev/Shrine Dev.app/Contents/Helpers/shrine-hook' --report codex",
+            "timeout": 2,
+            "type": "command"
           }
         ]
       }
     ],
-    "SessionStart" : [
+    "PostToolUse": [
       {
-        "hooks" : [
+        "hooks": [
           {
-            "command" : "bash '\/Users\/winnie\/.codex\/herdr-agent-state.sh' session",
-            "timeout" : 10,
-            "type" : "command"
+            "command": "'/Users/winnie/dev/lightdash/sanctuary/.build/dev/Shrine Dev.app/Contents/Helpers/shrine-hook' --report codex",
+            "timeout": 2,
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "'/Users/winnie/dev/lightdash/sanctuary/.build/dev/Shrine Dev.app/Contents/Helpers/shrine-hook' --report codex",
+            "timeout": 2,
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "command": "'/Users/winnie/dev/lightdash/sanctuary/.build/dev/Shrine Dev.app/Contents/Helpers/shrine-hook' --report codex",
+            "timeout": 2,
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "command": "'/Users/winnie/dev/lightdash/sanctuary/.build/dev/Shrine Dev.app/Contents/Helpers/shrine-hook' --report codex",
+            "timeout": 2,
+            "type": "command"
           }
         ]
       },
       {
-        "hooks" : [
+        "hooks": [
           {
-            "command" : "sh '\/Users\/winnie\/Library\/Application Support\/Crest\/approvals\/codex-hook.sh'",
-            "timeout" : 20,
-            "type" : "command"
+            "command": "bash '/Users/winnie/.codex/herdr-agent-state.sh' session",
+            "timeout": 10,
+            "type": "command"
           }
         ]
       }
     ],
-    "Stop" : [
+    "Stop": [
       {
-        "hooks" : [
+        "hooks": [
           {
-            "command" : "sh '\/Users\/winnie\/Library\/Application Support\/Crest\/approvals\/codex-hook.sh'",
-            "timeout" : 20,
-            "type" : "command"
+            "command": "'/Users/winnie/dev/lightdash/sanctuary/.build/dev/Shrine Dev.app/Contents/Helpers/shrine-hook' --report codex",
+            "timeout": 2,
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "command": "'/Users/winnie/dev/lightdash/sanctuary/.build/dev/Shrine Dev.app/Contents/Helpers/shrine-hook' --report codex",
+            "timeout": 2,
+            "type": "command"
           }
         ]
       }

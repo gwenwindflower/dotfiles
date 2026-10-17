@@ -378,10 +378,32 @@
 	"hooks": {
 		"Notification": [
 			{
+				"matcher": "^(startup|resume|clear|compact|fork)$",
 				"hooks": [
 					{
 						"type": "command",
-						"command": "{ printf '%s ' \"$(date +%s)\"; cat; echo; } >> \"$HOME/Library/Application Support/Crest/claude-events.jsonl\""
+						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' session",
+						"timeout": 10
+					}
+				]
+			},
+			{
+				"hooks": [
+					{
+						"command": "'/Users/winnie/dev/lightdash/sanctuary/.build/dev/Shrine Dev.app/Contents/Helpers/shrine-hook' --report claude",
+						"timeout": 2,
+						"type": "command"
+					}
+				]
+			}
+		],
+		"UserPromptSubmit": [
+			{
+				"hooks": [
+					{
+						"command": "'/Users/winnie/dev/lightdash/sanctuary/.build/dev/Shrine Dev.app/Contents/Helpers/shrine-hook' --report claude",
+						"timeout": 2,
+						"type": "command"
 					}
 				]
 			}
