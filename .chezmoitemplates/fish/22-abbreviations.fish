@@ -112,11 +112,9 @@ abbr --add hrdp herdr plugin
 abbr --add hrdpi herdr plugin install
 abbr --add hrdpls herdr plugin list
 abbr --add hrdprm herdr plugin uninstall
-abbr --add hrdpu herdr-updater apply --plugins-only
+abbr --add hrdpu herdr plugin update
 ## refresh the built-in herdr skill in the dotfiles skills source tree
 abbr --add hrdskrf "herdr --skill > ~/.local/share/chezmoi/skills/herdr/SKILL.md"
-## update herdr's managed agent plugins and hooks back into chezmoi
-abbr --add hrdapu "chezmoi re-add ~/.config/opencode/plugins/herdr-agent-state.js ~/.config/opencode/herdr-tui-session.js ~/.claude/hooks/herdr-agent-state.sh ~/.codex/herdr-agent-state.sh"
 # sprites
 abbr --add sp sprite
 abbr --add spls sprite list
@@ -133,7 +131,10 @@ abbr --add cma chezmoi add
 abbr --add cmaa chezmoi re-add
 abbr --add cmra chezmoi re-add
 abbr --add cmaf chezmoi add --follow
-abbr --add cmahp chezmoi add ~/.config/herdr/plugins.json
+## update herdr's plugin manifest
+abbr --add cmahp chezmoi re-add ~/.config/herdr/plugins.json
+## update herdr's agent integrations and hooks back into chezmoi
+abbr --add cmahi "chezmoi re-add ~/.config/opencode/plugins/herdr-agent-state.js ~/.config/opencode/herdr-tui-session.js ~/.claude/hooks/herdr-agent-state.sh ~/.codex/herdr-agent-state.sh ~/.codex/hooks.json"
 abbr --add cmx chezmoi apply
 abbr --add cmxx chezmoi apply ~/.config/
 abbr --add cmxf chezmoi apply ~/.config/fish/
