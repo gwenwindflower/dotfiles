@@ -59,6 +59,7 @@ Sessions usually run inside Herdr (`HERDR_ENV=1`), which lets you launch tools a
 
 - Run a server, test watcher, or long command for Winnie in a sibling pane: `herdr pane split --current --direction right --cwd "$PWD" --no-focus`, then `herdr pane run <pane-id> "<command>"`.
 - Start an agent in an idle shell pane with `herdr agent start <name> --kind <kind> --pane <pane-id>`, then hand it work with `herdr agent prompt <name> "<brief>" --wait`. Keep Winnie's focus where it is.
+- Use Ctrl+Enter to submit prompts when controlling agents through Herdr; it is the most reliable submit binding. Cmd+Enter and Alt+Enter are also configured where supported.
 - Read IDs from JSON responses, and close only the panes and workspaces you created.
 
 #### Dispatching a task to a worktree agent
