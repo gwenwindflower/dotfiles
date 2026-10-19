@@ -5,7 +5,7 @@ set -u
 printf '\nUpdating Herdr plugins...\n\n'
 
 status=0
-herdr-updater apply --plugins-only || status=$?
+herdr plugin update --yes || status=$?
 
 if [ "$status" -eq 0 ]; then
   printf '\nHerdr plugins are up to date\n'
@@ -13,7 +13,7 @@ if [ "$status" -eq 0 ]; then
   exit 0
 fi
 
-printf '\nHerdr plugin update failed — run `herdr-updater apply --plugins-only` yourself to troubleshoot\n'
+printf '\nHerdr plugin update failed — run `herdr plugin update` yourself to troubleshoot\n'
 printf 'Press Escape to close\n'
 
 terminal_state=

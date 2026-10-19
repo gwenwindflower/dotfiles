@@ -65,24 +65,14 @@ function uppy -d "Upgrade system tools across package and plugin managers"
     end
 end
 
-function _uppy_update_herdr_plugins -d "Update installed Herdr plugins"
+function _uppy_update_herdr_plugins -d "Update GitHub-installed Herdr plugins"
     argparse n/dry-run -- $argv
     or return
 
-    if not type -q herdr-updater
-        logirl warning "herdr-updater is not installed; skipping Herdr plugins"
-        logirl info "Install it with: herdr plugin install diegopzz/herdr-updater"
+    if set -q _flag_dry_run
+        logirl info "herdr plugin update has no preview; skipping"
         return 0
     end
 
-    if set -q _flag_dry_run
-        herdr-updater plan --plugins-only
-        set -l plan_status $status
-        if test $plan_status -le 1
-            return 0
-        end
-        return $plan_status
-    end
-
-    herdr-updater apply --plugins-only
+    herdr plugin update --yes
 end
