@@ -290,6 +290,119 @@ export function setTerminalFontStack(source: string): string {
     source.slice(terminal.index + terminal[0].length);
 }
 
+// Termframe measures cells with JetBrains Mono, whose advance is 0.6em.
+const cellWidthEm = 0.6;
+const boxDrawingFamily = "IBM Plex Mono";
+const boxOverdraw = 1.04;
+const boxDrawing = /[─-▟]/;
+
+type CellKind = "box" | "space" | "text";
+
+interface CellRun {
+  kind: CellKind;
+  column: number;
+  cells: number;
+  spans: Array<{ attributes: string; content: string }>;
+}
+
+function cellKind(cell: string): CellKind {
+  if (boxDrawing.test(cell)) return "box";
+  return cell === " " ? "space" : "text";
+}
+
+function emLength(cells: number): string {
+  return `${Number((cells * cellWidthEm).toFixed(3))}em`;
+}
+
+function startColumn(attributes: string): number {
+  const offset = attributes.match(/\bx="([^"]*)"/);
+  if (!offset) return 0;
+  const em = offset[1].match(/^(\d+(?:\.\d+)?)em$/);
+  if (!em) {
+    throw new Error(`unsupported terminal text offset "${offset[1]}"`);
+  }
+  return Math.round(Number(em[1]) / cellWidthEm);
+}
+
+function cellRuns(attributes: string, body: string): CellRun[] {
+  const runs: CellRun[] = [];
+  let column = startColumn(attributes);
+  const spans = /<tspan\b([^>]*)>([^<]*)<\/tspan>/g;
+  if (body.replace(spans, "") !== "") {
+    throw new Error(`unexpected terminal text markup: ${body}`);
+  }
+  for (const [, spanAttributes, content] of body.matchAll(spans)) {
+    for (const cell of content.match(/&[^;]+;|[\s\S]/gu) ?? []) {
+      const kind = cellKind(cell);
+      let run = runs.at(-1);
+      if (!run || run.kind !== kind) {
+        run = { kind, column, cells: 0, spans: [] };
+        runs.push(run);
+      }
+      const span = run.spans.at(-1);
+      if (span && span.attributes === spanAttributes) {
+        span.content += cell;
+      } else {
+        run.spans.push({ attributes: spanAttributes, content: cell });
+      }
+      run.cells++;
+      column++;
+    }
+  }
+  return runs;
+}
+
+function splitTextElement(
+  attributes: string,
+  body: string,
+  boxTransform: string,
+): string {
+  const shared = attributes.replace(/\s*\b(?:x|textLength)="[^"]*"/g, "");
+  return cellRuns(attributes, body)
+    .filter((run) => run.kind !== "space")
+    .map((run) => {
+      const box = run.kind === "box"
+        ? ` font-family="${boxDrawingFamily}" transform="${boxTransform}"`
+        : "";
+      const spans = run.spans
+        .map((span) => `<tspan${span.attributes}>${span.content}</tspan>`)
+        .join("");
+      return `<text${shared} x="${emLength(run.column)}" textLength="${
+        emLength(run.cells)
+      }"${box}>${spans}</text>`;
+    })
+    .join("\n");
+}
+
+// Resvg re-resolves a whole <text> at the default weight once any glyph in it
+// falls back to another family, so box glyphs get their own elements in Plex.
+// Rows overflow and box glyphs stretch slightly past the row to hide seams.
+export function isolateBoxDrawing(source: string): string {
+  return source.replace(
+    /<svg\b([^>]*)>(\s*(?:<text\b[^>]*>[\s\S]*?<\/text>\s*)+)<\/svg>/g,
+    (row, rowAttributes: string, texts: string) => {
+      if (!boxDrawing.test(texts)) return row;
+      const height = Number(rowAttributes.match(/\bheight="([^"]*)"/)?.[1]);
+      if (!Number.isFinite(height)) {
+        throw new Error(`terminal row has no numeric height: ${row}`);
+      }
+      const shift = Number(((height / 2) * (boxOverdraw - 1)).toFixed(3));
+      const boxTransform = `translate(0 -${shift}) scale(1 ${boxOverdraw})`;
+      const attributes = /\boverflow="[^"]*"/.test(rowAttributes)
+        ? rowAttributes.replace(/\boverflow="[^"]*"/, 'overflow="visible"')
+        : `${rowAttributes} overflow="visible"`;
+      const split = texts.replace(
+        /<text\b([^>]*)>([\s\S]*?)<\/text>/g,
+        (text, textAttributes: string, body: string) =>
+          boxDrawing.test(body)
+            ? splitTextElement(textAttributes, body, boxTransform)
+            : text,
+      );
+      return `<svg${attributes}>${split}</svg>`;
+    },
+  );
+}
+
 async function runChecked(
   runner: CommandRunner,
   command: string,
@@ -320,7 +433,7 @@ export async function captureTerminal(
   );
 
   const source = await dependencies.readTextFile(paths.svg);
-  const rendered = setTerminalFontStack(source);
+  const rendered = isolateBoxDrawing(setTerminalFontStack(source));
   await dependencies.writeTextFile(
     paths.svg,
     options.background

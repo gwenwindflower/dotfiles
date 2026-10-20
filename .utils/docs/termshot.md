@@ -27,9 +27,22 @@ termshot sets the terminal SVG stack to Ellograph CF Fixed Pitch for text,
 Symbols Nerd Font Mono for PUA icons, and IBM Plex Mono for box-drawing and
 block characters. Apple Color Emoji supplies emoji on macOS, with Noto Color
 Emoji available as the portable fallback. Resvg loads only these explicit
-families with system fonts disabled. IBM Plex Mono's box glyphs fit the
-configured `line-height = 1.3`; changing that line height can reopen vertical
-joins. Use `--emoji-font` to point at another color font.
+families with system fonts disabled. Use `--emoji-font` to point at another
+color font.
+
+Box-drawing and block characters (U+2500–U+259F) render in their own `<text>`
+elements, set explicitly in IBM Plex Mono and pinned to termframe's 0.6em cell
+grid, with label runs pinned the same way. Resvg re-resolves an entire `<text>`
+at the default weight once any glyph in it falls back to another family, so
+mixing tree lines and labels in one element would render the labels at Regular
+instead of the configured Thin. Box glyphs stretch 4% vertically around each
+row's center and rows render with visible overflow, which closes the
+anti-aliasing seams between stacked vertical lines.
+
+This split depends on termframe's SVG shape: one nested `<svg>` per row holding
+`<text>` elements made only of `<tspan>` runs, with `x` offsets in `em`. Markup
+outside that shape fails the capture with an `unexpected terminal text markup`
+or `unsupported terminal text offset` error rather than rendering misaligned.
 
 Run `termshot --help` for the focused override surface covering dimensions,
 theme, padding, gradient, grain, and raster scale.

@@ -1,4 +1,9 @@
-import { assertEquals, assertRejects, assertStringIncludes } from "@std/assert";
+import {
+  assertEquals,
+  assertRejects,
+  assertStringIncludes,
+  assertThrows,
+} from "@std/assert";
 import {
   addGradientBackground,
   buildResvgArgs,
@@ -8,6 +13,7 @@ import {
   type CommandRunner,
   DEFAULT_BACKGROUND,
   defaultEmojiFontFile,
+  isolateBoxDrawing,
   selectRasterFontFiles,
   setTerminalFontStack,
 } from "./termshot.ts";
@@ -187,6 +193,96 @@ Deno.test("setTerminalFontStack leaves the window title stack alone", () => {
   );
 });
 
+function terminalRow(texts: string): string {
+  return `<svg height="18.2" overflow="hidden" width="504" y="36.4">\n${texts}\n</svg>`;
+}
+
+function textElements(source: string): string[] {
+  return source.match(/<text\b[\s\S]*?<\/text>/g) ?? [];
+}
+
+Deno.test("isolateBoxDrawing keeps labels out of text elements with box glyphs", () => {
+  const output = isolateBoxDrawing(terminalRow(
+    '<text xml:space="preserve" y="1.01em"><tspan fill="#c6d0f5">│ </tspan><tspan>  </tspan><tspan fill="#c6d0f5">└── </tspan><tspan fill="#c6d0f5">git </tspan></text>',
+  ));
+
+  for (const text of textElements(output)) {
+    const hasBox = /[─-▟]/.test(text);
+    const hasLabel = /[a-z]/.test(text.replace(/<[^>]*>/g, ""));
+    assertEquals(hasBox && hasLabel, false, text);
+  }
+});
+
+Deno.test("isolateBoxDrawing pins box runs and labels to the cell grid", () => {
+  const texts = textElements(isolateBoxDrawing(terminalRow(
+    '<text xml:space="preserve" y="1.01em"><tspan fill="#c6d0f5">│ </tspan><tspan>  </tspan><tspan fill="#8caaee">└── </tspan><tspan fill="#c6d0f5">git </tspan></text>',
+  )));
+
+  assertEquals(texts.length, 3);
+  assertStringIncludes(texts[0], 'x="0em" textLength="0.6em"');
+  assertStringIncludes(texts[0], 'font-family="IBM Plex Mono"');
+  assertStringIncludes(texts[0], '<tspan fill="#c6d0f5">│</tspan>');
+  assertStringIncludes(texts[1], 'x="2.4em" textLength="1.8em"');
+  assertStringIncludes(texts[1], '<tspan fill="#8caaee">└──</tspan>');
+  assertStringIncludes(texts[2], 'x="4.8em" textLength="1.8em"');
+  assertStringIncludes(texts[2], '<tspan fill="#c6d0f5">git</tspan>');
+  for (const text of texts) assertStringIncludes(text, 'y="1.01em"');
+});
+
+Deno.test("isolateBoxDrawing starts columns at the text element's offset", () => {
+  const texts = textElements(isolateBoxDrawing(terminalRow(
+    '<text x="6em" xml:space="preserve" y="1.01em"><tspan>├─ a&amp;b</tspan></text>',
+  )));
+
+  assertStringIncludes(texts[0], 'x="6em" textLength="1.2em"');
+  assertStringIncludes(texts[1], 'x="7.8em" textLength="1.8em"');
+  assertStringIncludes(texts[1], "a&amp;b");
+});
+
+Deno.test("isolateBoxDrawing overdraws box glyphs across row seams", () => {
+  const output = isolateBoxDrawing(terminalRow(
+    '<text xml:space="preserve" y="1.01em"><tspan>│</tspan></text>',
+  ));
+
+  assertStringIncludes(output, 'overflow="visible"');
+  assertStringIncludes(
+    output,
+    'transform="translate(0 -0.364) scale(1 1.04)"',
+  );
+});
+
+Deno.test("isolateBoxDrawing leaves rows without box glyphs untouched", () => {
+  const source = [
+    terminalRow(
+      '<text xml:space="preserve" y="1.01em"><tspan fill="#c6d0f5">projects </tspan></text>',
+    ),
+    terminalRow(
+      '<text textLength="0.6em" x="34.8em" xml:space="preserve" y="1.01em"><tspan>\u{f07b}</tspan></text>',
+    ),
+  ].join("\n");
+
+  assertEquals(isolateBoxDrawing(source), source);
+});
+
+Deno.test("isolateBoxDrawing rejects text markup it cannot place on the grid", () => {
+  assertThrows(
+    () =>
+      isolateBoxDrawing(terminalRow(
+        '<text xml:space="preserve" y="1.01em">├── <tspan>git</tspan></text>',
+      )),
+    Error,
+    "unexpected terminal text markup",
+  );
+  assertThrows(
+    () =>
+      isolateBoxDrawing(terminalRow(
+        '<text x="12px" xml:space="preserve" y="1.01em"><tspan>├──</tspan></text>',
+      )),
+    Error,
+    'unsupported terminal text offset "12px"',
+  );
+});
+
 Deno.test("defaultEmojiFontFile uses the native macOS color font", () => {
   assertEquals(
     defaultEmojiFontFile("darwin"),
@@ -235,6 +331,40 @@ Deno.test("captureTerminal runs termframe then resvg and removes transient SVG",
   assertEquals(writes[0].path, "lsd-docs.svg");
   assertStringIncludes(writes[0].content, 'id="termshot-bg"');
   assertEquals(removals, ["lsd-docs.svg"]);
+});
+
+Deno.test("captureTerminal renders box glyphs apart from labels", async () => {
+  const writes: string[] = [];
+
+  await captureTerminal(
+    {
+      command: ["tree"],
+      keepSvg: true,
+      svgOnly: true,
+      background: null,
+      fontFiles: [],
+      zoom: 2,
+    },
+    {
+      runner: async () => ({ code: 0 }),
+      readTextFile: async () =>
+        `<svg><svg class="terminal" font-family="JetBrains Mono">${
+          terminalRow(
+            '<text xml:space="preserve" y="1.01em"><tspan>└── </tspan><tspan>git </tspan></text>',
+          )
+        }</svg></svg>`,
+      writeTextFile: async (_path, content) => {
+        writes.push(content);
+      },
+      remove: async () => {},
+    },
+  );
+
+  assertStringIncludes(
+    writes[0],
+    'font-family="IBM Plex Mono" transform="translate(0 -0.364) scale(1 1.04)"><tspan>└──</tspan>',
+  );
+  assertStringIncludes(writes[0], 'x="2.4em" textLength="1.8em"><tspan>git');
 });
 
 Deno.test("captureTerminal stops when termframe fails", async () => {
