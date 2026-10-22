@@ -356,7 +356,7 @@ home_last_prompted_at = 1781365511
 home = true
 
 [shell_environment_policy]
-inherit = "core"
+inherit = "all"
 ignore_default_excludes = false
 exclude = [
   "AWS_*",
@@ -370,7 +370,6 @@ exclude = [
   "KUBE*",
   "KUBECONFIG",
   "NPM_TOKEN",
-  "OP_*",
   "PYPI_TOKEN",
   "RUBYGEMS_*",
 ]
