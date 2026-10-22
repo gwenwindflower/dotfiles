@@ -41,6 +41,9 @@ jump_bottom = ["end", "shift-g"]
 jump_top = ["home", "g"]
 jump_bottom = ["end", "shift-g"]
 
+[tui.keymap.global]
+open_agents = "leader a"
+
 [tui.model_availability_nux]
 "gpt-5.5" = 4
 
