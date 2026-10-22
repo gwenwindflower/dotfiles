@@ -26,6 +26,7 @@ packages:
           - yakitrak/yakitrak
         personal: []
         work:
+          - makisuo/tap
           - withgraphite/tap
       formulae:
         core:
@@ -173,6 +174,7 @@ packages:
           - yt-dlp
         work:
           - graphite
+          - maple
           - microsandbox
       casks:
         core:
