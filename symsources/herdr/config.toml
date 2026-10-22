@@ -39,14 +39,14 @@ prefix = "ctrl+space"
 settings = "prefix+."
 reload_config = ["prefix+alt+r", "prefix+super+r"]
 toggle_sidebar = ["prefix+s", "shift+super+s"]
-goto = "prefix+w"
+goto = ["prefix+g", "shift+super+g"]
 # focus_pane_* = handled by herdr-splits plugin
 close_pane = ["prefix+d", "shift+super+d"]
 last_pane = ["prefix+`", "shift+super+-"]
 split_vertical = ["prefix+|", "prefix+ctrl+v"]
 split_horizontal = ["prefix+-", "prefix+ctrl+s"]
 new_tab = ["prefix+c", "shift+super+t"]
-rename_tab = "prefix+shift+c"
+rename_tab = "prefix+i"
 previous_tab = "shift+super+h"
 next_tab = "shift+super+l"
 move_tab_previous = "shift+alt+h"
@@ -54,7 +54,7 @@ move_tab_next = "shift+alt+l"
 close_tab = "prefix+shift+d"
 switch_tab = "prefix+ctrl+1..9"
 new_workspace = "prefix+n"
-rename_workspace = "prefix+shift+n"
+rename_workspace = "prefix+shift+i"
 previous_workspace = "shift+super+k"
 next_workspace = "shift+super+j"
 switch_workspace = "prefix+1..9"
@@ -86,28 +86,28 @@ description = "nvim overlay"
 
 # git
 [[keys.command]]
-key = ["prefix+g", "shift+super+g"]
+key = ["prefix+w", "shift+super+w"]
 type = "plugin_action"
 command = "wtherdr.switch"
 description = "wt switch worktree"
 
 [[keys.command]]
-key = "prefix+ctrl+g"
+key = "prefix+ctrl+w"
+type = "plugin_action"
+command = "wtherdr.create"
+description = "wt create worktree"
+
+[[keys.command]]
+key = ["prefix+ctrl+super+w", "prefix+ctrl+alt+w"]
 type = "plugin_action"
 command = "wtherdr.merge"
 description = "wt merge worktree"
 
 [[keys.command]]
-key = "prefix+alt+g"
+key = "prefix+shift+w"
 type = "plugin_action"
 command = "wtherdr.remove"
 description = "wt remove worktree"
-
-[[keys.command]]
-key = "prefix+shift+g"
-type = "plugin_action"
-command = "wtherdr.create"
-description = "wt create worktree"
 
 [[keys.command]]
 key = "prefix+super+g"
