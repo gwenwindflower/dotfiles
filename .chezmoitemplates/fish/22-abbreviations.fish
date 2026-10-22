@@ -97,7 +97,9 @@ abbr --add tmh tmux_hint
 # herdr
 abbr --add hrd herdr
 abbr --add hrdld herdr --session lightdash
-abbr --add hrdq herdr server stop
+abbr --add hrdsv herdr server
+abbr --add hrdsvs herdr server stop
+abbr --add hrdstop herdr server stop
 abbr --add hrdrs "herdr server stop; and herdr"
 abbr --add hrdii herdr integration install
 abbr --add hrds herdr session
