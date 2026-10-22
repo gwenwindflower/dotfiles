@@ -11,6 +11,7 @@ The girlOS vault lives at `$OBSIDIAN_DEFAULT_VAULT`. When and where to write in 
 | --- | --- |
 | Search, read, create, append, move, or edit one note's frontmatter | [notesmd-cli](notesmd-cli.md) |
 | Write note content: wikilinks, embeds, callouts, properties, tags | [markdown](markdown.md) |
+| Render notes from a template and JSON or CSV data, one or in batches | [knap](knap.md) |
 | Build or edit a `.base` view | [bases](bases.md) |
 | Build or edit a `.canvas` map | [canvas](canvas.md) |
 | Link graph, property and tag inventories, base queries, plugin and theme dev through the running app | [obsidian-cli](obsidian-cli.md) |

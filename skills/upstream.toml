@@ -70,6 +70,13 @@ files = ["obsidian-cli.md"]
 baseline = "3ccff5338ea700537839b21900aa5358a0402c98"
 tree = "96254a554e480359de7b685571876f2e7f9ba57d"
 
+[[obsidian.upstream]]
+repo = "kepano/obsidian-skills"
+skill = "knap"
+files = ["knap.md"]
+baseline = "3ccff5338ea700537839b21900aa5358a0402c98"
+tree = "f49e09ee53feece10378a1fb1194632581fb066a"
+
 [[project-management.upstream]]
 repo = "github/gh-stack"
 skill = "gh-stack"
