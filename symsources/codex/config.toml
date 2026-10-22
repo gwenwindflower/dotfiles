@@ -391,24 +391,6 @@ NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "9230e2bd8b24b7ac7a0ba6774c64bf0d78ec
 [plugins."computer-use@openai-bundled"]
 enabled = false
 
-[plugins."attio@openai-curated"]
-enabled = true
-
-[plugins."pylon@openai-curated"]
-enabled = true
-
-[plugins."build-web-data-visualization@openai-curated"]
-enabled = true
-
-[plugins."fal@openai-curated"]
-enabled = true
-
-[plugins."slack@openai-curated"]
-enabled = true
-
-[plugins."linear@openai-curated"]
-enabled = true
-
 [plugins."visualize@openai-bundled"]
 enabled = true
 
@@ -462,31 +444,15 @@ BROWSER_USE_CODEX_APP_VERSION = "26.1007.30912"
 NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/winnie/.codex/plugins/cache/openai-bundled/browser/26.1007.30912/scripts/browser-service.mjs"}'
 CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex"
 
-# [mcp_servers.indi]
-# command = "indi"
-# args = ["mcp", "serve"]
-# enabled = false
-#
-# [mcp_servers.indi.env]
-# INDI_COST__MAX_BYTES_BILLED = "1_500_000_000"
-# INDI_EMBEDDING__MODEL_PATH = "/Users/winnie/dev/_supermodel/_clients/indivisible/indi/models/embedding/nomic-embed-text-v1.5.f16.gguf"
-# INDI_GRAPH__ROOT = "/Users/winnie/dev/_supermodel/_clients/indivisible/indi/ctx"
-# INDI_INDEX__BACKEND = "lancedb"
-# INDI_INDEX__PATH = "/Users/winnie/dev/_supermodel/_clients/indivisible/indi/.lancedb"
-# INDI_SEARCH__DEFAULT_MODE = "rrf"
-# INDI_SEARCH__ENABLED_MODES = '["fts", "vector", "rrf"]'
-# INDI_WAREHOUSE__BACKEND = "bigquery"
-# INDI_WAREHOUSE__CREDENTIALS_PATH = "/Users/winnie/dev/_supermodel/_clients/indivisible/indi/.secrets/bq_service_account_keyfile.json"
-# INDI_WAREHOUSE__DEFAULT_DATASET = "dbt"
-# INDI_WAREHOUSE__LOCATION = "US"
-# INDI_WAREHOUSE__PROJECT = "proj-tmc-mem-in"
+[mcp_servers.rainbow_machine]
+url = "https://mcp.lightdash.rainbowmachine.dev/mcp"
 
-# [mcp_servers.lightdash]
-# url = "https://analytics.lightdash.cloud/api/v1/mcp"
-#
-# [mcp_servers.lightdash_docs]
-# url = "https://docs.lightdash.com/mcp"
-#
+[mcp_servers.lightdash-console]
+url = "https://console.lightdash.com/mcp"
+
+[mcp_servers.lightdash]
+url = "https://analytics.lightdash.cloud/api/v1/mcp"
+
 # [mcp_servers.bigquery]
 # url = "https://bigquery.googleapis.com/mcp"
 
