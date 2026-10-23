@@ -91,6 +91,138 @@
     }
   },
   {
+    "plugin_id": "herdr-bar",
+    "name": "Bar",
+    "version": "0.11.0",
+    "min_herdr_version": "0.9.0",
+    "description": "Cmd+K command bar with agent icons, fuzzy search, and optional automatic tab titles",
+    "manifest_path": "/Users/winnie/.config/herdr/plugins/github-installations/herdr-bar-96eebe452a9c/52773-0/checkout/herdr-plugin.toml",
+    "plugin_root": "/Users/winnie/.config/herdr/plugins/github-installations/herdr-bar-96eebe452a9c/52773-0/checkout",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "build": [
+      {
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "sh",
+          "scripts/install.sh"
+        ]
+      },
+      {
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "scripts/install.ps1"
+        ]
+      }
+    ],
+    "startup": [
+      {
+        "command": [
+          "bin/herdr-bar",
+          "--start-titles"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "open",
+        "title": "Open bar",
+        "description": "Fuzzy-jump to any tab, pane, or agent",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bin/herdr-bar",
+          "--open"
+        ]
+      },
+      {
+        "id": "open-windows",
+        "title": "Open bar",
+        "description": "Fuzzy-jump to any tab, pane, or agent",
+        "contexts": [
+          "global"
+        ],
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "bin/herdr-bar.exe",
+          "--open"
+        ]
+      },
+      {
+        "id": "start-titles",
+        "title": "Start tab watcher",
+        "description": "Start task title and tab status updates enabled in the plugin config",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bin/herdr-bar",
+          "--start-titles",
+          "--resume"
+        ]
+      },
+      {
+        "id": "stop-titles",
+        "title": "Stop tab watcher",
+        "description": "Stop this server's title and status watcher, restoring bare tab names",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bin/herdr-bar",
+          "--stop-titles"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "on": "pane.agent_detected",
+        "command": [
+          "bin/herdr-bar",
+          "--start-titles"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "bar",
+        "title": "Bar",
+        "description": "Fuzzy-jump to any tab, pane, or agent",
+        "placement": "popup",
+        "width": "74%",
+        "height": "62%",
+        "command": [
+          "bin/herdr-bar"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "jeffarese",
+      "repo": "herdr-bar",
+      "resolved_commit": "261de9b0441a6972941414bbf16eb4f5df27ac34",
+      "managed_path": "/Users/winnie/.config/herdr/plugins/github-installations/herdr-bar-96eebe452a9c/52773-0/checkout",
+      "installed_unix_ms": 1792729623733
+    }
+  },
+  {
     "plugin_id": "herdr-splits",
     "name": "Herdr Splits",
     "version": "0.5.3",
