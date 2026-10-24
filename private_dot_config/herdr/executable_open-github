@@ -1,0 +1,17 @@
+#!/bin/bash
+
+status=0
+gh "$1" view -w || status=$?
+
+if [ "$status" -eq 0 ]; then
+  exit 0
+fi
+
+printf '\nPress Escape to close\n'
+while IFS= read -rsn1 key; do
+  if [ "$key" = $'\e' ]; then
+    break
+  fi
+done
+
+exit "$status"

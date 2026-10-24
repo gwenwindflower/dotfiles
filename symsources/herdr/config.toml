@@ -86,6 +86,22 @@ description = "nvim overlay"
 
 # git
 [[keys.command]]
+key = "prefix+ctrl+o"
+type = "popup"
+command = '"$HOME/.config/herdr/open-github" pr'
+description = "open pull request in browser"
+width = 72
+height = 16
+
+[[keys.command]]
+key = "prefix+super+o"
+type = "popup"
+command = '"$HOME/.config/herdr/open-github" repo'
+description = "open repository in browser"
+width = 72
+height = 16
+
+[[keys.command]]
 key = ["prefix+w", "shift+super+w"]
 type = "plugin_action"
 command = "wtherdr.switch"
