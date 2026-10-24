@@ -13,7 +13,6 @@ id_ed25519
 *.local.yaml
 *.local.json
 __pycache__
-.pytest_cache
 .zvec-grep
 node_modules
 .pnpm-store
