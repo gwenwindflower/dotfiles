@@ -203,7 +203,7 @@ description = "yazi temp pane"
 [[keys.command]]
 key = "prefix+ctrl+m"
 type = "popup"
-command = 'status=0; chezmoi apply --error-on-conflict --no-pager --no-tty </dev/null >/dev/null 2>&1 || status=$?; if [ "$status" -eq 0 ]; then printf "\nchezmoi applied successfully\n"; else printf "\nchezmoi apply failed — run it yourself to troubleshoot\n"; fi; sleep 0.5; exit "$status"'
+command = '"$HOME/.config/herdr/apply-dotfiles"'
 description = "apply dotfiles"
 width = 72
 height = 16

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+status=0
+chezmoi apply --error-on-conflict --no-pager --no-tty </dev/null || status=$?
+
+if [ "$status" -eq 0 ]; then
+  exit 0
+fi
+
+printf '\nchezmoi apply failed — run it yourself to troubleshoot\n'
+printf 'Press Escape to close\n'
+while IFS= read -rsn1 key; do
+  if [ "$key" = $'\e' ]; then
+    break
+  fi
+done
+
+exit "$status"
