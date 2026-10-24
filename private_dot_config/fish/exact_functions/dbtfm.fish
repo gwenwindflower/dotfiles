@@ -1,4 +1,4 @@
-function fm -d "Search dbt models from manifest with fzf"
+function dbtfm -d "Search dbt models from manifest with fzf"
     set manifest_path "./target/manifest.json"
     set selected (jq -r '.nodes[] | select(.resource_type == "model") | [.name, .path] | @tsv' $manifest_path | fzf --delimiter '\t' \
         --with-nth 1 \
