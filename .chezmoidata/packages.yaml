@@ -102,6 +102,7 @@ packages:
           - luajit
           - luarocks
           - macchina
+          - microsandbox
           - mise
           - mole
           - moor
@@ -175,7 +176,6 @@ packages:
         work:
           - graphite
           - maple
-          - microsandbox
       casks:
         core:
           - 1password
