@@ -9,6 +9,7 @@ node = ["lts", "latest"]
 "npm:portless" = "latest"
 "npm:supabase" = "latest"
 "npm:@zvec/zvec-grep" = "latest"
+opencode = { version = "latest", allow_builds = ["@opencode/cli"] }
 
 [settings]
 npm.package_manager = "pnpm"
