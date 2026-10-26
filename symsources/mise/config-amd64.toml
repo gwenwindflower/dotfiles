@@ -13,3 +13,6 @@ opencode = { version = "latest", allow_builds = ["@opencode/cli"] }
 [settings]
 npm.package_manager = "pnpm"
 idiomatic_version_file_enable_tools = ["node", "ruby"]
+
+minimum_release_age_excludes = ["aube", "node", "sfw"]
+

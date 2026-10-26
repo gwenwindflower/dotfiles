@@ -15,4 +15,5 @@ opencode = { version = "latest", allow_builds = ["@opencode/cli"] }
 
 [settings]
 idiomatic_version_file_enable_tools = ["node", "ruby"]
-minimum_release_age_excludes = ["aube"]
+minimum_release_age_excludes = ["aube", "node", "sfw"]
+
