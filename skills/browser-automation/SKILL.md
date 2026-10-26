@@ -9,5 +9,3 @@ name: browser-automation
 | Job | Doc |
 | --- | --- |
 | Any `agent-browser` task | [agent-browser](agent-browser.md) |
-
-Reviewing UI code against design and accessibility guidelines belongs to `web-design-guidelines`.
