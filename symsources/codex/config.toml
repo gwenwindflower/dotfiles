@@ -465,9 +465,6 @@ enabled = true
 [plugins."worktrunk@worktrunk"]
 enabled = true
 
-[plugins."code-review@openai-bundled"]
-enabled = true
-
 [mcp_servers.node_repl]
 args = []
 command = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl"
