@@ -33,7 +33,7 @@ Plans live in Linear; specs live in the repo. Load `project-management` before p
 
 An issue is a task written in plain language; it usually maps to one PR. Parents and projects don't repeat their children. Branch names and commit subjects describe the work, never the planning system.
 
-- `#user` marks work needing human credentials, judgment, installs, or deployments. Stop when blocked.
+- Specs, requirement IDs, and other personal conventions never appear in Lightdash's Linear workspace; its issues follow the team's own labels, statuses, and wording.
 - Make reasonable calls, write them down, and flag them in the PR. Stop for choices with irreversible or external effects, or ones that change what's being built.
 
 #### Issues and tasks
@@ -71,3 +71,5 @@ This is the go-to way to hand a self-contained task to a parallel agent:
 3. Start the agent there, named after the branch: `herdr agent start <name> --kind claude --pane <pane-id>`. Use the kind Winnie asks for when she names one.
 4. Prompt it with a self-contained brief: the task or issue, acceptance criteria, and how the work lands, whether that's `wt merge` or a PR. The agent commits in its own worktree.
 5. Check on it with `herdr agent wait` and `herdr agent read`. If it reports `blocked`, show Winnie the question rather than answering it yourself.
+
+When you drive more than one agent in the same worktree workspace, give each its own tab with `herdr tab create --workspace <workspace-id> --label <name>` (its root pane is `.result.root_pane`) rather than splitting panes, so every agent gets a full-size view Winnie can flip between.

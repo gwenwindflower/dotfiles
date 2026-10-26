@@ -8,7 +8,7 @@ Plans live in Linear: what to do next, how work groups, what blocks what, and wh
 
 | Profile | Used for | Teams | Conventions |
 | --- | --- | --- | --- |
-| `lightdash` | Lightdash work | Many; read the team's labels and statuses first | [Lightdash workspace](lightdash.md) |
+| `lightdash` | Lightdash work | Many; read the team's labels and statuses first | [Lightdash workspace](lightdash.md); team conventions only, never specs or other personal ones |
 | `supermodellabs` | Supermodel Labs and personal projects | `WBG` | None yet; build them as the work needs them |
 
 Reads run in the sandbox; writes go to the harness reviewer. `linear-cli agent` and `linear-cli common` print agent-oriented usage, and [searching](searching.md) covers relevance search through `linear-cli api`.
