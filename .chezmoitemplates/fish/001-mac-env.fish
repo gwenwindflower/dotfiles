@@ -30,3 +30,5 @@ fish_add_path /Applications/Obsidian.app/Contents/MacOS
 
 ##  Cap 
 fish_add_path ~/.cap/bin
+##  Crest browser
+fish_add_path /Applications/Crest.app/Contents/Helpers

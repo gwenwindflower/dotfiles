@@ -458,6 +458,10 @@ url = "https://console.lightdash.com/mcp"
 [mcp_servers.lightdash]
 url = "https://analytics.lightdash.cloud/api/v1/mcp"
 
+[mcp_servers.crest-browser]
+command = "crest-browser"
+args = ["mcp"]
+
 # [mcp_servers.bigquery]
 # url = "https://bigquery.googleapis.com/mcp"
 

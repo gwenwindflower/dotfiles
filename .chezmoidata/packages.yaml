@@ -189,6 +189,7 @@ packages:
           - claude-code@latest
           - cloudflare-warp
           - codex
+          - crest-browser
           - descript
           - font-charter
           - font-cormorant
