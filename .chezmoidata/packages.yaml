@@ -245,7 +245,6 @@ packages:
         work:
           - canario
           - google-chrome
-          - kimi
           - loom
           - microsoft-teams
           - slack
