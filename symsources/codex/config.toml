@@ -235,6 +235,8 @@ allow_local_binding = true
 "json.schemastore.org" = "allow"
 "www.schemastore.org" = "allow"
 "schemastore.org" = "allow"
+"mise.jdx.dev" = "allow"
+"fnox.jdx.dev" = "allow"
 # services
 "api.attio.com" = "allow"
 "api.linear.app" = "allow"
@@ -252,6 +254,8 @@ allow_local_binding = true
 # documentation
 "agentskills.io" = "allow"
 "amoxide.rs" = "allow"
+"aube.jdx.dev" = "allow"
+"aube.sh" = "allow"
 "blacksmith.sh" = "allow"
 "bun.com" = "allow"
 "charm.land" = "allow"
@@ -273,6 +277,7 @@ allow_local_binding = true
 "exe.dev" = "allow"
 "fishshell.com" = "allow"
 "git-cliff.org" = "allow"
+"hk.jdx.dev" = "allow"
 "jdx.dev" = "allow"
 "lazy.folke.io" = "allow"
 "lazyvim.org" = "allow"
