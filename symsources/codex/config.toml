@@ -214,6 +214,7 @@ allow_local_binding = true
 # source control and package registries
 "api.github.com" = "allow"
 "github.com" = "allow"
+"public.cdn.getdbt.com" = "allow"
 "raw.githubusercontent.com" = "allow"
 "results-receiver.actions.githubusercontent.com" = "allow"
 "registry.npmjs.org" = "allow"
