@@ -9,6 +9,7 @@
 fish_add_path $HOMEBREW_PREFIX/opt/sqlite/bin
 ### 󰘂 curl
 fish_add_path /opt/homebrew/opt/curl/bin
+###  Homebrew binaries
 fish_add_path -m $HOMEBREW_PREFIX/bin
 {{ end -}}
 fish_add_path -m $HOME/.local/bin
