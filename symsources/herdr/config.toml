@@ -13,8 +13,8 @@ rows = [
 
 [ui.sidebar.agents]
 rows = [
-  ["state_icon", "$space", { token = "$worktree", dim = true }],
-  ["agent"],
+  ["state_icon", "$space", "$worktree"],
+  ["agent", "terminal_title_stripped"],
 ]
 
 [ui.toast]
