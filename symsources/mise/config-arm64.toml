@@ -17,3 +17,5 @@ opencode = { version = "latest", allow_builds = ["@opencode/cli"] }
 idiomatic_version_file_enable_tools = ["node", "ruby"]
 minimum_release_age_excludes = ["aube", "node", "sfw"]
 
+[settings.github]
+credential_command = "gh auth token"
