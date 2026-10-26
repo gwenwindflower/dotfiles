@@ -198,7 +198,6 @@ abbr --add cxr codex resume
 abbr --add cxc codex resume --last
 ## opencode
 abbr --add oc opencode
-abbr --add ocv opencode2
 abbr --add occf "ee $HOME/.config/opencode"
 ## claude
 abbr --add cl claude
