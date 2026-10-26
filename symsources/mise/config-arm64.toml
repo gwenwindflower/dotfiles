@@ -11,6 +11,7 @@ aube = "latest"
 "npm:sfw" = "latest"
 "npm:supabase" = "latest"
 "npm:@zvec/zvec-grep" = "latest"
+"npm:knap" = "latest"
 opencode = { version = "latest", allow_builds = ["@opencode/cli"] }
 
 [settings]
