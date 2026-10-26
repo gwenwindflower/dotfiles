@@ -27,8 +27,7 @@ fish_add_path /Applications/Monodraw.app/Contents/Resources/
 set -gx OBSIDIAN_HOME "$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents"
 set -gx OBSIDIAN_DEFAULT_VAULT $OBSIDIAN_HOME/girlOS
 fish_add_path /Applications/Obsidian.app/Contents/MacOS
-
-##  Cap 
+##  Cap
 fish_add_path ~/.cap/bin
 ##  Crest browser
 fish_add_path /Applications/Crest.app/Contents/Helpers
