@@ -49,10 +49,6 @@ set -gx TMUX_PLUGIN_MANAGER_PATH $XDG_CONFIG_HOME/tmux/plugins
 {{ if eq .chezmoi.os "darwin" -}}
 set -gx TMUX_PLUGIN_MANAGER_INSTALL $HOMEBREW_PREFIX/opt/tpm/share/tpm
 
-#  SQLite
-## Use the Homebrew install on macOS
-fish_add_path $HOMEBREW_PREFIX/opt/sqlite/bin
-
 #  PostgreSQL
 ## Helper env var so I can script and config
 ## for the latest version of PostgreSQL
