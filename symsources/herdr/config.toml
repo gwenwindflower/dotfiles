@@ -24,12 +24,28 @@ delivery = "terminal"
 enabled = true
 
 [theme]
-name = "terminal"
-
 auto_switch = false
 
+# Catppuccin Frappe
 [theme.custom]
-accent = "#ca9ee6"
+accent = "#ca9ee6"  # mauve
+panel_bg = "#303446"  # base
+active_row_bg = "#414559"  # surface0
+selection_bg = "#51576d"  # surface1
+surface0 = "#414559"
+surface1 = "#51576d"
+surface_dim = "#51576d"  # surface1
+overlay0 = "#737994"
+overlay1 = "#838ba7"
+text = "#c6d0f5"
+subtext0 = "#a5adce"
+mauve = "#ca9ee6"
+green = "#a6d189"
+yellow = "#e5c890"
+red = "#e78284"
+blue = "#8caaee"
+teal = "#81c8be"
+peach = "#ef9f76"
 
 [experimental]
 kitty_graphics = true
