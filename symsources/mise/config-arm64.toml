@@ -3,6 +3,7 @@ node = ["lts", "latest"]
 aube = "latest"
 
 "npm:@agentclientprotocol/claude-agent-acp" = "latest"
+"npm:@agentclientprotocol/codex-acp" = "latest"
 "npm:@aredotna/cli" = "latest"
 "npm:@opencode-ai/cli" = [{ version = "beta", allow_builds = ["@opencode-ai/cli"] }]
 "npm:@readwise/cli" = "latest"
