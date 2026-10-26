@@ -190,7 +190,6 @@ packages:
           - cloudflare-warp
           - codex
           - crest-browser
-          - descript
           - font-charter
           - font-cormorant
           - font-eb-garamond
