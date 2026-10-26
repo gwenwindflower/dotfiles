@@ -30,7 +30,7 @@ Examples in this collection:
 
 - `clean-python` routes dbt Python to `analytics-engineering`
 - `map-project` skips projects whose AGENTS.md and docs already cover them
-- `writing-prose` excludes agent context, READMEs, and CLI help
+- `writing` routes agent instructions to `agent-context-engineering`
 
 If two skills need long routing clauses to stay apart, merge them into one skill with reference docs instead.
 

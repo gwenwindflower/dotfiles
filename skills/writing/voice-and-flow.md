@@ -1,6 +1,6 @@
 # Voice and Flow
 
-Sentence-level rhythm, structure, and rhetorical patterns. For the hard-no list of LLM tells (binary contrasts, staccato triples, intensifiers, jargon, meta-voice), see [anti-patterns](anti-patterns.md) first — this file is the depth reference for what doesn't fit there.
+Sentence-level guidance for substantial prose. Follow the brief and available user context for the medium and intended voice; use [anti-patterns](anti-patterns.md) to diagnose formulaic writing.
 
 ## Cliche Relational Phrases
 
@@ -98,7 +98,7 @@ Make the point. Let readers draw conclusions.
 
 ## Em Dashes and Asides
 
-Em dashes are fun and asides are useful, but overuse destroys flow. If you can split a sentence into multiple sentences, do it. Preserve asides only when they *improve* the flow when read aloud. In a patch of short, staccato sentences, a longer sentence with a well-placed aside can add variety.
+Em dashes and asides can carry natural rhythm. Match their frequency to the author's voice and medium. In longer prose, split a sentence when its asides obscure the main point. Preserve asides that improve the flow when read aloud.
 
 When an aside is the right move, consider commas, em dashes, or a parenthetical:
 

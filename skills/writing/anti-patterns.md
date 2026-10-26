@@ -1,6 +1,6 @@
 # Prose Anti-Patterns
 
-Hard-no list of AI-writing tells distilled from real edit passes. Every entry below was a pattern that survived several reads before getting caught — they're subtle, recur often, and erode trust as a class. Read before drafting or editing any prose meant for human readers.
+Patterns to inspect when substantial prose feels formulaic. Judge their effect in context; preserve natural shorthand, humor, and emphasis that fit the medium and intended voice.
 
 ## The voice we're going for
 
@@ -8,7 +8,7 @@ Plain, direct, grounded. Lead with the point, not the setup. Hedge where uncerta
 
 Trust the reader. They can infer more than the writer thinks. Anything that re-explains what they already know is friction.
 
-No punch, no snark, no glib, no slick.
+Avoid manufactured punch and slick framing. Natural wit and informal phrasing can fit the audience.
 
 ---
 
@@ -74,8 +74,8 @@ Em-dashes themselves are fine; the pattern to cut is the *zinger payoff*, the em
 
 Emphasis without semantic load. The reader hears the volume but gets no signal.
 
-- **Italics-for-tone** on individual words (*shape*, *itself*, *before*, *answers*). Remove.
-- **Bolded mid-sentence phrases** (`**thin BI surface that any presentation tool can render**`). Remove the bold; let the prose carry it.
+- **Italics without meaningful emphasis.** Keep italics when they clarify intent or a useful distinction; cut decorative stress.
+- **Blanket bolding.** Emphasize actions, requests, decisions, and key distinctions selectively, including mid-sentence when useful. Do not bold every claim or entire paragraphs.
 - **Scare-quotes around your own framing**: `"'is the build paying off?'"`. Drop the quotes.
 
 **Sentence-opening markers** — "More importantly", "Crucially", "Notably", "Importantly", "Interestingly". Drop. If a sentence is important, it'll read that way.
@@ -99,7 +99,7 @@ Drop and state directly. Announcing importance doesn't add it.
 
 ## 3. Intensifier and puffery words
 
-Strip on sight; they almost never do real work.
+Check whether these words add meaning or natural conversational tone; cut them when they only inflate a claim.
 
 `actually`, `actual`, `clean(ly)`, `deeply`, `essentially`, `exactly`, `genuinely`, `inherently`, `interestingly`, `just`, `literally`, `merely`, `nice`, `of course`, `perfectly`, `precisely`, `pretty`, `quite`, `really`, `simply`, `so`, `surely`, `trivially`, `truly`, `ultimately`, `uniquely`, `very`
 
@@ -231,7 +231,7 @@ The piece doesn't narrate itself.
 - **No section-number cross-refs** (§1.4.2, Part 2, Part 4). They break the moment structure shifts. Use descriptive links to the relevant heading instead.
 - **No cross-references inside intros**. Make the point first; link out only when the reader will actually want to leave.
 
-**Topic-label headings** — headings should lead with the finding, not name the topic.
+**Vague headings** — use findings for an argument or audit; use clear topic or task headings when they help readers navigate reference docs.
 
 - Bad: "A thin presentation layer across the stack", "The four layers", "Retrieval and the always-loaded triad"
 - Good: A heading that states what the section concludes.
@@ -245,9 +245,9 @@ The piece doesn't narrate itself.
 - Bad: "Cheapest item in the plan."
 - Good: "This is the cheapest item in the plan because…"
 
-Fiction and stylized prose use fragments deliberately for rhythm. The LLM default of breaking complete thoughts into telegraph fragments to feel punchy is the tell to cut.
+Fiction, stylized prose, Slack, and texts can use fragments deliberately. The pattern to cut is breaking thoughts into fragments for manufactured punch or at the expense of clarity.
 
-**Verify before stating; show method alongside numbers.** When a confident claim rests on sampled evidence, name the method and add an `Open:` annotation flagging what isn't fully verified.
+**Verify before stating.** When a claim rests on sampled evidence, state the relevant limits. Include the method where the audience needs it to assess the claim; do not force research notation into a casual reply.
 
 - Bad: "more than 150 raw references"
 - Good: "more than 150 raw references (`grep -rE …`; may miss multi-line shapes)"
