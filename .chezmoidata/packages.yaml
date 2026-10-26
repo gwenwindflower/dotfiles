@@ -18,6 +18,7 @@ packages:
           - oven-sh/bun
           - pulumi/tap
           - redpanda-data/tap
+          - rjyo/moshi
           - rubysolo/tools
           - sassman/tap
           - supermodellabs/tap
@@ -106,6 +107,7 @@ packages:
           - mise
           - mole
           - moor
+          - moshi-hook
           - mq
           - mutagen
           - neovim
