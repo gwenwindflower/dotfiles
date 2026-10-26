@@ -234,6 +234,7 @@ packages:
           - secretive
           - spotifast
           - spotify
+          - sprites
           - tailscale-app
           - thaw
           - zoom
