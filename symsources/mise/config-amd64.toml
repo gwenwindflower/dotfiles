@@ -5,7 +5,6 @@ node = ["lts", "latest"]
 "npm:@agentclientprotocol/codex-acp" = "latest"
 "npm:@aredotna/cli" = "latest"
 "npm:@readwise/cli" = "latest"
-"npm:portless" = "latest"
 "npm:supabase" = "latest"
 "npm:knap" = "latest"
 "npm:@zvec/zvec-grep" = "latest"
