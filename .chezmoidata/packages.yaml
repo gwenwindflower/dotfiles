@@ -52,6 +52,7 @@ packages:
           - coreutils
           - countdown
           - crush
+          - curl
           - ctx7
           - d2
           - databricks
