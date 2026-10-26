@@ -9,7 +9,9 @@
 				"enter": "chat:newline",
 				"ctrl+enter": "chat:submit",
 				"cmd+enter": "chat:submit",
-				"alt+enter": "chat:submit"
+				"alt+enter": "chat:submit",
+				"alt+space": "voice:pushToTalk",
+				"space": null
 			}
 		},
 		{
