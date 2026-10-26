@@ -31,5 +31,10 @@
     "input.delete.word.forward": "ctrl+alt+shift+l,alt+d,alt+delete,ctrl+delete",
     "input.delete.word.backward": "ctrl+alt+shift+h,ctrl+w,ctrl+backspace,alt+backspace"
   },
-  "plugins": ["./herdr-opencode"]
+  "plugins": [
+    "./herdr-opencode"
+  ],
+  "tabs": {
+    "layout": "vertical"
+  }
 }
