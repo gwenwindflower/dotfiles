@@ -23,9 +23,9 @@ Hugging Face is in neither domain list, so the first index for a new embedding m
 | --- | --- | --- | --- |
 | Code and mixed workspaces | `zg` | `<root>/.zvec-grep/` | Daemon watcher or `zg index`; direct mode never refreshes on query |
 | Markdown knowledge bases, girlOS | `qmd` | `~/.cache/qmd/` | `qmd update` then `qmd embed` |
-| Agent session history | `agentsview` | `$AGENTSVIEW_DATA_DIR` | Continuous capture; embeddings served by `llup` |
+| Agent session history | `agentsview` | `$AGENTSVIEW_DATA_DIR` | Continuous capture; embeddings served by Llama.app on `localhost:9931` |
 
-The default `zg` model for new indexes is `local/potion-code-16m-v2`, exported as `ZVEC_GREP_EMBEDDING`; an existing index keeps whatever model built it. `qmd` reads the Qwen3 GGUF that `llup` also serves for agentsview.
+The default `zg` model for new indexes is `local/potion-code-16m-v2`, exported as `ZVEC_GREP_EMBEDDING`; an existing index keeps whatever model built it. `qmd` reads the Qwen3 GGUF from the Hugging Face cache, the same file Llama.app serves for agentsview.
 
 ## Levels
 

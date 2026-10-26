@@ -221,6 +221,7 @@ packages:
           - karabiner-elements
           - kitty
           - linear
+          - llama-app
           - lookaway
           - mimestream
           - monodraw
