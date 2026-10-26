@@ -223,3 +223,9 @@ command = '"$HOME/.config/herdr/apply-dotfiles"'
 description = "apply dotfiles"
 width = 72
 height = 16
+
+[[keys.command]]
+key = "super+k"
+type = "plugin_action"
+command = "herdr-bar.open"
+description = "command bar"
