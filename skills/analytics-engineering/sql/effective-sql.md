@@ -111,6 +111,14 @@ select
     created_at
 ```
 
+Within a type group, order columns by the story of the data, and keep that sequence parallel across groups:
+
+1. The canonical column of that type: the primary key, the headline amount, the defining timestamp.
+2. The columns that break it down, qualify it, or complicate it: a related source's key, a component amount, a secondary event time.
+3. The columns derived from the ones above, such as a correction, an adjusted total, or a denormalized attribute.
+
+A reader then meets each column after the ones it depends on. For an orders model that gains a return reconciliation source, the numerics read `order_amount_usd`, `return_amount_usd`, `order_return_amount_usd`, `reconciled_return_amount_usd`: headline, breakdown, then the derived and provenance columns.
+
 ## Naming
 
 Names should be specific enough to survive downstream use without table context.
@@ -130,6 +138,7 @@ Rules:
 - Never expose generic `id`, `name`, `type`, or `status` unless unambiguous everywhere downstream.
 - Store dates and timestamps in UTC; localize only in downstream marts or BI layers.
 - Read entity + column as a phrase: `order is_refunded` works, `order refund` does not.
+- Core columns keep plain names. When a new source corrects or enriches an existing column, update it in place (usually with a backfill) and add qualified columns that tell the new source's story, rather than moving consumers to a `reconciled_` or `corrected_` name. Preserve the original value in its own qualified column when the history matters.
 
 ## Defaults
 
