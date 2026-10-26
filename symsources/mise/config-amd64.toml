@@ -7,7 +7,6 @@ node = ["lts", "latest"]
 "npm:@readwise/cli" = "latest"
 "npm:supabase" = "latest"
 "npm:knap" = "latest"
-"npm:@zvec/zvec-grep" = "latest"
 opencode = { version = "latest", allow_builds = ["@opencode/cli"] }
 
 [settings]
