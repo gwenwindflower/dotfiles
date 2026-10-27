@@ -1,11 +1,6 @@
-# Diagram Themes
+# Diagram theme
 
-Two named palettes with one shared semantic-class vocabulary, expressed per language. Pick the theme by audience, then style only through these classes — no ad-hoc hex in diagram source.
-
-| Theme | Use for |
-| --- | --- |
-| `lightdash` | Anything work-facing — Lightdash PRs, docs, Notion, Linear, customer-facing material |
-| `frappe` | Personal and Supermodel Labs projects, blog, dotfiles docs (Catppuccin Frappe, dark-first) |
+One theme for every diagram: Catppuccin Frappe for dark, Rosé Pine Dawn for light, with one semantic-class vocabulary expressed per language. Style only through these classes, with no ad-hoc hex in diagram source.
 
 ## Semantic classes
 
@@ -21,65 +16,13 @@ Same class names in every diagram, both languages. Color reinforces meaning; the
 | `warn` | Failures, alerts, risky paths |
 | `external` | Third-party or out-of-scope systems (dashed border) |
 
-The Mermaid `%%{init}%%` blocks below are for mmdc-rendered exports and destinations that honor directives (Obsidian, Artifacts). GitHub ignores or mangles them — there, omit the init block and let the semantic classDefs carry the theme on top of GitHub's adaptive default.
+The Mermaid and D2 blocks below give each class its Frappe colors in source, which is all a GitHub fence or a plain `d2` preview shows. `diagram.ts` renders override those colors and paint the full theme, light and dark, from `scripts/theme.ts`; that file mirrors these token tables, so change both together.
 
-## Lightdash
+## Palettes
 
-Brand violet `#7262FF` with the lightdash.com gray ramp; Inter for type. Field-type semantic colors (dimension blue, metric orange, calculation green) supply the non-violet accents, so diagrams read as part of the product family.
+Frappe is the primary scheme. `diagram.ts` renders use Dawn for `--mode light` and for light-mode viewers of `auto` SVGs. Mermaid fences and plain `d2` previews carry only the Frappe colors written in the source.
 
-| Token | Value |
-| --- | --- |
-| violet (brand) | `#7262FF` |
-| violet fill / deep | `#efedff` / `#2e2585` |
-| text | `#1a1b25` |
-| line / muted text | `#666d80` |
-| surface / border | `#f8fafb` / `#c1c7d0` |
-| dimension blue (text/bg) | `#3b5bdb` / `#EDF0FD` |
-| metric orange (text/bg) | `#de7f0b` / `#FBE9E0` |
-| calculation green (text/bg) | `#2b8a3e` / `#EBF5ED` |
-
-### Mermaid
-
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {
-  'fontFamily': 'Inter, sans-serif',
-  'primaryColor': '#efedff', 'primaryBorderColor': '#7262FF', 'primaryTextColor': '#1a1b25',
-  'lineColor': '#666d80', 'secondaryColor': '#f8fafb', 'tertiaryColor': '#eceff3'
-}}}%%
-flowchart LR
-    a[API] --> b[(Warehouse)]
-    classDef accent fill:#efedff,stroke:#7262FF,color:#1a1b25
-    classDef data fill:#EDF0FD,stroke:#3b5bdb,color:#1c2b67
-    classDef decision fill:#FBE9E0,stroke:#de7f0b,color:#502e06
-    classDef good fill:#EBF5ED,stroke:#2b8a3e,color:#1b5326
-    classDef warn fill:#FBE9E0,stroke:#de7f0b,color:#502e06
-    classDef external fill:#f8fafb,stroke:#c1c7d0,color:#666d80,stroke-dasharray:4 3
-    class a accent
-    class b data
-```
-
-### D2
-
-```d2
-vars: {
-  accent: "#7262FF"
-}
-
-classes: {
-  accent: {style.fill: "#efedff"; style.stroke: "#7262FF"; style.font-color: "#1a1b25"}
-  data: {shape: cylinder; style.fill: "#EDF0FD"; style.stroke: "#3b5bdb"; style.font-color: "#1c2b67"}
-  decision: {shape: diamond; style.fill: "#FBE9E0"; style.stroke: "#de7f0b"; style.font-color: "#502e06"}
-  good: {style.fill: "#EBF5ED"; style.stroke: "#2b8a3e"; style.font-color: "#1b5326"}
-  warn: {style.fill: "#FBE9E0"; style.stroke: "#de7f0b"; style.font-color: "#502e06"}
-  external: {style.fill: "#f8fafb"; style.stroke: "#c1c7d0"; style.font-color: "#666d80"; style.stroke-dash: 4}
-}
-```
-
-For exported SVG/PNG, pass Inter to D2 with `--font-regular`/`--font-bold` TTF paths when pixel-faithful brand type matters; otherwise D2's default font is acceptable for internal work.
-
-## Frappe
-
-Catppuccin Frappe, dark-first. On light-background destinations that can't honor a dark diagram, fall back to the destination default theme rather than forcing dark fills onto a light page.
+### Frappe
 
 | Token | Value |
 | --- | --- |
@@ -94,14 +37,23 @@ Catppuccin Frappe, dark-first. On light-background destinations that can't honor
 | yellow | `#e5c890` |
 | teal | `#81c8be` |
 
-### Mermaid
+### Rosé Pine Dawn
+
+| Token | Value | Class |
+| --- | --- | --- |
+| base / surface | `#faf4ed` / `#fffaf3` | background / `external` fill |
+| overlay | `#f2e9e1` | node fill |
+| text / subtle / muted | `#575279` / `#797593` / `#9893a5` | text / muted text / lines |
+| highlight high | `#cecacd` | borders |
+| iris | `#907aa9` | `accent` |
+| foam | `#56949f` | `data` |
+| pine | `#286983` | `good` |
+| gold | `#ea9d34` | `decision` |
+| love | `#b4637a` | `warn` |
+
+## Mermaid
 
 ```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {
-  'darkMode': true, 'background': '#303446',
-  'primaryColor': '#414559', 'primaryBorderColor': '#babbf1', 'primaryTextColor': '#c6d0f5',
-  'lineColor': '#737994', 'secondaryColor': '#292c3c', 'tertiaryColor': '#51576d'
-}}}%%
 flowchart LR
     a[API] --> b[(Warehouse)]
     classDef accent fill:#414559,stroke:#babbf1,color:#c6d0f5
@@ -114,13 +66,9 @@ flowchart LR
     class b data
 ```
 
-### D2
+## D2
 
 ```d2
-vars: {
-  accent: "#babbf1"
-}
-
 classes: {
   accent: {style.fill: "#414559"; style.stroke: "#babbf1"; style.font-color: "#c6d0f5"}
   data: {shape: cylinder; style.fill: "#414559"; style.stroke: "#8caaee"; style.font-color: "#c6d0f5"}
@@ -130,8 +78,6 @@ classes: {
   external: {style.fill: "#292c3c"; style.stroke: "#737994"; style.font-color: "#b5bfe2"; style.stroke-dash: 4}
 }
 ```
-
-Set `style.fill: "#303446"` on the root board (or `--pad` with a dark page) when the destination doesn't supply a dark background, so frappe fills never float on white.
 
 ## Contrast rule
 

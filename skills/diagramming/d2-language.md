@@ -45,23 +45,11 @@ Containers should express ownership, deployment, trust, or another domain bounda
 
 Common shapes include `rectangle`, `oval`, `circle`, `diamond`, `hexagon`, `cloud`, `person`, `cylinder`, `queue`, `page`, `package`, `sql_table`, `class`, `code`, and `sequence_diagram`. Check the [shape catalog](https://d2lang.com/tour/shapes/) before guessing a shape name.
 
-Prefer themes for the baseline appearance and classes for repeated semantic styling. Pull fill/stroke values from the active palette in [themes](themes.md) rather than ad-hoc hex:
+Style through the semantic classes in [themes](themes.md); paste that `classes` block and attach classes rather than writing fill and stroke values:
 
 ```d2
-classes: {
-  decision: {
-    shape: diamond
-    style.fill: "#fff3bf"
-    style.stroke: "#e67700"
-  }
-  failure: {
-    style.fill: "#ffe3e3"
-    style.stroke: "#c92a2a"
-  }
-}
-
 check: Valid? {class: decision}
-reject: Reject {class: failure}
+reject: Reject {class: warn}
 check -> reject: no
 ```
 
@@ -73,17 +61,15 @@ Use `vars` for repeated values. `${name}` substitutes a value; dotted names addr
 
 ```d2
 vars: {
-  accent: "#4c6ef5"
+  owner: "Platform team"
   d2-config: {
     layout-engine: elk
-    theme-id: 4
-    dark-theme-id: 200
     pad: 40
   }
 }
 
 service: Service {
-  style.stroke: ${accent}
+  tooltip: Owned by ${owner}
 }
 ```
 
