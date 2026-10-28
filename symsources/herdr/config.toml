@@ -124,19 +124,19 @@ command = "wtherdr.switch"
 description = "wt switch worktree"
 
 [[keys.command]]
-key = "prefix+ctrl+w"
+key = "prefix+shift+w"
 type = "plugin_action"
 command = "wtherdr.create"
 description = "wt create worktree"
 
 [[keys.command]]
-key = ["prefix+ctrl+super+w", "prefix+ctrl+alt+w"]
+key = ["prefix+ctrl+w"]
 type = "plugin_action"
 command = "wtherdr.merge"
 description = "wt merge worktree"
 
 [[keys.command]]
-key = "prefix+shift+w"
+key = "prefix+alt+w"
 type = "plugin_action"
 command = "wtherdr.remove"
 description = "wt remove worktree"
