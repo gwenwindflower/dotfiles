@@ -12,6 +12,7 @@ packages:
           - denisotree/tuitab
           - huseyinbabal/tap
           - jesseduffield/lazydocker
+          - kelsierbot/tap
           - kiki-ki/tap
           - lightdash/lightdash
           - mutagen-io/mutagen
@@ -83,6 +84,7 @@ packages:
           - go-task
           - googleworkspace-cli
           - gpg-tui
+          - grimoire
           - gum
           - hcloud
           - herdr
