@@ -1,0 +1,7 @@
+new_tab 🧁
+launch herdr
+
+new_tab 🌩️
+launch herdr --session lightdash
+
+focus_tab 0

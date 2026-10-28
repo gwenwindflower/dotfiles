@@ -58,6 +58,8 @@ abbr --add lt lsd --tree
 abbr --add v nvim
 abbr --add vi nvim
 abbr --add eee ee -e
+# kitty
+abbr --add kiki kitty --detach --session ~/.config/kitty/sessions/herdr.kitty-session
 # network
 abbr --add ipext "curl https://api64.ipify.org | fish_clipboard_copy"
 abbr --add mulv mullvad
