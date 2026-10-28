@@ -265,6 +265,7 @@ packages:
         - linear-cli
         - nightlight
         - presenterm
+        - samply
       personal: []
       work: []
     uv:
