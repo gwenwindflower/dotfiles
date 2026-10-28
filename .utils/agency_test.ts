@@ -1,13 +1,10 @@
 import { assertEquals, assertThrows } from "@std/assert";
-import { join } from "@std/path";
 import {
   defaultProfile,
   execpolicyArgs,
   isNestedSandboxFailure,
   parseDecision,
   parseProbes,
-  repoRoot,
-  ruleFilePaths,
   sandboxArgs,
   tokenize,
 } from "./agency.ts";
@@ -37,6 +34,7 @@ Deno.test("parseProbes reads sandbox and rule tables", () => {
   const probes = parseProbes(`
 [[sandbox]]
 name = "cache is writable"
+group = "writes"
 expect = "ok"
 cmd = "touch x"
 
@@ -46,6 +44,7 @@ expect = "allow"
 `);
   assertEquals(probes.sandbox, [{
     name: "cache is writable",
+    group: "writes",
     expect: "ok",
     cmd: "touch x",
   }]);
@@ -54,7 +53,8 @@ expect = "allow"
 
 Deno.test("parseProbes names the table and field for a missing value", () => {
   assertThrows(
-    () => parseProbes(`[[sandbox]]\nname = "x"\nexpect = "ok"\n`),
+    () =>
+      parseProbes(`[[sandbox]]\nname = "x"\ngroup = "reads"\nexpect = "ok"\n`),
     Error,
     `[[sandbox]] #1: missing string field "cmd"`,
   );
@@ -65,6 +65,25 @@ Deno.test("parseProbes rejects an unknown rule decision", () => {
     () => parseProbes(`[[rule]]\ncmd = "git push"\nexpect = "ask"\n`),
     Error,
     `[[rule]] #1: expect must be one of`,
+  );
+});
+
+Deno.test("parseProbes requires a sandbox group", () => {
+  assertThrows(
+    () => parseProbes(`[[sandbox]]\nname = "x"\nexpect = "ok"\ncmd = "true"`),
+    Error,
+    'missing string field "group"',
+  );
+});
+
+Deno.test("parseProbes rejects an unknown sandbox group", () => {
+  assertThrows(
+    () =>
+      parseProbes(
+        `[[sandbox]]\nname = "x"\ngroup = "typo"\nexpect = "ok"\ncmd = "true"`,
+      ),
+    Error,
+    "group must be one of reads, writes, network, integrations",
   );
 });
 
@@ -126,79 +145,3 @@ Deno.test("isNestedSandboxFailure recognizes Seatbelt refusing to nest", () => {
     false,
   );
 });
-
-// ── Repo probes ────────────────────────────────────────────────────
-
-const root = repoRoot();
-const probes = parseProbes(
-  Deno.readTextFileSync(join(root, ".utils", "agency.toml")),
-);
-const ruleFiles = ruleFilePaths(root);
-const configPath = join(root, "symsources", "codex", "config.toml");
-const profile = defaultProfile(Deno.readTextFileSync(configPath));
-const requireHost = Deno.env.get("AGENCY_REQUIRE_HOST") === "1";
-const decoder = new TextDecoder();
-
-async function codex(args: string[], env: Record<string, string> = {}) {
-  const out = await new Deno.Command("codex", {
-    args,
-    env,
-    cwd: root,
-    stdout: "piped",
-    stderr: "piped",
-  }).output();
-  return {
-    code: out.code,
-    stdout: decoder.decode(out.stdout),
-    stderr: decoder.decode(out.stderr),
-  };
-}
-
-for (const c of probes.rule) {
-  Deno.test(`rule: ${c.cmd} → ${c.expect}`, async () => {
-    const out = await codex(execpolicyArgs(ruleFiles, c.cmd));
-    assertEquals(out.code, 0, `codex execpolicy check failed:\n${out.stderr}`);
-    assertEquals(parseDecision(out.stdout), c.expect);
-  });
-}
-
-// Sandbox probes use a temp CODEX_HOME holding this repo's config, so a worktree
-// probes its own config rather than the deployed one.
-const codexHome = await Deno.makeTempDir({ prefix: "agency-codex-" });
-await Deno.copyFile(configPath, join(codexHome, "config.toml"));
-const sandboxEnv = { CODEX_HOME: codexHome };
-const nested = isNestedSandboxFailure(
-  (await codex(sandboxArgs(profile, "true"), sandboxEnv)).stderr,
-);
-
-if (nested && !requireHost) {
-  console.warn(
-    "agency: sandbox probes skipped; Seatbelt cannot nest inside this shell's sandbox. " +
-      "Run `agency` from a host terminal to run them.",
-  );
-}
-
-for (const p of probes.sandbox) {
-  Deno.test({
-    name: `sandbox (${profile}): ${p.name} → ${p.expect}`,
-    ignore: nested && !requireHost,
-    fn: async () => {
-      if (nested) {
-        throw new Error(
-          "Seatbelt cannot nest inside this shell's sandbox; run agency from a host terminal",
-        );
-      }
-      const out = await codex(sandboxArgs(profile, p.cmd), sandboxEnv);
-      const outcome = out.code === 0 ? "ok" : "deny";
-      const detail = out.stderr.split("\n").filter((l) =>
-        l && !l.includes("PATH aliases")
-      ).slice(0, 3).join("\n");
-      assertEquals(outcome, p.expect, `exit ${out.code}: ${p.cmd}\n${detail}`);
-    },
-  });
-}
-
-globalThis.addEventListener(
-  "unload",
-  () => Deno.removeSync(codexHome, { recursive: true }),
-);

@@ -2,7 +2,7 @@
 /**
  * agency — probe the agent permission configs declared in this repo.
  *
- * Probes live in `agency.toml`. `agency_test.ts` turns each one into a test:
+ * Probes live in `agency.toml`. Agency's test suites turn each one into a test:
  *   - [[sandbox]] probes run a command under `codex sandbox -P <profile>` with the
  *     repo's `symsources/codex/config.toml` and expect it to succeed or be blocked.
  *   - [[rule]] cases check the strongest `codex execpolicy` decision across
@@ -16,10 +16,12 @@ import { parse as parseToml } from "@std/toml";
 import { dirname, fromFileUrl, join } from "@std/path";
 
 export type SandboxExpectation = "ok" | "deny";
+export type SandboxGroup = "reads" | "writes" | "network" | "integrations";
 export type RuleDecision = "allow" | "prompt" | "forbidden" | "none";
 
 export interface SandboxProbe {
   name: string;
+  group: SandboxGroup;
   expect: SandboxExpectation;
   cmd: string;
 }
@@ -35,6 +37,12 @@ export interface Probes {
 }
 
 const SANDBOX_EXPECTATIONS: readonly string[] = ["ok", "deny"];
+const SANDBOX_GROUPS: readonly string[] = [
+  "reads",
+  "writes",
+  "network",
+  "integrations",
+];
 const RULE_DECISIONS: readonly string[] = [
   "allow",
   "prompt",
@@ -54,9 +62,17 @@ export function parseProbes(text: string, source = "agency.toml"): Probes {
     const where = `${source}: [[sandbox]] #${i + 1}`;
     const probe = {
       name: requireString(t, "name", where),
+      group: requireString(t, "group", where),
       expect: requireString(t, "expect", where),
       cmd: requireString(t, "cmd", where),
     };
+    if (!SANDBOX_GROUPS.includes(probe.group)) {
+      throw new Error(
+        `${where}: group must be one of ${
+          SANDBOX_GROUPS.join(", ")
+        }, got "${probe.group}"`,
+      );
+    }
     if (!SANDBOX_EXPECTATIONS.includes(probe.expect)) {
       throw new Error(
         `${where}: expect must be "ok" or "deny", got "${probe.expect}"`,

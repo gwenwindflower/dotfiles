@@ -35,6 +35,14 @@
     "test:termshot": "deno test termshot_test.ts",
     "test:skillet": "deno test --allow-read skillet_test.ts",
     "test:itch": "deno test --allow-read --allow-write --allow-run=git itch_test.ts",
-    "test:agency": "deno test --allow-read --allow-write --allow-env --allow-run=codex agency_test.ts"
+    "test:agency-unit": "deno test agency_test.ts",
+    "test:agency-rules-allow": "deno test --allow-read --allow-run=codex --filter '/ → allow$/' agency_rules_test.ts",
+    "test:agency-rules-none": "deno test --allow-read --allow-run=codex --filter '/ → none$/' agency_rules_test.ts",
+    "test:agency-rules-prompt": "deno test --allow-read --allow-run=codex --filter '/ → prompt$/' agency_rules_test.ts",
+    "test:agency-rules-forbidden": "deno test --allow-read --allow-run=codex --filter '/ → forbidden$/' agency_rules_test.ts",
+    "test:agency-sandbox-reads": "deno test --allow-read --allow-write --allow-env --allow-run=codex --filter '/ reads: /' agency_sandbox_test.ts",
+    "test:agency-sandbox-writes": "deno test --allow-read --allow-write --allow-env --allow-run=codex --filter '/ writes: /' agency_sandbox_test.ts",
+    "test:agency-sandbox-network": "deno test --allow-read --allow-write --allow-env --allow-run=codex --filter '/ network: /' agency_sandbox_test.ts",
+    "test:agency-sandbox-integrations": "deno test --allow-read --allow-write --allow-env --allow-run=codex --filter '/ integrations: /' agency_sandbox_test.ts"
   }
 }
