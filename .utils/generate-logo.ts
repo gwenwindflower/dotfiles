@@ -11,8 +11,15 @@
 
 import { parseArgs } from "@std/cli/parse-args";
 import { extname, isAbsolute, join, resolve } from "@std/path";
+// @ts-types="@types/opentype.js"
+import opentype from "opentype.js";
 
-const FONT_EXT_PRIORITY = [".otf", ".ttf", ".woff2", ".woff"] as const;
+type Font = opentype.Font;
+type Glyph = opentype.Glyph;
+type Path = opentype.Path;
+
+const FONT_EXT_PRIORITY = [".otf", ".ttf", ".woff"] as const;
+const WOFF2_EXT = ".woff2";
 const HOME = Deno.env.get("HOME") ?? "";
 const DEFAULT_FONTS_DIR = `${HOME}/Library/Fonts`;
 
@@ -26,7 +33,7 @@ export interface ResolveFontOptions {
 /**
  * Resolve a font name or path to an absolute file path.
  *
- * - "Heavy"            → <fontsDir>/Heavy.{otf,ttf,woff2,woff}
+ * - "Heavy"            → <fontsDir>/Heavy.{otf,ttf,woff}
  * - "Heavy.ttf"        → tries exact, then alternate extensions
  * - "./fonts/Heavy"    → path-like, extensions tried against the stem
  * - "~/fonts/Heavy"    → tilde expanded against $HOME
@@ -63,10 +70,10 @@ function resolveWithExtensions(
   const ext = extname(basePath).toLowerCase();
   const stem = ext ? basePath.slice(0, -ext.length) : basePath;
 
-  // Build candidate list: exact match first (if any), then priority order
-  // skipping the already-tried exact extension.
+  // Build candidate list: exact match first (if supported), then priority
+  // order skipping the already-tried exact extension.
   const candidates: string[] = [];
-  if (ext) candidates.push(basePath);
+  if (ext && ext !== WOFF2_EXT) candidates.push(basePath);
   for (const e of FONT_EXT_PRIORITY) {
     if (e === ext) continue;
     candidates.push(stem + e);
@@ -75,6 +82,9 @@ function resolveWithExtensions(
   for (const candidate of candidates) {
     if (exists(candidate)) return candidate;
   }
+
+  const woff2 = ext === WOFF2_EXT ? basePath : stem + WOFF2_EXT;
+  if (exists(woff2)) throw new Error(`${woff2}: ${WOFF2_HINT}`);
 
   throw new Error(
     `font not found: tried ${
@@ -138,14 +148,46 @@ function classifyCodePoint(cp: number): string | null {
   return null;
 }
 
+// ── Font loading ───────────────────────────────────────────────────────
+
+const WOFF2_HINT =
+  "WOFF2 fonts are not supported; convert to OTF, TTF, or WOFF first (e.g. `woff2_decompress font.woff2`)";
+
+/**
+ * Parse OTF, TTF, or WOFF bytes into an opentype.js Font.
+ * `source` names the font in error messages.
+ */
+export function parseFont(
+  bytes: Uint8Array | ArrayBuffer,
+  source: string,
+): Font {
+  const view = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
+  const signature = new TextDecoder().decode(view.subarray(0, 4));
+  if (signature === "wOF2") throw new Error(`${source}: ${WOFF2_HINT}`);
+
+  const buffer = view.buffer.slice(
+    view.byteOffset,
+    view.byteOffset + view.byteLength,
+  );
+  try {
+    return opentype.parse(buffer);
+  } catch (err) {
+    const reason = err instanceof Error ? err.message : String(err);
+    throw new Error(`${source}: could not parse font: ${reason}`);
+  }
+}
+
 // ── SVG generation ─────────────────────────────────────────────────────
 
-export interface GenerateOptions {
+export interface RenderOptions {
   text: string;
-  fontPath: string;
   fontSize?: number;
   className?: string;
   padding?: number;
+}
+
+export interface GenerateOptions extends RenderOptions {
+  fontPath: string;
 }
 
 export interface GenerateResult {
@@ -166,69 +208,106 @@ function xmlEscape(s: string): string {
     .replace(/"/g, "&quot;");
 }
 
-export async function generateLogo(
-  opts: GenerateOptions,
-): Promise<GenerateResult> {
-  const {
-    text,
-    fontPath,
-    fontSize = 72,
-    className = "logo",
-    padding = 0,
-  } = opts;
+interface Bounds {
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+}
 
-  // Lazy-load the npm dep so tests of pure helpers don't trigger an npm fetch.
-  const mod = await import("text-to-svg");
-  // deno-lint-ignore no-explicit-any
-  const TextToSVG = (mod as any).default ?? mod;
-  // deno-lint-ignore no-explicit-any
-  const font = (TextToSVG as any).loadSync(fontPath);
-  // opentype.js Font is exposed as `.font` on TextToSVG instances
-  // deno-lint-ignore no-explicit-any
-  const otFont = (font as any).font;
+/**
+ * Place a glyph outline with its baseline origin at (x, baseline), in SVG
+ * coordinates (y down). Keeps close commands so stroked outlines stay sealed.
+ */
+function placeGlyph(
+  glyph: Glyph,
+  x: number,
+  baseline: number,
+  scale: number,
+): Path {
+  const path = new opentype.Path();
+  const px = (v: number) => x + v * scale;
+  const py = (v: number) => baseline - v * scale;
+  for (const cmd of glyph.path.commands) {
+    switch (cmd.type) {
+      case "M":
+        path.moveTo(px(cmd.x), py(cmd.y));
+        break;
+      case "L":
+        path.lineTo(px(cmd.x), py(cmd.y));
+        break;
+      case "Q":
+        path.quadraticCurveTo(px(cmd.x1), py(cmd.y1), px(cmd.x), py(cmd.y));
+        break;
+      case "C":
+        path.curveTo(
+          px(cmd.x1),
+          py(cmd.y1),
+          px(cmd.x2),
+          py(cmd.y2),
+          px(cmd.x),
+          py(cmd.y),
+        );
+        break;
+      case "Z":
+        path.closePath();
+        break;
+    }
+  }
+  return path;
+}
 
-  // Use the font's own metrics for an accurate viewBox height.
-  const scale = fontSize / otFont.unitsPerEm;
-  const ascent = otFont.ascender * scale;
-  const descent = Math.abs(otFont.descender * scale);
-  const lineHeight = ascent + descent;
+/** Render text to an SVG with one <path> per character, kerned by pair. */
+export function renderLogo(font: Font, opts: RenderOptions): GenerateResult {
+  const { text, fontSize = 72, className = "logo", padding = 0 } = opts;
 
-  let x = 0;
+  const scale = fontSize / font.unitsPerEm;
+  const ascent = font.ascender * scale;
+  const descent = Math.abs(font.descender * scale);
+
   const paths: string[] = [];
   const missing: string[] = [];
+  const bounds: Bounds = { left: 0, top: 0, right: 0, bottom: 0 };
+  let x = 0;
   let index = 0;
+  let previous: Glyph | null = null;
 
   for (const ch of text) {
-    const glyph = otFont.charToGlyph(ch);
-    if (glyph?.name === ".notdef") missing.push(ch);
+    const glyph = font.charToGlyph(ch);
+    if (glyph.index === 0) missing.push(ch);
+    if (previous) x += font.getKerningValue(previous, glyph) * scale;
 
-    const metrics = font.getMetrics(ch, { fontSize });
-    const d = font.getD(ch, { x, y: ascent, fontSize });
-
-    if (d) {
+    if (glyph.path.commands.length) {
+      const path = placeGlyph(glyph, x, ascent, scale);
+      const box = path.getBoundingBox();
+      bounds.left = Math.min(bounds.left, box.x1);
+      bounds.top = Math.min(bounds.top, box.y1);
+      bounds.right = Math.max(bounds.right, box.x2);
+      bounds.bottom = Math.max(bounds.bottom, box.y2);
       paths.push(
         `    <path class="${className}-glyph" data-char="${
-          xmlEscape(
-            ch,
-          )
-        }" data-index="${index}" d="${d}" />`,
+          xmlEscape(ch)
+        }" data-index="${index}" d="${path.toPathData(2)}" />`,
       );
     }
-    x += metrics.width;
+
+    x += (glyph.advanceWidth ?? 0) * scale;
+    previous = glyph;
     index++;
   }
 
-  const width = Math.ceil(x + padding * 2);
-  const height = Math.ceil(lineHeight + padding * 2);
-  const transform = padding
-    ? ` transform="translate(${padding} ${padding})"`
-    : "";
+  bounds.right = Math.max(bounds.right, x);
+  bounds.bottom = Math.max(bounds.bottom, ascent + descent);
+
+  const width = Math.ceil(bounds.right - bounds.left + padding * 2);
+  const height = Math.ceil(bounds.bottom - bounds.top + padding * 2);
+  const dx = round(padding - bounds.left);
+  const dy = round(padding - bounds.top);
+  const transform = dx || dy ? ` transform="translate(${dx} ${dy})"` : "";
 
   const svg =
     `<svg viewBox="0 0 ${width} ${height}" class="${className}-svg" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${
-      xmlEscape(
-        text,
-      )
+      xmlEscape(text)
     }">
   <title>${xmlEscape(text)}</title>
   <g${transform}>
@@ -238,6 +317,17 @@ ${paths.join("\n")}
 `;
 
   return { svg, glyphs: paths.length, width, height, missing };
+}
+
+function round(v: number): number {
+  return Math.round(v * 100) / 100;
+}
+
+export async function generateLogo(
+  opts: GenerateOptions,
+): Promise<GenerateResult> {
+  const font = parseFont(await Deno.readFile(opts.fontPath), opts.fontPath);
+  return renderLogo(font, opts);
 }
 
 // ── CLI ────────────────────────────────────────────────────────────────
@@ -262,7 +352,7 @@ Options:
   -h, --help              Show this help
 
 Font resolution:
-  Bare name      "Heavy"            → ~/Library/Fonts/Heavy.{otf,ttf,woff2,woff}
+  Bare name      "Heavy"            → ~/Library/Fonts/Heavy.{otf,ttf,woff}
   With ext       "Heavy.ttf"        → exact, then other extensions on the stem
   Path-like      "./fonts/Heavy"    → path, extension hierarchy applies
   Tilde          "~/fonts/Heavy"    → expanded against $HOME

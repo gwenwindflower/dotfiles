@@ -9,9 +9,9 @@
     "@std/toml": "jsr:@std/toml@^1.0.11",
     "@std/yaml": "jsr:@std/yaml@^1.3.0",
     "@cliffy/command": "jsr:@cliffy/command@^1.3.1",
-    "text-to-svg": "npm:text-to-svg@^3.1.5"
+    "@types/opentype.js": "npm:@types/opentype.js@^1.3.10",
+    "opentype.js": "npm:opentype.js@^2.0.0"
   },
-  "nodeModulesDir": "auto",
   "tasks": {
     "fix-tables": "deno run --allow-read --allow-write fix-md-tables.ts",
     "check-tables": "deno run --allow-read fix-md-tables.ts --check",
