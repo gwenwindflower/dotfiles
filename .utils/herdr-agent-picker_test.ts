@@ -123,7 +123,7 @@ fi
 Deno.test("Codex picker creates a focused tab and submits the selected model", async () => {
   const result = await runLauncher("executable_pick-agent", {
     agent: "codex",
-    model: "gpt-5.6-terra",
+    model: "gpt-6.1-terra",
     effort: "high",
   });
 
@@ -135,7 +135,7 @@ Deno.test("Codex picker creates a focused tab and submits the selected model", a
   );
   assertStringIncludes(
     result.herdrCalls,
-    "CALL\tpane\trun\tw1:p9\tcodex -m gpt-5.6-terra -c 'model_reasoning_effort=\"high\"'",
+    "CALL\tpane\trun\tw1:p9\tcodex -m gpt-6.1-terra -c 'model_reasoning_effort=\"high\"'",
   );
   assertEquals(result.herdrCalls.includes("\tagent\tstart\t"), false);
 });
@@ -149,7 +149,7 @@ Deno.test("Codex picker orders default, Astra, Sol, Luna, then Terra", async () 
   assertEquals(result.code, 0, result.stderr);
   assertStringIncludes(
     result.gumArguments,
-    "default\ngpt-6-astra\ngpt-5.6-sol\ngpt-5.6-luna\ngpt-5.6-terra\n",
+    "default\ngpt-6-astra\ngpt-6.1-sol\ngpt-6-luna\ngpt-6.1-terra\n",
   );
 });
 
