@@ -180,6 +180,7 @@ packages:
         work:
           - graphite
           - maple
+          - swiftformat
       casks:
         core:
           - 1password
