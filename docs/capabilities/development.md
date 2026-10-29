@@ -18,19 +18,19 @@ Command families are placed by purpose, not because a binary is globally trusted
 
 | Family | Level | Notes |
 | --- | --- | --- |
-| Inspection, format, lint, typecheck, test, and build loops | `sandboxed` | Caches and package stores are granted in [workspace access](workspace.md#paths-by-purpose). |
-| Project dependency installs | `sandboxed` | Lifecycle scripts stay sandboxed. |
-| mise tasks (`mise run`, `mise r`) | `open` | mise's trust file is user-owned and stays read-only to every sandbox, so a task that runs at all is one the user approved; tasks that need guarding are guarded in the project's mise config. The agent still reads a task definition before running it. |
-| Other task runners (`deno task`, `make`, `npm`/`aube run`) | `sandboxed` | In Claude they reach the classifier; in Codex they run unreviewed. An unsandboxed retry is `review` after the task definition is inspected; release-shaped tasks are `review` (on request). |
-| Configured upgrades (`brew update`/`upgrade`, `mise up`, `uv tool upgrade`, `uv python upgrade`, `rustup update`, `deno upgrade`, `cargo install-update`) and project `mise install` | `open` | They write `PATH` directories, which no sandbox may. Pins, cooldowns, and checksum checks stay on. |
-| New global installs and uninstalls (`brew install`, `uv tool install`, `cargo install`, `mise use -g`) | `review` | They fail in the sandbox for the same reason and reach review. A tool the user named is routine. |
-| Process inspection (`ps`, `pgrep`) | `open` | Codex also runs `lsof` and read-only `docker` subcommands on the host. |
-| Raw registry publishing, unpublish, yank, dist-tag, `docker push` | `deny` | Releases run through the reviewed project release task. |
-| Project release task | `review` (on request) | |
-| Deploys and infrastructure apply (`wrangler`/`fly`/`railway deploy`, `terraform apply`, `kubectl apply`) | `review` (on request) | Claude also denies `kubectl apply` to a `prod` namespace. |
-| `terraform destroy`, `kubectl delete` | `deny` | |
-| macOS host administration (`defaults write`/`delete`/`import`, `launchctl`, `killall`, `osascript`) | `review` (on request) | |
-| `sudo` | `user-open` | |
+| Inspection, format, lint, typecheck, test, and build loops | `sandboxed-unruled` | Caches and package stores are granted in [workspace access](workspace.md#paths-by-purpose). |
+| Project dependency installs | `sandboxed-unruled` | Lifecycle scripts stay sandboxed. |
+| mise tasks (`mise run`, `mise r`) | `host-allowed` | mise's trust file is user-owned and stays read-only to every sandbox, so a task that runs at all is one the user approved; tasks that need guarding are guarded in the project's mise config. The agent still reads a task definition before running it. |
+| Other task runners (`deno task`, `make`, `npm`/`aube run`) | `sandboxed-unruled` | In Claude they reach the classifier; in Codex they run unreviewed. An unsandboxed retry is `auto-reviewed` after the task definition is inspected; release-shaped tasks are `auto-reviewed` (on request). |
+| Configured upgrades (`brew update`/`upgrade`, `mise up`, `uv tool upgrade`, `uv python upgrade`, `rustup update`, `deno upgrade`, `cargo install-update`) and project `mise install` | `host-allowed` | They write `PATH` directories, which no sandbox may. Pins, cooldowns, and checksum checks stay on. |
+| New global installs and uninstalls (`brew install`, `uv tool install`, `cargo install`, `mise use -g`) | `auto-reviewed` | They fail in the sandbox for the same reason and reach review. A tool the user named is routine. |
+| Process inspection (`ps`, `pgrep`) | `host-allowed` | Codex also runs `lsof` and read-only `docker` subcommands on the host. |
+| Raw registry publishing, unpublish, yank, dist-tag, `docker push` | `denied` | Releases run through the reviewed project release task. |
+| Project release task | `auto-reviewed` (on request) | |
+| Deploys and infrastructure apply (`wrangler`/`fly`/`railway deploy`, `terraform apply`, `kubectl apply`) | `auto-reviewed` (on request) | Claude also denies `kubectl apply` to a `prod` namespace. |
+| `terraform destroy`, `kubectl delete` | `denied` | |
+| macOS host administration (`defaults write`/`delete`/`import`, `launchctl`, `killall`, `osascript`) | `auto-reviewed` (on request) | |
+| `sudo` | `user-reviewed` | |
 
 ## CI/CD
 

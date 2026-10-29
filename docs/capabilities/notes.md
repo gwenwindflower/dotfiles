@@ -18,11 +18,11 @@ A loop of individual commands is still a batch. Incidental capture does not auth
 
 | Family | Level | Notes |
 | --- | --- | --- |
-| `notesmd-cli` reads, captures, and individual edits, moves, and deletions | `sandboxed` | Through the vault write grant. |
-| Routine `obsidian` CLI reads and task changes | `sandboxed` | Through the granted `~/.obsidian-cli.sock`. |
-| Vault batches (imports, exports, mass deletion, loops) | `sandboxed` | The review policy treats batches as requested-only, but sandboxed calls never reach a reviewer, so guidance holds the scope. |
-| `obsidian eval`, `command`, `plugin` | `review` (on request) | The reviewer checks the actual code and scope. |
-| Vault administration (`notesmd-cli add-vault`, `remove-vault`, `set-default-vault`) | `user-open` | Manual-only, even during an authorized note-editing task. |
+| `notesmd-cli` reads, captures, and individual edits, moves, and deletions | `sandboxed-unruled` | Through the vault write grant. |
+| Routine `obsidian` CLI reads and task changes | `sandboxed-unruled` | Through the granted `~/.obsidian-cli.sock`. |
+| Vault batches (imports, exports, mass deletion, loops) | `sandboxed-unruled` | The review policy treats batches as requested-only, but sandboxed calls never reach a reviewer, so guidance holds the scope. |
+| `obsidian eval`, `command`, `plugin` | `auto-reviewed` (on request) | The reviewer checks the actual code and scope. |
+| Vault administration (`notesmd-cli add-vault`, `remove-vault`, `set-default-vault`) | `user-reviewed` | Manual-only, even during an authorized note-editing task. |
 
 ## Platform implementations
 

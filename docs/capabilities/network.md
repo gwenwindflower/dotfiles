@@ -11,7 +11,7 @@ Agents reach routine development services through a domain list that both Claude
 
 ## Safety boundary
 
-Provider ownership does not make every path or payload safe. Prefer exact hosts serving a known function; avoid wildcards when the same domain family also serves user-generated or executable content. Host commands (`open` and approved `review-*` families) run outside both network lists.
+Provider ownership does not make every path or payload safe. Prefer exact hosts serving a known function; avoid wildcards when the same domain family also serves user-generated or executable content. Host commands (`host-allowed` and approved `auto-reviewed` families) run outside both network lists.
 
 ## Hosts by purpose
 
@@ -22,12 +22,14 @@ Claude lists sandbox hosts in `sandbox.network.allowedDomains` and documentation
 | Source control | `github.com`, `api.github.com`, `raw.githubusercontent.com`, `results-receiver.actions.githubusercontent.com` | Sandbox | Profile |
 | Package registries and toolchains | `registry.npmjs.org`, `jsr.io`, `deno.land`, `dl.deno.land`, `pypi.org`, `pythonhosted.org`, `files.pythonhosted.org`, `releases.astral.sh`, `index.crates.io`, `static.crates.io`, `static.rust-lang.org`, `proxy.golang.org`, `sum.golang.org`, `storage.googleapis.com`, `mise-versions.jdx.dev`, `formulae.brew.sh`, `hub.getdbt.com` | Sandbox | Profile |
 | Schemas | `schemastore.org`, `json.schemastore.org`, `www.schemastore.org`, `mise.jdx.dev`, `fnox.jdx.dev` | Sandbox | Profile |
-| Work and personal services | `api.linear.app`, `api.lightdash.com`, `app.lightdash.cloud`, `analytics.lightdash.cloud`, `api.notion.com`, `api.attio.com`, `readwise.io`, `api.todoist.com`, `context7.com`, `backend.blacksmith.sh`, `clireleases.blacksmith.sh`, `workers.cloudflare.com`, `telemetry.astro.build` | Sandbox | Profile |
+| Work and personal services | `api.linear.app`, `api.lightdash.com`, `app.lightdash.cloud`, `analytics.lightdash.cloud`, `api.notion.com`, `api.attio.com`, `readwise.io`, `api.todoist.com`, `backend.blacksmith.sh`, `clireleases.blacksmith.sh`, `workers.cloudflare.com`, `telemetry.astro.build` | Sandbox | Profile |
+| Cap | `cap.so` | Not needed: `cap` runs on the host | Profile |
 | Documentation | Tool and library doc sites (`docs.github.com`, `docs.astral.sh`, `developers.openai.com`, `worktrunk.dev`, and similar) | `WebFetch` only; a shell fetch goes to review | Profile, so shell fetches reach them too |
+| ChatGPT documentation | `learn.chatgpt.com` | Sandbox and `WebFetch` | Profile |
 | Local | `localhost`, `127.0.0.1`, `::1` | `allowLocalBinding` | Listed hosts plus `allow_local_binding` |
 | Deliberately unlisted | Binary payload hosts (`objects.githubusercontent.com`, `release-assets.githubusercontent.com`, `codeload.github.com`, `nodejs.org`), warehouse and Google APIs, Hugging Face | Review | Review |
 
-Unix sockets granted in both harnesses: `~/.agent-browser/default.sock`, `~/.config/herdr/herdr.sock`, `~/.obsidian-cli.sock`, pm2's `~/.pm2/rpc.sock` and `~/.pm2/pub.sock` (the daemon's command and event channels, which every `pm2` subcommand needs), and Secretive's `~/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh` (agent commit signing). Codex lists them as absolute paths. The Docker socket is not granted; Codex runs read-only Docker inspection as an `open` rule instead.
+Unix sockets granted in both harnesses: `~/.agent-browser/default.sock`, `~/.config/herdr/herdr.sock`, sockets beneath `~/.config/herdr/sessions/`, `~/.obsidian-cli.sock`, pm2's `~/.pm2/rpc.sock` and `~/.pm2/pub.sock` (the daemon's command and event channels, which every `pm2` subcommand needs), and Secretive's `~/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh` (agent commit signing). Codex lists them as absolute paths. On macOS, both harnesses treat socket entries as subtree grants, so the Herdr sessions directory admits `sessions/<name>/herdr.sock` dynamically, including sessions created after sandbox startup; it also admits other socket names beneath that directory. Socket entries are paths, not glob patterns. The Docker socket is not granted; Codex runs read-only Docker inspection as an `host-allowed` rule instead.
 
 ## Platform implementations
 

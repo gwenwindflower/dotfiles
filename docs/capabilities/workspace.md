@@ -24,12 +24,12 @@ Claude grants live in `sandbox.filesystem`; Codex grants live in `[permissions.d
 
 | Purpose | Paths | Claude | Codex |
 | --- | --- | --- | --- |
-| Workspace and temp | Session directory and worktrees, `$TMPDIR`, pnpm's store lock dir `/tmp/pnpm-store-operation-locks-<uid>` and its `/private/tmp` alias | Write (the lock dirs are listed explicitly) | Write (`:workspace`, `:tmpdir`, `:slash_tmp`); `.git`, `.agents`, and `.codex` inside workspace roots stay read-only |
+| Workspace and temp | Session directory and worktrees, `$TMPDIR`, pnpm's store lock dir `/tmp/pnpm-store-operation-locks-<uid>` and its `/private/tmp` alias | Write (the lock dirs are listed explicitly) | Write (`:workspace`, `:tmpdir`, `:slash_tmp`), including an explicit `.git` write grant for [worktree management](../agent-config.md#codex-worktree-permissions); `.agents` and `.codex` inside workspace roots stay read-only |
 | Darwin user temp dir | `getconf DARWIN_USER_TEMP_DIR` | Write, because `/usr/bin/mktemp` and `diff` ignore `$TMPDIR` | Covered by `:tmpdir` |
 | Caches and package stores | `~/.cache`, `~/.npm`, `~/.bun/install`, `~/.cargo/{git,registry}`, `~/.go/pkg`, `~/.local/share/{aube,mise,pnpm,uv}`, `~/.local/state/mise`, `~/Library/Caches/{Homebrew,deno,go-build,mise,node-gyp,pip,com.apple.python,dev.biomejs.biome,kitty,ms-playwright}` | Write | Write |
-| Tool state | `~/.agent-browser`, `~/.pm2` (daemon state, logs, and pids for pm2-managed dev services), `~/.blacksmith`, `~/.context7`, `~/.critique`, `~/.duckdb`, `~/.mintlify`, `~/.zvec-grep`, `~/.dbt/leases`, `~/.local/share/{agentsview,graveyard,nvim}`, `~/.local/state/{herdr,nvim}`, `~/Library/Application Support/go`, `~/Library/Application Support/linear-cli/cache` | Write | Write |
+| Tool state | `~/.agent-browser`, `~/.pm2` (daemon state, logs, and pids for pm2-managed dev services), `~/.blacksmith`, `~/.critique`, `~/.duckdb`, `~/.mintlify`, `~/.zvec-grep`, `~/.dbt/leases`, `~/.local/share/{agentsview,graveyard,nvim}`, `~/.local/state/{herdr,nvim}`, `~/Library/Application Support/go`, `~/Library/Application Support/linear-cli/cache` | Write | Write |
 | Tool configs that hold their own token | `~/.config/lightdash`, `~/.config/rclone`, `~/.config/.wrangler` | Write | Write |
-| Agent state | `~/.codex/{tmp,.tmp,sqlite,cache,memories,plugins,skills}`, `~/.agents/skills`, `symsources/agents/skill-lock.json` | `~/.agents/skills` is a protected path in Claude's sandbox (`~/.claude/skills` links to it), so `gh skill` runs `open`; the manifest is writable | Write |
+| Agent state | `~/.codex/{tmp,.tmp,sqlite,cache,memories,plugins,skills}`, `~/.agents/skills`, `symsources/agents/skill-lock.json` | `~/.agents/skills` is a protected path in Claude's sandbox (`~/.claude/skills` links to it), so `gh skill` runs `host-allowed`; the manifest is writable | Write |
 | Notes vault | `~/Library/Mobile Documents/iCloud~md~obsidian/Documents/girlOS` | Write | Write |
 | PATH and trust directories | `~/.local/share/mise/{installs,shims}`, `~/.local/share/uv/{python,tools}`, `~/.local/share/nvim/{lazy,mason}`, `~/.bun/install/global`, `~/.deno/bin`, `~/.local/state/mise/{trusted-configs,ignored-configs}`; under `symsources/`, agent settings (claude, codex, opencode), trust surfaces (mise, aube, git, worktrunk, amoxide), and plugin locks (`nvim/lazy-lock.json`, `yazi/package.toml`). Other symlinked configs, such as herdr, and the skill-lock manifest stay writable | Read-only: not granted, or `denyWrite` under a granted parent | Read-only: not granted, or a `read` entry under a granted parent |
 | Credential stores | `~/.ssh` (except `allowed_signers`), `~/.aws`, `~/.gnupg`, `~/.config/{gcloud,op,github-copilot}`, `~/.codex/auth.json`, the chezmoi age identity, `~/.fly`, `~/.sprites`, 1Password and browser profile data, `~/Library/Cookies`, `.env` and key files | Read-denied | Readable; reviewer policy and guidance govern access |
@@ -40,13 +40,13 @@ Levels are defined in [agent configuration](../agent-config.md#permission-levels
 
 | Family | Level | Notes |
 | --- | --- | --- |
-| Dotfiles inspection and dry run (`chezmoi diff`, `status`, `verify`, `doctor`, `--dry-run --no-pager apply`) | `open` | They read every managed target and chezmoi's state database. Codex also runs `cat`, `data`, and `managed` on the host; Claude runs those sandboxed. |
-| `chezmoi add`, `re-add`, `forget` | `review` | Files the task changed. |
-| Real `chezmoi apply`, `update`, `init` | `review` (on request) | Approved only when the user's message asked to apply after the changes. |
-| `chezmoi state`, `purge`, `manage`, `unmanage`, `destroy` | `user-open` | |
-| Recoverable deletion (`rip`, single-file `rm`) | `sandboxed` | |
-| Unrecoverable deletion (recursive `rm` in any flag order, `rip -d`, `sudo rm`, `dd`, `mkfs`, `chmod -R 777`) | `deny` | `rip` is the recoverable path. |
-| Trust and permission surfaces (`mise trust`, `direnv allow`, build-script approvals, agent permission or sandbox config, `ctx7 setup`/`remove`, `zg install`, `zg auth grant`, agent MCP and plugin changes) | `review` (on request) | Only on a direct request about that surface. Trust files are read-only in both sandboxes, so these fail there and reach review. |
+| Dotfiles inspection and dry run (`chezmoi diff`, `status`, `verify`, `doctor`, `--dry-run --no-pager apply`) | `host-allowed` | They read every managed target and chezmoi's state database. Codex also runs `cat`, `data`, and `managed` on the host; Claude runs those sandboxed. |
+| `chezmoi add`, `re-add`, `forget` | `auto-reviewed` | Files the task changed. |
+| Real `chezmoi apply`, `update`, `init` | `auto-reviewed` (on request) | Approved only when the user's message asked to apply after the changes. |
+| `chezmoi state`, `purge`, `manage`, `unmanage`, `destroy` | `user-reviewed` | |
+| Recoverable deletion (`rip`, single-file `rm`) | `sandboxed-unruled` | |
+| Unrecoverable deletion (recursive `rm` in any flag order, `rip -d`, `sudo rm`, `dd`, `mkfs`, `chmod -R 777`) | `denied` | `rip` is the recoverable path. |
+| Trust and permission surfaces (`mise trust`, `direnv allow`, build-script approvals, agent permission or sandbox config, `zg install`, `zg auth grant`, agent MCP and plugin changes) | `auto-reviewed` (on request) | Only on a direct request about that surface. Trust files are read-only in both sandboxes, so these fail there and reach review. |
 
 ## Dotfiles deployment
 

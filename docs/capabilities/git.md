@@ -8,21 +8,21 @@ Levels are defined in [agent configuration](../agent-config.md#permission-levels
 
 | Family | Level | Notes |
 | --- | --- | --- |
-| Inspection (`status`, `diff`, `log`, `show`, `reflog`, branch and worktree listing) | `sandboxed` | `open` in Codex, where `.git` is read-only inside workspace roots. |
-| Local writes (`add`, `commit`, `stash`, `switch` to an existing branch, `branch -d`, a clean rebase onto `main`, `merge --ff-only`) | `sandboxed` | `open` in Codex for the same reason. |
-| Remote sync (`fetch`, `pull`, `clone`, `ls-remote`, `submodule update`, `gh repo clone`, `gh pr checkout`) | `open` | SSH runs through the 1Password agent on the host. |
-| Worktrunk lifecycle (`wt switch`, `shift`, `copy`, `list`, `status`, `merge`, `remove`, `step`, `config show`, `hook show`) | `open` | Sibling worktrees, shared `.git`, hooks, and approvals live on the host. |
-| Normal push to a non-protected branch | `review` | The reviewer resolves the real destination from refspecs and push config. |
-| Complex rebase (`-i`, `--onto`, `--root`, `--exec`), plain branch creation (`switch -c`, `checkout -b`), direct `git worktree add`/`move`/`remove`/`prune`, remote edits | `review` | Branches start as worktrees through `wt switch -c`. |
-| `push --force-with-lease` to the session's own branch, push to `main` or a protected branch | `review` (on request) | |
-| Discarding work (`reset --hard`, `clean`, `checkout --`, `restore`, `stash drop`/`clear`), `rebase --skip`, `--no-verify` | `review` (on request) | These also need a preserved backup. |
-| Bare force push (`--force`, `-f`, `+refspec`), `git config --global`, `wt config approvals`, `branch -D`/`--force`, forced worktree removal (`git worktree remove --force`, `wt remove -D`/`--force`) | `user-open` | |
-| Remote ref deletion, mirror push, Worktrunk `--yes`/`--no-hooks`, `commit -S` | `deny` | GitHub deletes merged head branches. |
-| `gh` reads | `sandboxed` | The keychain token works in both sandboxes. Codex routes every `gh api` call, reads included, to the reviewer. |
-| `gh` PR and issue writes, `gh api` mutations, workflow rerun and cancel, `gh extension` installs | `review` | Read before write. |
-| `gh pr merge`, PR approvals, repository create/fork/rename/archive/edit, secret and variable writes, release workflow dispatch | `review` (on request) | |
-| `gh auth login`/`logout`/`refresh`/`switch`/`setup-git`, `gh auth status` | `review` | Routine authentication; status is denied with `-t`/`--show-token`. Codex routes all status flags to review because prefix rules cannot detect flags in every position. |
-| `gh auth token`, `gh repo delete`, `gh release` mutations | `deny` | Releases run through the reviewed project release task. |
+| Inspection (`status`, `diff`, `log`, `show`, `reflog`, branch and worktree listing) | `sandboxed-unruled` | `host-allowed` in Codex through `git.rules`. |
+| Local writes (`add`, `commit`, `stash`, `switch` to an existing branch, `branch -d`, a clean rebase onto `main`, `merge --ff-only`) | `sandboxed-unruled` | `host-allowed` in Codex through `git.rules`. |
+| Remote sync (`fetch`, `pull`, `clone`, `ls-remote`, `submodule update`, `gh repo clone`, `gh pr checkout`) | `host-allowed` | SSH runs through the 1Password agent on the host. |
+| Worktrunk lifecycle (`wt switch`, `shift`, `copy`, `list`, `status`, `merge`, `remove`, `step`, `config show`, `hook show`) | `host-allowed` | Sibling worktrees, shared `.git`, hooks, and approvals live on the host. |
+| Normal push to a non-protected branch | `auto-reviewed` | The reviewer resolves the real destination from refspecs and push config. |
+| Complex rebase (`-i`, `--onto`, `--root`, `--exec`), plain branch creation (`switch -c`, `checkout -b`), direct `git worktree add`/`move`/`remove`/`prune`, remote edits | `auto-reviewed` | Branches start as worktrees through `wt switch -c`. |
+| `push --force-with-lease` to the session's own branch, push to `main` or a protected branch | `auto-reviewed` (on request) | |
+| Discarding work (`reset --hard`, `clean`, `checkout --`, `restore`, `stash drop`/`clear`), `rebase --skip`, `--no-verify` | `auto-reviewed` (on request) | These also need a preserved backup. |
+| Bare force push (`--force`, `-f`, `+refspec`), `git config --global`, `wt config approvals`, `branch -D`/`--force`, forced worktree removal (`git worktree remove --force`, `wt remove -D`/`--force`) | `user-reviewed` | |
+| Remote ref deletion, mirror push, Worktrunk `--yes`/`--no-hooks`, `commit -S` | `denied` | GitHub deletes merged head branches. |
+| `gh` reads | `sandboxed-unruled` | The keychain token works in both sandboxes. Codex routes every `gh api` call, reads included, to the reviewer. |
+| `gh` PR and issue writes, `gh api` mutations, workflow rerun and cancel, `gh extension` installs | `auto-reviewed` | Read before write. |
+| `gh pr merge`, PR approvals, repository create/fork/rename/archive/edit, secret and variable writes, release workflow dispatch | `auto-reviewed` (on request) | |
+| `gh auth login`/`logout`/`refresh`/`switch`/`setup-git`, `gh auth status` | `auto-reviewed` | Routine authentication; status is denied with `-t`/`--show-token`. Codex routes all status flags to review because prefix rules cannot detect flags in every position. |
+| `gh auth token`, `gh repo delete`, `gh release` mutations | `denied` | Releases run through the reviewed project release task. |
 
 ## Recoverable history
 
@@ -49,7 +49,7 @@ An alias added to `symsources/worktrunk/config.toml` reaches review until both c
 
 SSH authentication uses 1Password's agent on the host. User terminal commits sign through it; agent sessions sign with the dedicated agent signing key held in the Secure Enclave by Secretive, which requires Touch ID or Apple Watch per signature. The Claude SessionStart hook and the Codex environment policy each include one fragment through `GIT_CONFIG_*` env (`~/.config/git/claude.gitconfig`, `~/.config/git/codex.gitconfig`); both pull in `agent.gitconfig`, which sets the `key::` public key and the `secretive-sign` wrapper that points `ssh-keygen` at Secretive's socket for signing only, so host SSH keeps using 1Password. The key is registered on GitHub as a signing-only key, so commits verify under the user without granting SSH access. `~/.ssh` stays denied to sandboxes apart from `allowed_signers`; each sandbox allows the Secretive socket. Never change signing settings or pass `-S` in response to a failure.
 
-Sandboxed tools that need linked-worktree metadata resolve `git rev-parse --absolute-git-dir --git-common-dir`; a `.git` pointer alone does not grant its external target.
+Codex keeps workspace Git metadata writable, including Worktrunk's local config, branch variables, and `.git/wt/` state. The grant and linked-worktree launcher are described in [Codex worktree permissions](../agent-config.md#codex-worktree-permissions). Sandboxed tools that need linked-worktree metadata resolve `git rev-parse --absolute-git-dir --git-common-dir`; a `.git` pointer alone does not grant its external target.
 
 ## GitHub and publication
 
@@ -59,7 +59,7 @@ Use `gh`, read before writing, and verify changed destinations. Confidential pro
 
 | Harness | Mechanism and limits |
 | --- | --- |
-| Claude Code | `open` families are excluded with a matching allow; `git push` is excluded without one, since SSH needs the host. Every other `review` family has no rule and reaches the classifier. Standard forms of bare force push, `branch -D`, forced worktree removal, auth, and global config are `ask`; standard forms of remote-ref deletion, mirror push, Worktrunk bypass flags, and signing are `deny`. Other shapes of these reach the classifier, whose Never section names them. |
+| Claude Code | `host-allowed` families are excluded with a matching allow; `git push` is excluded without one, since SSH needs the host. Every other `auto-reviewed` family has no rule and reaches the classifier. Standard forms of bare force push, `branch -D`, forced worktree removal, auth, and global config are `ask`; standard forms of remote-ref deletion, mirror push, Worktrunk bypass flags, and signing are `denied`. Other shapes of these reach the classifier, whose Never section names them. |
 | Codex | `git.rules` allows inspection, local writes, remote sync, and Worktrunk lifecycle; prompts on discard forms, complex rebase, branch creation, `--no-verify`, worktree and remote mutations, `gh` writes, and `gh api`; forbids user-open and deny families. `git push` has no allow, so it fails in the sandbox and escalates to the reviewer. |
 | OpenCode | Ordered Bash patterns allow exact `git rebase main`, `git rebase origin/main`, `git rebase --continue`, and `git rebase --abort`; shared guidance requires ownership and recovery checks. Other rebases and pushes retain ask: this harness has no automatic evaluator or branch-protection-aware pattern. A broad push allow cannot express the target-dependent contract. Agent overrides preserve global safety rules; no process sandbox is supplied by command policy. |
 

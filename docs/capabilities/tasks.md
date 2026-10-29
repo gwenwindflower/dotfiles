@@ -25,11 +25,11 @@ Agents read, reconcile, organize, and schedule Obsidian Tasks and Apple Reminder
 
 | Family | Level | Notes |
 | --- | --- | --- |
-| `rem` reads, add, and individual update, complete, flag, and list moves | `open` | EventKit needs the host. Prefer JSON for reconciliation. |
-| `rem delete`/`rm`/`remove` | `review` | An individual requested deletion is routine; multi-ID deletion is judged as a batch. |
-| `rem import`/`export`, `list-mgmt`/`lm` | `review` (on request) | Batches and list administration. |
-| `rem interactive`, `rem skills` | `review` | |
-| Obsidian task changes and individual note edits | `sandboxed` | After vault and record identity checks; see [Obsidian notes](notes.md#levels). |
+| `rem` reads, add, and individual update, complete, flag, and list moves | `host-allowed` | EventKit needs the host. Prefer JSON for reconciliation. |
+| `rem delete`/`rm`/`remove` | `auto-reviewed` | An individual requested deletion is routine; multi-ID deletion is judged as a batch. |
+| `rem import`/`export`, `list-mgmt`/`lm` | `auto-reviewed` (on request) | Batches and list administration. |
+| `rem interactive`, `rem skills` | `auto-reviewed` | |
+| Obsidian task changes and individual note edits | `sandboxed-unruled` | After vault and record identity checks; see [Obsidian notes](notes.md#levels). |
 | `obsidian eval`/`command`/`plugin` and vault administration | See [Obsidian notes](notes.md#levels) | |
 
 Moving across a shared-list boundary can recreate a reminder with a different ID. If the user has already requested that specific move, preserve its fields, use the tool's documented confirmation mechanism, and update the stored mapping. Ask only if the destination or sharing scope is unresolved; routine project moves do not require a second approval solely because they are moves.
