@@ -439,62 +439,6 @@
 	},
 	"model": "opus",
 	"hooks": {
-		"Notification": [
-			{
-				"matcher": "^(startup|resume|clear|compact|fork)$",
-				"hooks": [
-					{
-						"type": "command",
-						"command": "bash '/Users/winnie/.claude/hooks/herdr-agent-state.sh' session",
-						"timeout": 10
-					}
-				]
-			},
-			{
-				"hooks": [
-					{
-						"command": "'/Users/winnie/dev/lightdash/sanctuary/.build/dev/Shrine Dev.app/Contents/Helpers/shrine-hook' --report claude",
-						"timeout": 2,
-						"type": "command"
-					}
-				]
-			}
-		],
-		"UserPromptSubmit": [
-			{
-				"hooks": [
-					{
-						"command": "'/Users/winnie/dev/lightdash/sanctuary/.build/dev/Shrine Dev.app/Contents/Helpers/shrine-hook' --report claude",
-						"timeout": 2,
-						"type": "command"
-					}
-				]
-			}
-		],
-		"PreToolUse": [
-			{
-				"matcher": "Bash|Edit|Write|MultiEdit|NotebookEdit|WebFetch|WebSearch|AskUserQuestion",
-				"hooks": [
-					{
-						"type": "command",
-						"command": "sh '/Users/winnie/Library/Application Support/Crest/approvals/pretooluse.sh'",
-						"timeout": 86400
-					}
-				]
-			}
-		],
-		"PostToolUse": [
-			{
-				"matcher": "AskUserQuestion",
-				"hooks": [
-					{
-						"type": "command",
-						"command": "sh '/Users/winnie/Library/Application Support/Crest/approvals/posttooluse.sh'",
-						"timeout": 10
-					}
-				]
-			}
-		],
 		"SessionStart": [
 			{
 				"matcher": "",

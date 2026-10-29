@@ -315,7 +315,7 @@ job_max_runtime_seconds = 1800
 
 [hooks.state]
 [hooks.state."/Users/winnie/.codex/hooks.json:session_start:0:0"]
-trusted_hash = "sha256:504c9308593084799edfe6fb1c55506db4098b84c65a17a1c7b8aae83f562390"
+trusted_hash = "sha256:1d35af394dbcd2b93315f3c526a1369dc2c48ebed7e4520ff09999283c78f65b"
 enabled = true
 
 [hooks.state."worktrunk@worktrunk:hooks/hooks.json:user_prompt_submit:0:0"]

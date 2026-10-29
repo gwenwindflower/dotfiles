@@ -1,97 +1,11 @@
 {
   "hooks": {
-    "Interrupt": [
-      {
-        "hooks": [
-          {
-            "command": "'/Users/winnie/dev/lightdash/sanctuary/.build/dev/Shrine Dev.app/Contents/Helpers/shrine-hook' --report codex",
-            "timeout": 2,
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "PermissionRequest": [
-      {
-        "hooks": [
-          {
-            "command": "'/Users/winnie/dev/lightdash/sanctuary/.build/dev/Shrine Dev.app/Contents/Helpers/shrine-hook' --report codex",
-            "timeout": 2,
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "hooks": [
-          {
-            "command": "'/Users/winnie/dev/lightdash/sanctuary/.build/dev/Shrine Dev.app/Contents/Helpers/shrine-hook' --report codex",
-            "timeout": 2,
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "hooks": [
-          {
-            "command": "'/Users/winnie/dev/lightdash/sanctuary/.build/dev/Shrine Dev.app/Contents/Helpers/shrine-hook' --report codex",
-            "timeout": 2,
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "command": "'/Users/winnie/dev/lightdash/sanctuary/.build/dev/Shrine Dev.app/Contents/Helpers/shrine-hook' --report codex",
-            "timeout": 2,
-            "type": "command"
-          }
-        ]
-      }
-    ],
     "SessionStart": [
-      {
-        "hooks": [
-          {
-            "command": "'/Users/winnie/dev/lightdash/sanctuary/.build/dev/Shrine Dev.app/Contents/Helpers/shrine-hook' --report codex",
-            "timeout": 2,
-            "type": "command"
-          }
-        ]
-      },
       {
         "hooks": [
           {
             "command": "bash '/Users/winnie/.codex/herdr-agent-state.sh' session",
             "timeout": 10,
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "command": "'/Users/winnie/dev/lightdash/sanctuary/.build/dev/Shrine Dev.app/Contents/Helpers/shrine-hook' --report codex",
-            "timeout": 2,
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "command": "'/Users/winnie/dev/lightdash/sanctuary/.build/dev/Shrine Dev.app/Contents/Helpers/shrine-hook' --report codex",
-            "timeout": 2,
             "type": "command"
           }
         ]
