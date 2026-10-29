@@ -249,6 +249,7 @@ allow_local_binding = true
 "api.lightdash.com" = "allow"
 "analytics.lightdash.cloud" = "allow"
 "app.lightdash.cloud" = "allow"
+"fishtownanalytics.sinter-collect.com" = "allow"
 "api.notion.com" = "allow"
 "readwise.io" = "allow"
 "api.todoist.com" = "allow"
@@ -752,6 +753,9 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/Users/winnie/dev/web/winnie-sh-phosphor"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/Library/Mobile Documents/iCloud~md~obsidian/Documents/girlOS"]
 trust_level = "trusted"
 
 [apps._default]

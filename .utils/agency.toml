@@ -159,6 +159,12 @@ expect = "ok"
 cmd = "curl -fsSI --max-time 8 https://learn.chatgpt.com >/dev/null"
 
 [[sandbox]]
+name = "Sinter collection host is reachable"
+group = "network"
+expect = "ok"
+cmd = "curl -sSI --max-time 8 https://fishtownanalytics.sinter-collect.com >/dev/null"
+
+[[sandbox]]
 name = "unlisted host is blocked"
 group = "network"
 expect = "deny"
