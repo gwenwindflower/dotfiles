@@ -123,3 +123,51 @@ files = ["rem.md"]
 baseline = "9a788845ff232e838a28316973d7b57cbe38e03a"
 tree = "bc9d5e8928ace95d018f97734b11db83a188e23c"
 
+[[video-production.upstream]]
+repo = "CapSoftware/Cap"
+skill = "apps/cli/skill/cap"
+files = ["cap.md"]
+baseline = "cb12972577993e6051228a703af17e59564b9289"
+tree = "a8cdf20ea401337012722f916792be8ab89f58c6"
+
+[[video-production.upstream]]
+repo = "CapSoftware/Cap"
+skill = "apps/cli/skill/cap-demo"
+files = ["cap.md", "demo-editing.md"]
+baseline = "cb12972577993e6051228a703af17e59564b9289"
+tree = "41417f61e6ae84e9f77ee5bdbfb68f7dbc0c1e1d"
+
+[[video-production.upstream]]
+repo = "descriptinc/descript-mcp"
+skill = "create-video"
+files = ["descript.md"]
+baseline = "a34bf79970993edd1df74293ebc16425f820798f"
+tree = "d6ea8631d98fb56f7cc7e16d65882e4ba1d8a335"
+
+[[video-production.upstream]]
+repo = "descriptinc/descript-mcp"
+skill = "edit-project"
+files = ["descript.md"]
+baseline = "a34bf79970993edd1df74293ebc16425f820798f"
+tree = "24dea2ba089c5867540d0bbc6932eafb4e256ed7"
+
+[[video-production.upstream]]
+repo = "descriptinc/descript-mcp"
+skill = "publish-project"
+files = ["descript.md"]
+baseline = "a34bf79970993edd1df74293ebc16425f820798f"
+tree = "944ad3ece0b6c9d10f580607802532860809500e"
+
+[[video-production.upstream]]
+repo = "descriptinc/descript-mcp"
+skill = "export-transcript"
+files = ["descript.md"]
+baseline = "a34bf79970993edd1df74293ebc16425f820798f"
+tree = "de5b6d389065387ae8ebe8f2be1dbc37a34c72ad"
+
+[[video-production.upstream]]
+repo = "descriptinc/descript-mcp"
+skill = "export-timeline"
+files = ["descript.md"]
+baseline = "a34bf79970993edd1df74293ebc16425f820798f"
+tree = "adf287f853bfbb18b8fbd8c0f1d0248c126ff325"

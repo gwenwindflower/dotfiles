@@ -25,6 +25,14 @@ prefix_rule(
 )
 
 prefix_rule(
+    pattern = ["cap", ["doctor", "targets"]],
+    decision = "allow",
+    justification = "Cap's screen-recording permission and ScreenCaptureKit are only visible on the host; in the sandbox these report no permission and an empty display.",
+    match = ["cap doctor --json", "cap targets --json"],
+    not_match = ["cap caps list --json", "cap record start --screen 0"],
+)
+
+prefix_rule(
     pattern = ["qmd", ["embed", "query", "vsearch"]],
     decision = "allow",
     justification = "Local embedding and vector search load models on the GPU, which the sandbox blocks.",
@@ -55,6 +63,70 @@ prefix_rule(
     decision = "prompt",
     justification = "The Default profile carries signed-in, Keychain-backed browser state; use it beyond capture only when the user's current request asks for it. Request escalation with this command.",
     match = ["agent-browser --profile Default open https://example.com"],
+)
+
+prefix_rule(
+    pattern = ["cap", ["screenshot", "export"]],
+    decision = "prompt",
+    justification = "Screen capture and exports run for the task in hand; capture needs the host's screen-recording permission. Request escalation with this command.",
+    match = ["cap screenshot --screen 0 --output shot.png", "cap export a.cap --output out.mp4"],
+    not_match = ["cap doctor --json"],
+)
+
+prefix_rule(
+    pattern = ["cap", "record"],
+    decision = "prompt",
+    justification = "Screen and camera recording runs only when the user asked for a recording, and needs the host's screen-recording permission. Request escalation with this command.",
+    match = ["cap record start --screen 0 --detach --json", "cap record stop --id abc --json", "cap record windows --json"],
+    not_match = ["cap recordings list --json", "cap targets --json"],
+)
+
+prefix_rule(
+    pattern = ["cap", ["upload", "update", "agents", "library"]],
+    decision = "prompt",
+    justification = "Uploading publishes a shareable link, and these change Cap Desktop, agent config, or shared library state.",
+    match = ["cap upload out.mp4 --json", "cap library folders list --json", "cap agents install --target codex --component skill"],
+    not_match = ["cap caps list --json"],
+)
+
+prefix_rule(
+    pattern = ["cap", "caps", ["process", "import", "transcript-replace", "download", "duplicate", "delete", "password", "unlock", "comments", "reactions", "update", "sharing", "settings", "date", "move", "shares"]],
+    decision = "prompt",
+    justification = "These change a Cap's content, sharing, or location, can start paid processing, or write its media to disk.",
+    match = ["cap caps delete abc --yes", "cap caps sharing set abc --public", "cap caps download abc --output a.mp4"],
+    not_match = ["cap caps context abc --json", "cap caps transcript abc --output t.txt"],
+)
+
+prefix_rule(
+    pattern = ["cap", "account", ["update", "image", "referrals", "sign-out-all"]],
+    decision = "prompt",
+    justification = "Account changes, including signing out every session, need the user's request.",
+    match = ["cap account sign-out-all", "cap account update --name x"],
+    not_match = ["cap account get --json"],
+)
+
+prefix_rule(
+    pattern = ["cap", "organizations", ["create", "members", "invites", "billing", "storage", "update", "icon", "shareable-icon", "settings", "invite", "member", "domain", "delete"]],
+    decision = "prompt",
+    justification = "Organization membership, billing, storage, and settings are shared state.",
+    match = ["cap organizations invite add x@example.com", "cap organizations delete abc"],
+    not_match = ["cap organizations list --json"],
+)
+
+prefix_rule(
+    pattern = ["cap", "developers", ["create", "update", "delete", "domains", "keys", "auto-top-up"]],
+    decision = "prompt",
+    justification = "Developer apps, keys, and billing top-ups need the user's request.",
+    match = ["cap developers keys create abc", "cap developers auto-top-up abc"],
+    not_match = ["cap developers list --json"],
+)
+
+prefix_rule(
+    pattern = ["cap", "auth", ["login", "logout"]],
+    decision = "prompt",
+    justification = "Authentication through Cap is routine in task scope; the user completes the browser handoff.",
+    match = ["cap auth login --json"],
+    not_match = ["cap auth status --json"],
 )
 
 prefix_rule(

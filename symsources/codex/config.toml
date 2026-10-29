@@ -86,7 +86,7 @@ extra_policy = '''
 - Authentication and CLI configuration: account status, interactive login, logout, refresh, account or workspace switching, and non-secret config reads and writes through the owning CLI (`gh`, `linear-cli`, `gcloud`, `fly`/`flyctl`, `wrangler`, `lightdash`, `rclone`, `codex`, `claude`). Let the user complete browser or terminal prompts. Credentials stay in the tool's store; do not extract them into command arguments, output, or artifacts. Authentication does not authorize deployment, production changes, or agent trust changes.
 - Host retries: running a routine command outside the sandbox after a nested-sandbox failure (`sandbox_apply: Operation not permitted`), for SSH remotes, and for tools that need the keychain, EventKit, Chrome, or the GPU. A retry whose purpose is to get past a block on a credential store or trust surface is not routine.
 - mise tasks (`mise run`, `mise r`, or a task name given directly to `mise`) in any shape: the user-owned trust file already gates them, and a task is guarded in the project's mise config, not here. Other project tasks whose definition was inspected and is not release-shaped. Configured tool upgrades and project-pinned installs; a new global tool the user named. Pins, cooldowns, and checksum checks stay on.
-- Service CLIs in task scope: Linear issue and comment writes in the Lightdash workspace; Lightdash uploads, deploys, and previews to non-production projects; `chezmoi add`/`re-add` of files the task changed; herdr control of panes the session created or the user named; `agent-browser` with a named, non-Default profile; warehouse reads against non-production targets.
+- Service CLIs in task scope: Linear issue and comment writes in the Lightdash workspace; Lightdash uploads, deploys, and previews to non-production projects; `chezmoi add`/`re-add` of files the task changed; herdr control of panes the session created or the user named; `hunk session` navigation, comments, highlights, and reloads on a review the user opened; `agent-browser` with a named, non-Default profile; warehouse reads against non-production targets; `cap` screenshots, exports, and downloads the task calls for, run on the host; Descript imports, Underlord prompts, timeline exports, and the presigned upload `PUT` for media the task produced.
 - Notes and tasks: individual `notesmd-cli` and `rem` changes the user requested; an explicit sync authorizes its resolved change set. `gh skill` install, update, search, and preview.
 - Local processes and reads: stopping processes this session started (dev servers, watchers); reading public documentation and source from unlisted hosts with GET requests; a worktree session reading the source worktree it branched off from.
 - Outcome rule: allow the actions above when they serve the user's task, provided no other risk rule applies.
@@ -99,6 +99,8 @@ extra_policy = '''
 - Trust and permission surfaces: agent permission and sandbox settings, `mise trust`, `direnv allow`, build-script approvals, MCP or plugin trust, `zg install`, `zg auth grant`, `codex`/`claude` MCP and feature changes, and package-runner skill installers.
 - macOS and app state: `defaults write`/`delete`/`import`, LaunchServices handler edits, `launchctl` changes, `killall` of system processes, `osascript`, and `obsidian eval`/`command`/`plugin`.
 - Signed-in state: `agent-browser` with the Default profile beyond screenshot, snapshot, PDF, and close; cookie, storage, and state export; reading browser or app profile data under `~/Library/Application Support`.
+- Screen recording: `cap record` in any form, including device and session listings, only when the user's current request asks for a recording.
+- Video sharing and account state: `cap upload`, Cap library writes (metadata, sharing, comments, moves, deletes, passwords), `caps process` and imports that can spend credits, account, organization, and developer changes, and `cap agents install`; Descript `publish_project`, which overwrites the composition's earlier share URL.
 - 1Password secrets: `op read`, `op inject`, and `op run`, including inside `$(…)`, only when the user named the item and its destination; the secret goes straight there and never into output, logs, or files.
 - Remote environments and infrastructure: creating, exec-ing into, deploying, or destroying exe.dev, Sprites, Fly.io, Cloudflare, or Railway environments; `terraform apply` and `kubectl apply`; anything matching a production name; warehouse mutations (DDL, DML, `bq rm`/`mk`/`load`); `rclone sync`, `move`, `delete`, or `purge`.
 - Batches: vault and Reminders imports, exports, mass deletions, and broad restructures, including loops of individual commands, judged as one complete change set.
@@ -247,6 +249,7 @@ allow_local_binding = true
 "api.notion.com" = "allow"
 "readwise.io" = "allow"
 "api.todoist.com" = "allow"
+"cap.so" = "allow"
 "backend.blacksmith.sh" = "allow"
 "clireleases.blacksmith.sh" = "allow"
 "telemetry.astro.build" = "allow"

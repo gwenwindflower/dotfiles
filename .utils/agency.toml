@@ -188,7 +188,23 @@ group = "integrations"
 expect = "ok"
 cmd = "linear-cli whoami >/dev/null"
 
+[[sandbox]]
+name = "cap reads the Cap library through cap.so"
+group = "integrations"
+expect = "ok"
+cmd = "cap caps list --json >/dev/null"
+
+[[sandbox]]
+name = "cap cannot capture the screen from the sandbox"
+group = "integrations"
+expect = "deny"
+cmd = "cap doctor --json | grep -q '\"captureReady\": true'"
+
 # ── Codex rules: open (allow) ─────────────────────────────────────
+
+[[rule]]
+cmd = "cap doctor --json"
+expect = "allow"
 
 [[rule]]
 cmd = "git status --short"
@@ -293,7 +309,23 @@ expect = "none"
 cmd = "mise trust"
 expect = "none"
 
+[[rule]]
+cmd = "cap caps context abc --json"
+expect = "none"
+
 # ── Codex rules: review (prompt) ──────────────────────────────────
+
+[[rule]]
+cmd = "cap record start --screen 0 --detach --json"
+expect = "prompt"
+
+[[rule]]
+cmd = "cap upload out.mp4 --json"
+expect = "prompt"
+
+[[rule]]
+cmd = "cap caps delete abc --yes --json"
+expect = "prompt"
 
 [[rule]]
 cmd = "gh pr merge 12 --squash"
@@ -345,6 +377,18 @@ expect = "prompt"
 
 [[rule]]
 cmd = "herdr agent prompt 2 go"
+expect = "prompt"
+
+[[rule]]
+cmd = "cap record windows --json"
+expect = "prompt"
+
+[[rule]]
+cmd = "herdr tab focus 2"
+expect = "prompt"
+
+[[rule]]
+cmd = "herdr worktree create --branch x"
 expect = "prompt"
 
 [[rule]]

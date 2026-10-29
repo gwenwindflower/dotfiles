@@ -22,7 +22,7 @@ The configs port each entry below by hand, with the same labels. Change this fil
 - **Environment names:** `prod` (or `production`) is production, `staging` is a long-lived shared environment, and `dev` is development. Each matches as a whole word or a `-`/`_`/`.`-delimited segment: `prod-db` matches, `producer` does not. Production targets and IaC scopes covering IAM, RBAC, networking, quota, and node pools are sensitive; `staging` warrants care, not a block. Short-lived per-PR and CI-gated environments are the norm.
 - **Sandbox model:** reads and routine inspection run inside the harness sandbox without review. Other actions reach review, and most still run sandboxed after approval; the sandbox bounds local effects, and review judges remote and shared-state effects. Some Never actions (forced branch or worktree deletion, vault administration) are the user's to run: deny them and hand the exact command to the user. Retrying outside the sandbox is expected for nested sandboxes, keychain or IPC access, SSH, and GPU work. A retry whose purpose is to get past a sandbox block on a credential store or a trust surface is not routine.
 - **Dotfiles:** the chezmoi source tree is `~/.local/share/chezmoi`. It deploys to `~` only through a `chezmoi apply` the user asked for.
-- **Personal CLIs:** `herdr`, `wt`, `chezmoi`, `linear-cli`, `agent-browser`, `agentsview`, `notesmd-cli`, `rem`, `qmd`, `zg`, `rclone`, `mise`, `uv`, `deno`, `mint`, `lightdash`, plus the modern replacements `rip`, `fd`, `rg`, `bat`, `lsd`, and `sd`.
+- **Personal CLIs:** `herdr`, `hunk`, `wt`, `chezmoi`, `linear-cli`, `agent-browser`, `agentsview`, `notesmd-cli`, `rem`, `qmd`, `zg`, `rclone`, `mise`, `uv`, `deno`, `mint`, `lightdash`, `cap`, plus the modern replacements `rip`, `fd`, `rg`, `bat`, `lsd`, and `sd`.
 
 ## Routine
 
@@ -44,6 +44,8 @@ Approve these when they serve the task; no separate request is needed.
   - `herdr` control of panes the session created or the user named.
   - `agent-browser` interaction with a named, non-Default profile.
   - Warehouse reads (`bq query`, `dbt run`/`build`) against non-production targets.
+  - `cap` screenshots, exports, and downloads the task calls for, run on the host.
+  - Descript imports, Underlord prompts, timeline exports, and the presigned upload `PUT` for media the task produced.
 - **Notes, tasks, and skills:**
   - Individual `notesmd-cli` and `rem` changes the user requested: edits, moves, named deletions, status and date changes. An explicit sync authorizes its resolved change set.
   - `gh skill` install, add, update, search, and preview.
@@ -75,6 +77,8 @@ Approve these only when the user's current request names the action or its exact
   - Preferences and services: `defaults write`/`delete`/`import`, LaunchServices handler edits, `launchctl` load, bootstrap, kickstart, and bootout, and `killall` of system processes.
   - App control: `osascript` and `obsidian eval`/`command`/`plugin`.
 - **Signed-in state:** `agent-browser` with the Default profile beyond screenshot, snapshot, PDF, and close. Cookie, storage, and state export. Reading browser or app profile data under `~/Library/Application Support`.
+- **Screen recording:** `cap record` in any form, including device and session listings, only when the user's current request asks for a recording.
+- **Video sharing and account state:** `cap upload`, Cap library writes (metadata, sharing, comments, moves, deletes, passwords), `caps process` and imports that can spend credits, account, organization, and developer changes, and `cap agents install`. Descript `publish_project`, which overwrites the composition's earlier share URL.
 - **1Password secrets:** `op read`, `op inject`, and `op run`, including inside `$(…)`, only when the user named the item and its destination. The secret goes straight to that destination and never into output, logs, or files.
 - **Remote environments and infrastructure:**
   - Environments: creating, exec-ing into, deploying, or destroying exe.dev, Sprites, Fly.io, Cloudflare, or Railway environments.
