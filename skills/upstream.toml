@@ -3,9 +3,12 @@
 # folded in) and `accept` records a new baseline once the change is distilled
 # into every spine-relative doc in `files`.
 #
-# Installed as-is, with no spine: cloudflare and wrangler (cloudflare/skills).
-# They span dozens of rarely used products, so they stay external until a
-# spine for the parts in use is worth the distilling.
+# Installed as-is, with no spine:
+# - cloudflare and wrangler (cloudflare/skills) span dozens of rarely used
+#   products, so they stay external until a spine for the parts in use is worth
+#   the distilling.
+# - developing-in-lightdash (lightdash/lightdash) tracks the Lightdash CLI and
+#   as-code schemas, which change too often to keep a distilled copy current.
 
 [[browser-automation.upstream]]
 repo = "vercel-labs/agent-browser"
@@ -119,11 +122,4 @@ skill = "rem-cli"
 files = ["rem.md"]
 baseline = "9a788845ff232e838a28316973d7b57cbe38e03a"
 tree = "bc9d5e8928ace95d018f97734b11db83a188e23c"
-
-[[review-changes.upstream]]
-repo = "fallow-rs/fallow-skills"
-skill = "fallow-review"
-files = ["SKILL.md", "fallow.md", "tradeoffs.md"]
-baseline = "7dd076fba7e00b2997c942e8120d14c39b47a24a"
-tree = "1b1d09835873abfbfe40c1b0550fab81c94339f2"
 
