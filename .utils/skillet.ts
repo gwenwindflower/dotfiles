@@ -221,6 +221,10 @@ export function refName(ref: string): string {
   return ref.replace(/^refs\/(tags|heads)\//, "");
 }
 
+export function tempDirPrefix(skill: string): string {
+  return `skillet-${skill.replaceAll("/", "-")}-`;
+}
+
 export function upstreamStatus(
   entry: UpstreamEntry,
   fetchedTree: string,
@@ -357,7 +361,7 @@ async function checkCommand(): Promise<number> {
 async function diffCommand(skill: string): Promise<number> {
   const { entries } = await loadManifest();
   const entry = findEntry(entries, skill);
-  const root = await Deno.makeTempDir({ prefix: `skillet-${skill}-` });
+  const root = await Deno.makeTempDir({ prefix: tempDirPrefix(skill) });
   const next = await fetchSkill(entry, join(root, "new"), entry.pin);
   const commit = await resolveCommit(next.meta);
   const oldDir = join(root, "old", basename(next.dir));
