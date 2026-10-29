@@ -132,25 +132,10 @@ fill_tree() {
 	done < <(find "$root" -type f -not -path '*/.git/*' -not -name 'bootstrap.md')
 }
 
-# Every tool mise.toml declares is assumed to exist globally on this machine; mise.local.toml
-# keeps the project from installing a second copy. Delete a line there to let mise own that tool.
-write_local_tools() {
-	local root="$1" tools=()
-	while IFS= read -r tool; do
-		tools+=("\"$tool\"")
-	done < <(awk '/^\[tools\]/ { on = 1; next } /^\[/ { on = 0 } on && /^[A-Za-z0-9_.:@"-]+ *=/ { gsub(/"/, "", $1); print $1 }' "$root/mise.toml")
-	[[ ${#tools[@]} -gt 0 ]] || return 0
-	[[ -e "$root/mise.local.toml" ]] && return 0
-	local list
-	list="$(IFS=,; printf '%s' "${tools[*]}")"
-	printf '[settings]\ndisable_tools = [%s]\n' "${list//,/, }" >"$root/mise.local.toml"
-	plan "wrote mise.local.toml disabling ${#tools[@]} globally installed tools"
-}
-
 install_tools() {
 	local root="$1"
-	write_local_tools "$root"
-	log "Installing the toolchain"
+	log "Installing build and runtime dependencies"
+	plan "development tools use PATH; uncomment missing tools in mise.toml and run mise install"
 	(
 		cd "$root"
 		mise trust --quiet . 2>/dev/null || true
@@ -179,7 +164,7 @@ if [[ "$mode" == new ]]; then
 		plan "remove template/ and .github/workflows/template.yml from the generated project"
 		plan "fill placeholders: TOOL_NAME=$name TOOL_BINARY=$binary GH_OWNER=$owner AUTHOR=$author YEAR=$year"
 		plan "install kit from $kit (mise tools and tasks, version hooks, matchers, root files, src/)"
-		plan "write mise.local.toml disabling every declared tool; mise trust; mise install; kit post-install; mise run hooks:install; pinact run --update"
+		plan "mise trust; mise install build/runtime dependencies; kit post-install; mise run hooks:install; pinact run --update (development tools must be on PATH)"
 		plan "report remaining placeholders"
 		exit 0
 	fi

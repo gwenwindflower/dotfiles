@@ -1,6 +1,6 @@
 # mise projects
 
-mise owns two things in a project: the toolchain (`[tools]`) and the command surface (tasks). Onboarding is `mise trust && mise install`; discovery is `mise tasks`; the local gate is `mise run check`. CI installs mise with `jdx/mise-action` and runs the same tasks, so a task definition is the only place a check lives.
+mise owns build/runtime dependencies (`[tools]`) and the command surface (tasks). Development tools use `PATH`; contributors can uncomment individual tools in `mise.toml` before `mise trust && mise install`. Discovery is `mise tasks`; the local gate is `mise run check`. CI runs the same tasks, so a task definition is the only place a check lives; [CI practices](ci/practices.md) covers the CI side.
 
 ## Where a task lives
 
@@ -31,11 +31,11 @@ Every task carries a `description`; `mise tasks` is the discovery surface, so th
 - **`#USAGE arg "[tag]" env="TAG"`** declares an argument with an environment fallback. A pipeline resolves a value once, exports it, and every step reads the same one. Flags: `#USAGE flag "--topics <list>"` arrives as `$usage_topics`; boolean flags arrive as `true`.
 - **Sandbox policies belong on TOML tasks.** For zizmor, use `allow_write = ["~/.cache/zizmor"]`: it restricts other writes while permitting the online audit cache. A bare `deny_write = true` blocks that cache. Keep network access available for online audits. Direct tool invocations bypass mise task policies; validate both offline hooks and authenticated online audits.
 - **`quiet = true`** suppresses the task banner; use it on tasks whose stdout is consumed by other scripts (`version:read`, `version:next`).
-- **Tools float on `latest`.** `mise.toml` declares the toolchain for CI and contributors; release cooldowns belong to each machine's global mise config, never to the project. Pin a version only when the project needs that version, and say why in `mise.toml`. The core set (git-cliff, pinact, zizmor, shellcheck, prek, rumdl) is installed globally on the maintainer's machine, so the bootstrap writes `mise.local.toml` disabling all of it; only a genuinely project-specific tool gets a project-scoped install. Language toolchains are never mise tools: Rust comes from rustup on `PATH`, declared by `rust-toolchain.toml`.
-- **`latest` needs a rotating CI cache key.** `jdx/mise-action` keys its cache on the hash of the mise config files and never re-saves on a hit, so a floating toolchain would reinstall every moved tool on every run. `ci.yml` writes `MISE_CACHE_WEEK` from `date +%G-%V` and passes `cache_key: "{{default}}-{{env.MISE_CACHE_WEEK}}"`.
-- **`MISE_TRUSTED_CONFIG_PATHS: ${{ github.workspace }}`** at workflow level lets CI trust the checkout without a separate step.
-- **`mise.local.toml` is the per-machine layer.** Gitignored, loaded after `mise.toml`, trusted with the directory. A contributor skips project tools already on `PATH` with `[settings] disable_tools = ["prek", "rust"]`: the setting is scoped to that directory, `mise install` skips those tools, tasks fall through to `command -v`, and `mise use` still writes to `mise.toml`. Ship `mise.local.toml.example` showing it. Never pin a tool to `@system`; it is deprecated, and the rust backend hands it to rustup, which fails.
-- **`cache: false`** on `jdx/mise-action` in any workflow that publishes artifacts. The cache holds the installed toolchain and skips verification on a hit; a poisoned entry would reach users.
+- **Development tools are opt-in.** Only build or runtime dependencies are active in `mise.toml`. Comment linters, formatters, release tooling, and other development-only binaries under `[tools]`; contributors uncomment the tools they need and run `mise install`, keeping those opt-ins uncommitted. Rust comes from rustup on `PATH`, declared by `rust-toolchain.toml`.
+- **CI opts in explicitly.** Put active development-tool declarations in `mise.ci.toml` and set `MISE_ENV: ci` at workflow level in every workflow that uses mise. The base config still supplies build/runtime dependencies. Keep the commented development entries and CI versions aligned. Projects without CI do not need this overlay.
+- **Tools float on `latest`.** Release cooldowns belong to each machine's global mise config. Pin a version only when the project requires it, documenting the constraint beside the declaration.
+- **`latest` needs a rotating CI cache key.** See [CI caching](ci/practices.md#caching).
+- **Local config is not an installation guard.** Do not generate or ship `mise.local.toml` disabling project tools: plugin clones do not carry it. During alignment, remove obsolete `disable_tools` settings and examples, preserving unrelated local settings. Keep the filenames gitignored for other local customization. Never use `@system` as a substitute.
 
 ## Hooks and merge gates
 
@@ -49,12 +49,13 @@ Three runners, one definition each. Together they are the project's local CI, so
 
 Worktrunk hooks fire only inside `wt merge`, so prek is the only guard on agent commits. `mise run hooks:install` wires prek into a clone; the bootstrap does it.
 
-Every hook is `language = "system"` over a binary mise installs (shellcheck, zizmor, rumdl, rustfmt) or a prek builtin. A remote hook with its own `language` (node, python) makes prek download that runtime and install the hook on every fresh machine and every CI run, outside the toolchain cache. Markdown lint is rumdl for that reason: one static binary, `rumdl check --no-cache` in the hook, `.rumdl.toml` for config (`rumdl import` converts a markdownlint file), markdownlint rule IDs and inline `<!-- markdownlint-disable -->` comments honored.
+Every hook is `language = "system"` over a binary on `PATH` (shellcheck, zizmor, rumdl, rustfmt) or a prek builtin. CI installs development binaries through its mise overlay; Rust supplies rustfmt. A remote hook with its own `language` (node, python) makes prek download that runtime and install the hook on every fresh machine and every CI run, outside the toolchain cache. Markdown lint is rumdl for that reason: one static binary, `rumdl check --no-cache` in the hook, `.rumdl.toml` for config (`rumdl import` converts a markdownlint file), markdownlint rule IDs and inline `<!-- markdownlint-disable -->` comments honored.
 
 ## Layout
 
 ```text
 mise.toml            tools, one-liners, pipelines, aliases
+mise.ci.toml         development tools enabled by MISE_ENV=ci
 mise-tasks/
   version/           read, write, files, verify (kit hooks); check, next, bump, sync (neutral)
   release/           _default, preflight, commit, notes, create, rehearse, package, formula

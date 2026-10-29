@@ -24,7 +24,7 @@ bash ~/.agents/skills/project-tooling/scripts/bootstrap.sh new \
   --name <name> --owner gwenwindflower --description "<one line>" [--binary <bin>] [--author "<name>"]
 ```
 
-The script creates the repo from the template with `gh`, clones it, fills every `{{...}}` and `@@...@@` placeholder it knows, installs the language kit, writes `mise.local.toml` disabling every declared tool (the core set is installed globally; delete a line to let mise own a tool), runs `mise trust && mise install` and `mise run hooks:install`, pins the workflows with `pinact run --update`, and prints what remains. Pass `--dry-run` to see the plan without creating anything.
+The script creates the repo from the template with `gh`, clones it, fills every `{{...}}` and `@@...@@` placeholder it knows, installs the language kit, runs `mise trust && mise install` for build/runtime dependencies, installs hooks, pins workflows, and prints what remains. Development tools must be on `PATH`; uncomment missing tools in `mise.toml` and run `mise install` to opt in locally. CI selects `mise.ci.toml` with `MISE_ENV=ci`. The bootstrap does not create tool-disabling local files. Pass `--dry-run` to see the plan without creating anything.
 
 Then, in order:
 
@@ -35,7 +35,7 @@ Then, in order:
 5. Load `project-management`, fill in `SPEC.md` as far as the project's goals are known, and set `LINEAR_CLI_PROFILE` in `mise.toml` so issues land in the right Linear workspace. `specs/dev-release.md` is already real; prune it rather than restating it.
 6. `mise run check`, then push a throwaway branch with a deliberate lint failure to confirm annotations land on the PR diff.
 7. `mise run repo:rulesets` after CI has reported on `main` once.
-8. `mise run release:rehearse`. Hand the `#user` steps back: the tap PAT when Homebrew is on, and `mise run release` itself.
+8. `mise run release:rehearse`. Hand the steps that need Winnie back to her: the tap PAT when Homebrew is on, and `mise run release` itself.
 
 ## Existing repository
 
@@ -50,3 +50,5 @@ Both modes exclude `template/` and `.github/workflows/template.yml`, which own `
 ## Language kits
 
 `assets/<lang>/` holds real files the script copies and splices at the template's `LANG_TOOLS`, `LANG_TASKS`, `LANG_IGNORES`, and `LANG_HOOKS` markers. A kit must provide `build`, `lint:*` for semantic linters, `test:*`, the version hooks, and its formatter as a prek hook. Adapt the generated tasks to the language's conventional output paths, updating packaging and workflow artifact paths together. [rust](rust.md) describes the Rust kit and the Cargo contract. Adding a kit means adding a directory with the same shape, never editing the template.
+
+Keep only build/runtime dependencies active in `mise.tools.toml`; development entries must be commented. When a kit needs extra development tools, add their active declarations to the generated `mise.ci.toml` and verify each mise workflow selects the overlay. Rust itself and optional Cargo extensions stay outside mise tool declarations.

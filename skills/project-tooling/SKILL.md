@@ -16,7 +16,8 @@ The local CI below depends on how `wt switch` and `wt merge` behave; `project-ma
 - Every third-party CI dependency is SHA-pinned with a version comment; `mise run ci-audit` audits workflows and checks the pins.
 - prek hooks guard every commit (file hygiene on staged files, Conventional Commit subjects); `.config/wt.toml` guards `wt merge` with one gate after the rebase: `release:check` into the default branch, `check` into any other. Formatters and validators live in `prek.toml`, semantic checks in mise tasks.
 - On solo projects, mise tasks, prek, and worktrunk hooks are local CI: work lands with `wt merge`, and PRs are for changes that need remote verification (workflow edits, cross-architecture builds, breaking changes). The git rule's "Local CI for solo projects" section sets the scope.
-- The language toolchain is never a mise tool. Rust comes from rustup on `PATH`, declared by `rust-toolchain.toml`; CI uses the runner image's rustup.
+- Only build or runtime dependencies are active in `mise.toml`; development tools stay commented for local opt-in. CI selects `mise.ci.toml` with `MISE_ENV=ci`. Do not generate tool-disabling local files.
+- Rust comes from rustup on `PATH`, declared by `rust-toolchain.toml`; CI uses the runner image's rustup.
 - Keep optional Cargo extensions such as cargo-binstall, cargo-edit, cargo-audit, and cargo-pretty out of project mise tools. Template audits preserve intentional tool omissions.
 - The version has one source of truth read through `version:read`; kits provide `read`, `write`, `files`, and optionally `verify`.
 - Projects are licensed `GPL-3.0-or-later` so derivatives stay open while commercial use stays allowed. Open source network services (hosted APIs, SaaS-style apps) use `AGPL-3.0-or-later`; FSL only on request. [bootstrap](bootstrap.md) covers installing the license.
