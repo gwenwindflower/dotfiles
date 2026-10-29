@@ -45,7 +45,7 @@ Values are `read`, `write`, and `deny` (`none` is an alias for `deny`). More spe
 | `~/path` | Home-relative path |
 | `/absolute/path` | Absolute path |
 
-The built-in `:workspace` profile keeps `.git`, `.agents`, and `.codex` read-only inside each workspace root. Linked worktrees also keep their Git common dir in the main checkout, outside the roots. Git metadata writes therefore run on the host through execution rules.
+The built-in `:workspace` profile keeps `.git`, `.agents`, and `.codex` read-only inside each workspace root. The dotfiles `dev` profile overrides `.git` to `write` so Git and Worktrunk can maintain local config, branch variables, caches, and logs without per-operation exceptions. `.agents` and `.codex` stay read-only. Linked worktrees keep their Git common dir outside the workspace root and need a separate write grant; see `docs/agent-config.md` under "Codex worktree permissions" for the launcher behavior.
 
 Keep directories that host `PATH` lookups resolve into (mise shims and installs, uv tools and pythons, `~/.deno/bin`, Mason, bun globals) and trust files (mise `trusted-configs`) read-only. A sandboxed write there turns into code the next host command runs.
 

@@ -35,7 +35,7 @@ Approve these when they serve the task; no separate request is needed.
 - **Project tasks and host retries:**
   - mise tasks (`mise run`, `mise r`, and a task name given directly to `mise`) in any shape: mise's user-owned trust file already gates them, and a task is guarded in the project's mise config, not here.
   - Other task-runner invocations (`deno task`, `make`, `npm`/`aube run`) whose task definition was inspected and is not release-shaped.
-  - Retrying a routine command outside the sandbox: after a nested-sandbox failure (`sandbox_apply: Operation not permitted`), for tools that need the keychain, EventKit, or Chrome, for SSH remotes, and for local GPU model work (`qmd embed`, `qmd query`).
+  - Retrying a routine command outside the sandbox: after a nested-sandbox failure (`sandbox_apply: Operation not permitted`), for tools that need the keychain, EventKit, or Chrome, for SSH remotes, for local GPU model work (`qmd embed`, `qmd query`), and for an approved project task or script that injects secrets with `op run` or `op inject`, which reaches the 1Password Desktop socket only on the host. The secret goes to the task's process, never to the agent; a direct `op` call still follows the 1Password rule below.
 - **Tool installs and upgrades:** configured upgrades (`brew upgrade`, `mise up`, `uv tool upgrade`, `rustup update`) and project-pinned installs (`mise install` in a project with a mise config). Installing a new global tool the user named. Pins, release-age cooldowns, and checksum or signature checks stay on.
 - **Service CLIs in task scope:**
   - `linear-cli` issue and comment writes in the Lightdash workspace.
