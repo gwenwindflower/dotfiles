@@ -198,6 +198,7 @@ abbr --add cx codex
 abbr --add cxcf "ee $HOME/.codex"
 abbr --add cxr codex resume
 abbr --add cxc codex resume --last
+abbr --add cxa codex agents
 ## opencode
 abbr --add oc opencode
 abbr --add occf "ee $HOME/.config/opencode"
