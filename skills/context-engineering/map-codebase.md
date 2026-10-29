@@ -24,4 +24,3 @@ The map is agent context: AGENTS.md or CLAUDE.md plus a `docs/` index. Learnings
 - Record only what is surprising or non-inferable: gotchas, non-obvious conventions, pointers to where detail lives. If one grep would re-derive it, leave it out.
 - Describe stable structure (boundaries, entry points, conventions), not volatile detail like function names or line counts. When a map contradicts the code, the code wins; fix the map in the same session.
 - Churn findings set exploration priorities; they don't go in current-state docs.
-
