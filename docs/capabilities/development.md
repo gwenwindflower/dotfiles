@@ -34,7 +34,7 @@ Command families are placed by purpose, not because a binary is globally trusted
 
 ## CI/CD
 
-GitHub Actions is the only CI/CD system. The `github-actions-workflows` skill is the authoritative source for workflow patterns and loads whenever a workflow file is being edited; other skills link to it rather than restating its rules.
+GitHub Actions is the only CI/CD platform in use. The `project-tooling` skill's CI modules are the authoritative source and load whenever a workflow file is being edited: `ci/practices.md` holds the platform-neutral practices, and `ci/github-actions.md` implements them for GitHub Actions. Other skills link to them rather than restating their rules.
 
 - `zizmor` audits workflows for template injection, excessive permissions, `pull_request_target` misuse, cache poisoning, and unpinned actions. It runs locally from the repo root and in CI with GitHub annotations.
 - `pinact` pins every `uses:` reference to a full commit SHA with a version comment, and checks or updates those pins.

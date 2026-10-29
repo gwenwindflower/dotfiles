@@ -17,7 +17,7 @@ Build Herdr plugins as portable tools with a stable binary interface. Keep Herdr
 
 6. Consult the official [plugin guide](https://herdr.dev/docs/plugins/) and [socket API](https://herdr.dev/docs/socket-api/) for behavior not expressed by the installed schema.
 7. Read [runtime](runtime.md) when changing manifests, actions, panes, events, context, storage, or socket behavior.
-8. Read [project-shape](project-shape.md) when changing the manifest, installer, version hooks, or plugin tasks. The repository itself comes from [bootstrap](../bootstrap.md); the task layer and release pipeline are in [mise](../mise.md) and [releasing](../releasing.md), workflows in `github-actions-workflows`.
+8. Read [project-shape](project-shape.md) when changing the manifest, installer, version hooks, or plugin tasks. The repository itself comes from [bootstrap](../bootstrap.md); the task layer and release pipeline are in [mise](../mise.md) and [releasing](../releasing.md), workflows in [CI](../ci/practices.md).
 
 ## Choose the Runtime Shape
 

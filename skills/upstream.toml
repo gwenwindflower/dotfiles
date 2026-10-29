@@ -92,6 +92,20 @@ files = ["prek.md"]
 baseline = "77c4056ce76b600de77d5d425e52844a76652a58"
 tree = "6032680b95ac73c5604c2a44e2e041b9098242de"
 
+[[project-tooling.upstream]]
+repo = "jdx/hk"
+skill = "hk-configure"
+files = ["hk.md"]
+baseline = "2e06ed15c5077edc43e13b41b33420659a4f1b3e"
+tree = "b30f19fa634af9b13dd1b1004ed7af51b2dfc6ae"
+
+[[project-tooling.upstream]]
+repo = "jdx/hk"
+skill = "hk-debug"
+files = ["hk.md"]
+baseline = "2e06ed15c5077edc43e13b41b33420659a4f1b3e"
+tree = "8bb19f3dcb6a1eab5a9e3e936645658b54eb237c"
+
 [[python.upstream]]
 repo = "pydantic/skills"
 skill = "pydantic"

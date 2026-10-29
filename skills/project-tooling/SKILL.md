@@ -1,5 +1,5 @@
 ---
-description: Tool project pattern from scaffold to release - gwenwindflower/_tool template, mise toolchain and tasks, prek hooks, release pipeline, install paths, gitignore, Rust and Herdr plugin variants.
+description: Tool projects from scaffold to release - _tool template, mise tasks, prek and hk hooks, CI and GitHub Actions workflows, releases, install paths, gitignore, Rust and Herdr plugins.
 name: project-tooling
 ---
 
@@ -13,7 +13,7 @@ The local CI below depends on how `wt switch` and `wt merge` behave; `project-ma
 
 - `mise run check` is the local gate and the only place a check is defined; CI runs the same tasks.
 - Releases go through `mise run release` from a clean `main`; `release:rehearse` is the dry run.
-- Every `uses:` is SHA-pinned with a version comment; `mise run ci-audit` runs zizmor and pinact. Workflow authoring lives in `github-actions-workflows`.
+- Every third-party CI dependency is SHA-pinned with a version comment; `mise run ci-audit` audits workflows and checks the pins.
 - prek hooks guard every commit (file hygiene on staged files, Conventional Commit subjects); `.config/wt.toml` guards `wt merge` with one gate after the rebase: `release:check` into the default branch, `check` into any other. Formatters and validators live in `prek.toml`, semantic checks in mise tasks.
 - On solo projects, mise tasks, prek, and worktrunk hooks are local CI: work lands with `wt merge`, and PRs are for changes that need remote verification (workflow edits, cross-architecture builds, breaking changes). The git rule's "Local CI for solo projects" section sets the scope.
 - The language toolchain is never a mise tool. Rust comes from rustup on `PATH`, declared by `rust-toolchain.toml`; CI uses the runner image's rustup.
@@ -30,8 +30,11 @@ Treat `_tool` as a bidirectional source of project learning. Update regression t
 | Job | Doc |
 | --- | --- |
 | Create a repo from the template, or audit one against it | [bootstrap](bootstrap.md) |
-| Design tasks and toolchain, hooks and merge gates, CI wiring | [mise](mise.md) |
+| Design tasks and toolchain, hooks and merge gates | [mise](mise.md) |
+| What CI runs, pinning, workflow audits, PR annotations, release builds | [ci/practices](ci/practices.md) |
+| Write, audit, or debug GitHub Actions workflows | [ci/github-actions](ci/github-actions.md), with [annotations](ci/github-actions-annotations.md) |
 | Write or debug `prek.toml` hooks, prek commands | [prek](prek.md) |
+| Configure or debug hk hooks and checks in `hk.pkl` | [hk](hk.md) |
 | Worktrunk hooks, aliases, approvals, and config | [worktrunk-config](worktrunk-config.md) |
 | Cut a release, install paths per language | [releasing](releasing.md) |
 | Set up or debug the Homebrew tap | [homebrew-tap](homebrew-tap.md) |

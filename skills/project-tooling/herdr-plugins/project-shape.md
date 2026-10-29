@@ -1,6 +1,6 @@
 # Herdr Plugin Project Patterns
 
-What a Rust Herdr plugin adds on top of the standard tool repository. The generic parts live elsewhere: repo shape in [bootstrap](../bootstrap.md), the Rust kit in [rust](../rust.md), the task layer in [mise](../mise.md), the release pipeline in [releasing](../releasing.md), workflows in `github-actions-workflows`.
+What a Rust Herdr plugin adds on top of the standard tool repository. The generic parts live elsewhere: repo shape in [bootstrap](../bootstrap.md), the Rust kit in [rust](../rust.md), the task layer in [mise](../mise.md), the release pipeline in [releasing](../releasing.md), workflows in [CI](../ci/practices.md).
 
 ## Project Shape
 
@@ -89,7 +89,7 @@ Group under `herdr:` (`link`, `unlink`, `install`, `uninstall`, `status`, plus o
 
 ## README Contract
 
-Document supported operating systems and minimum Herdr version; requirements for Herdr, Cargo, the Cargo bin directory on `PATH`, and any integrated third-party tools; `herdr plugin install <owner>/<name>` and `herdr plugin list --plugin <name>` to verify; the actions and the workflows they own; direct binary installation with Binstall and Cargo; local development (`mise trust && mise install`, then `mise run dev:reload`); uninstall behavior and durable state cleanup. Document workflows, not the task list.
+Document supported operating systems and minimum Herdr version; requirements for Herdr, Cargo, the Cargo bin directory on `PATH`, and any integrated third-party tools; `herdr plugin install <owner>/<name>` and `herdr plugin list --plugin <name>` to verify; the actions and the workflows they own; direct binary installation with Binstall and Cargo; local development (opt into missing development tools before `mise trust && mise install`, then `mise run dev:reload`); uninstall behavior and durable state cleanup. Document workflows, not the task list.
 
 ## Shared Support Boundaries
 
