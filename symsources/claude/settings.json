@@ -463,7 +463,7 @@
 	},
 	"statusLine": {
 		"type": "command",
-		"command": "sh '/Users/winnie/Library/Application Support/Crest/approvals/statusline.sh'",
+		"command": "winline",
 		"padding": 0
 	},
 	"enabledPlugins": {
@@ -477,7 +477,8 @@
 		"worktrunk@worktrunk": true,
 		"deno-or-ts@supermodel": true,
 		"pyright-or-ruff@supermodel": true,
-		"git-gate@supermodel": false
+		"git-gate@supermodel": false,
+		"swift-lsp@claude-plugins-official": true
 	},
 	"extraKnownMarketplaces": {
 		"mcp-apps": {
