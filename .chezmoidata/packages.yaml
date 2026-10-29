@@ -99,6 +99,7 @@ packages:
           - lazygit
           - lazyrsync
           - lfk
+          - librsvg
           - lightdash
           - lsd
           - lua
