@@ -1,4 +1,4 @@
-# CLI and Subprocess
+# CLI and subprocess
 
 ## Click
 
@@ -44,5 +44,3 @@ def git_output(args: Sequence[str], *, cwd: Path) -> str:
         raise GitCommandError(f"git {' '.join(args)} failed: {error.stderr.strip()}") from error
     return completed.stdout.strip()
 ```
-
-In async code use `asyncio.create_subprocess_exec` and `await process.communicate()`; never `subprocess.run` inside a coroutine.

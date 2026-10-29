@@ -36,13 +36,13 @@ An issue is a task written in plain language; it usually maps to one PR. Parents
 - Specs, requirement IDs, and other personal conventions never appear in Lightdash's Linear workspace; its issues follow the team's own labels, statuses, and wording.
 - Make reasonable calls, write them down, and flag them in the PR. Stop for choices with irreversible or external effects, or ones that change what's being built.
 
-#### Issues and tasks
+#### Issues vs. todos
 
-Issues are work and project tracking in Linear or GitHub. Tasks are Winnie's personal to-dos in Reminders and the vault, even when one mirrors an issue assigned to her.
+Issues are work and project tracking in Linear or GitHub. Todos are Winnie's personal to-dos, kept as Apple Reminders and Obsidian Tasks in the vault, even when one mirrors an issue assigned to her.
 
 - Load `project-management` before reading or writing any issue.
-- Load `tasks` before reading or changing any task or reminder.
-- A request about "my tasks" or "to-dos" means tasks; a request about tickets, the backlog, or a named issue means issues. Changing one never implies changing the other.
+- Load `todos` before reading or changing any reminder or vault task.
+- A request about "my tasks", "to-dos", or reminders means todos; a request about tickets, the backlog, or a named issue means issues. Changing one never implies changing the other.
 
 #### Notes vault
 

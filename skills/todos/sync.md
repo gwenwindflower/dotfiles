@@ -6,7 +6,7 @@ A sync session requires a nonempty `OBSIDIAN_DEFAULT_VAULT` and the Obsidian app
 
 ## Invocation
 
-- `/tasks sync` or `$tasks sync`: inventory both systems, reconcile established mappings, organize unambiguous items under the preferences below, and add missing eligible counterparts. Report conflicts while continuing independent safe work. This authorizes routine sync writes, not deletion, speculative merging, or invented scheduling.
+- `/todos sync` or `$todos sync`: inventory both systems, reconcile established mappings, organize unambiguous items under the preferences below, and add missing eligible counterparts. Report conflicts while continuing independent safe work. This authorizes routine sync writes, not deletion, speculative merging, or invented scheduling.
 - A topic such as `dev tackle`, `cleaning kitchen`, or `writing` narrows mutations to that area. Inspect adjacent records to detect overlap, but do not reorganize unrelated areas. Match scope through mappings, note paths, headings, tags, and context; title keywords alone are insufficient.
 - `review` previews without writes. `plan` or conversational input adds collaborative grouping, priority, dependency, and scheduling work; apply decisions the user actually makes. Preserve the active scope through follow-up messages.
 

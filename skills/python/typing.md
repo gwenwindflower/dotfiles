@@ -82,5 +82,3 @@ class EventStore(ABC):
     def replay(self, since: datetime) -> Iterator[Event]:
         """Yield events recorded after ``since`` in order."""
 ```
-
-`@runtime_checkable` Protocols check method presence only, not signatures. Reach for an ABC when runtime validation matters.

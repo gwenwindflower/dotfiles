@@ -1,4 +1,4 @@
-# Astral Toolchain
+# Astral toolchain
 
 uv owns Python versions, environments, dependencies, and tool installs. ruff owns linting and formatting. ty owns type checking. All three read `pyproject.toml`.
 
@@ -102,6 +102,6 @@ jobs:
       - run: uv run --frozen pytest
 ```
 
-- `setup-uv` installs uv and caches its store. `uv python install` reads `.python-version`. Verify current major versions on the Marketplace before pinning; the `github-actions-workflows` skill has the standard CI layout.
+- `setup-uv` installs uv and caches its store. `uv python install` reads `.python-version`. Verify current major versions on the Marketplace before pinning; the `project-tooling` skill's CI modules have the standard CI layout.
 - ty has no dedicated action. Run it through `uv run` so the version comes from the lockfile.
 - Publishing: `uv build` then `uv publish` with trusted publishing. The `project-tooling` skill covers the release pipeline.

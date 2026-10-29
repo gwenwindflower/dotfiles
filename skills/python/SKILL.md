@@ -1,13 +1,13 @@
 ---
-name: clean-python
-description: Typed modern Python on uv, ruff, and ty - pyproject, lint and type config, style, Pydantic models, CI. dbt Python uses analytics-engineering.
+name: python
+description: Python - uv, ruff, and ty toolchain, pyproject, typing, errors, async, CLIs, pytest, Pydantic, style conventions. dbt Python uses analytics-engineering.
 metadata:
   inspired-by: dagster-io/skills dignified-python v1.13.20
 ---
 
-# Clean Python
+# Python
 
-Readable, explicit Python for the latest stable CPython. Great names carry meaning, types carry contracts, and the Astral toolchain enforces both.
+Our Python conventions on the latest stable CPython: names carry meaning, types carry contracts, and the Astral toolchain enforces both.
 
 ## Defaults
 
@@ -23,7 +23,7 @@ Readable, explicit Python for the latest stable CPython. Great names carry meani
 - **CLI and subprocess**: patterns in [cli](cli.md).
 - **Validation at boundaries**: Pydantic models for untrusted input. See [pydantic](pydantic.md).
 
-## Style Rules
+## Style rules
 
 - `pathlib.Path` everywhere; never `os.path`. Always pass `encoding="utf-8"`.
 - Absolute imports only.
@@ -34,7 +34,7 @@ Readable, explicit Python for the latest stable CPython. Great names carry meani
 - `dataclass(frozen=True, slots=True)` for value objects; `Enum` or `Literal` for fixed sets of strings.
 - Break internal APIs and migrate call sites in one change. Preserve compatibility only for published public APIs or on explicit request.
 
-## Review Pass
+## Review pass
 
 Before finishing Python work, confirm:
 

@@ -1,9 +1,9 @@
 ---
-name: caveman-speak
-description: Caveman-style compression of prose to save tokens, live or in files. Keeps code, paths, and technical substance. Toggled on or off by request.
+name: ultra-concise-mode
+description: Ultra-concise replies and file compression to save tokens. Keeps code, paths, and technical substance. Toggled on or off by request.
 ---
 
-# Caveman Speak
+# Ultra-concise mode
 
 Two modes: **conversation mode** (toggle for live replies) and **file mode** (one-shot, write a compressed copy).
 
@@ -11,17 +11,17 @@ Two modes: **conversation mode** (toggle for live replies) and **file mode** (on
 
 | User says | Mode | Action |
 | --- | --- | --- |
-| `/caveman-speak`, "caveman mode", "talk caveman", "go caveman", "caveman on" | conversation ON | Compress every reply until OFF trigger |
-| "stop caveman", "normal mode", "english mode", "back to normal", "caveman off" | conversation OFF | Resume normal prose |
-| `/caveman-speak <file>`, "caveman compress <X>", "compress <X> to caveman", "make a caveman version of <X>", "cavemanify <X>" | file | Compress that file (or located file) to a new `_caveman` copy |
+| `/ultra-concise-mode`, "ultra-concise mode", "concise mode on", "be ultra terse" | conversation ON | Compress every reply until an OFF trigger |
+| "concise mode off", "stop ultra-concise", "normal mode", "back to normal" | conversation OFF | Resume normal prose |
+| `/ultra-concise-mode <file>`, "compress <X>", "make a concise version of <X>", "ultra-concise copy of <X>" | file | Compress that file (or located file) to a new `_concise` copy |
 
-If both signals appear (e.g. "go caveman and also compress the spec"), do the file op AND turn conversation mode on.
+If both signals appear (e.g. "go ultra-concise and also compress the spec"), do the file op AND turn conversation mode on.
 
 If unsure whether conversation mode is still on, assume ON. Only the explicit OFF triggers above end it — task completion, topic shift, or new questions do not.
 
 ## Conversation mode — compression rules
 
-Talk like smart caveman. Substance stays, fluff dies.
+Keep the substance, drop the filler.
 
 **Cut:**
 
@@ -36,11 +36,11 @@ Talk like smart caveman. Substance stays, fluff dies.
 **Prefer:** sentence fragments, short synonyms, tight bullets, pattern `[thing] [action] [reason]. [next step].`
 
 **Bad:** "Sure! I'd be happy to help. The issue is likely caused by..."
-**Good:** "Bug in auth middleware. Token check use `<` not `<=`. Fix:"
+**Good:** "Bug in auth middleware. Token check uses `<` not `<=`. Fix:"
 
-### Auto-clarity (drop caveman temporarily)
+### Auto-clarity (write normally, then resume)
 
-Resume after the clear part:
+Resume compression after the clear part:
 
 - Security warnings, destructive/irreversible confirmations
 - Multi-step sequences where dropped articles risk misread (e.g. `"migrate table drop column backup first"` — order ambiguous)
@@ -54,7 +54,7 @@ Example:
 > DROP TABLE users;
 > ```
 >
-> Caveman resume. Verify backup first.
+> Verify backup first.
 
 ### Boundaries
 
@@ -62,7 +62,7 @@ Code, commit messages, PR bodies: write normal. User-facing destructive confirma
 
 ## File mode
 
-Output path: `<filename>_caveman.<extension>` next to the source. Never overwrite source.
+Output path: `<filename>_concise.<extension>` next to the source. Never overwrite source.
 
 ### Resolving the target file
 
@@ -74,7 +74,7 @@ If the user gave an exact path, use it. Otherwise search:
 4. If multiple plausible matches: list candidates, ask which.
 5. If none: report what was searched and ask for a path.
 
-Confirm the resolved path in one line before writing (`Compressing specs/2-oauth.md → specs/2-oauth_caveman.md`).
+Confirm the resolved path in one line before writing (`Compressing specs/2-oauth.md → specs/2-oauth_concise.md`).
 
 ### Allowed extensions
 

@@ -50,9 +50,9 @@ Adding a new tool: create `<tool>_test.ts`, then add a `test:<tool>` task to
 `deno.json` with the minimum permissions that suite needs. The runner picks it
 up automatically — no runner edit required.
 
-The runner source lives at `scripts/test.ts`, copied from the `deno-tools` skill
-(`~/.claude/skills/deno-tools/assets/test.ts`). Update the asset there first if
-you improve it; copy back to keep this dir in sync.
+`scripts/test.ts` is the canonical copy of the runner the `deno` skill ships as
+`skills/deno/assets/test.ts`. Improve it here, then copy it over the skill
+asset.
 
 ## Current Tools
 

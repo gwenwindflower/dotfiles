@@ -38,7 +38,7 @@ The printed path must equal `$OBSIDIAN_DEFAULT_VAULT`. If it differs, stop and a
 | `search query=<q> path=<dir> format=json`, `search:context query=<q> format=json` | App search results, with matching lines for `search:context` |
 | `bases`, `base:views path=<p>`, `base:query path=<p> view=<v> format=json` | Base files, their views, and a view's rows |
 | `templates`, `template:read name=<n>` | Templates and their content |
-| `tasks ... format=json` | Checkbox lines; the `tasks` skill's sync recipes own inventory and status |
+| `tasks ... format=json` | Checkbox lines; the `todos` skill's sync recipes own inventory and status |
 | `plugins:enabled versions`, `themes`, `snippets:enabled`, `version` | App, plugin, and theme state |
 
 `properties` and `tags` are the quickest way to see which fields, tags, and values already exist before writing frontmatter ([markdown.md](markdown.md)).

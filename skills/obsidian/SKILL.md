@@ -18,4 +18,4 @@ The girlOS vault lives at `$OBSIDIAN_DEFAULT_VAULT`. When and where to write in 
 | Link graph, property and tag inventories, base queries, plugin and theme dev through the running app | [obsidian-cli](obsidian-cli.md) |
 | Validate, fix, rename, or sync frontmatter across a directory; publish to Astro | [rematter](rematter.md) |
 
-Task checkboxes and their sync with Apple Reminders belong to `tasks`.
+Task checkboxes and their sync with Apple Reminders belong to `todos`.

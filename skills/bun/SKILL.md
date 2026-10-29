@@ -1,12 +1,11 @@
 ---
-name: bun-development
-description: Bun projects - native APIs, bun test, bun build --compile, tsconfig. For repos with bun.lock or bun imports.
+name: bun
+description: Bun runtime - native APIs over Node, bun build --compile, single-file HTML bundles, tsconfig. For repos with bun.lock or bun imports.
 ---
 
-# Bun Development
+# Bun
 
-> [!IMPORTANT]
-> In Claude Code's sandbox, `bun` and `bunx` bypass `$TMPDIR` and hit a blocked darwin temp path, since Bun reads it from `confstr(_CS_DARWIN_USER_TEMP_DIR)` rather than the environment. For one-off package execution use `aubx` (or `pnpx` if `aube` isn't available); for a JS runner prefer `aube`, with `pnpm` as a backup (only use plain `npm` if it's the only option on the system). Reach for `bun` only when the project mandates it, and expect `bun install`/`bun test` to need user-side execution outside the sandbox.
+Use Bun when requested or when the project specifically requires it. Our conventions: Bun-native APIs over Node and npm equivalents, and its bundler for binaries and HTML apps.
 
 ## Lockfile signals
 
@@ -26,42 +25,6 @@ Bun ≥ 1.1.45 writes text `bun.lock` by default; older projects have binary `bu
 
 `node:*` modules work for compat — reach for them only when no Bun-native exists.
 
-## Bun.serve
-
-```typescript
-const server = Bun.serve({
-  port: 3000,
-  fetch(req, server) {
-    const url = new URL(req.url);
-    if (url.pathname === "/ws" && server.upgrade(req)) return;
-    return Response.json({ ok: true });
-  },
-  websocket: {
-    open(ws) { ws.send("hi"); },
-    message(ws, msg) { ws.send(`echo: ${msg}`); },
-  },
-  error(err) { return new Response(err.message, { status: 500 }); },
-});
-```
-
-Returning `undefined` after `server.upgrade(req)` completes the WebSocket handshake.
-
-## bun:test
-
-Jest-compatible API, runs `.ts` natively with no transform:
-
-```typescript
-import { describe, it, expect, mock, spyOn, beforeAll } from "bun:test";
-
-const mockFn = mock((x: number) => x * 2);
-mockFn(5);
-expect(mockFn).toHaveBeenCalledWith(5);
-
-const spy = spyOn(obj, "method").mockReturnValue("stub");
-```
-
-CLI: `bun test`, `--watch`, `--coverage`, `--grep <pat>`, `--timeout <ms>`.
-
 ## Build and compile
 
 ```bash
@@ -75,24 +38,9 @@ bun build ./src/cli.ts --compile --target=bun-darwin-arm64 --outfile myapp-mac
 bun build ./src/cli.ts --compile --embed ./assets --outfile myapp
 ```
 
-Programmatic:
+`Bun.build({ ... })` takes the same options programmatically, plus `plugins`.
 
-```typescript
-const result = await Bun.build({
-  entrypoints: ["./src/index.ts"],
-  outdir: "./dist",
-  target: "browser",        // "browser" | "bun" | "node"
-  minify: true,
-  sourcemap: "external",
-  splitting: true,
-  format: "esm",
-  external: ["react"],
-  define: { "process.env.NODE_ENV": JSON.stringify("production") },
-});
-if (!result.success) console.error(result.logs);
-```
-
-## Full-stack HTML bundles
+## Single-file HTML bundles
 
 Bun ≥ 1.3.10 takes `.html` files as bundler entrypoints — it traces `<script type="module" src="./x.ts">`, `<link rel="stylesheet">`, CSS imported from JS/TS, and `url()` references inside CSS. Pair it with `--compile --target=browser` to emit one self-contained HTML with every asset inlined as a `data:` URI (woff2 fonts from `@fontsource/*` work out of the box). Replaces Vite + `vite-plugin-singlefile` for iframe widgets, MCP App resources, and other single-file SPAs.
 
@@ -115,7 +63,7 @@ import "./component.css";
 ```
 
 > [!CAUTION]
-> Plain `bun build --html` (without `--compile --target=browser`) emits sibling JS/CSS chunks, not one file. The single-file behavior comes from `--compile --target=browser` against an HTML entry, added in Bun 1.3.10 (April 2026). No third-party inliner needed — `vite-plugin-singlefile`, `inline-source`, `posthtml-inline-assets` are all obsolete for this case.
+> Plain `bun build --html` (without `--compile --target=browser`) emits sibling JS/CSS chunks, not one file. The single-file behavior comes from `--compile --target=browser` against an HTML entry, added in Bun 1.3.10. No third-party inliner needed — `vite-plugin-singlefile`, `inline-source`, `posthtml-inline-assets` are all obsolete for this case.
 
 ## tsconfig baseline
 
@@ -140,12 +88,4 @@ import "./component.css";
 
 Pair `"types": ["bun"]` with `@types/bun` as a devDependency. The legacy `bun-types` package is superseded.
 
-## Watch vs hot
-
-- `bun --watch <file>` restarts the process on change — short scripts.
-- `bun --hot <file>` keeps the process alive and hot-swaps modules — long-running servers.
-
-## Resources
-
-- [Bun docs](https://bun.sh/docs)
-- [Elysia](https://elysiajs.com/) · [Hono](https://hono.dev/) — Bun-friendly server frameworks
+Docs: <https://bun.sh/docs>

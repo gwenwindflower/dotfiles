@@ -59,8 +59,6 @@ def replay(self, since: datetime) -> Iterator[Event]:
 
 ## Naming
 
-- Functions are verbs (`load_manifest`, `replay_events`); predicates read as questions (`is_expired`, `has_pending`).
 - Classes are nouns for the thing they represent. Avoid `Manager`, `Handler`, `Processor`, `Service` unless the codebase already uses them with a precise meaning.
-- Collections are plural; a loop variable is the singular (`for event in events`).
-- Private module members start with `_`. Name-mangled `__attrs` are almost never worth it.
-- Constants are `UPPER_SNAKE` and only for true constants, never for cached results.
+- Skip name-mangled `__attrs`; a single `_` marks private.
+- `UPPER_SNAKE` is only for true constants, never for cached results.
