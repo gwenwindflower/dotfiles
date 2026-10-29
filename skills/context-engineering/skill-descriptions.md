@@ -8,7 +8,7 @@ At startup the agent sees only a list of names and descriptions, and the harness
 <Domain or tool> - <what's inside, as a noun list>. [For <scope>.] [<Adjacent case> uses <other-skill>.]
 ```
 
-- Aim under 160 characters; 200 is the ceiling. Fragments are fine; caveman style is fine if nothing is lost.
+- Aim under 160 characters; 200 is the ceiling. Fragments and terse shorthand are fine if nothing is lost.
 - Lead with the tool or domain name the agent will match against: file types, CLI names, domain terms.
 - List contents, not trigger phrases. `Use when the user says X, Y, Z` lists are out.
 - Add a routing clause only when an adjacent skill would otherwise be picked wrongly.
@@ -20,7 +20,7 @@ At startup the agent sees only a list of names and descriptions, and the harness
 | Avoid | Prefer |
 | --- | --- |
 | `dbt Analytics Engineering` | `dbt projects - models, sources, tests, UDFs, Jinja, CLI builds, deploys, debugging.` |
-| `Use when user says "caveman mode", "talk caveman", "go caveman", ...` | `Caveman-style compression of prose to save tokens, live or in files. Toggled on or off by request.` |
+| `Use when user says "concise mode", "be terse", "fewer words", ...` | `Ultra-concise replies and file compression to save tokens. Toggled on or off by request.` |
 | `Generate advanced and comprehensive .gitignore files based on project type...` | `Project-aware .gitignore generation, extension, and audit.` |
 | `Use when adding components; customizing variants; troubleshooting setup; ...` | `shadcn/ui components - add, customize variants, components.json, CLI, troubleshooting.` |
 
@@ -28,9 +28,9 @@ At startup the agent sees only a list of names and descriptions, and the harness
 
 Examples in this collection:
 
-- `clean-python` routes dbt Python to `analytics-engineering`
-- `map-project` skips projects whose AGENTS.md and docs already cover them
-- `writing` routes agent instructions to `agent-context-engineering`
+- `python` routes dbt Python to `analytics-engineering`
+- `writing` routes agent instructions to `context-engineering`
+- `project-management` routes repo tooling to `project-tooling`
 
 If two skills need long routing clauses to stay apart, merge them into one skill with reference docs instead.
 

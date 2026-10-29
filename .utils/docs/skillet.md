@@ -1,6 +1,6 @@
 # skillet
 
-Curates the dotfiles skill library on top of `gh skill`. gh fetches upstream skills and resolves refs; skillet diffs each upstream skill against the version last distilled into our spines and records baselines. The distilling itself is agent work, described in `skills/agent-context-engineering/upstream-fold.md`.
+Curates the dotfiles skill library on top of `gh skill`. gh fetches upstream skills and resolves refs; skillet diffs each upstream skill against the version last distilled into our spines and records baselines. The distilling itself is agent work, described in `skills/context-engineering/upstream-fold.md`.
 
 Run it anywhere through the `skillet` fish function, or `deno task skillet` from `.utils/`.
 
@@ -14,7 +14,7 @@ Run it anywhere through the `skillet` fish function, or `deno task skillet` from
 ## Manifest
 
 ```toml
-[[context-search.upstream]]   # one array per spine; keep spines sorted
+[[obsidian.upstream]]         # one array per spine; keep spines sorted
 repo = "tobi/qmd"             # owner/name
 skill = "qmd"                 # gh skill name; unique across the whole manifest
 files = ["qmd.md"]            # spine-relative docs this upstream folds into; one baseline covers all

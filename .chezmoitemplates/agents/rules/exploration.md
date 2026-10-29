@@ -6,13 +6,12 @@ For actively developed tools, syntax, versions, APIs, or framework behavior, che
 
 #### Finding docs
 
-- Use `ctx7` (see the `context-search` skill) for current docs on popular libraries and frameworks.
 - Read the help text of any CLI you are not deeply familiar with; it is often comprehensive and agent-oriented.
 - Record key dependencies' docs sites in project context. If fetching one hits an approval wall, propose adding the domain to the global fetch allowlist so future projects skip the same wall.
 
 #### Searching local corpora
 
-Pick the corpus, then the retrieval mode. A known literal (identifier, path, error text, config key) is an `rg` job in any corpus. When the wording or location is unknown, or the question is about relationships, flow, or architecture, use the indexed tool for that corpus. The `context-search` skill has each tool's usage:
+Pick the corpus, then the retrieval mode. A known literal (identifier, path, error text, config key) is an `rg` job in any corpus. When the wording or location is unknown, or the question is about relationships, flow, or architecture, use the indexed tool for that corpus. The `context-engineering` skill has usage for `zg`, `ast-grep`, and `agentsview`; the `obsidian` skill covers `qmd`:
 
 | Corpus | Tool |
 | --- | --- |

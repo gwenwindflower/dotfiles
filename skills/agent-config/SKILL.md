@@ -20,6 +20,6 @@ In this dotfiles repo, allow, ask, deny, sandbox, network, rule, and reviewer ch
 ## Shared rules
 
 - Edit chezmoi sources, never deployed targets. Symlinked settings (`symsources/claude/settings.json`, `symsources/codex/config.toml`) are written by the tools too; keep their generated tables.
-- Behavior instructions belong in AGENTS.md, rules, or skills (see `agent-context-engineering`); config holds runtime settings only.
+- Behavior instructions belong in AGENTS.md, rules, or skills (see `context-engineering`); config holds runtime settings only.
 - Never weaken sandboxing, approvals, hook trust, or secret filtering without an explicit request.
 - Refresh official docs before changing active syntax; hook events, keys, and profile fields move between releases.

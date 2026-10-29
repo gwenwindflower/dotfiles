@@ -1,6 +1,6 @@
 ---
 name: obsidian
-description: Obsidian vault work - notesmd-cli notes, Obsidian Flavored Markdown, frontmatter, Bases, JSON Canvas, the obsidian app CLI, rematter bulk frontmatter and site sync.
+description: Obsidian vault and Markdown knowledge bases - qmd note search, notesmd-cli notes, Obsidian Flavored Markdown, Bases, JSON Canvas, obsidian CLI, rematter frontmatter.
 ---
 
 # Obsidian
@@ -9,7 +9,8 @@ The girlOS vault lives at `$OBSIDIAN_DEFAULT_VAULT`. When and where to write in 
 
 | Job | Doc |
 | --- | --- |
-| Search, read, create, append, move, or edit one note's frontmatter | [notesmd-cli](notesmd-cli.md) |
+| Find notes or answers by topic, idea, or phrase across the vault and other indexed Markdown collections | [qmd](qmd.md) |
+| Read, create, append, move, or edit one note's frontmatter; check a note exists by name | [notesmd-cli](notesmd-cli.md) |
 | Write note content: wikilinks, embeds, callouts, properties, tags | [markdown](markdown.md) |
 | Render notes from a template and JSON or CSV data, one or in batches | [knap](knap.md) |
 | Build or edit a `.base` view | [bases](bases.md) |

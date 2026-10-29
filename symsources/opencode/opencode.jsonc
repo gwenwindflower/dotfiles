@@ -69,8 +69,6 @@
 			"chezmoi state *": "ask",
 			"chezmoi unmanage *": "ask",
 			"chezmoi update*": "ask",
-			"ctx7 docs *": "allow",
-			"ctx7 library *": "allow",
 			"deno check *": "allow",
 			"deno fmt *": "allow",
 			"deno info *": "allow",

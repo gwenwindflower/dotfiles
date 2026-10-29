@@ -130,14 +130,6 @@ prefix_rule(
 )
 
 prefix_rule(
-    pattern = ["ctx7", ["setup", "remove", "login", "logout"]],
-    decision = "prompt",
-    justification = "ctx7 setup and remove edit agent MCP and skill config, a trust surface that changes only on the user's request; skills come from gh skill.",
-    match = ["ctx7 setup", "ctx7 remove"],
-    not_match = ["ctx7 docs /vercel/next.js routing"],
-)
-
-prefix_rule(
     pattern = [["codex", "claude"], ["mcp", "plugin", "features", "config"], ["add", "remove", "enable", "disable", "set", "install", "uninstall"]],
     decision = "prompt",
     justification = "Agent MCP, plugin, and feature changes are a trust surface that changes only on the user's request.",

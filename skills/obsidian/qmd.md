@@ -1,6 +1,6 @@
 # qmd
 
-`qmd` searches local markdown collections: notes, docs, wikis, transcripts, and the girlOS vault. Search it before the web when the answer may already be in indexed files.
+`qmd` is the indexed search over the girlOS vault (collection `girlos`) and any other local Markdown collections: docs, wikis, transcripts. Use it to find notes by topic or idea, and search it before the web when the answer may already be in indexed files. A known literal is still an `rg` or `notesmd-cli search-content` job. Use the CLI, not the qmd MCP server.
 
 The loop is always search, retrieve, answer. Snippets are leads; fetch the document before stating facts, decisions, or quotes, and cite the `#docid` or path.
 
@@ -41,7 +41,7 @@ qmd multi-get 'sources/podcast-2025-*.md' -l 80
 - Output is line-numbered and headed with the `#docid` and `qmd://` path.
 - Slice with the `:from:count` suffix or `--from`/`-l`, never by piping through `sed`, `head`, or `tail`; piping breaks docid resolution and the header.
 - Each search hit carries a `:line` anchor; feed it straight into `qmd get path:line:<n>`.
-- `--full-path` on `search` and `query` swaps `qmd://` URIs for on-disk paths, for handing results to other tools.
+- `--full-path` on `search` and `query` swaps `qmd://` URIs for on-disk paths, for handing a note to [notesmd-cli](notesmd-cli.md) or an editor.
 
 ## Keep the index fresh
 
@@ -52,4 +52,6 @@ Maintaining the index is part of using the tool:
 - `qmd doctor` diagnoses config, model cache, GPU, and vector fingerprints; run it before changing configuration when a model-backed command fails.
 - Adding collections (`qmd collection add`) is setup work; do it only on request.
 
-Use the CLI, not the qmd MCP server.
+## Sandboxing
+
+`qmd search`, `get`, `update`, and collection reads run sandboxed. `qmd query`, `qmd vsearch`, and `qmd embed` load models on the GPU, so run them outside the sandbox.

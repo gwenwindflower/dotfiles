@@ -5,7 +5,7 @@ description: Writing for humans - messaging, posts, articles, technical docs, an
 
 # Writing
 
-Match the audience, medium, and purpose before choosing structure or tone. Infer these from the request and surrounding conversation; ask only when an unresolved choice changes the piece. Agent instructions belong to `agent-context-engineering`.
+Match the audience, medium, and purpose before choosing structure or tone. Infer these from the request and surrounding conversation; ask only when an unresolved choice changes the piece. Agent instructions belong to `context-engineering`.
 
 ## Voice and structure
 

@@ -14,28 +14,21 @@ files = ["agent-browser.md"]
 baseline = "aff6125c023b810ea3f2e5deec5379e9a4270bdc"
 tree = "82def67855a0d2aad7794207951820fa5422fdb0"
 
-[[clean-python.upstream]]
-repo = "pydantic/skills"
-skill = "pydantic"
-files = ["pydantic.md"]
-baseline = "238d97102650c1caa51f35027aee13c469c59542"
-tree = "177519a6580cd617767ca75c9d53c69ab15ffd14"
-
-[[context-search.upstream]]
+[[context-engineering.upstream]]
 repo = "ast-grep/agent-skill"
 skill = "ast-grep"
 files = ["ast-grep.md", "ast-grep-rules.md"]
 baseline = "f2175aff21f20cfb8e2db30c28febeb3a2d42b61"
 tree = "1f1877bfb051fff6e6de5ebe529fb47758a03367"
 
-[[context-search.upstream]]
+[[context-engineering.upstream]]
 repo = "ast-grep/agent-skill"
 skill = "outline"
 files = ["ast-grep.md"]
 baseline = "f2175aff21f20cfb8e2db30c28febeb3a2d42b61"
 tree = "7ee23d31b0578aa6702d8bbafa15749fc499a8c0"
 
-[[context-search.upstream]]
+[[obsidian.upstream]]
 repo = "tobi/qmd"
 skill = "qmd"
 files = ["qmd.md"]
@@ -99,12 +92,12 @@ files = ["prek.md"]
 baseline = "77c4056ce76b600de77d5d425e52844a76652a58"
 tree = "6032680b95ac73c5604c2a44e2e041b9098242de"
 
-[[review-changes.upstream]]
-repo = "fallow-rs/fallow-skills"
-skill = "fallow-review"
-files = ["SKILL.md", "fallow.md", "tradeoffs.md"]
-baseline = "7dd076fba7e00b2997c942e8120d14c39b47a24a"
-tree = "1b1d09835873abfbfe40c1b0550fab81c94339f2"
+[[clean-python.upstream]]
+repo = "pydantic/skills"
+skill = "pydantic"
+files = ["pydantic.md"]
+baseline = "238d97102650c1caa51f35027aee13c469c59542"
+tree = "177519a6580cd617767ca75c9d53c69ab15ffd14"
 
 [[tasks.upstream]]
 repo = "BRO3886/rem"
@@ -112,3 +105,10 @@ skill = "rem-cli"
 files = ["rem.md"]
 baseline = "9a788845ff232e838a28316973d7b57cbe38e03a"
 tree = "bc9d5e8928ace95d018f97734b11db83a188e23c"
+[[review-changes.upstream]]
+repo = "fallow-rs/fallow-skills"
+skill = "fallow-review"
+files = ["SKILL.md", "fallow.md", "tradeoffs.md"]
+baseline = "7dd076fba7e00b2997c942e8120d14c39b47a24a"
+tree = "1b1d09835873abfbfe40c1b0550fab81c94339f2"
+

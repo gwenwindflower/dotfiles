@@ -58,7 +58,7 @@ Each authoring subagent gets one finding and must receive:
 - The finding stated as current-state knowledge, plus the evidence windows
   (quoted excerpts — the subagent cannot search the archive itself).
 - The target path and artifact type from the classification table.
-- To load `agent-context-engineering`, plus [skills](skills.md) when the
+- To load `context-engineering`, plus [skills](skills.md) when the
   target is a skill.
 - The current-state rule: write what is true now; no "we discovered",
   no session references, no history framing in the artifact.

@@ -1,12 +1,9 @@
 ---
-name: agent-context-engineering
-description: Authoring and capturing agent context - AGENTS.md, CLAUDE.md, rules, memory, skills, subagents. Session-end capture and mining past sessions for gaps.
-allowed-tools:
-  - WebFetch(domain:docs.agentskills.io)
-  - WebFetch(domain:code.claude.com)
+name: context-engineering
+description: Agent context - AGENTS.md, CLAUDE.md, rules, memory, skills, subagents. Session capture, codebase and package mapping, zg and ast-grep code search, agentsview history.
 ---
 
-# Agent context docs
+# Context engineering
 
 Every line is loaded on every trigger. If it doesn't change agent behavior, cut it. This file covers AGENTS.md, rules, and memory; load the doc for any other artifact or job.
 
@@ -14,9 +11,22 @@ Every line is loaded on every trigger. If it doesn't change agent behavior, cut 
 | --- | --- |
 | Author or audit a skill, write descriptions, frontmatter | [skills](skills.md), then [skill-descriptions](skill-descriptions.md), [skill-metadata](skill-metadata.md), [skill-scaffold](skill-scaffold.md) |
 | Design a subagent | [subagents](subagents.md), then the platform doc it links |
+| Map an unfamiliar codebase or package and leave durable context | [map-codebase](map-codebase.md) |
 | Capture what this session learned | [capture-session](capture-session.md) |
 | Mine past sessions for uncaptured knowledge | [capture-from-history](capture-from-history.md) |
 | Distill a new or updated upstream skill into our spines | [upstream-fold](upstream-fold.md) |
+
+## Retrieval
+
+Pick the corpus, then the tool. A known literal (identifier, path, error text, config key) is an `rg` job anywhere. Run the indexed search before broad file reads or delegating discovery; a snippet that answers the question counts as read.
+
+| Question | Tool | Doc |
+| --- | --- | --- |
+| Unknown wording, flow, or architecture in code and mixed workspaces | `zg query` | [zvec-grep](zvec-grep.md) |
+| Code by structure: AST patterns, language constructs, rewrite targets | `ast-grep run`, `ast-grep scan` | [ast-grep](ast-grep.md) |
+| Structural map of files, imports, and exports before reading source | `ast-grep outline` | [ast-grep](ast-grep.md) |
+| Why a decision was made, how something was done before, prior instructions | `agentsview session search` | `agentsview session search --help` |
+| Markdown knowledge bases and the girlOS vault | `qmd` | the `obsidian` skill |
 
 > [!NOTE]
 > `AGENTS.md` and `.agents/` are both real and stand-ins. They're the shared cross-agent standard adopted by most non-Claude tools, *and* the generic model for agent-specific equivalents (`CLAUDE.md`, `GEMINI.md`, `.codex/`, etc.). Guidance here applies to all of them.

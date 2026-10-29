@@ -1,6 +1,6 @@
 # notesmd-cli
 
-`notesmd-cli` reads and writes vault files directly, with no running app, so it works on every machine. It is the default tool for searching, reading, creating, and appending notes. Where notes land and when to write at all come from the global notes vault rules.
+`notesmd-cli` reads and writes vault files directly, with no running app, so it works on every machine. It is the default tool for reading, creating, and appending notes and for literal content searches; [qmd](qmd.md) finds notes by topic. Where notes land and when to write at all come from the global notes vault rules.
 
 Pass `--vault "$OBSIDIAN_DEFAULT_VAULT"` on every call; the flag accepts the vault path, and no default vault is registered. Note names are vault-relative paths without the `.md` extension (`org/_inbox/Task Sync`).
 

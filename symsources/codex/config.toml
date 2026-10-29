@@ -96,7 +96,7 @@ extra_policy = '''
 - History rewrite and discarded work: `git push --force-with-lease` in any form to the session's own feature branch (approve when the user asked to update that rebased branch); `git reset --hard`, `git clean -f`, `git checkout -- <paths>`, `git restore` of worktree files, and `git stash drop`/`clear`, which also need a preserved backup; `git rebase --skip`; `--no-verify` and `-c core.hooksPath=…`.
 - Protected and shared targets: pushes to `main` or another protected branch; `gh pr merge` and PR approvals; repository create, fork, rename, archive, and settings or visibility edits; secret and variable writes; release workflow dispatch and release-shaped project tasks; `gh api` or GraphQL calls with any of these effects, judged as the equivalent command.
 - Dotfiles deployment: a real `chezmoi apply`, `update`, or `init`, only when the user's message asked to apply after the changes. Editing the source tree or wanting to see a change live does not count; a sandboxed chezmoi call failing on its state database is never grounds for a real apply.
-- Trust and permission surfaces: agent permission and sandbox settings, `mise trust`, `direnv allow`, build-script approvals, MCP or plugin trust, `ctx7 setup`/`remove`, `zg install`, `zg auth grant`, `codex`/`claude` MCP and feature changes, and package-runner skill installers.
+- Trust and permission surfaces: agent permission and sandbox settings, `mise trust`, `direnv allow`, build-script approvals, MCP or plugin trust, `zg install`, `zg auth grant`, `codex`/`claude` MCP and feature changes, and package-runner skill installers.
 - macOS and app state: `defaults write`/`delete`/`import`, LaunchServices handler edits, `launchctl` changes, `killall` of system processes, `osascript`, and `obsidian eval`/`command`/`plugin`.
 - Signed-in state: `agent-browser` with the Default profile beyond screenshot, snapshot, PDF, and close; cookie, storage, and state export; reading browser or app profile data under `~/Library/Application Support`.
 - 1Password secrets: `op read`, `op inject`, and `op run`, including inside `$(…)`, only when the user named the item and its destination; the secret goes straight there and never into output, logs, or files.
@@ -144,7 +144,6 @@ extends = ":workspace"
 ".agent-browser" = "write"
 ".pm2" = "write"
 ".blacksmith" = "write"
-".context7" = "write"
 ".critique" = "write"
 ".duckdb" = "write"
 ".mintlify" = "write"
@@ -250,7 +249,6 @@ allow_local_binding = true
 "api.todoist.com" = "allow"
 "backend.blacksmith.sh" = "allow"
 "clireleases.blacksmith.sh" = "allow"
-"context7.com" = "allow"
 "telemetry.astro.build" = "allow"
 "workers.cloudflare.com" = "allow"
 # documentation

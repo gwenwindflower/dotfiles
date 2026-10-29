@@ -48,7 +48,7 @@ Raw `sqlite3` reads of the agentsview or Codex databases open them with `file:<p
 | Codex | Profile grants cover the same paths; `services.rules` allows the GPU `qmd` commands. `ZVEC_GREP_EMBEDDING` and `AGENTSVIEW_DATA_DIR` come through `shell_environment_policy.set`, because shell environment inheritance is restricted to core variables. |
 | OpenCode | Explicit allows for `zg query`/`status`/`index`/`server status`, `qmd` read and search commands, and `agentsview session` search and messages; `zg index --drop` asks. |
 
-Shared routing lives in `.chezmoitemplates/agents/rules/exploration.md`; tool detail lives in the `context-search` skill.
+Shared routing lives in `.chezmoitemplates/agents/rules/exploration.md`; tool detail lives in the `context-engineering` skill, and in the `obsidian` skill for `qmd`.
 
 ## Verification
 

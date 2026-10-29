@@ -32,7 +32,7 @@ Screenshot, snapshot, PDF, and close operations are fine on any profile, includi
 
 #### Skills
 
-Manage external skills with `gh skill`: search, preview, list, install/add, and update are routine within the task, including user scope. Confirm before removing a skill or force-replacing one. Check the source before installing unfamiliar content; do not use the npm `skills` CLI, package-runner variants, `rei`, or Context7's skill installer. Shared user skills live in `~/.agents/skills`, installed with `--agent universal --scope user`; own skills live in the dotfiles `skills/` tree and edits to a deployed one return there with `skillet save <name>`. Project-scoped skills may shadow global ones.
+Manage external skills with `gh skill`: search, preview, list, install/add, and update are routine within the task, including user scope. Confirm before removing a skill or force-replacing one. Check the source before installing unfamiliar content; do not use the npm `skills` CLI, package-runner variants, or `rei`. Shared user skills live in `~/.agents/skills`, installed with `--agent universal --scope user`; own skills live in the dotfiles `skills/` tree and edits to a deployed one return there with `skillet save <name>`. Project-scoped skills may shadow global ones.
 
 Many tools also ship version-matched skills. Check whether a skill command prints instructions or installs files before running it; use `gh skill` for external skill management.
 

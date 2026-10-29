@@ -1,13 +1,17 @@
 # Scaffolding a new skill
 
+## Skills are containers
+
+A skill is a broad domain container: SKILL.md is a short index, and each topic, workflow, or tool lives in its own module beside it. Add a module to an existing skill before adding a skill; a narrow job (mapping a codebase, auditing CI) is a module, not a skill. Fewer, deeper skills keep the startup list short. External skills in a domain we cover are distilled into that spine through [upstream-fold](upstream-fold.md), not installed top-level.
+
 ## Naming
 
-Two valid shapes, chosen by scope:
+Name the domain in as few words as stay unambiguous:
 
-- **Topic noun** (`chezmoi`, `fish-shell`, `analytics-engineering`) — for skills that span multiple actions or carry special topic knowledge.
-- **Present-tense active verb phrase** (`map-project`) — for skills scoped to one action, or whenever a verb makes the trigger clearer. The verb form must complete the sentence "As an agent I want to `<skill-name>`" — so `map-project`, never `mapping-project`.
+- **Topic noun** (`python`, `chezmoi`, `obsidian`, `context-engineering`) — the default. Use the bare language, runtime, or tool name when it is the domain.
+- **`<name>-mode`** (`learning-mode`, `ultra-concise-mode`) — for a behavior the user toggles on and off for the rest of a session.
 
-Before adding a skill, check whether it belongs as a reference doc inside an existing skill in the same domain. Fewer, deeper skills keep the startup list short. External skills in a domain we cover are distilled into that spine through [upstream-fold](upstream-fold.md), not installed top-level.
+Don't fold in words the domain already implies (`context-engineering`, not `agent-context-engineering`) or adjectives that describe our taste (`python`, not `clean-python`).
 
 Third-party skills keep their upstream names; they update externally.
 
@@ -24,19 +28,20 @@ Third-party skills keep their upstream names; they update externally.
 
 ## Structure
 
-A real skill (`github-actions-workflows`) bundling templates, modular docs, and a script:
+A real skill (`project-tooling`, trimmed) bundling assets, a script, flat modules, and a nested module group:
 
 ```text
-github-actions-workflows/
+project-tooling/
 ├── assets/
-│   ├── ci.yml.template
-│   ├── release-build.yml.template
-│   └── release.yml.template
+│   └── rust/
+├── herdr-plugins/
+│   ├── project-shape.md
+│   └── workflow.md
 ├── scripts/
-│   └── install-workflow.sh
-├── ci.md
-├── release-build.md
-├── release.md
+│   └── bootstrap.sh
+├── bootstrap.md
+├── mise.md
+├── releasing.md
 └── SKILL.md
 ```
 

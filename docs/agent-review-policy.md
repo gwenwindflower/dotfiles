@@ -68,7 +68,7 @@ Approve these only when the user's current request names the action or its exact
 - **Trust and permission surfaces:**
   - Agent permission and sandbox settings.
   - Trust files and approvals: `mise trust`, `direnv allow`, build-script approvals, MCP or plugin trust.
-  - Agent config changes: `ctx7 setup`/`remove`, `zg install`, `zg auth grant`, `codex`/`claude` MCP and feature changes.
+  - Agent config changes: `zg install`, `zg auth grant`, `codex`/`claude` MCP and feature changes.
   - Package-runner skill installers; skills come from `gh skill`.
   - These change only on a direct request about that surface, never as a step toward another goal. Creating fish universal variables (`set -U`) is never a fix; config exports use `set -gx`.
 - **macOS and app state:**
