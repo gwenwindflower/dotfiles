@@ -178,11 +178,35 @@ prefix_rule(
 )
 
 prefix_rule(
-    pattern = ["herdr", "agent", ["send-keys", "prompt", "start", "attach"]],
+    pattern = ["herdr", "agent", ["send-keys", "prompt", "attach"]],
     decision = "prompt",
     justification = "Driving another agent passes this session's authority to it; act on agents the session started or the user named.",
-    match = ["herdr agent prompt 2 'run tests'", "herdr agent start codex"],
-    not_match = ["herdr agent list", "herdr agent read 2"],
+    match = ["herdr agent prompt 2 'run tests'", "herdr agent send-keys 2 Enter"],
+    not_match = ["herdr agent list", "herdr agent read 2", "herdr agent start codex --kind codex --pane 3"],
+)
+
+prefix_rule(
+    pattern = ["herdr", ["pane", "tab", "workspace", "agent"], "focus"],
+    decision = "prompt",
+    justification = "Focus belongs to the user; move it only when the user asked.",
+    match = ["herdr pane focus --direction left", "herdr tab focus 2"],
+    not_match = ["herdr pane split --current --direction right --no-focus"],
+)
+
+prefix_rule(
+    pattern = ["herdr", ["pane", "workspace"], ["report-agent", "report-agent-session", "release-agent", "report-metadata"]],
+    decision = "prompt",
+    justification = "Agent status and metadata reports belong to harness hooks, not agent commands.",
+    match = ["herdr pane report-agent 2 --source x --agent claude --state idle"],
+    not_match = ["herdr pane read 2"],
+)
+
+prefix_rule(
+    pattern = ["herdr", "worktree", ["create", "remove"]],
+    decision = "prompt",
+    justification = "Worktrees are created and removed through wt so project hooks run; herdr only opens them.",
+    match = ["herdr worktree create --branch x", "herdr worktree remove --workspace 2"],
+    not_match = ["herdr worktree open --branch x --no-focus", "herdr worktree list --cwd ."],
 )
 
 prefix_rule(

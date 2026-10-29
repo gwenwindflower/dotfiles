@@ -302,6 +302,7 @@ allow_local_binding = true
 [permissions.dev.network.unix_sockets]
 "/Users/winnie/.agent-browser/default.sock" = "allow"
 "/Users/winnie/.config/herdr/herdr.sock" = "allow"
+"/Users/winnie/.config/herdr/sessions" = "allow"
 "/Users/winnie/.obsidian-cli.sock" = "allow"
 "/Users/winnie/.pm2/rpc.sock" = "allow"
 "/Users/winnie/.pm2/pub.sock" = "allow"

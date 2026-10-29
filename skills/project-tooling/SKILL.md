@@ -43,4 +43,4 @@ Treat `_tool` as a bidirectional source of project learning. Update regression t
 | Rust kit and Cargo contract | [rust](rust.md) |
 | Build a Rust Herdr plugin | [herdr-plugins/workflow](herdr-plugins/workflow.md), with [runtime](herdr-plugins/runtime.md) and [project-shape](herdr-plugins/project-shape.md) |
 
-Planning, specs, issues, and branch work belong to `project-management`; Herdr CLI control belongs to `herdr`.
+Planning, specs, issues, and branch work belong to `project-management`; Herdr CLI control follows the `herdr --skill` briefing.

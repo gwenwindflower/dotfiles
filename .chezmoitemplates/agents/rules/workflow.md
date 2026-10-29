@@ -55,12 +55,14 @@ The girlOS Obsidian vault is Winnie's knowledge base for deep dives and learning
 
 ### Herdr
 
-Sessions usually run inside Herdr (`HERDR_ENV=1`), which lets you launch tools and agents where Winnie can watch them. Load the `herdr` skill before any `herdr` command; the CLI's help is the syntax authority.
+Sessions usually run inside Herdr (`HERDR_ENV=1`), which lets you launch tools and agents where Winnie can watch them. Before your first `herdr` command in a session, run `herdr --skill` for the version-matched briefing; the CLI's help is the syntax authority.
 
 - Run a server, test watcher, or long command for Winnie in a sibling pane: `herdr pane split --current --direction right --cwd "$PWD" --no-focus`, then `herdr pane run <pane-id> "<command>"`.
-- Start an agent in an idle shell pane with `herdr agent start <name> --kind <kind> --pane <pane-id>`, then hand it work with `herdr agent prompt <name> "<brief>" --wait`. Keep Winnie's focus where it is.
+- Start an agent in an idle shell pane with `herdr agent start <name> --kind <kind> --pane <pane-id>`, then hand it work with `herdr agent prompt <name> "<brief>"` as described in the workaround below. Keep Winnie's focus where it is.
 - Use Ctrl+Enter to submit prompts when controlling agents through Herdr; it is the most reliable submit binding. Cmd+Enter and Alt+Enter are also configured where supported.
 - Read IDs from JSON responses, and close only the panes and workspaces you created.
+
+**Workaround**: `herdr agent prompt` submits with a plain Enter, which the agents' keybindings treat as a newline because only mod+Enter submits. The brief lands in the composer unsent, and the agent sits idle. Follow every `agent prompt` with `herdr agent send-keys <name> ctrl+enter`, then wait with `herdr agent wait <name>`.
 
 #### Dispatching a task to a worktree agent
 
@@ -73,3 +75,7 @@ This is the go-to way to hand a self-contained task to a parallel agent:
 5. Check on it with `herdr agent wait` and `herdr agent read`. If it reports `blocked`, show Winnie the question rather than answering it yourself.
 
 When you drive more than one agent in the same worktree workspace, give each its own tab with `herdr tab create --workspace <workspace-id> --label <name>` (its root pane is `.result.root_pane`) rather than splitting panes, so every agent gets a full-size view Winnie can flip between.
+
+#### Reviewing changes in Hunk
+
+Hunk is a terminal diff viewer Winnie uses to review changes. When she says she'll review the session's changes in Hunk, run `hunk skill show` for the version-matched briefing, then work through her open review with `hunk session` commands. The TUI is hers; never launch `hunk diff` or `hunk show` yourself.

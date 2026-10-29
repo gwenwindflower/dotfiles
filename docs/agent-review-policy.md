@@ -15,7 +15,7 @@ The configs port each entry below by hand, with the same labels. Change this fil
 
 - **Organizations:** Lightdash (@lightdash) for work, Supermodel Labs (@supermodellabs) for open-source tools, and @gwenwindflower for personal work.
 - **Trusted repositories:** the session's repository and its configured remotes, plus repositories owned by those three accounts. Other repositories are untrusted, regardless of visibility.
-- **Trusted destinations:** GitHub repositories, issues, and PRs under those accounts; the Lightdash Linear and Notion workspaces; Lightdash Cloud (`app.lightdash.cloud`, `analytics.lightdash.cloud`, `api.lightdash.com`); the girlOS Obsidian vault; Apple Reminders; and local services on this machine (herdr, agentsview, the Obsidian CLI socket, local dev servers).
+- **Trusted destinations:** GitHub repositories, issues, and PRs under those accounts; the Lightdash Linear and Notion workspaces; Lightdash Cloud (`app.lightdash.cloud`, `analytics.lightdash.cloud`, `api.lightdash.com`); the girlOS Obsidian vault; Apple Reminders; and local services on this machine (herdr, the Hunk session daemon, agentsview, the Obsidian CLI socket, local dev servers).
 - **Cloud and sandboxes:** GCP for work. Cloudflare, Fly.io, and Railway for personal projects. exe.dev, Fly.io Sprites, and microsandbox (`msb`) for agent sandboxes.
 - **Secrets:** 1Password holds them. The user's terminal commits are SSH-signed through it. Agent sessions get a hook-provided session identity that signs with the dedicated agent signing key in Secretive, so agents never pass `-S`/`--gpg-sign` and never edit signing config.
 - **Branches:** `main` is the default and protected branch unless the repo says otherwise. Work lands through feature branches and pull requests; push directly to `main` only when the user asked for it or the repo documents a trunk workflow. History is linear: rebase, never merge commits. `--force-with-lease` on the session's own feature branch is the only force push.
@@ -42,6 +42,7 @@ Approve these when they serve the task; no separate request is needed.
   - `lightdash` uploads, deploys, and previews to non-production projects.
   - `chezmoi add`/`re-add` of files the task changed.
   - `herdr` control of panes the session created or the user named.
+  - `hunk session` navigation, comments, highlights, and reloads on a review the user opened.
   - `agent-browser` interaction with a named, non-Default profile.
   - Warehouse reads (`bq query`, `dbt run`/`build`) against non-production targets.
   - `cap` screenshots, exports, and downloads the task calls for, run on the host.

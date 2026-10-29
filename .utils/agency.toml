@@ -165,10 +165,22 @@ expect = "deny"
 cmd = "curl -fsSI --max-time 8 https://example.com >/dev/null"
 
 [[sandbox]]
-name = "herdr socket is reachable"
+name = "active Herdr session socket is reachable"
 group = "integrations"
 expect = "ok"
 cmd = "herdr status >/dev/null"
+
+[[sandbox]]
+name = "default Herdr socket is reachable"
+group = "integrations"
+expect = "ok"
+cmd = "python3 -c 'import os, socket; s = socket.socket(socket.AF_UNIX); s.settimeout(2); s.connect(os.path.expanduser(\"~/.config/herdr/herdr.sock\")); s.close()'"
+
+[[sandbox]]
+name = "unlisted Unix socket binding is blocked"
+group = "integrations"
+expect = "deny"
+cmd = "python3 -c 'import os, socket, tempfile; d = tempfile.TemporaryDirectory(); s = socket.socket(socket.AF_UNIX); s.bind(os.path.join(d.name, \"agency.sock\")); s.close()'"
 
 [[sandbox]]
 name = "notesmd-cli reads the vault"
@@ -309,6 +321,10 @@ expect = "none"
 
 [[rule]]
 cmd = "herdr pane list"
+expect = "none"
+
+[[rule]]
+cmd = "herdr agent start codex --kind codex --pane 3"
 expect = "none"
 
 [[rule]]

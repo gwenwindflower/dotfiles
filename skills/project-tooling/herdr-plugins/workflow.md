@@ -4,7 +4,7 @@ Build Herdr plugins as portable tools with a stable binary interface. Keep Herdr
 
 ## Establish Current Authority
 
-1. Load the core `herdr` skill and follow its CLI, schema, runtime-safety, and workspace-control guidance throughout the task.
+1. Run `herdr --skill` and follow its CLI, schema, runtime-safety, and workspace-control guidance throughout the task.
 2. Read the repository instructions and existing project docs.
 3. Inspect `herdr-plugin.toml`, `Cargo.toml`, `mise.toml`, `mise-tasks/`, the binary entrypoint, installer, tests, and workflows.
 4. Run `mise tasks` before running anything else. The task list is the project's command surface; prefer a task over the command it wraps, and add a task rather than running a one-off.

@@ -16,7 +16,7 @@ Load a specialized guide when the task leaves ordinary web pages:
 | Slack workspaces | `agent-browser skills get slack` |
 | Record a HAR and derive an API client for a site | `agent-browser skills get derive-client` |
 
-`agent-browser skills list` shows every guide the installed version ships. Browser binaries, sockets, sessions, and encryption state live under `~/.agent-browser`.
+When a scenario falls outside this table, the core guide, and `--help`, run `agent-browser skills list` to see every guide the installed version ships and load the one that fits with `agent-browser skills get <name>`. Pull a guide only when the task needs it. Browser binaries, sockets, sessions, and encryption state live under `~/.agent-browser`.
 
 The observability dashboard runs on port 4848, independent of browser sessions. Session tabs, status, and streams are proxied through the dashboard origin, so session ports never need exposing.
 
