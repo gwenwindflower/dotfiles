@@ -102,7 +102,7 @@ A genuine UX judgment call ("feels responsive") can stay *squishy*; the PR recor
 
 ## Specs and issues
 
-Issues hold the work; specs hold the requirements. When an issue implements requirements, link the spec file once, on the default branch, and quote an ID with its wording only when a few specific requirements are the point. Don't restate requirements in the issue. A bare ID like `au-R007` means nothing inside Linear, and in a workspace where nobody uses specs, Lightdash included, don't reference them at all.
+Issues hold the work; specs hold the requirements. When an issue implements requirements, link the spec file once, on the default branch, and quote an ID with its wording only when a few specific requirements are the point. Don't restate requirements in the issue. A bare ID like `au-R007` means nothing inside Linear, and in a workspace where nobody uses specs, don't reference them at all.
 
 ## Living document
 

@@ -1,8 +1,7 @@
 ---
-name: project-management
 description: Planning and doing the work - Linear and GitHub issues, specs, ADRs, wt worktrees, landing PRs, helpers, parallel sessions. Repo tooling uses project-tooling.
+name: project-management
 ---
-
 # Project management
 
 Plans live in Linear; specs live in the repo; work happens on a branch in its own worktree and lands as a PR or `wt merge`. Everything here serves the project's goals, not the process. Adapt to how a project already works, and move it toward one consistent way of working over time rather than front-loading structure.
@@ -15,6 +14,7 @@ Plans live in Linear; specs live in the repo; work happens on a branch in its ow
 | Job | Doc |
 | --- | --- |
 | Connect to a workspace; shape issues, sub-issues, and projects; relations; PR magic words | [linear](linear.md) |
+| Create or maintain skills inside Linear Agent | [linear-agent-skills](linear-agent-skills.md) |
 | Write or rewrite an issue | [issues](issues.md) |
 | Work in the Lightdash workspace: customers, readiness labels, GitHub sync | [lightdash](lightdash.md), with [clarify](clarify.md), [compact-rubric](compact-rubric.md), [github-sync](github-sync.md) |
 | Find issues or duplicates on Linear and GitHub | [searching](searching.md) |

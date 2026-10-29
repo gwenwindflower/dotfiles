@@ -8,7 +8,7 @@ Plans live in Linear: what to do next, how work groups, what blocks what, and wh
 
 | Profile | Used for | Teams | Conventions |
 | --- | --- | --- | --- |
-| `lightdash` | Lightdash work | Many; read the team's labels and statuses first | [Lightdash workspace](lightdash.md); team conventions only, never specs or other personal ones |
+| `lightdash` | Lightdash work | Many; read the team's labels and statuses first | [Lightdash workspace](lightdash.md) |
 | `supermodellabs` | Supermodel Labs and personal projects | `WBG` | None yet; build them as the work needs them |
 
 Reads run in the sandbox; writes go to the harness reviewer. `linear-cli agent` and `linear-cli common` print agent-oriented usage, and [searching](searching.md) covers relevance search through `linear-cli api`.
@@ -36,3 +36,7 @@ An issue is a task written in plain language. It usually maps to one PR, but tha
 - The PR description carries `Closes <issue ID>`, plus `Part of <parent ID>` when the issue has a parent. Linear moves status on merge; confirm it did.
 - The PR description is the record: what shipped, the calls made, and anything worth a follow-up issue. Comment on the issue only when its next reader needs something the PR doesn't say.
 - Close a parent when its last child lands, with a one-line comment if the group's outcome needs saying.
+
+## Maintaining Linear Agent skills
+
+If you need to make skills available directly to the Linear Agent, [see the module](linear-agent-skills.md) for the workflow and conventions.

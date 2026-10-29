@@ -4,8 +4,6 @@ Conventions for the `lightdash` Linear workspace (`linear-cli --profile lightdas
 
 Issues live on two platforms with distinct jobs. GitHub is for customers: they see we understand their problem, check progress, and give feedback there. Linear is for us: prioritizing and executing the work. Synced pairs mirror the shared fields, so title and description serve both audiences at once, while everything surface-specific goes to its surface: customer names, demand records, and exact figures to Linear; public narrative and progress to GitHub. How the sync works: [github-sync](github-sync.md).
 
-The workspace is the team's, so issues use only its conventions: the labels and statuses below, plain-language briefs, and the PR magic words. Specs, requirement IDs, and any other convention from personal projects stay out.
-
 | Job | Doc |
 | --- | --- |
 | Rewrite an existing issue into the description format | [clarify](clarify.md) |
