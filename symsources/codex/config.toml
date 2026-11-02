@@ -530,7 +530,7 @@ git-branch-prefix = "winnie/"
 appearanceTheme = "dark"
 selected-avatar-id = "pet_6abe9987329c819188c6145423e0b2ce"
 hotkey-window-projectless-default-enabled = true
-avatar-overlay-mascot-width-px = 99
+avatar-overlay-mascot-width-px = 93
 dock-icon-preference = "codex-system"
 realtimeVoiceScreenContextEnabled = true
 
