@@ -323,37 +323,6 @@ job_max_runtime_seconds = 1800
 trusted_hash = "sha256:1d35af394dbcd2b93315f3c526a1369dc2c48ebed7e4520ff09999283c78f65b"
 enabled = true
 
-[hooks.state."worktrunk@worktrunk:hooks/hooks.json:user_prompt_submit:0:0"]
-trusted_hash = "sha256:86a49b4b05a9805452d08caf78b88216621055aebc8a7afccfd55b459939b494"
-enabled = true
-
-[hooks.state."worktrunk@worktrunk:hooks/hooks.json:pre_tool_use:0:0"]
-trusted_hash = "sha256:16017ebee7cf0c67c9a73f75514b3d52d1f0c1de443cb36294f20bf715812c73"
-
-[hooks.state."worktrunk@worktrunk:hooks/hooks.json:permission_request:0:0"]
-trusted_hash = "sha256:c2f38a99e16bc21ab2fbdfd0942d961a7293eccfdd26ca8fe1134722486ae46f"
-
-[hooks.state."worktrunk@worktrunk:hooks/hooks.json:stop:0:0"]
-trusted_hash = "sha256:ae39455d097e32699e48441ade7671d9db5b80b17943aa3cc0901386b714a896"
-
-[hooks.state."worktrunk@worktrunk:plugin.json#hooks[0]:permission_request:0:0"]
-trusted_hash = "sha256:b5f6112154fd814298da679652ea096e11434b7f2876d471eb00c790a68045d0"
-trusted_content_hash = "sha256:b0bc0b2b49a46cabf8cea36aca3c37ebc164667dca3a3246eba56824d3b74301"
-
-[hooks.state."worktrunk@worktrunk:plugin.json#hooks[0]:stop:0:0"]
-trusted_hash = "sha256:350c210fba4996f546f4d0483fc29286d73880ca5ef01fda3583ea2ce676945d"
-enabled = true
-trusted_content_hash = "sha256:b0bc0b2b49a46cabf8cea36aca3c37ebc164667dca3a3246eba56824d3b74301"
-
-[hooks.state."worktrunk@worktrunk:plugin.json#hooks[0]:user_prompt_submit:0:0"]
-trusted_hash = "sha256:e2ffec558188fd0988ad51768594f675801fd2a1ba2895b5df2aca2650d70c2a"
-trusted_content_hash = "sha256:b0bc0b2b49a46cabf8cea36aca3c37ebc164667dca3a3246eba56824d3b74301"
-
-[hooks.state."worktrunk@worktrunk:plugin.json#hooks[0]:session_end:0:0"]
-trusted_hash = "sha256:09b9fff83447c926af5f61010bc3dd3c8f2e6194c7c06b08f8acbf808a51710d"
-enabled = true
-trusted_content_hash = "sha256:b0bc0b2b49a46cabf8cea36aca3c37ebc164667dca3a3246eba56824d3b74301"
-
 [hooks.state."browser@openai-bundled:plugin.json#hooks[0]:stop:0:0"]
 trusted_hash = "sha256:317a07045dfc95aef2e80c55428a2f817e2768be867e3b1ef29a73da8636ae7f"
 enabled = true
