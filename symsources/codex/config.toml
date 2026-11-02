@@ -250,6 +250,7 @@ allow_local_binding = true
 "analytics.lightdash.cloud" = "allow"
 "app.lightdash.cloud" = "allow"
 "fishtownanalytics.sinter-collect.com" = "allow"
+"git.chatgpt-team.site" = "allow"
 "api.notion.com" = "allow"
 "readwise.io" = "allow"
 "api.todoist.com" = "allow"
