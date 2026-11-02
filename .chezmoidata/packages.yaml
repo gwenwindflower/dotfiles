@@ -48,7 +48,6 @@ packages:
           - chafa
           - chezmoi
           - choose-rust
-          - cloudflare-wrangler
           - cmake
           - cmus
           - coreutils

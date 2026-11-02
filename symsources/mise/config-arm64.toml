@@ -12,6 +12,7 @@ aube = "latest"
 "npm:@zvec/zvec-grep" = "latest"
 "npm:knap" = "latest"
 opencode = { version = "latest", allow_builds = ["@opencode/cli"] }
+wrangler = { version = "latest", allow_builds = ["esbuild", "sharp", "workerd"] }
 
 [settings]
 idiomatic_version_file_enable_tools = ["node", "ruby"]
