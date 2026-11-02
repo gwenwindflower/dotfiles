@@ -132,7 +132,7 @@ abbr --add cmaf chezmoi add --follow
 ## update herdr's plugin manifest
 abbr --add cmahp chezmoi re-add ~/.config/herdr/plugins.json
 ## update herdr's agent integrations and hooks back into chezmoi
-abbr --add cmahi "chezmoi re-add ~/.config/opencode/plugins/herdr-agent-state.js ~/.config/opencode/herdr-tui-session.js ~/.claude/hooks/herdr-agent-state.sh ~/.codex/herdr-agent-state.sh ~/.codex/hooks.json"
+abbr --add cmahi "chezmoi re-add ~/.config/opencode/plugins/herdr-agent-state.js ~/.config/opencode/herdr-tui-session.js ~/.config/opencode/tui.jsonc ~/.claude/hooks/herdr-agent-state.sh ~/.codex/herdr-agent-state.sh ~/.codex/hooks.json"
 abbr --add cmx chezmoi apply
 abbr --add cmxx chezmoi apply ~/.config/
 abbr --add cmxf chezmoi apply ~/.config/fish/
