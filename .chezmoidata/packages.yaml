@@ -197,6 +197,11 @@ packages:
           - font-charter
           - font-cormorant
           - font-eb-garamond
+          - font-geist
+          - font-geist-mono
+          - font-geist-mono-nerd-font
+          - font-geist-pixel
+          - font-geist-serif
           - font-hanken-grotesk
           - font-ia-writer-duo
           - font-ia-writer-mono
