@@ -3,7 +3,12 @@
 # =============================================================================
 #
 # edit this file
-abbr --add efab nvim ~/.local/share/chezmoi/.chezmoitemplates/fish/22-abbreviations.fish
+abbr --add dtea nvim ~/.local/share/chezmoi/.chezmoitemplates/fish/22-abbreviations.fish
+# work with the rest of the dotfiles repo
+abbr --add dot z ~/.local/share/chezmoi
+abbr --add dots z ~/.local/share/chezmoi
+abbr --add dt ee ~/.local/share/chezmoi
+abbr --add dte ee -e ~/.local/share/chezmoi
 #
 # print, copy, paste
 abbr --add p echo
@@ -64,14 +69,6 @@ abbr --add kiki kitty --detach --session ~/.config/kitty/sessions/herdr.kitty-se
 abbr --add ipext "curl https://api64.ipify.org | fish_clipboard_copy"
 abbr --add mulv mullvad
 abbr --add tls tailscale
-# project bookmarks
-# uses ee fish function
-abbr --add dots "ee -e $DOTFILES"
-abbr --add de "ee -e $DOTFILES"
-abbr --add conf "ee $XDG_CONFIG_HOME"
-abbr --add keeb "ee -e $HOME/dev/tinybabykeeb"
-abbr --add ana "ee -e $HOME/dev/lightdash/analytics"
-abbr --add lde "ee -e $HOME/dev/lightdash/lightdash"
 # cloud
 ## gcp
 abbr --add gcld gcloud
@@ -130,7 +127,6 @@ abbr --add wr wrangler
 abbr --add cm chezmoi
 abbr --add cmcd chezmoi cd
 abbr --add cme chezmoi edit
-abbr --add cmee ee -e ~/.local/share/chezmoi
 abbr --add cma chezmoi add
 abbr --add cmaa chezmoi re-add
 abbr --add cmra chezmoi re-add
