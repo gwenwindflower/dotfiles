@@ -33,7 +33,6 @@ packages:
       formulae:
         core:
           - age
-          - agent-browser
           - amoxide
           - amoxide-tui
           - asciinema
@@ -255,6 +254,7 @@ packages:
           - slack
     cargo:
       core:
+        - agent-browser
         - basalt-tui
         - cargo-audit
         - cargo-edit
