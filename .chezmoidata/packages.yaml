@@ -82,6 +82,7 @@ packages:
           - go-task
           - googleworkspace-cli
           - gpg-tui
+          - gridcraft-cli
           - grimoire
           - gum
           - hcloud
