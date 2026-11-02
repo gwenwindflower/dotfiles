@@ -21,6 +21,8 @@ Identities: GitHub login `gwenwindflower`; Linear is the Lightdash workspace; ca
 
 Research notes carry the window as a start-inclusive, end-exclusive timestamp interval. When an API takes only dates or indexes by artifact update time, fetch the boundary dates and filter each contribution back to the interval. Exhaust pagination or report the gap. A recently changed artifact is something to inspect, not evidence of work.
 
+Use one shared cutoff in America/Chicago, converted to UTC where required. Check that every query covers the entire reporting week through that cutoff; date-only APIs must fetch both boundary dates. The eight-day lookback supplies context, not eligibility or deduplication. Separately revisit the previous published week's active workstreams by their canonical IDs, regardless of update-date search results. Look for research, model iteration, validation, and scope refinement as well as commits; accept Winnie's confirmation when tool activity underrepresents ongoing work. Reconcile candidates against published statuses before selecting them.
+
 ## Linear
 
 Search issues Winnie created or was assigned, her comments, and linked work, then read comments and history to date the contribution and name her role. An issue someone else updated is not her accomplishment. Follow linked PRs before calling something unfinished, since issue status lags merged implementations. Record canonical issue URLs and IDs for citations. The pass is read-only, statuses included.

@@ -18,6 +18,8 @@ Place work by the system it operates or the person it served, not the tool invol
 
 Nest only under a shared objective, never a shared tool or keyword: demo provisioning is a parent with the workflow improvement and each sandbox beneath it, each child keeping its own status.
 
+Distinct PRs generally get distinct items, including docs work. A backlog push intentionally tracked by one Linear issue can stay one item.
+
 ## Wording and citations
 
 Blurbs are short, outcome-first, and describe Winnie's actual contribution. A request is not delivery, an investigation is not a resolution, and a draft is not shipped. Winnie's corrections about ownership override anything inferred from authorship. Planning items state the goal and the concrete progress in the window, such as questions resolved or scope clarified.
@@ -52,4 +54,4 @@ The Site renders differently from its input: category emojis move to headers and
 - Bullets start with a category emoji and end with a status immediately before the parenthesized citations, or at line end.
 - Two-space indentation marks nested work.
 
-Strip every `Winnie:` review note before publishing, and check the generated list against the reviewed draft.
+Strip every `Winnie:` review note before publishing, and check the generated list against the current draft. The Site is the full-list review surface; revisions go live while Slack highlights await review.
