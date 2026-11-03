@@ -175,6 +175,7 @@ abbr --add bruise brew uses --installed
 abbr --add brbg brew services
 abbr --add brsrv brew services
 abbr --add brsrvls brew services list
+abbr --add brt brew trust
 # packy
 abbr --add pky packy
 abbr --add pkya packy add
