@@ -3,7 +3,7 @@
   "SchemaStore.nvim": { "branch": "main", "commit": "9af500514dbaa2b3ed668d9fca0c82d3a5c5d91b" },
   "aerial.nvim": { "branch": "master", "commit": "28fe6e822ae344544c379d60fcb13c9519a1f08a" },
   "blink-copilot": { "branch": "main", "commit": "7ad8209b2f880a2840c94cdcd80ab4dc511d4f39" },
-  "blink.cmp": { "branch": "main", "commit": "86cfb6bd5edc45fad37b118d67f63ee1808b816a" },
+  "blink.cmp": { "branch": "main", "commit": "06097529cf6d3618546436f9a6bd5beaed979aef" },
   "blink.lib": { "branch": "main", "commit": "fd9a48ebbe6ec30d5dfcc5b42c243941ccdca1aa" },
   "bufferline.nvim": { "branch": "main", "commit": "655133c3b4c3e5e05ec549b9f8cc2894ac6f51b3" },
   "catppuccin": { "branch": "main", "commit": "edefef779ab08ce1a4a404713e3012b0d202bd35" },
@@ -82,5 +82,5 @@
   "vim-illuminate": { "branch": "master", "commit": "1cc33d347c574c3bd21a4852fc9ffed677c1c58c" },
   "which-key.nvim": { "branch": "main", "commit": "3aab2147e74890957785941f0c1ad87d0a44c15a" },
   "yanky.nvim": { "branch": "main", "commit": "adcabd8512bead30184916fa9277e73c021ef099" },
-  "yazi.nvim": { "branch": "main", "commit": "ed9e6f795bee8fb1bcaa86873707798ffb2b3db9" }
+  "yazi.nvim": { "branch": "main", "commit": "f32b2dbd498a585c26dcee0b6b698a2ce1318ce5" }
 }
