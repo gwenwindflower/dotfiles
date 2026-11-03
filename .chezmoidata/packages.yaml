@@ -221,6 +221,7 @@ packages:
           - gcloud-cli
           - glide
           - gridcraft
+          - herdr-app
           - hex
           - homerow
           - hora
