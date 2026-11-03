@@ -3,12 +3,10 @@
 # =============================================================================
 #
 # edit this file
-abbr --add dtea nvim ~/.local/share/chezmoi/.chezmoitemplates/fish/22-abbreviations.fish
+abbr --add cmefa nvim ~/.local/share/chezmoi/.chezmoitemplates/fish/22-abbreviations.fish
 # work with the rest of the dotfiles repo
-abbr --add dot z ~/.local/share/chezmoi
-abbr --add dots z ~/.local/share/chezmoi
-abbr --add dt ee ~/.local/share/chezmoi
-abbr --add dte ee -e ~/.local/share/chezmoi
+abbr --add cmm z ~/.local/share/chezmoi
+abbr --add cmee ee -e ~/.local/share/chezmoi
 #
 # print, copy, paste
 abbr --add p echo
