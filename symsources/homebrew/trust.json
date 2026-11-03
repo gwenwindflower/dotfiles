@@ -1,17 +1,12 @@
 {
   "trustedtaps": [
     "charmbracelet/tap",
-    "columnar-tech/tap",
     "databricks/tap",
-    "dbcli/tap",
     "dbt-labs/dbt",
-    "jesseduffield/lazydocker",
     "lightdash/lightdash",
     "mutagen-io/mutagen",
-    "oven-sh/bun",
     "pulumi/tap",
     "redpanda-data/tap",
-    "sassman/tap",
     "supermodellabs/tap"
   ],
   "trustedformulae": [
@@ -21,17 +16,18 @@
     "denisotree/tuitab/tuitab",
     "huseyinbabal/tap/taws",
     "kelsierbot/tap/grimoire",
-    "kiki-ki/tap/qo",
     "lightdash/lightdash/lightdash",
     "makisuo/tap/maple",
     "rjyo/moshi/moshi-hook",
     "rubysolo/tools/brows",
+    "sassman/tap/amoxide",
+    "sassman/tap/amoxide-tui",
     "supermodellabs/tap/winline",
     "superradcompany/tap/microsandbox",
-    "withgraphite/tap/graphite",
     "yakitrak/yakitrak/notesmd-cli"
   ],
   "trustedcasks": [
+    "anomalyco/tap/hex",
     "anthropics/tap/ant",
     "crmne/tap/spotifast",
     "szamowski-dev/tap/hora"

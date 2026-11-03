@@ -11,13 +11,9 @@ packages:
           - dbt-labs/dbt
           - denisotree/tuitab
           - huseyinbabal/tap
-          - jesseduffield/lazydocker
           - kelsierbot/tap
-          - kiki-ki/tap
           - lightdash/lightdash
           - mutagen-io/mutagen
-          - oven-sh/bun
-          - pulumi/tap
           - redpanda-data/tap
           - rjyo/moshi
           - rubysolo/tools
@@ -29,7 +25,6 @@ packages:
         personal: []
         work:
           - makisuo/tap
-          - withgraphite/tap
       formulae:
         core:
           - age
@@ -178,7 +173,6 @@ packages:
           - snitch
           - yt-dlp
         work:
-          - graphite
           - maple
           - swiftformat
       casks:
