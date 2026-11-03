@@ -136,6 +136,7 @@ packages:
           - rumdl
           - sc-im
           - sd
+          - sequin
           - sevenzip
           - sheets
           - slides
