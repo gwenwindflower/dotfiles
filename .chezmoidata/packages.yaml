@@ -3,6 +3,7 @@ packages:
     homebrew:
       taps:
         core:
+          - anomalyco/tap
           - anthropics/tap
           - bro3886/tap
           - charmbracelet/tap
@@ -220,6 +221,7 @@ packages:
           - gcloud-cli
           - glide
           - gridcraft
+          - hex
           - homerow
           - hora
           - ia-markdown-dictionary
