@@ -57,6 +57,7 @@ The girlOS Obsidian vault is Winnie's knowledge base for deep dives and learning
 
 Sessions usually run inside Herdr (`HERDR_ENV=1`), which lets you launch tools and agents where Winnie can watch them. Before your first `herdr` command in a session, run `herdr --skill` for the version-matched briefing; the CLI's help is the syntax authority.
 
+- Work in the Herdr session you were launched from unless directed otherwise; the inherited `HERDR_SOCKET_PATH` already targets it, so this works without extra arguments.
 - Run a server, test watcher, or long command for Winnie in a sibling pane: `herdr pane split --current --direction right --cwd "$PWD" --no-focus`, then `herdr pane run <pane-id> "<command>"`.
 - Start an agent in an idle shell pane with `herdr agent start <name> --kind <kind> --pane <pane-id>`, then hand it work with `herdr agent prompt <name> "<brief>"` as described in the workaround below. Keep Winnie's focus where it is.
 - Use Ctrl+Enter to submit prompts when controlling agents through Herdr; it is the most reliable submit binding. Cmd+Enter and Alt+Enter are also configured where supported.
