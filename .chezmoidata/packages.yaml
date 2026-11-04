@@ -106,6 +106,7 @@ packages:
           - mise
           - mole
           - moor
+          - mosh
           - moshi-hook
           - mq
           - mutagen
