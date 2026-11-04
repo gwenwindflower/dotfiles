@@ -362,19 +362,19 @@ trusted_hash = "sha256:d853f716353cce1c2662ca6004877fc585c620255eb36169865c06522
 
 [hooks.state."worktrunk@worktrunk:plugin.json#hooks[0]:permission_request:0:0"]
 trusted_hash = "sha256:b5f6112154fd814298da679652ea096e11434b7f2876d471eb00c790a68045d0"
-trusted_content_hash = "sha256:5c9077c8facc841daf2ecfcb3c229fc7de0bf6c3ff2acead169a3ca8457de75e"
+trusted_content_hash = "sha256:1245fa6dec94d1002e61cba72e62eab0ddcf319aff73eda4dd7a83f7eb96eddc"
 
 [hooks.state."worktrunk@worktrunk:plugin.json#hooks[0]:session_end:0:0"]
 trusted_hash = "sha256:09b9fff83447c926af5f61010bc3dd3c8f2e6194c7c06b08f8acbf808a51710d"
-trusted_content_hash = "sha256:5c9077c8facc841daf2ecfcb3c229fc7de0bf6c3ff2acead169a3ca8457de75e"
+trusted_content_hash = "sha256:1245fa6dec94d1002e61cba72e62eab0ddcf319aff73eda4dd7a83f7eb96eddc"
 
 [hooks.state."worktrunk@worktrunk:plugin.json#hooks[0]:user_prompt_submit:0:0"]
 trusted_hash = "sha256:e2ffec558188fd0988ad51768594f675801fd2a1ba2895b5df2aca2650d70c2a"
-trusted_content_hash = "sha256:5c9077c8facc841daf2ecfcb3c229fc7de0bf6c3ff2acead169a3ca8457de75e"
+trusted_content_hash = "sha256:1245fa6dec94d1002e61cba72e62eab0ddcf319aff73eda4dd7a83f7eb96eddc"
 
 [hooks.state."worktrunk@worktrunk:plugin.json#hooks[0]:stop:0:0"]
 trusted_hash = "sha256:350c210fba4996f546f4d0483fc29286d73880ca5ef01fda3583ea2ce676945d"
-trusted_content_hash = "sha256:5c9077c8facc841daf2ecfcb3c229fc7de0bf6c3ff2acead169a3ca8457de75e"
+trusted_content_hash = "sha256:1245fa6dec94d1002e61cba72e62eab0ddcf319aff73eda4dd7a83f7eb96eddc"
 
 [marketplaces.openai-bundled]
 source_type = "local"
