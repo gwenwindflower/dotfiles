@@ -195,6 +195,7 @@ packages:
           - cloudflare-warp
           - codex
           - crest-browser
+          - font-atkinson-hyperlegible-next
           - font-charter
           - font-cormorant
           - font-eb-garamond
