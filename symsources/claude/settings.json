@@ -379,7 +379,6 @@
 			"Bash(fly auth token *)",
 			"Bash(flyctl auth token *)",
 			"Read(~/.codex/auth.json)",
-			"Read(~/.config/chezmoi/chezmoi-age-id.txt)",
 			"Read(~/.config/github-copilot/**)",
 			"Read(~/.config/op/**)",
 			"Read(~/.fly/**)",
