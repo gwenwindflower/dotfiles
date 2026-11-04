@@ -29,6 +29,7 @@ packages:
       formulae:
         core:
           - age
+          - age-plugin-se
           - amoxide
           - amoxide-tui
           - asciinema
