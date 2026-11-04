@@ -26,6 +26,7 @@ Every task carries a `description`; `mise tasks` is the discovery surface, so th
 ## Behaviors that shape the design
 
 - **`depends` runs in parallel.** Order-sensitive steps go in a sequential `run` array.
+- **`lock` serializes tasks on a machine singleton.** Parallel worktrees run the same tasks at once, so a task that touches a shared test database, a dev server port, a cache dir shared across worktrees, or a release step that must not run twice declares `lock = true` (one holder per repository, across all its worktrees) or a named string lock such as `lock = "test-db"` (machine-wide, shared by any task in any project that names it). The lock is taken after `depends`, `skip_if`, and `sources` checks, so a skipped task never waits, and the OS releases it when the holder exits, even if killed. `mise run --lock-timeout 5m` fails instead of waiting forever and names the holder.
 - **Multiple task invocations need `:::`.** Use `mise run lint ::: test`; without the separator, `test` is an argument to `lint`. Quote commands containing `:::` in YAML, and validate the exact CI invocation locally.
 - **`confirm` prompts, defaults to no, and reads the tty.** Use it for every step that leaves the machine (push, publish). It cannot be piped past, which is the point.
 - **`#USAGE arg "[tag]" env="TAG"`** declares an argument with an environment fallback. A pipeline resolves a value once, exports it, and every step reads the same one. Flags: `#USAGE flag "--topics <list>"` arrives as `$usage_topics`; boolean flags arrive as `true`.
