@@ -132,6 +132,7 @@ abbr --add cmra chezmoi re-add
 abbr --add cmaf chezmoi add --follow
 abbr --add cmahp chezmoi re-add ~/.config/herdr/plugins.json
 abbr --add cmahi "chezmoi re-add ~/.config/opencode/plugins/herdr-agent-state.js ~/.config/opencode/herdr-tui-session.js ~/.config/opencode/tui.jsonc ~/.claude/hooks/herdr-agent-state.sh ~/.codex/herdr-agent-state.sh ~/.codex/hooks.json"
+abbr --add cmahxc "chezmoi re-add ~/Library/Application\ Support/hex/settings.json"
 abbr --add cmx chezmoi apply
 abbr --add cmxx chezmoi apply ~/.config/
 abbr --add cmxf chezmoi apply ~/.config/fish/
