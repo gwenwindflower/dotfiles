@@ -140,6 +140,8 @@ Shared agent rules live in `.chezmoitemplates/agents/rules/`. The platform root 
 
 The template holds only the `##` groups (Foundations, Work, Output). Each fragment owns its `###` headings and everything below, so it reads correctly when loaded alone. One fragment covers one domain: `communication`, `workflow`, `exploration`, `tools`, `git`, `config`, `output`, plus the encrypted `primary-user`. A rule that fits an existing domain goes in that fragment as a section; a fragment is added only for a domain none of them cover, with a matching wrapper.
 
+`primary-user.md` is plaintext in the working tree and encrypted only in git, by transcrypt through `.gitattributes`. Edit and include it like any other fragment. A fresh clone shows ciphertext until `transcrypt -c aes-256-cbc -p <password>` runs in it, so configure transcrypt before the first `chezmoi apply`. Its pre-commit hook rejects a plaintext commit of any file matching the crypt pattern.
+
 `dot_agents/exact_rules/*.md.tmpl` are generated wrappers for tools and skill docs that still read `~/.agents/rules/*.md` directly. Edit the `.chezmoitemplates/agents/rules/` fragments, not the wrappers.
 
 #### Skills
