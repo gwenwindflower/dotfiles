@@ -39,6 +39,7 @@ packages:
           - blueutil
           - bottom
           - brows
+          - brush
           - bun
           - cargo-binstall
           - chafa
