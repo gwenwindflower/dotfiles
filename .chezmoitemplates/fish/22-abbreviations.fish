@@ -67,6 +67,11 @@ abbr --add kiki kitty --detach --session ~/.config/kitty/sessions/herdr.kitty-se
 abbr --add ipext "curl https://api64.ipify.org | fish_clipboard_copy"
 abbr --add mulv mullvad
 abbr --add tls tailscale
+## ssh (kitten ssh — macOS only, kitty terminal)
+abbr --add sshk kitten ssh -A
+abbr --add ssha ssh -A
+### moshi
+abbr --add moshi moshi-hook
 # cloud
 ## gcp
 abbr --add gcld gcloud
@@ -75,21 +80,18 @@ abbr --add gccf gcloud config
 abbr --add gccfs gcloud config set
 abbr --add gccfg gcloud config get
 abbr --add gccfa gcloud config configurations activate
-# ssh (kitten ssh — macOS only, kitty terminal)
-abbr --add sshk kitten ssh -A
-abbr --add ssha ssh -A
+## cloudflare
+abbr --add wr wrangler
+## sandboxes
+### sprites
+abbr --add sp sprite
+abbr --add spls sprite list
+abbr --add sps sprite sessions
+abbr --add spnew sprite create
+### exe.dev
 abbr --add exe ssh exe.dev
-# tmux
-abbr --add tm tmux
-abbr --add tmst tstat
-abbr --add tmls tmux list-sessions
-abbr --add tmn tmux new-session
-abbr --add tma tmux attach-session
-abbr --add tmd tmux detach-client
-abbr --add tmrm tmux kill-server
-abbr --add tmw twin (basename "$PWD") --cmd
-abbr --add tmh tmux_hint
-# herdr
+# multiplexers
+## herdr
 abbr --add hrd herdr
 abbr --add hrdld herdr --session lightdash
 abbr --add hrdsv herdr server
@@ -110,15 +112,16 @@ abbr --add hrdpi herdr plugin install
 abbr --add hrdpls herdr plugin list
 abbr --add hrdprm herdr plugin uninstall
 abbr --add hrdpu herdr plugin update
-## refresh the built-in herdr skill in the dotfiles skills source tree
-abbr --add hrdskrf "herdr --skill > ~/.local/share/chezmoi/skills/herdr/SKILL.md"
-# sprites
-abbr --add sp sprite
-abbr --add spls sprite list
-abbr --add sps sprite sessions
-abbr --add spnew sprite create
-# cloudflare
-abbr --add wr wrangler
+## tmux
+abbr --add tm tmux
+abbr --add tmst tstat
+abbr --add tmls tmux list-sessions
+abbr --add tmn tmux new-session
+abbr --add tma tmux attach-session
+abbr --add tmd tmux detach-client
+abbr --add tmrm tmux kill-server
+abbr --add tmw twin (basename "$PWD") --cmd
+abbr --add tmh tmux_hint
 # dotfiles
 abbr --add cm chezmoi
 abbr --add cmcd chezmoi cd
@@ -127,9 +130,7 @@ abbr --add cma chezmoi add
 abbr --add cmaa chezmoi re-add
 abbr --add cmra chezmoi re-add
 abbr --add cmaf chezmoi add --follow
-## update herdr's plugin manifest
 abbr --add cmahp chezmoi re-add ~/.config/herdr/plugins.json
-## update herdr's agent integrations and hooks back into chezmoi
 abbr --add cmahi "chezmoi re-add ~/.config/opencode/plugins/herdr-agent-state.js ~/.config/opencode/herdr-tui-session.js ~/.config/opencode/tui.jsonc ~/.claude/hooks/herdr-agent-state.sh ~/.codex/herdr-agent-state.sh ~/.codex/hooks.json"
 abbr --add cmx chezmoi apply
 abbr --add cmxx chezmoi apply ~/.config/
@@ -143,9 +144,6 @@ abbr --add cmdr chezmoi diff -r
 # runners
 abbr --add tk task
 abbr --add mk make
-# 'lazy' TUIs
-abbr --add lgt lazygit
-abbr --add ldr lazydocker
 # linear cli
 abbr --add lin linear-cli
 abbr --add linear linear-cli
@@ -183,8 +181,10 @@ abbr --add pkyup packy upgrade
 abbr --add pkys packy sync
 abbr --add pkyd packy diff
 # containers
-abbr --add dk docker
-abbr --add dkcu docker compose up
+abbr --add dck docker
+abbr --add dckc docker compose
+abbr --add dckcu docker compose up
+abbr --add ldr lazydocker
 # agents
 ## codex
 abbr --add cx codex
@@ -432,6 +432,7 @@ abbr --add dnq deno info
 abbr --add dnsh deno repl
 abbr --add dnru deno run
 # git
+abbr --add lgt lazygit
 ## github
 abbr --add ghro gh repo view -w
 abbr --add ghrc gh repo create
