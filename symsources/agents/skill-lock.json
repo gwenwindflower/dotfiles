@@ -172,6 +172,15 @@
       "installedAt": "2026-10-29T06:38:06Z",
       "updatedAt": "2026-10-29T06:38:06Z"
     },
+    "rencal": {
+      "source": "t4t5/rencal",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/t4t5/rencal.git",
+      "skillPath": "skills/rencal/SKILL.md",
+      "skillFolderHash": "1dfbe3d71e8cf7aa4e0b819f46b85ac0d2677fb7",
+      "installedAt": "2026-11-04T16:40:34Z",
+      "updatedAt": "2026-11-04T16:40:34Z"
+    },
     "scrawl": {
       "source": "kitlangton/scrawl",
       "sourceType": "github",
