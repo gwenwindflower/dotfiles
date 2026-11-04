@@ -2,7 +2,7 @@
 	"release_microphone_while_idle": true,
 	"sound_effects": true,
 	"sound_effect_volume": 0.5,
-	"sound_theme": "thock",
+	"sound_theme": "click",
 	"microphone": null,
 	"avoid_bluetooth_microphone": true,
 	"recording_audio_behavior": "do_nothing",
