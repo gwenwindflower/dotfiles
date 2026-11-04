@@ -506,10 +506,7 @@
 			"term": "Cloudflare",
 			"sounds_like": ["cloud flare"]
 		},
-		{
-			"term": "Obsidian",
-			"sounds_like": ["obsidian"]
-		},
+		"Obsidian",
 		{
 			"term": "OpenCode",
 			"sounds_like": ["open code"]
