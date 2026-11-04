@@ -2,7 +2,7 @@
 
 ## Foundations
 
-{{ joinPath .chezmoi.sourceDir ".chezmoitemplates/agents/rules/primary-user.md" | include }}
+{{ joinPath .chezmoi.sourceDir ".chezmoitemplates/agents/rules/user.md" | include }}
 {{ template "agents/rules/communication.md" . }}
 ## Work
 
