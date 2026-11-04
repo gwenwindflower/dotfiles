@@ -211,7 +211,18 @@
 		"summarize_with_opencode": false,
 		"show_recording_indicator": true,
 		"recording_indicator_corner": "top_right",
-		"providers": [],
+		"providers": [
+			{
+				"key": "net.whatsapp.WhatsApp",
+				"label": "WhatsApp",
+				"policy": "never_offer"
+			},
+			{
+				"key": "com.apple.FaceTime",
+				"label": "FaceTime",
+				"policy": "never_offer"
+			}
+		],
 		"calendar": {
 			"connected": false,
 			"excluded_calendars": [],
@@ -224,6 +235,10 @@
 		"hotkey": {
 			"keys": [
 				{
+					"modifier": "control",
+					"side": "any"
+				},
+				{
 					"modifier": "option",
 					"side": "any"
 				},
@@ -232,8 +247,12 @@
 					"side": "any"
 				},
 				{
-					"code": 1,
-					"label": "S"
+					"modifier": "command",
+					"side": "any"
+				},
+				{
+					"code": 24,
+					"label": "+"
 				}
 			]
 		},
@@ -258,7 +277,7 @@
 			"agentOpencode": null,
 			"sendCaptures": true
 		},
-		"show_overlays_in_recordings": false,
+		"show_overlays_in_recordings": true,
 		"capsule_flow": "list"
 	},
 	"experimental": {
@@ -278,16 +297,16 @@
 		"restore_shortcut_default": false,
 		"keep_on_clipboard": false,
 		"copy_only": false,
-		"spoken_formatting": false,
-		"filler_words": false,
+		"spoken_formatting": true,
+		"filler_words": true,
 		"subtitle_export": false,
 		"second_dictation_shortcut": false,
-		"smart_spacing": false,
-		"spoken_symbols": false,
-		"picker_sort_filter": false,
+		"smart_spacing": true,
+		"spoken_symbols": true,
+		"picker_sort_filter": true,
 		"sided_modifier_chords": false,
 		"tap_or_hold": false,
-		"benchmark_details": false,
+		"benchmark_details": true,
 		"parakeet_ultra": true,
 		"standalone_special_keys": false,
 		"history_stats": false,
