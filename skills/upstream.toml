@@ -9,6 +9,8 @@
 #   the distilling.
 # - developing-in-lightdash (lightdash/lightdash) tracks the Lightdash CLI and
 #   as-code schemas, which change too often to keep a distilled copy current.
+# - scrawl (kitlangton/scrawl, skills/scrawl) is installed through gh skill
+#   and stays fully external.
 
 [[browser-automation.upstream]]
 repo = "vercel-labs/agent-browser"

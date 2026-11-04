@@ -172,6 +172,15 @@
       "installedAt": "2026-10-29T06:38:06Z",
       "updatedAt": "2026-10-29T06:38:06Z"
     },
+    "scrawl": {
+      "source": "kitlangton/scrawl",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/kitlangton/scrawl.git",
+      "skillPath": "skills/scrawl/SKILL.md",
+      "skillFolderHash": "afddc05003828078d088586e829c1938d3b731f9",
+      "installedAt": "2026-11-03T18:22:52Z",
+      "updatedAt": "2026-11-03T18:22:52Z"
+    },
     "todos": {
       "source": "gwenwindflower/dotfiles",
       "sourceType": "github",
