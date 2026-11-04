@@ -153,6 +153,7 @@ packages:
           - tlrc
           - tmux
           - tpm
+          - transcrypt
           - tree
           - tuitab
           - typst
