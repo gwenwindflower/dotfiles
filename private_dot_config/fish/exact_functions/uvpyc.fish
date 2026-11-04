@@ -66,18 +66,20 @@ function uvpyc -d "Check uv-managed Python minor versions for patch upgrades and
 
         for action in $actions
             set -l fields (string split \t -- $action)
-            set -l target $fields[1]
+            set -l key $fields[1]
+            set -l minor $fields[2]
+            set -l patch_version $fields[3]
             set findings (math $findings + 1)
             if test $phase = upgrade
-                logirl warning "Upgrade Python $fields[2] to $fields[3] ($target)"
+                logirl warning "Upgrade Python $minor to $patch_version ($key)"
                 if set -q _flag_fix
-                    uv python install --upgrade $target
+                    uv python install --upgrade $minor
                     or return 1
                 end
             else
-                logirl warning "Clean Python $fields[3] ($target)"
+                logirl warning "Clean Python $patch_version ($key)"
                 if set -q _flag_fix
-                    uv python uninstall $target
+                    uv python uninstall $key
                     or return 1
                 end
             end
