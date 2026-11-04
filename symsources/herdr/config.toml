@@ -53,9 +53,9 @@ kitty_graphics = true
 [keys]
 prefix = "ctrl+space"
 settings = "prefix+."
-reload_config = ["prefix+alt+r", "prefix+super+r"]
+reload_config = ["prefix+super+r", "prefix+alt+r"]
 toggle_sidebar = ["prefix+s", "shift+super+s"]
-goto = ["prefix+g", "shift+super+g"]
+goto = ["prefix+g", "shift+super+g", "shift+alt+g"]
 # focus_pane_* = handled by herdr-splits plugin
 close_pane = ["prefix+d", "shift+super+d"]
 last_pane = ["prefix+`", "shift+super+-"]
@@ -118,7 +118,7 @@ width = 72
 height = 16
 
 [[keys.command]]
-key = ["prefix+w", "shift+super+w"]
+key = ["prefix+w", "shift+super+w", "shift+alt+w"]
 type = "plugin_action"
 command = "wtherdr.switch"
 description = "wt switch worktree"
@@ -130,7 +130,7 @@ command = "wtherdr.create"
 description = "wt create worktree"
 
 [[keys.command]]
-key = ["prefix+ctrl+w"]
+key = "prefix+ctrl+w"
 type = "plugin_action"
 command = "wtherdr.merge"
 description = "wt merge worktree"

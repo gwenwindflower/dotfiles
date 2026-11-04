@@ -30,10 +30,10 @@ bind --user -M insert ctrl-super-g "commandline -r 'git forgit log'; commandline
 bind --user ctrl-super-g "commandline -r 'git forgit log'; commandline -f execute"
 bind --user -M insert ctrl-alt-g "commandline -r 'git forgit log'; commandline -f execute"
 bind --user ctrl-alt-g "commandline -r 'git forgit log'; commandline -f execute"
-bind --user -M insert shift-super-g "commandline -r 'wt switch'; commandline -f execute"
-bind --user shift-super-g "commandline -r 'wt switch'; commandline -f execute"
-bind --user -M insert shift-alt-g "commandline -r 'wt switch'; commandline -f execute"
-bind --user shift-alt-g "commandline -r 'wt switch'; commandline -f execute"
+bind --user -M insert shift-super-w "commandline -r 'wt switch'; commandline -f execute"
+bind --user shift-super-w "commandline -r 'wt switch'; commandline -f execute"
+bind --user -M insert shift-alt-w "commandline -r 'wt switch'; commandline -f execute"
+bind --user shift-alt-w "commandline -r 'wt switch'; commandline -f execute"
 
 # clearing and reloading
 bind --user -M insert super-r "fresh -r"
