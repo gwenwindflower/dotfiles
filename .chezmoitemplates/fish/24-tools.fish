@@ -47,3 +47,9 @@ set -gx LINEAR_CLI_TRUST_PAGER 1
 
 # slumber
 set -gx SLUMBER_CONFIG_PATH "~/.config/slumber/config.yml"
+
+# fx
+set -gx FX_COLLAPSED true
+set -gx FX_INDENT 4
+set -gx FX_LINE_NUMBERS true
+set -gx FX_SHOW_SIZE true
