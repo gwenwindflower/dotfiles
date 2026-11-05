@@ -45,9 +45,6 @@ set -gx QMD_EDITOR_URI "obsidian://open?path={path}"
 # linear
 set -gx LINEAR_CLI_TRUST_PAGER 1
 
-# slumber
-set -gx SLUMBER_CONFIG_PATH "~/.config/slumber/config.yml"
-
 # fx
 set -gx FX_COLLAPSED true
 set -gx FX_INDENT 4
