@@ -29,7 +29,7 @@ log_info "All required taps present"
 {{- $casks := concat $hb.casks.core (index $hb.casks .profile | default (list)) -}}
 log_info "Installing {{ len $formulae }} formulae and {{ len $casks }} casks..."
 
-brew bundle --file=/dev/stdin <<EOF
+brew bundle --no-upgrade --file=/dev/stdin <<EOF
 {{ range $formulae -}}
 brew {{ . | quote }}
 {{ end -}}
