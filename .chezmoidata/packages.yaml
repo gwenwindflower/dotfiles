@@ -39,6 +39,7 @@ packages:
           - blueutil
           - bottom
           - brows
+          - bruno-cli
           - brush
           - bun
           - cargo-binstall
@@ -187,6 +188,7 @@ packages:
           - agentsview
           - ant
           - arc
+          - bruno
           - cap
           - chatgpt
           - claude
