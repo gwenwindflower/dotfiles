@@ -11,16 +11,17 @@ For actively developed tools, syntax, versions, APIs, or framework behavior, che
 
 #### Searching local corpora
 
-Pick the corpus, then the retrieval mode. A known literal (identifier, path, error text, config key) is an `rg` job in any corpus. When the wording or location is unknown, or the question is about relationships, flow, or architecture, use the indexed tool for that corpus. The `context-engineering` skill has usage for `zg`, `ast-grep`, and `agentsview`; the `obsidian` skill covers `qmd`:
+Search code with `rg` or the harness's built-in grep by default. Any word you expect in the target, plus a likely directory or file type, makes it a text search, and `rg` is faster and exhaustive where an index is ranked and can be stale. The `context-engineering` skill has usage for `ast-grep`, `zg`, and `agentsview`; the `obsidian` skill covers `qmd`.
 
-| Corpus | Tool |
+| You have | Tool |
 | --- | --- |
-| Code and mixed-content workspaces | `zg` (zvec-grep) |
-| Code structure | `ast-grep`, `ast-grep outline` |
+| A word, identifier, path, error text, or config key you expect in the target | `rg` or built-in grep |
+| A known function, component, or code pattern; a file's structure before reading it | `ast-grep run`, `ast-grep outline` |
+| Only a description, in an unfamiliar codebase whose docs don't point to it | `zg` (zvec-grep) |
 | Markdown knowledge bases and the girlOS vault | `qmd` |
 | Recorded agent sessions | `agentsview` |
 
-Run the indexed search before broad file reads or delegating discovery; a subagent should not be spawned only to locate material. Treat a sufficient snippet as read and open the file only when the needed detail lies outside it.
+A subagent should not be spawned only to locate material. Treat a sufficient snippet as read and open the file only when the needed detail lies outside it.
 
 #### Trusting non-official sources
 

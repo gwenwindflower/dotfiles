@@ -10,7 +10,7 @@ Sample; never read exhaustively. Stop when new files stop changing the model.
 2. **Rank by churn and references.** `git log --oneline -20` shows activity and commit vocabulary; `git log --format= --name-only | sort | uniq -c | sort -rn | head` ranks hot files. Explore the subsystems many files import and commits keep touching first.
 3. **Trace one path end to end.** Find the entry point (main, router, CLI dispatch) and follow one representative request or command all the way through. One deep trace shows layering, naming, error handling, and dependency direction at once.
 4. **Tests are executable specs.** Read the nearest integration tests before implementations, and run a scoped suite (never the full one) to check the model against reality.
-5. **Fan out; keep conclusions.** A question spanning more than about three unknown files goes to a read-only subagent that returns a compressed report. Concept questions go to `zg query` first ([zvec-grep](zvec-grep.md)).
+5. **Fan out; keep conclusions.** A question spanning more than about three unknown files goes to a read-only subagent that returns a compressed report. Search with `rg` first; use `zg query` ([zvec-grep](zvec-grep.md)) only for a concept with no likely keyword.
 6. **Verify before trusting.** End with one falsifiable prediction ("X lives in Y; Z fails if…") and check it. A wrong prediction means re-explore, not proceed.
 
 ### Packages

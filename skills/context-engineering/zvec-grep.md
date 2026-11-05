@@ -2,16 +2,17 @@
 
 `zg` fuses BM25 full-text search and vector search over a per-workspace index at `<root>/.zvec-grep/`, with structural extraction for C, C++, Go, Java, JS/TS, Python, and Rust, heading-aware chunks for markdown, and plain chunks for everything else text. It also wraps ripgrep with the same ignore rules. Output is agent-oriented markdown by default.
 
-## Route the question
+## When to use it
+
+`zg` is the fallback for when you don't know what the code is called or where it lives: "encrypted at rest secret storage" in an unfamiliar repo that doesn't document it. If you expect a word in the target, `rg` is faster and exhaustive; if you know a symbol or code shape, use [ast-grep](ast-grep.md). A likely word plus a likely directory is always an `rg` job.
 
 | You have | Use |
 | --- | --- |
-| An exact identifier, path, error string, config key, or regex | `rg` (or `zg query --rg <pattern>` to match the index's ignore rules) |
-| A concept, paraphrase, or "where does X happen" with unknown wording | `zg query "<question>"` |
-| A relationship, chronology, data or control flow, or cross-file comparison | `zg query` with several query groups, then `rg` on the anchors it surfaces |
-| A "does anything relevant exist" check | One focused `zg query`; stop if the top hits are irrelevant |
+| Any word, identifier, path, error string, config key, or regex you expect in the target | `rg` |
+| Only a description, and neither docs nor directory names point to it | `zg query "<question>"`, then `rg` on the anchors it surfaces |
+| A "does anything relevant exist" check with no likely keyword | One focused `zg query`; stop if the top hits are irrelevant |
 
-Search before broad file reads or delegating discovery. A snippet that answers the question counts as read; open the file only for detail the snippet lacks.
+A snippet that answers the question counts as read; open the file only for detail the snippet lacks.
 
 ## Check readiness first
 

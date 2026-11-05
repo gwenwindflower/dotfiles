@@ -18,13 +18,14 @@ Every line is loaded on every trigger. If it doesn't change agent behavior, cut 
 
 ## Retrieval
 
-Pick the corpus, then the tool. A known literal (identifier, path, error text, config key) is an `rg` job anywhere. Run the indexed search before broad file reads or delegating discovery; a snippet that answers the question counts as read.
+`rg` or the built-in grep is the default for code. Reach for another tool only when the question fits its row; a snippet that answers the question counts as read.
 
 | Question | Tool | Doc |
 | --- | --- | --- |
-| Unknown wording, flow, or architecture in code and mixed workspaces | `zg query` | [zvec-grep](zvec-grep.md) |
-| Code by structure: AST patterns, language constructs, rewrite targets | `ast-grep run`, `ast-grep scan` | [ast-grep](ast-grep.md) |
+| A word, identifier, path, error text, or config key you expect in the target | `rg` or built-in grep | |
+| A known function, component, or code pattern; AST constructs, rewrite targets | `ast-grep run`, `ast-grep scan` | [ast-grep](ast-grep.md) |
 | Structural map of files, imports, and exports before reading source | `ast-grep outline` | [ast-grep](ast-grep.md) |
+| Only a description, in an unfamiliar codebase whose docs don't point to it | `zg query` | [zvec-grep](zvec-grep.md) |
 | Why a decision was made, how something was done before, prior instructions | `agentsview session search` | `agentsview session search --help` |
 | Markdown knowledge bases and the girlOS vault | `qmd` | the `obsidian` skill |
 

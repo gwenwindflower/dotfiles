@@ -4,8 +4,8 @@ Agents find material by corpus-appropriate retrieval instead of broad file reads
 
 ## Expected behavior
 
-- Route a known literal to `rg` in any corpus. Route unknown wording, conceptual questions, and cross-file relationships to the indexed tool for the corpus: `zg` for code and mixed-content workspaces, `qmd` for markdown knowledge bases including girlOS, `agentsview` for recorded agent sessions.
-- Run the indexed search before delegating discovery or reading files wholesale. A sufficient snippet counts as read.
+- Search code with `rg` or the built-in grep by default, and with `ast-grep` for a known symbol or code pattern. `zg` is the fallback when the agent has only a description and no likely keyword or location. `qmd` covers markdown knowledge bases including girlOS, and `agentsview` covers recorded agent sessions.
+- Search before delegating discovery or reading files wholesale. A sufficient snippet counts as read.
 - Query, status, and incremental refresh are routine. A workspace index is built on first use when its embedding model is already cached.
 - Keep embeddings local. Remote embedding providers are never granted or allowed as a recovery step.
 
@@ -17,7 +17,7 @@ Hugging Face is in neither domain list, so the first index for a new embedding m
 
 `zg` in `auto` mode uses the shared loopback daemon when it is running and otherwise works in-process. The daemon exposes only indexed search on its MCP endpoint by default; no harness registers it as an MCP server, so the CLI is the single agent surface.
 
-## Corpus routing
+## Indexes
 
 | Corpus | Tool | Index location | Refresh |
 | --- | --- | --- | --- |
