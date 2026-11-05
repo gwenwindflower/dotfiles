@@ -22,7 +22,10 @@ Levels are defined in [agent configuration](../agent-config.md#permission-levels
 | `gh` PR and issue writes, `gh api` mutations, workflow rerun and cancel, `gh extension` installs | `auto-reviewed` | Read before write. |
 | `gh pr merge`, PR approvals, repository create/fork/rename/archive/edit, secret and variable writes, release workflow dispatch | `auto-reviewed` (on request) | |
 | `gh auth login`/`logout`/`refresh`/`switch`/`setup-git`, `gh auth status` | `auto-reviewed` | Routine authentication; status is denied with `-t`/`--show-token`. Codex routes all status flags to review because prefix rules cannot detect flags in every position. |
-| `gh auth token`, `gh repo delete`, `gh release` mutations | `denied` | Releases run through the reviewed project release task. |
+| `gh auth token` | `auto-reviewed` | Approve only the zizmor environment handoff below; standalone output is prohibited. |
+| `gh repo delete`, `gh release` mutations | `denied` | Releases run through the reviewed project release task. |
+
+For online workflow audits, `GH_TOKEN=$(gh auth token) zizmor .` passes the token directly into zizmor's process environment. This is routine in task scope, including host execution for keychain access. Review the whole command: no shell tracing, token output, persistence, or alternate token consumer. Codex routes the substitution to review; Claude leaves it to the classifier. OpenCode keeps its standalone token-output denies and uses shared guidance for the complete zizmor command. [zizmor documents the token environment variables and recommends GitHub CLI authentication](https://docs.zizmor.sh/usage/#operating-modes).
 
 ## Recoverable history
 

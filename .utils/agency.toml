@@ -475,7 +475,11 @@ expect = "forbidden"
 
 [[rule]]
 cmd = "gh auth token"
-expect = "forbidden"
+expect = "prompt"
+
+[[rule]]
+cmd = "gh auth token --hostname github.com"
+expect = "prompt"
 
 [[rule]]
 cmd = "gh auth login"

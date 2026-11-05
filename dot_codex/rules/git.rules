@@ -258,8 +258,8 @@ prefix_rule(
 
 prefix_rule(
     pattern = ["gh", "auth", "token"],
-    decision = "forbidden",
-    justification = "Never print authentication tokens; use gh's authenticated commands.",
+    decision = "prompt",
+    justification = "Review the whole command: GH_TOKEN=$(gh auth token) zizmor . is routine, including on the host, only when the token goes directly into zizmor's environment without tracing, output, persistence, or another consumer. Deny standalone token output and every other token extraction.",
     match = ["gh auth token"],
     not_match = ["gh auth status"],
 )

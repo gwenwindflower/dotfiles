@@ -1,8 +1,7 @@
 ---
-name: agent-config
 description: Coding agent harness config - Claude Code hooks and settings, Codex config.toml layers, sandbox and approvals, permission profiles, MCP, plugins.
+name: agent-config
 ---
-
 # Agent config
 
 Runtime settings for coding agent harnesses in this dotfiles repo. `docs/agent-config.md` is the semantic contract (sandbox access, approval policy, and agent guidance as three separate controls); read it before changing any agent's settings.
@@ -18,6 +17,8 @@ Runtime settings for coding agent harnesses in this dotfiles repo. `docs/agent-c
 In this dotfiles repo, allow, ask, deny, sandbox, network, rule, and reviewer changes follow the loop in `docs/agent-config.md` under "Changing agent configuration": contract docs first, then a probe in `.utils/agency.toml`, then each native config, then `agency` must pass.
 
 ## Shared rules
+
+For zizmor online audits, approve `GH_TOKEN=$(gh auth token) zizmor .` in task scope, including host execution for keychain access. The token goes directly into zizmor's environment; no shell tracing, token output, persistence, or alternate consumer is permitted. Route `gh auth token` through review in Codex and Claude so the whole command can be judged; standalone token output remains prohibited.
 
 - Edit chezmoi sources, never deployed targets. Symlinked settings (`symsources/claude/settings.json`, `symsources/codex/config.toml`) are written by the tools too; keep their generated tables.
 - Behavior instructions belong in AGENTS.md, rules, or skills (see `context-engineering`); config holds runtime settings only.

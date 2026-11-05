@@ -85,7 +85,7 @@ Discarding changes with `reset --hard`, `checkout --`, `restore`, or `clean` alw
 #### GitHub
 
 - Use `gh` for GitHub work beyond core git: repos, issues, PRs, Actions, checks, and runs. Read before writing: `list`, `view`, `status`, `diff`, `checks`, or logs first. For raw code, fetch the raw URL rather than routing through `gh api`.
-- Never print tokens or run `gh auth token`.
+- Never print tokens. For online workflow audits, `GH_TOKEN=$(gh auth token) zizmor .` is approved in task scope, including on the host: pass the token only into zizmor's environment, with no shell tracing, token output, persistence, or other consumer. Standalone `gh auth token` is prohibited.
 - GitHub writes follow the task's authority. Confirm before consequential changes: repository deletion, archival, transfer, visibility changes, and destructive issue operations.
 - Merge PRs with `gh pr merge --squash`; use rebase only for small, clean histories.
 - Publish packages and create or mutate releases only through the project's release task, on explicit request. Keep its checks and confirmations; never substitute raw publish commands or trigger a release workflow to get around it.

@@ -73,7 +73,7 @@ Descript is a remote MCP connector managed in the Claude and Codex desktop apps,
 | Platform | Mechanism | Coverage |
 | --- | --- | --- |
 | Claude Code | Plugins, marketplaces, optional Claude.ai MCP servers, CLI tools, and agent-browser | `host-allowed` families are excluded with an allow; service writes and authentication reach the classifier; `op` secrets are `ask`. Token output has narrow denies plus reviewer coverage for alternate forms. |
-| Codex | Plugins, apps, MCP servers, browser integration, artifact skills, and command rules | Service writes and authentication reach review; token output is forbidden. `gh auth status` and `linear-cli config get` reach review for flags beyond literal-prefix coverage. Families that fail in the sandbox escalate to the reviewer with no rule. |
+| Codex | Plugins, apps, MCP servers, browser integration, artifact skills, and command rules | Service writes and authentication reach review; token output is prohibited. `gh auth token` reaches review for the [zizmor environment handoff](git.md#levels). `gh auth status` and `linear-cli config get` reach review for flags beyond literal-prefix coverage. Families that fail in the sandbox escalate to the reviewer with no rule. |
 | OpenCode | Plugins, configured language tooling, and shell CLIs | Ordered rules allow masked auth/config reads and deny standard token-output forms. Other commands use the existing permission defaults. Alternate global-flag placement and arbitrary short-flag clusters lack reviewer coverage: OpenCode `--auto` approves every ask without an intent-sensitive review. |
 
 ## Verification
@@ -82,5 +82,5 @@ Descript is a remote MCP connector managed in the Claude and Codex desktop apps,
 - Capture commands run without review, including with `--profile Default`.
 - A non-capture Default-profile command is approved only when the current request explicitly authorizes it.
 - An `op read` in Claude prompts the user; in Codex it reaches the reviewer.
-- Credentials remain in their owning authentication store.
+- Credentials remain in their owning authentication store, except the reviewed zizmor process-environment handoff.
 - Disabled or unknown integrations are not activated as a workaround.
