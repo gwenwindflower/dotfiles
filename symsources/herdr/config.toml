@@ -18,10 +18,10 @@ rows = [
 ]
 
 [ui.toast]
-delivery = "terminal"
+delivery = "herdr"
 
 [ui.sound]
-enabled = true
+enabled = false
 
 [theme]
 auto_switch = false
