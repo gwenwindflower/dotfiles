@@ -75,6 +75,20 @@ files = ["knap.md"]
 baseline = "3ccff5338ea700537839b21900aa5358a0402c98"
 tree = "f49e09ee53feece10378a1fb1194632581fb066a"
 
+[[obsidian.upstream]]
+repo = "zsviczian/obsidian-excalidraw-plugin"
+skill = "docs/AITrainingData/excalidraw-cli"
+files = ["excalidraw.md"]
+baseline = "5429408ad0e58ac3eb918439f463bde741357143"
+tree = "3eaf21719005926c420ba4fd05360d3b4e5c10ca"
+
+[[obsidian.upstream]]
+repo = "zsviczian/obsidian-excalidraw-plugin"
+skill = "docs/AITrainingData/excalidraw-automate"
+files = ["excalidraw-scripts.md"]
+baseline = "5429408ad0e58ac3eb918439f463bde741357143"
+tree = "1a42b8b5e0b7d331917a21457f91f4b9112bcdde"
+
 [[project-management.upstream]]
 repo = "github/gh-stack"
 skill = "gh-stack"
