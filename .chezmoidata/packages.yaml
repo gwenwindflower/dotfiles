@@ -243,6 +243,7 @@ packages:
           - orbstack
           - postico
           - reader
+          - rencal
           - secretive
           - spotifast
           - spotify
