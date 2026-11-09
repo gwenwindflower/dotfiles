@@ -39,7 +39,6 @@ packages:
           - blueutil
           - bottom
           - brows
-          - bruno-cli
           - brush
           - bun
           - cargo-binstall
