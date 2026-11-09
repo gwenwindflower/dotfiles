@@ -1,0 +1,12 @@
+# Agent logos: "auto" detects Herdr Agent Icons Max locally, "font" forces
+# logos (useful over SSH), and "none" uses configured Nerd Font icons.
+agent_icons = "auto"
+
+# Ordered tab components: $jump, $icon, $program, and $session_title.
+# Missing values disappear with their separators; tokens must be unique.
+# Add "$session_title" to show the foreground agent's truncated title:
+# tab_label = ["$jump", "$icon", "$program", "$session_title"]
+tab_label = ["$jump", "$icon", "$program", "$session_title"]
+
+# Maximum session-title width in terminal columns, including its ellipsis (1–256).
+session_title_max_width = 28
