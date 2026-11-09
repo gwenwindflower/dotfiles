@@ -13,7 +13,10 @@ format = """
 [](mauve)\
 $os\
 $username\
-[](bg:peach fg:mauve)\
+[](bg:blue fg:mauve)\
+$container\
+$docker_context\
+[](fg:blue bg:peach)\
 $directory\
 $hostname\
 [](bg:yellow fg:peach)\
@@ -31,7 +34,8 @@ $kotlin\
 $haskell\
 $python\
 [](fg:green bg:sapphire)\
-$container\
+$gcloud\
+$aws\
 [](fg:sapphire bg:pink)\
 $time\
 [ ](fg:pink)\
@@ -174,10 +178,26 @@ style = "bg:green"
 detect_folders = ['.venv']
 format = '[[ $symbol( $version) [( $virtualenv )](bold italic fg:base bg:green)](fg:crust bg:green)]($style)'
 
+[container]
+symbol = ""
+style = "bg:blue"
+format = '[[ $symbol $name ](fg:crust bg:blue)]($style)'
+
 [docker_context]
 symbol = ""
+style = "bg:blue"
+format = '[[ $symbol $context ](fg:crust bg:blue)]($style)'
+
+[gcloud]
+symbol = "󱇶"
 style = "bg:sapphire"
-format = '[[ $symbol( $context) ](fg:crust bg:sapphire)]($style)'
+detect_env_vars = ["IN_GCLOUD_PROJECT"]
+format = '[[ $symbol $active ](fg:crust bg:sapphire)]($style)'
+
+[aws]
+symbol = ""
+style = "bg:sapphire"
+format = '[[ $symbol $profile ](fg:crust bg:sapphire)]($style)'
 
 [conda]
 symbol = "  "
