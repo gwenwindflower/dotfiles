@@ -1,0 +1,14 @@
+{
+  "auto_titles": true,
+  "tab_status": false,
+  "preview": "auto",
+  "mouse": true,
+  "workspaces": "auto",
+  "scope": "agent",
+  "selection_background": "#414559",
+  "colors": {
+    "accent": "#85c1dc",
+    "match": "#a6d189",
+    "muted": "#838ba7"
+  }
+}
