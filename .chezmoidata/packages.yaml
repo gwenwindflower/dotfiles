@@ -246,7 +246,6 @@ packages:
           - rencal
           - secretive
           - spotifast
-          - spotify
           - sprites
           - tailscale-app
           - thaw
