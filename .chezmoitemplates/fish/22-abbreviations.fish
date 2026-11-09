@@ -79,7 +79,9 @@ abbr --add gcauth "gcloud auth application-default login"
 abbr --add gccf gcloud config
 abbr --add gccfs gcloud config set
 abbr --add gccfg gcloud config get
-abbr --add gccfa gcloud config configurations activate
+abbr --add gccfcf gcloud config configurations
+abbr --add gccfcfa gcloud config configurations activate
+abbr --add gccfcfls gcloud config configurations list
 ## cloudflare
 abbr --add wr wrangler
 ## sandboxes
