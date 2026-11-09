@@ -1,0 +1,13 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+set -euo pipefail
+
+{{ template "script-log.sh" }}
+{{ template "brew-preamble.sh" . }}
+
+log_step "OpenCode service port"
+if [ "$(opencode service get port)" != "14096" ]; then
+  opencode service set port 14096
+fi
+log_success "OpenCode service port configured"
+{{ end -}}
