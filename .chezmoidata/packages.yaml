@@ -242,6 +242,7 @@ packages:
           - obsidian
           - orbstack
           - postico
+          - reader
           - secretive
           - spotifast
           - spotify
