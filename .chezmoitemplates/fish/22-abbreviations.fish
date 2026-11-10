@@ -202,6 +202,10 @@ abbr --add cxa codex agents
 ## opencode
 abbr --add oc opencode
 abbr --add occf "ee $HOME/.config/opencode"
+abbr --add ocsv opencode service
+abbr --add ocsvo opencode service start
+abbr --add ocsvx opencode service stop
+abbr --add ocsvst opencode service status
 ## claude
 abbr --add cl claude
 abbr --add clr claude --resume
