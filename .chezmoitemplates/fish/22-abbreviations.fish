@@ -259,9 +259,9 @@ abbr -a mp mitmproxy
 # data
 abbr --add dbx databricks
 abbr --add ddb duckdb
-abbr --add pg pgcli
+abbr --add pgc pgcli
 abbr --add sqlite sqlite3
-abbr --add sqli sqlite3
+abbr --add sqlt sqlite3
 if set -q PG_LATEST
     abbr --add psql psql-$PG_LATEST
     abbr --add postgres postgres-$PG_LATEST
