@@ -29,11 +29,15 @@ abbr --add --position anywhere -- -hr '--help | bat -plhelp | rg'
 abbr --add --position anywhere -- qq '>/dev/null'
 abbr --add --position anywhere -- qqq '>/dev/null 2>&1'
 abbr --add --position anywhere -- qqf '&>/dev/null'
-# procs
+# processes
+## built-ins
+abbr --add pg pgrep
+abbr --add pk pkill
+## procs
 abbr --add pps procs
+abbr --add ppk ppkill
 abbr --add ppsm procs --sortd usagemem
 abbr --add ppsc procs --sortd usagecpu
-abbr --add pps procs
 # dir and file management
 abbr --add cp. "pwd | fish_clipboard_copy"
 abbr --add cpwd "pwd | fish_clipboard_copy"
