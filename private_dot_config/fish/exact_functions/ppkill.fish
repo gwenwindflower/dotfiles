@@ -1,22 +1,22 @@
-function prockill -d "Find processes with procs and kill matching PIDs"
+function ppkill -d "Find processes with procs and kill matching PIDs"
     argparse h/help x/execute -- $argv
     or return 2
 
     if set -q _flag_help
         echo "Find processes matching a query and kill them when explicitly requested."
-        logirl help_usage "prockill [OPTIONS] <query>"
+        logirl help_usage "ppkill [OPTIONS] <query>"
         logirl help_header Options
         logirl help_flag h/help "Show this help message"
         logirl help_flag x/execute "Kill matching processes"
         logirl help_header Examples
-        printf "  prockill 'node server'\n"
-        printf "  prockill --execute 'node server'\n"
+        printf "  ppkill 'node server'\n"
+        printf "  ppkill --execute 'node server'\n"
         return 0
     end
 
     if test (count $argv) -ne 1
         logirl error "Expected exactly one process query"
-        logirl info "Try `prockill --help`"
+        logirl info "Try `ppkill --help`"
         return 2
     end
 
