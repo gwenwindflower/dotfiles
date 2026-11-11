@@ -21,6 +21,7 @@ Lead with what the reader needs. Keep paragraphs short, use lists for parallel i
 | Diagnose formulaic phrasing or repetition in substantial prose | [anti-patterns](anti-patterns.md) |
 | Improve sentence rhythm, asides, and flow | [voice and flow](voice-and-flow.md) |
 | Shape a blog post or essay using annotated examples | [human blog example](human-blog-example.md) |
+| Write or edit software docs: READMEs, guides, reference | [software docs](software-docs.md) |
 
 Read the branch that serves the task. Apply prose references with the medium in mind: Slack shorthand and natural em dashes do not need formalizing.
 
