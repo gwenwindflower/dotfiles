@@ -1,7 +1,8 @@
 ---
-description: Planning and doing the work - Linear and GitHub issues, specs, ADRs, wt worktrees, landing PRs, helpers, parallel sessions. Repo tooling uses project-tooling.
 name: project-management
+description: Planning and doing dev work - making and tracking good product decisions; crafting ideas and decisions into specs; creating and clarifying Linear and GitHub issues; sequencing and organizing issues into projects; managing agents, git, worktrees, and PRs to execute the projects.
 ---
+
 # Project management
 
 Plans live in Linear; specs live in the repo; work happens on a branch in its own worktree and lands as a PR or `wt merge`. Everything here serves the project's goals, not the process. Adapt to how a project already works, and move it toward one consistent way of working over time rather than front-loading structure.
