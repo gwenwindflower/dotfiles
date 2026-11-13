@@ -27,6 +27,9 @@ vim.filetype.add({
     ["http"] = "http",
     ["env"] = "dotenv",
     ["gitconfig"] = "gitconfig",
+    -- Neovim has no built-in MDX detection; the compound filetype keeps
+    -- markdown ftplugins, Tree-sitter, and marksman working
+    ["mdx"] = "markdown.mdx",
   },
   pattern = {
     [".*/spell/[^/]+%.[^/]+%.add"] = "spellfile",

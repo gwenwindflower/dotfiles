@@ -26,6 +26,21 @@ local function filter_chezmoi_marksman_diagnostics(next_handler)
   end
 end
 
+local vtsls_typescript_lib = vim.fs.joinpath(
+  vim.fn.stdpath("data"),
+  "mason/packages/vtsls/node_modules/@vtsls/language-server/node_modules/typescript/lib"
+)
+
+-- mdx-analyzer requires a tsdk but bundles no TypeScript, and Mintlify docs
+-- repos usually have no node_modules, so fall back to vtsls's copy
+local function mdx_typescript_lib(root_dir)
+  local project_lib = require("lspconfig.util").get_typescript_server_path(root_dir)
+  if project_lib ~= "" then
+    return project_lib
+  end
+  return vtsls_typescript_lib
+end
+
 return {
   {
     "stevearc/conform.nvim",
@@ -93,6 +108,28 @@ return {
           vim.lsp.codelens.enable(true, { bufnr = bufnr })
         end,
       }
+
+      opts.servers.mdx_analyzer = {
+        filetypes = { "markdown.mdx" },
+        -- docs.json and mint.json mark Mintlify docs roots
+        root_markers = { "package.json", "docs.json", "mint.json", ".git" },
+        before_init = function(_, config)
+          config.init_options = config.init_options or {}
+          config.init_options.typescript = config.init_options.typescript or {}
+          config.init_options.typescript.tsdk = config.init_options.typescript.tsdk
+            or mdx_typescript_lib(config.root_dir)
+        end,
+      }
+      return opts
+    end,
+  },
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    optional = true,
+    ft = { "markdown.mdx" },
+    opts = function(_, opts)
+      opts.file_types = opts.file_types or { "markdown" }
+      table.insert(opts.file_types, "markdown.mdx")
       return opts
     end,
   },
