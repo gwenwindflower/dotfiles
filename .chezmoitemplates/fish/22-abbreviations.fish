@@ -463,7 +463,7 @@ abbr --add ghscld "gh search code --repo lightdash/lightdash -- "
 abbr --add ghscldw "gh search code --web --repo lightdash/lightdash -- "
 abbr --add ghski gh skill
 abbr --add ghskii gh skill install --agent universal --scope user
-abbr --add ghskil gh skill list --agent universal --scope user
+abbr --add ghskils gh skill list --agent universal --scope user
 abbr --add ghskis gh skill search
 abbr --add ghskiup gh skill update
 ## shortening my git aliases
