@@ -31,3 +31,5 @@ fish_add_path /Applications/Obsidian.app/Contents/MacOS
 fish_add_path ~/.cap/bin
 ##  Crest browser
 fish_add_path /Applications/Crest.app/Contents/Helpers
+##  renCal
+fish_add_path /Applications/renCal.app/Contents/MacOS
