@@ -115,9 +115,15 @@ return {
         filetypes = { "markdown.mdx" },
         -- docs.json and mint.json mark Mintlify docs roots
         root_markers = { "package.json", "docs.json", "mint.json" },
+        -- The server only recognizes the "mdx" languageId, not the compound filetype
+        get_language_id = function()
+          return "mdx"
+        end,
         before_init = function(_, config)
           config.init_options = config.init_options or {}
           config.init_options.typescript = config.init_options.typescript or {}
+          -- Without this the server runs syntax-only: no definition, hover, or completion
+          config.init_options.typescript.enabled = true
           config.init_options.typescript.tsdk = config.init_options.typescript.tsdk
             or mdx_typescript_lib(config.root_dir)
         end,
