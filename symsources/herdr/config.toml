@@ -55,12 +55,12 @@ prefix = "ctrl+space"
 settings = "prefix+."
 reload_config = ["prefix+super+r", "prefix+alt+r"]
 toggle_sidebar = ["prefix+s", "shift+super+s"]
-goto = ["prefix+g", "shift+super+g", "shift+alt+g"]
 # focus_pane_* = handled by herdr-splits plugin
-close_pane = ["prefix+d", "shift+super+d"]
-last_pane = ["prefix+`", "shift+super+-"]
-split_vertical = ["prefix+|", "prefix+ctrl+v"]
-split_horizontal = ["prefix+-", "prefix+ctrl+s"]
+close_pane = ["prefix+d", "shift+super+w"]
+zoom = ["prefix+z", "shift+super+z"]
+last_pane = ["prefix+`", "shift+super+0"]
+split_vertical = ["prefix+|", "prefix+ctrl+v", "shift+super+\\"]
+split_horizontal = ["prefix+-", "prefix+ctrl+s", "shift+super+-"]
 new_tab = ["prefix+c", "shift+super+t"]
 rename_tab = ["prefix+i", "shift+super+i"]
 previous_tab = "shift+super+h"
@@ -77,6 +77,7 @@ switch_workspace = "prefix+1..9"
 close_workspace = ["prefix+alt+d", "prefix+super+d"]
 next_agent = "shift+super+n"
 previous_agent = "shift+super+p"
+open_notification_target = ["prefix+o", "shift+super+o"]
 
 # agents
 [[keys.command]]
@@ -118,31 +119,31 @@ width = 72
 height = 16
 
 [[keys.command]]
-key = ["prefix+w", "shift+super+w", "shift+alt+w"]
+key = ["prefix+g", "shift+super+g", "shift+alt+g"]
 type = "plugin_action"
 command = "wtherdr.switch"
 description = "wt switch worktree"
 
 [[keys.command]]
-key = "prefix+shift+w"
+key = "prefix+shift+g"
 type = "plugin_action"
 command = "wtherdr.create"
 description = "wt create worktree"
 
 [[keys.command]]
-key = "prefix+ctrl+w"
+key = ["prefix+super+g", "prefix+alt+g"]
 type = "plugin_action"
 command = "wtherdr.merge"
 description = "wt merge worktree"
 
 [[keys.command]]
-key = "prefix+alt+w"
+key = "prefix+ctrl+g"
 type = "plugin_action"
 command = "wtherdr.remove"
 description = "wt remove worktree"
 
 [[keys.command]]
-key = "prefix+super+g"
+key = "alt+super+g"
 type = "pane"
 command = "lazygit"
 description = "lazygit overlay"
