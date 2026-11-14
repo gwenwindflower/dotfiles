@@ -32,10 +32,12 @@ local vtsls_typescript_lib = vim.fs.joinpath(
 )
 
 -- mdx-analyzer requires a tsdk but bundles no TypeScript, and Mintlify docs
--- repos usually have no node_modules, so fall back to vtsls's copy
+-- repos rarely install it, so fall back to vtsls's copy. lspconfig's
+-- get_typescript_server_path returns node_modules/typescript/lib whenever
+-- node_modules exists, so check for typescript.js itself.
 local function mdx_typescript_lib(root_dir)
   local project_lib = require("lspconfig.util").get_typescript_server_path(root_dir)
-  if project_lib ~= "" then
+  if project_lib ~= "" and vim.uv.fs_stat(vim.fs.joinpath(project_lib, "typescript.js")) then
     return project_lib
   end
   return vtsls_typescript_lib
@@ -112,7 +114,7 @@ return {
       opts.servers.mdx_analyzer = {
         filetypes = { "markdown.mdx" },
         -- docs.json and mint.json mark Mintlify docs roots
-        root_markers = { "package.json", "docs.json", "mint.json", ".git" },
+        root_markers = { "package.json", "docs.json", "mint.json" },
         before_init = function(_, config)
           config.init_options = config.init_options or {}
           config.init_options.typescript = config.init_options.typescript or {}
