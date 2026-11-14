@@ -88,6 +88,13 @@ symsources/agents/                # skill-lock.json (gh skill install manifest)
 
 `wip/` is the home for anything transient — plans, review notes, research, references, generated output. Its contents are ignored by both git and chezmoi (only `.gitkeep` is tracked), so nothing there leaks into a commit or deploys to `~`. Put scratch work there instead of at the repo root; root-level files need their own ignore entries and are easy to commit by accident.
 
+### Branching
+
+Targeted changes land directly on `main` in this repo, overriding the global worktree-first default. Create a worktree with `wt switch -c` only when:
+
+- The work is experimental, a refactor, or otherwise risky to leave half-done on `main`.
+- The user says multiple agents are working in the repo at the same time.
+
 ### OS conditionals
 
 Two mechanisms, use whichever fits:
