@@ -5,8 +5,8 @@
     "version": "0.0.2",
     "min_herdr_version": "0.7.5",
     "description": "Dress herdr tabs as [N] <icon> <program> and feed sidebar rows composable tokens: $jump (workspace jump number) plus $space/$worktree (repo + nested worktree names for agent rows). Labels stay bare for the agents panel and navigator; manual renames win. Icons reload from icons.conf with a compiled fallback.",
-    "manifest_path": "/Users/winnie/.config/herdr/plugins/github-installations/heraldr-263bee430f10/93834-0/checkout/herdr-plugin.toml",
-    "plugin_root": "/Users/winnie/.config/herdr/plugins/github-installations/heraldr-263bee430f10/93834-0/checkout",
+    "manifest_path": "/Users/winnie/dev/herdr/heraldr.feat-agent-labels/herdr-plugin.toml",
+    "plugin_root": "/Users/winnie/dev/herdr/heraldr.feat-agent-labels",
     "enabled": true,
     "platforms": [
       "linux",
@@ -82,12 +82,7 @@
       }
     ],
     "source": {
-      "kind": "github",
-      "owner": "gwenwindflower",
-      "repo": "heraldr",
-      "resolved_commit": "ff641ab707594610fd1e1ea6cb604d105e643bcf",
-      "managed_path": "/Users/winnie/.config/herdr/plugins/github-installations/heraldr-263bee430f10/93834-0/checkout",
-      "installed_unix_ms": 1791964458055
+      "kind": "local"
     }
   },
   {
@@ -96,8 +91,8 @@
     "version": "0.14.0",
     "min_herdr_version": "0.9.0",
     "description": "Cmd+K command bar with agent icons, fuzzy search, and optional automatic tab titles",
-    "manifest_path": "/Users/winnie/.config/herdr/plugins/github-installations/herdr-bar-96eebe452a9c/30260-0/checkout/herdr-plugin.toml",
-    "plugin_root": "/Users/winnie/.config/herdr/plugins/github-installations/herdr-bar-96eebe452a9c/30260-0/checkout",
+    "manifest_path": "/Users/winnie/.config/herdr/plugins/github-installations/herdr-bar-96eebe452a9c/90020-0/checkout/herdr-plugin.toml",
+    "plugin_root": "/Users/winnie/.config/herdr/plugins/github-installations/herdr-bar-96eebe452a9c/90020-0/checkout",
     "enabled": true,
     "platforms": [
       "linux",
@@ -217,19 +212,19 @@
       "kind": "github",
       "owner": "jeffarese",
       "repo": "herdr-bar",
-      "resolved_commit": "d642f7964231b86e82e1ac7f3a390fd5baa03e98",
-      "managed_path": "/Users/winnie/.config/herdr/plugins/github-installations/herdr-bar-96eebe452a9c/30260-0/checkout",
-      "installed_unix_ms": 1793638935414
+      "resolved_commit": "5099a62a786331af9c3512d3cb2aa960ba06c9f3",
+      "managed_path": "/Users/winnie/.config/herdr/plugins/github-installations/herdr-bar-96eebe452a9c/90020-0/checkout",
+      "installed_unix_ms": 1794244168231
     }
   },
   {
     "plugin_id": "herdr-splits",
     "name": "Herdr Splits",
-    "version": "0.5.3",
+    "version": "0.5.4",
     "min_herdr_version": "0.7.0",
     "description": "Seamless navigation and resizing between Herdr panes and Neovim splits",
-    "manifest_path": "/Users/winnie/.config/herdr/plugins/github/herdr-splits-d880c4924f2b/herdr-plugin.toml",
-    "plugin_root": "/Users/winnie/.config/herdr/plugins/github/herdr-splits-d880c4924f2b",
+    "manifest_path": "/Users/winnie/.config/herdr/plugins/github-installations/herdr-splits-d880c4924f2b/24327-0/checkout/herdr-plugin.toml",
+    "plugin_root": "/Users/winnie/.config/herdr/plugins/github-installations/herdr-splits-d880c4924f2b/24327-0/checkout",
     "enabled": true,
     "platforms": [
       "linux",
@@ -243,7 +238,7 @@
           "global"
         ],
         "command": [
-          "bash",
+          "/bin/sh",
           "scripts/herdr-nav.sh",
           "down"
         ]
@@ -255,7 +250,7 @@
           "global"
         ],
         "command": [
-          "bash",
+          "/bin/sh",
           "scripts/herdr-nav.sh",
           "left"
         ]
@@ -267,7 +262,7 @@
           "global"
         ],
         "command": [
-          "bash",
+          "/bin/sh",
           "scripts/herdr-nav.sh",
           "right"
         ]
@@ -279,7 +274,7 @@
           "global"
         ],
         "command": [
-          "bash",
+          "/bin/sh",
           "scripts/herdr-nav.sh",
           "up"
         ]
@@ -291,7 +286,7 @@
           "global"
         ],
         "command": [
-          "bash",
+          "/bin/sh",
           "scripts/herdr-resize.sh",
           "down"
         ]
@@ -303,7 +298,7 @@
           "global"
         ],
         "command": [
-          "bash",
+          "/bin/sh",
           "scripts/herdr-resize.sh",
           "left"
         ]
@@ -315,7 +310,7 @@
           "global"
         ],
         "command": [
-          "bash",
+          "/bin/sh",
           "scripts/herdr-resize.sh",
           "right"
         ]
@@ -327,7 +322,7 @@
           "global"
         ],
         "command": [
-          "bash",
+          "/bin/sh",
           "scripts/herdr-resize.sh",
           "up"
         ]
@@ -337,9 +332,10 @@
       "kind": "github",
       "owner": "lmilojevicc",
       "repo": "herdr-splits.nvim",
-      "resolved_commit": "94f30cf4e9ac76ddf185a3acd0977be728fa4106",
-      "managed_path": "/Users/winnie/.config/herdr/plugins/github/herdr-splits-d880c4924f2b",
-      "installed_unix_ms": 1788407565447
+      "requested_ref": "4556fc0e7d4895fd8c86a1727dd9104c39e6e7d4",
+      "resolved_commit": "4556fc0e7d4895fd8c86a1727dd9104c39e6e7d4",
+      "managed_path": "/Users/winnie/.config/herdr/plugins/github-installations/herdr-splits-d880c4924f2b/24327-0/checkout",
+      "installed_unix_ms": 1794462335674
     }
   },
   {
@@ -348,8 +344,8 @@
     "version": "0.0.3",
     "min_herdr_version": "0.7.5",
     "description": "Run Worktrunk's native worktree workflows in Herdr popups and keep nested workspaces in sync.",
-    "manifest_path": "/Users/winnie/dev/herdr/wtherdr/herdr-plugin.toml",
-    "plugin_root": "/Users/winnie/dev/herdr/wtherdr",
+    "manifest_path": "/Users/winnie/dev/herdr/wtherdr.feat-workflow-dialogs/herdr-plugin.toml",
+    "plugin_root": "/Users/winnie/dev/herdr/wtherdr.feat-workflow-dialogs",
     "enabled": true,
     "platforms": [
       "linux",
@@ -377,6 +373,18 @@
         ]
       },
       {
+        "id": "hook",
+        "title": "wt hook",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "wtherdr",
+          "popup",
+          "hook"
+        ]
+      },
+      {
         "id": "merge",
         "title": " wt merge",
         "contexts": [
@@ -386,6 +394,18 @@
           "wtherdr",
           "popup",
           "merge"
+        ]
+      },
+      {
+        "id": "rebase",
+        "title": "wt rebase",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "wtherdr",
+          "popup",
+          "rebase"
         ]
       },
       {
@@ -415,6 +435,17 @@
     ],
     "panes": [
       {
+        "id": "complete",
+        "title": "wt result",
+        "placement": "popup",
+        "width": 72,
+        "height": 7,
+        "command": [
+          "wtherdr",
+          "finish"
+        ]
+      },
+      {
         "id": "create",
         "title": "󱓊 wt create",
         "placement": "popup",
@@ -439,6 +470,30 @@
         ]
       },
       {
+        "id": "hook",
+        "title": "wt hook",
+        "placement": "popup",
+        "width": 80,
+        "height": 18,
+        "command": [
+          "wtherdr",
+          "prompt",
+          "hook"
+        ]
+      },
+      {
+        "id": "hook-run",
+        "title": "wt hook",
+        "placement": "popup",
+        "width": "90%",
+        "height": "85%",
+        "command": [
+          "wtherdr",
+          "run",
+          "hook"
+        ]
+      },
+      {
         "id": "merge",
         "title": " wt merge",
         "placement": "popup",
@@ -460,6 +515,30 @@
           "wtherdr",
           "run",
           "merge"
+        ]
+      },
+      {
+        "id": "rebase",
+        "title": "wt rebase",
+        "placement": "popup",
+        "width": 80,
+        "height": 18,
+        "command": [
+          "wtherdr",
+          "prompt",
+          "rebase"
+        ]
+      },
+      {
+        "id": "rebase-run",
+        "title": "wt rebase",
+        "placement": "popup",
+        "width": "90%",
+        "height": "85%",
+        "command": [
+          "wtherdr",
+          "run",
+          "rebase"
         ]
       },
       {
