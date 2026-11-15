@@ -1,0 +1,16 @@
+notifications_enabled = true
+auto_sync_enabled = true
+first_day_of_week = "monday"
+show_week_numbers = true
+
+[theme]
+mode = "system"
+single = "gwenwindflower.catppuccin/frappe"
+light = "gwenwindflower.rose-pine/dawn"
+dark = "gwenwindflower.catppuccin/frappe"
+
+[groups]
+Work = [
+    "lightdash",
+    "holidays-in-united-states",
+]

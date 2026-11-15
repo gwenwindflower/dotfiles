@@ -1,0 +1,4 @@
+# renCal key bindings: https://rencal.org/docs/keyboard-shortcuts/#change-keys
+
+[keys]
+"mod+p" = false
