@@ -1,0 +1,106 @@
+[
+  {
+    "command": "archiveThread",
+    "key": "Ctrl+X"
+  },
+  {
+    "command": "composer.openModelPicker",
+    "key": "Command+Shift+M"
+  },
+  {
+    "command": "composer.openProjectPicker",
+    "key": "Command+Shift+O"
+  },
+  {
+    "command": "composer.startVoiceMode",
+    "key": "Ctrl+Command+V"
+  },
+  {
+    "command": "environmentAction1",
+    "key": null
+  },
+  {
+    "command": "newProjectlessTask",
+    "key": "Ctrl+Command+N"
+  },
+  {
+    "command": "newTask",
+    "key": "CmdOrCtrl+N"
+  },
+  {
+    "command": "nextRecentThread",
+    "key": "Command+Shift+="
+  },
+  {
+    "command": "nextThread",
+    "key": "Command+Shift+J"
+  },
+  {
+    "command": "nextThreadNeedingAttention",
+    "key": "Ctrl+Command+A"
+  },
+  {
+    "command": "openAvatarOverlay",
+    "key": null
+  },
+  {
+    "command": "openSideChat",
+    "key": "Ctrl+Command+]"
+  },
+  {
+    "command": "previousRecentThread",
+    "key": "Command+Shift+-"
+  },
+  {
+    "command": "previousThread",
+    "key": "Command+Shift+K"
+  },
+  {
+    "command": "realtimeVoice",
+    "key": null
+  },
+  {
+    "command": "realtimeVoice.endCall",
+    "key": null
+  },
+  {
+    "command": "realtimeVoice.toggleMicrophoneMute",
+    "key": "Command+Shift+A"
+  },
+  {
+    "command": "realtimeVoice.toggleOutputMute",
+    "key": null
+  },
+  {
+    "command": "recentThread4",
+    "key": "CmdOrCtrl+Alt+4"
+  },
+  {
+    "command": "recentThread5",
+    "key": "CmdOrCtrl+Alt+5"
+  },
+  {
+    "command": "searchChats",
+    "key": "Alt+Tab"
+  },
+  {
+    "command": "showWorkspaceTabView",
+    "key": "Command+Alt+]"
+  },
+  {
+    "command": "spotlightSearch",
+    "key": "Ctrl+Alt+Shift+X"
+  },
+  {
+    "command": "temporaryChat",
+    "key": "Command+Alt+N"
+  },
+  {
+    "command": "toggleSidebar",
+    "key": "Ctrl+["
+  },
+  {
+    "command": "toggleSidePanel",
+    "key": "Ctrl+]"
+  }
+]
