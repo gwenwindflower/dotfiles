@@ -27,6 +27,7 @@ function uppy -d "Upgrade system tools across package and plugin managers"
     set -l steps \
         "Packy managers" "packy upgrade" \
         "Mise tools" "mise -C "(string escape -- $source_path)" upgrade" \
+        "uv Python patches" _uppy_upgrade_uv_pythons \
         "GitHub CLI extensions" "gh extension upgrade --all" \
         "Herdr plugins" _uppy_update_herdr_plugins
 
@@ -75,4 +76,15 @@ function _uppy_update_herdr_plugins -d "Update GitHub-installed Herdr plugins"
     end
 
     herdr plugin update --yes
+end
+
+function _uppy_upgrade_uv_pythons -d "Move uv-managed Python minors to their latest patch"
+    argparse n/dry-run -- $argv
+    or return
+
+    if set -q _flag_dry_run
+        uvpyc
+    else
+        uvpyc --fix
+    end
 end
