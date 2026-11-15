@@ -458,7 +458,12 @@
     },
     {
       "term": "TODO.md",
-      "sounds_like": ["todo em dee", "to do m d", "todo md", "todo dot md"]
+      "sounds_like": [
+        "todo em dee",
+        "to do m d",
+        "todo md",
+        "todo dot md"
+      ]
     },
     {
       "term": "CHANGELOG.md",
@@ -480,28 +485,42 @@
     },
     {
       "term": "Vitest",
-      "sounds_like": ["veet est", "vee test", "the test"]
+      "sounds_like": [
+        "veet est",
+        "vee test",
+        "the test"
+      ]
     },
     {
       "term": "const",
-      "sounds_like": ["konst"]
+      "sounds_like": [
+        "konst"
+      ]
     },
     {
       "term": "mut",
-      "sounds_like": ["mute"]
+      "sounds_like": [
+        "mute"
+      ]
     },
     {
       "term": "assert",
-      "sounds_like": ["uh sert"]
+      "sounds_like": [
+        "uh sert"
+      ]
     },
     {
       "term": "tuple",
-      "sounds_like": ["too pull"]
+      "sounds_like": [
+        "too pull"
+      ]
     },
     "bool",
     {
       "term": "dbt",
-      "sounds_like": ["dee bee tee"]
+      "sounds_like": [
+        "dee bee tee"
+      ]
     },
     "dbt Cloud",
     "dbt Core",
@@ -510,270 +529,424 @@
     "dbt Fusion",
     {
       "term": "SaaS",
-      "sounds_like": ["sass"]
+      "sounds_like": [
+        "sass"
+      ]
     },
     {
       "term": "SQL",
-      "sounds_like": ["sequel"]
+      "sounds_like": [
+        "sequel"
+      ]
     },
     {
       "term": "Lightdash",
-      "sounds_like": ["light dash"]
+      "sounds_like": [
+        "light dash"
+      ]
     },
     {
       "term": "Cloudy",
-      "sounds_like": ["cloudy", "clowdy"]
+      "sounds_like": [
+        "cloudy",
+        "clowdy"
+      ]
     },
     {
       "term": "chezmoi",
-      "sounds_like": ["shay mwah", "chez moi"]
+      "sounds_like": [
+        "shay mwah",
+        "chez moi"
+      ]
     },
     {
       "term": "yazi",
-      "sounds_like": ["yah zee"]
+      "sounds_like": [
+        "yah zee"
+      ]
     },
     {
       "term": "mise",
-      "sounds_like": ["meez"]
+      "sounds_like": [
+        "meez"
+      ]
     },
     {
       "term": "Herdr",
-      "sounds_like": ["herder"]
+      "sounds_like": [
+        "herder"
+      ]
     },
     {
       "term": "worktrunk",
-      "sounds_like": ["work trunk"]
+      "sounds_like": [
+        "work trunk"
+      ]
     },
     {
       "term": "ast-grep",
-      "sounds_like": ["a s t grep", "ast grep"]
+      "sounds_like": [
+        "a s t grep",
+        "ast grep"
+      ]
     },
     {
       "term": "zvec",
-      "sounds_like": ["zee veck", "z veck"]
+      "sounds_like": [
+        "zee veck",
+        "z veck"
+      ]
     },
     {
       "term": "ripgrep",
-      "sounds_like": ["rip grep"]
+      "sounds_like": [
+        "rip grep"
+      ]
     },
     {
       "term": "SQLFluff",
-      "sounds_like": ["sequel fluff", "sql fluff"]
+      "sounds_like": [
+        "sequel fluff",
+        "sql fluff"
+      ]
     },
     {
       "term": "DuckDB",
-      "sounds_like": ["duck dee bee"]
+      "sounds_like": [
+        "duck dee bee"
+      ]
     },
     {
       "term": "Postgres",
-      "sounds_like": ["post gres"]
+      "sounds_like": [
+        "post gres"
+      ]
     },
     {
       "term": "k8s",
-      "sounds_like": ["kates", "kay eights"]
+      "sounds_like": [
+        "kates",
+        "kay eights"
+      ]
     },
     {
       "term": "flyctl",
-      "sounds_like": ["fly control", "fly c t l"]
+      "sounds_like": [
+        "fly control",
+        "fly c t l"
+      ]
     },
     {
       "term": "launchctl",
-      "sounds_like": ["launch control", "launch c t l"]
+      "sounds_like": [
+        "launch control",
+        "launch c t l"
+      ]
     },
     {
       "term": "uv",
-      "sounds_like": ["you vee"]
+      "sounds_like": [
+        "you vee"
+      ]
     },
     {
       "term": "venv",
-      "sounds_like": ["vee env"]
+      "sounds_like": [
+        "vee env"
+      ]
     },
     {
       "term": "Neovim",
-      "sounds_like": ["neo vim"]
+      "sounds_like": [
+        "neo vim"
+      ]
     },
     {
       "term": "nvim",
-      "sounds_like": ["en vim"]
+      "sounds_like": [
+        "en vim"
+      ]
     },
     {
       "term": "tmux",
-      "sounds_like": ["tee mux"]
+      "sounds_like": [
+        "tee mux"
+      ]
     },
     {
       "term": "conf.d",
-      "sounds_like": ["conf dot dee", "conf dee"]
+      "sounds_like": [
+        "conf dot dee",
+        "conf dee"
+      ]
     },
     {
       "term": "TPC-DS",
-      "sounds_like": ["tee pee see dee ess"]
+      "sounds_like": [
+        "tee pee see dee ess"
+      ]
     },
     {
       "term": "CTE",
-      "sounds_like": ["see tee ee"]
+      "sounds_like": [
+        "see tee ee"
+      ]
     },
     {
       "term": "AST",
-      "sounds_like": ["a s t"]
+      "sounds_like": [
+        "a s t"
+      ]
     },
     {
       "term": "TypeScript",
-      "sounds_like": ["type script"]
+      "sounds_like": [
+        "type script"
+      ]
     },
     {
       "term": "toml",
-      "sounds_like": ["tom all"]
+      "sounds_like": [
+        "tom all"
+      ]
     },
     {
       "term": "json",
-      "sounds_like": ["jayce on", "jay sawn"]
+      "sounds_like": [
+        "jayce on",
+        "jay sawn"
+      ]
     },
     {
       "term": "Cloudflare",
-      "sounds_like": ["cloud flare"]
+      "sounds_like": [
+        "cloud flare"
+      ]
     },
     "Obsidian",
     {
       "term": "OpenCode",
-      "sounds_like": ["open code"]
+      "sounds_like": [
+        "open code"
+      ]
     },
     {
       "term": "Claude",
-      "sounds_like": ["clawed"]
+      "sounds_like": [
+        "clawed"
+      ]
     },
     {
       "term": "Claude Code",
-      "sounds_like": ["clawed code"]
+      "sounds_like": [
+        "clawed code"
+      ]
     },
     {
       "term": "OpenAI",
-      "sounds_like": ["open a i"]
+      "sounds_like": [
+        "open a i"
+      ]
     },
     "Anthropic",
     {
       "term": "GitHub",
-      "sounds_like": ["git hub"]
+      "sounds_like": [
+        "git hub"
+      ]
     },
     {
       "term": "1Password",
-      "sounds_like": ["one password", "one pass"]
+      "sounds_like": [
+        "one password",
+        "one pass"
+      ]
     },
     {
       "term": "Ilonna",
-      "sounds_like": ["ill on a"]
+      "sounds_like": [
+        "ill on a"
+      ]
     },
     {
       "term": "package.json",
-      "sounds_like": ["package jay sawn", "package dot jay sawn"]
+      "sounds_like": [
+        "package jay sawn",
+        "package dot jay sawn"
+      ]
     },
     {
       "term": "config.toml",
-      "sounds_like": ["config dot toml"]
+      "sounds_like": [
+        "config dot toml"
+      ]
     },
     {
       "term": "Databricks",
-      "sounds_like": ["data bricks"]
+      "sounds_like": [
+        "data bricks"
+      ]
     },
     {
       "term": "Redpanda",
-      "sounds_like": ["red panda"]
+      "sounds_like": [
+        "red panda"
+      ]
     },
     {
       "term": "Kubernetes",
-      "sounds_like": ["kuber netties", "cooper netties"]
+      "sounds_like": [
+        "kuber netties",
+        "cooper netties"
+      ]
     },
     {
       "term": "kubectl",
-      "sounds_like": ["koob control", "cube control", "kube cuddle"]
+      "sounds_like": [
+        "koob control",
+        "cube control",
+        "kube cuddle"
+      ]
     },
     {
       "term": "k9s",
-      "sounds_like": ["canines", "k nines"]
+      "sounds_like": [
+        "canines",
+        "k nines"
+      ]
     },
     {
       "term": "Deno",
-      "sounds_like": ["dee no"]
+      "sounds_like": [
+        "dee no"
+      ]
     },
     "Bun",
     {
       "term": "pnpm",
-      "sounds_like": ["p n p m"]
+      "sounds_like": [
+        "p n p m"
+      ]
     },
     {
       "term": "Homebrew",
-      "sounds_like": ["home brew"]
+      "sounds_like": [
+        "home brew"
+      ]
     },
     {
       "term": "macOS",
-      "sounds_like": ["mac o s", "mac os"]
+      "sounds_like": [
+        "mac o s",
+        "mac os"
+      ]
     },
     {
       "term": "fzf",
-      "sounds_like": ["f z f"]
+      "sounds_like": [
+        "f z f"
+      ]
     },
     {
       "term": "zoxide",
-      "sounds_like": ["zox ide", "zocks ide"]
+      "sounds_like": [
+        "zox ide",
+        "zocks ide"
+      ]
     },
     {
       "term": "lazygit",
-      "sounds_like": ["lazy git"]
+      "sounds_like": [
+        "lazy git"
+      ]
     },
     {
       "term": "lazydocker",
-      "sounds_like": ["lazy docker"]
+      "sounds_like": [
+        "lazy docker"
+      ]
     },
     {
       "term": "jq",
-      "sounds_like": ["jay q"]
+      "sounds_like": [
+        "jay q"
+      ]
     },
     {
       "term": "yq",
-      "sounds_like": ["why q"]
+      "sounds_like": [
+        "why q"
+      ]
     },
     {
       "term": "pgcli",
-      "sounds_like": ["p g c l i", "pg cli"]
+      "sounds_like": [
+        "pee gee cee ell i",
+        "pg cli"
+      ]
     },
     {
       "term": "Pandoc",
-      "sounds_like": ["pan doc"]
+      "sounds_like": [
+        "pan dock"
+      ]
     },
     {
       "term": "Pulumi",
-      "sounds_like": ["pull oomi", "pa loomi"]
+      "sounds_like": [
+        "pull oomi",
+        "pa loomi"
+      ]
     },
     {
       "term": "Tailscale",
-      "sounds_like": ["tail scale"]
+      "sounds_like": [
+        "tail scale"
+      ]
     },
     {
       "term": "OrbStack",
-      "sounds_like": ["orb stack"]
+      "sounds_like": [
+        "orb stack"
+      ]
     },
     {
       "term": "Karabiner",
-      "sounds_like": ["carabiner"]
+      "sounds_like": [
+        "carabiner"
+      ]
     },
     {
       "term": "marimo",
-      "sounds_like": ["mari mo", "ma ree mo"]
+      "sounds_like": [
+        "mari mo",
+        "ma ree mo"
+      ]
     },
     {
       "term": "transcrypt",
-      "sounds_like": ["trans crypt"]
+      "sounds_like": [
+        "trans crypt"
+      ]
     },
     {
       "term": "git-cliff",
-      "sounds_like": ["git cliff"]
+      "sounds_like": [
+        "git cliff"
+      ]
     },
     {
       "term": "mitmproxy",
-      "sounds_like": ["mitm proxy", "man in the middle proxy"]
+      "sounds_like": [
+        "mitm proxy",
+        "man in the middle proxy"
+      ]
     },
     {
       "term": "Mullvad",
-      "sounds_like": ["mull vad"]
+      "sounds_like": [
+        "mull vad"
+      ]
     },
     "Codex",
     "Typst"
