@@ -29,6 +29,7 @@ function uppy -d "Upgrade system tools across package and plugin managers"
         "Mise tools" "mise -C "(string escape -- $source_path)" upgrade" \
         "uv Python patches" _uppy_upgrade_uv_pythons \
         "GitHub CLI extensions" "gh extension upgrade --all" \
+        "Mason tools" _uppy_upgrade_mason_tools \
         "Herdr plugins" _uppy_update_herdr_plugins
 
     set -l failures
@@ -76,6 +77,18 @@ function _uppy_update_herdr_plugins -d "Update GitHub-installed Herdr plugins"
     end
 
     herdr plugin update --yes
+end
+
+function _uppy_upgrade_mason_tools -d "Upgrade Mason-installed Neovim tools headlessly"
+    argparse n/dry-run -- $argv
+    or return
+
+    set -l dry_run false
+    if set -q _flag_dry_run
+        set dry_run true
+    end
+
+    nvim --headless -c "lua require('config.mason_upgrade').run({ dry_run = $dry_run })"
 end
 
 function _uppy_upgrade_uv_pythons -d "Move uv-managed Python minors to their latest patch"
