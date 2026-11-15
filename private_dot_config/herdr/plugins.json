@@ -91,8 +91,8 @@
     "version": "0.14.0",
     "min_herdr_version": "0.9.0",
     "description": "Cmd+K command bar with agent icons, fuzzy search, and optional automatic tab titles",
-    "manifest_path": "/Users/winnie/.config/herdr/plugins/github-installations/herdr-bar-96eebe452a9c/90020-0/checkout/herdr-plugin.toml",
-    "plugin_root": "/Users/winnie/.config/herdr/plugins/github-installations/herdr-bar-96eebe452a9c/90020-0/checkout",
+    "manifest_path": "/Users/winnie/.config/herdr/plugins/github-installations/herdr-bar-96eebe452a9c/80777-0/checkout/herdr-plugin.toml",
+    "plugin_root": "/Users/winnie/.config/herdr/plugins/github-installations/herdr-bar-96eebe452a9c/80777-0/checkout",
     "enabled": true,
     "platforms": [
       "linux",
@@ -212,9 +212,9 @@
       "kind": "github",
       "owner": "jeffarese",
       "repo": "herdr-bar",
-      "resolved_commit": "5099a62a786331af9c3512d3cb2aa960ba06c9f3",
-      "managed_path": "/Users/winnie/.config/herdr/plugins/github-installations/herdr-bar-96eebe452a9c/90020-0/checkout",
-      "installed_unix_ms": 1794244168231
+      "resolved_commit": "598395f6c51929145d45ec66a1e5b32e0452c7db",
+      "managed_path": "/Users/winnie/.config/herdr/plugins/github-installations/herdr-bar-96eebe452a9c/80777-0/checkout",
+      "installed_unix_ms": 1794530714904
     }
   },
   {
