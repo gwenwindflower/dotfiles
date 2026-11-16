@@ -388,7 +388,7 @@
     "gnome_clipboard_restore": false,
     "typed_text": false,
     "meeting_notes_vocabulary": false,
-    "notch_indicator": false,
+    "notch_indicator": true,
     "meeting_finished_event": false,
     "gnome_meeting_capsules": false,
     "gnome_annotate": false,
