@@ -30,6 +30,7 @@
     "anomalyco/tap/hex",
     "anthropics/tap/ant",
     "crmne/tap/spotifast",
+    "stablyai/orca/orca",
     "szamowski-dev/tap/hora"
   ]
 }
