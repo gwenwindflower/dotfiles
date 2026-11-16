@@ -5,8 +5,8 @@
 # edit this file
 abbr --add cmefa nvim ~/.local/share/chezmoi/.chezmoitemplates/fish/22-abbreviations.fish
 # work with the rest of the dotfiles repo
-abbr --add cmm z ~/.local/share/chezmoi
-abbr --add cmee ee -e ~/.local/share/chezmoi
+abbr --add cmg z ~/.local/share/chezmoi
+abbr --add cmge ee -e ~/.local/share/chezmoi
 #
 # print, copy, paste
 abbr --add p echo
@@ -148,6 +148,7 @@ abbr --add cmxc chezmoi apply ~/.claude/
 abbr --add cmc chezmoi cat
 abbr --add cmd chezmoi diff
 abbr --add cmdr chezmoi diff -r
+abbr --add cmm chezmoi merge
 # runners
 abbr --add tk task
 abbr --add mk make
