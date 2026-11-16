@@ -1,0 +1,52 @@
+# git-cliff renders release notes for GitHub Releases; there is no CHANGELOG.md.
+# Commits must be Conventional Commits or `mise run release:notes` fails.
+
+[changelog]
+body = """
+{% for group, commits in commits | group_by(attribute="group") %}
+    ### {{ group | striptags | trim | upper_first }}
+    {% for group, commits in commits | group_by(attribute="scope") %}
+        #### {{ group | upper_first }}
+        {% for commit in commits %}
+              * {{ commit.message | split(pat="\n") | first | trim }}\
+                {% if commit.remote.username %} by @{{ commit.remote.username }}{%- endif %}\
+                {% if commit.remote.pr_number %} in #{{ commit.remote.pr_number }}{%- endif %}
+        {% endfor %}
+    {% endfor %}\
+{% endfor %}\n
+"""
+trim = true
+
+[git]
+conventional_commits = true
+filter_unconventional = true
+require_conventional = true
+split_commits = false
+filter_commits = true
+fail_on_unmatched_commit = true
+topo_order = true
+sort_commits = "oldest"
+tag_pattern = '^v[0-9]+\.[0-9]+\.[0-9]+$'
+# Group prefixes are zero-padded HTML comments so lexical sort matches priority.
+commit_parsers = [
+  { message = "^feat", group = "<!-- 01 -->✨ Features", default_scope = "General" },
+  { message = "^fix", group = "<!-- 02 -->🐛 Bug Fixes", default_scope = "General" },
+  { body = ".*security", group = "<!-- 03 -->🛡️ Security", default_scope = "General" },
+  { message = "^perf", group = "<!-- 04 -->🏎️ Performance", default_scope = "General" },
+  { message = "^refactor", group = "<!-- 05 -->♻️ Refactor", default_scope = "General" },
+  { message = "^test", group = "<!-- 06 -->🧪 Testing", default_scope = "General" },
+  { message = "^agent", group = "<!-- 07 -->🤖 Coding Agents", default_scope = "Config" },
+  { message = "^docs\\(todo\\)", skip = true },
+  { message = "^docs", group = "<!-- 08 -->📚 Documentation", default_scope = "User Docs" },
+  { message = "^build", group = "<!-- 09 -->🛠️ Build System", default_scope = "General" },
+  { message = "^ci", group = "<!-- 10 -->🚧 CI/CD", default_scope = "GitHub Actions" },
+  { message = "^style", group = "<!-- 11 -->🎨 Style & Formatting", default_scope = "General" },
+  { message = "^chore\\(release\\):", skip = true },
+  { message = "^chore\\(specs\\)", skip = true },
+  { message = "^chore", group = "<!-- 12 -->🧰 Tooling & Tasks", default_scope = "General" },
+]
+
+[bump]
+initial_tag = "v0.0.1"
+breaking_always_bump_major = false
+features_always_bump_minor = false
