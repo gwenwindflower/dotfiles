@@ -341,11 +341,11 @@
   {
     "plugin_id": "wtherdr",
     "name": "wtherdr",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "min_herdr_version": "0.7.5",
     "description": "Run Worktrunk's native worktree workflows in Herdr popups and keep nested workspaces in sync.",
-    "manifest_path": "/Users/winnie/dev/herdr/wtherdr.feat-workflow-dialogs/herdr-plugin.toml",
-    "plugin_root": "/Users/winnie/dev/herdr/wtherdr.feat-workflow-dialogs",
+    "manifest_path": "/Users/winnie/.config/herdr/plugins/github-installations/wtherdr-0a1b0bff4c46/80357-0/checkout/herdr-plugin.toml",
+    "plugin_root": "/Users/winnie/.config/herdr/plugins/github-installations/wtherdr-0a1b0bff4c46/80357-0/checkout",
     "enabled": true,
     "platforms": [
       "linux",
@@ -360,6 +360,18 @@
       }
     ],
     "actions": [
+      {
+        "id": "clean",
+        "title": "wt clean",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "wtherdr",
+          "popup",
+          "clean"
+        ]
+      },
       {
         "id": "create",
         "title": "󱓊 wt create",
@@ -434,6 +446,30 @@
       }
     ],
     "panes": [
+      {
+        "id": "clean",
+        "title": "wt clean",
+        "placement": "popup",
+        "width": 72,
+        "height": 7,
+        "command": [
+          "wtherdr",
+          "prompt",
+          "clean"
+        ]
+      },
+      {
+        "id": "clean-run",
+        "title": "wt clean",
+        "placement": "popup",
+        "width": "90%",
+        "height": "85%",
+        "command": [
+          "wtherdr",
+          "run",
+          "clean"
+        ]
+      },
       {
         "id": "complete",
         "title": "wt result",
@@ -579,7 +615,12 @@
       }
     ],
     "source": {
-      "kind": "local"
+      "kind": "github",
+      "owner": "gwenwindflower",
+      "repo": "wtherdr",
+      "resolved_commit": "a635a97cf648283853a060a5418842099b4a686c",
+      "managed_path": "/Users/winnie/.config/herdr/plugins/github-installations/wtherdr-0a1b0bff4c46/80357-0/checkout",
+      "installed_unix_ms": 1794797548429
     }
   }
 ]
