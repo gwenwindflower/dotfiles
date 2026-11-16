@@ -1,0 +1,12 @@
+local = []
+
+[[plugins]]
+id = "t4t5.dracula"
+repo = "t4t5/rencal-theme-dracula"
+commit = "e5173a8f32f1958a30cfc1316c0fba76e429d801"
+
+[[plugins]]
+id = "gwenwindflower.rose-pine-dawn"
+repo = "gwenwindflower/rencal-theme-rose-pine-dawn"
+commit = "8981215f21ae3c041dc6df19a7978dffa95f1833"
+tag = "v0.0.3"
