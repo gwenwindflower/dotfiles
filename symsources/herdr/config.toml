@@ -119,7 +119,7 @@ width = 72
 height = 16
 
 [[keys.command]]
-key = ["prefix+g", "shift+super+g", "shift+alt+g"]
+key = ["prefix+g", "shift+super+g"]
 type = "plugin_action"
 command = "wtherdr.switch"
 description = "wt switch worktree"
@@ -131,10 +131,22 @@ command = "wtherdr.create"
 description = "wt create worktree"
 
 [[keys.command]]
-key = ["prefix+super+g", "prefix+alt+g"]
+key = ["prefix+super+g"]
 type = "plugin_action"
 command = "wtherdr.merge"
 description = "wt merge worktree"
+
+[[keys.command]]
+key = ["prefix+alt+g"]
+type = "plugin_action"
+command = "wtherdr.clean"
+description = "wt clean merged worktrees"
+
+[[keys.command]]
+key = ["prefix+ctrl+alt+g"]
+type = "plugin_action"
+command = "wtherdr.hook"
+description = "wt hooks"
 
 [[keys.command]]
 key = "prefix+ctrl+g"
