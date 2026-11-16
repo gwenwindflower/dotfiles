@@ -41,6 +41,11 @@ esac
 [[pre-start]]
 copy = "wt step copy-ignored"
 
+# Copied Cargo fingerprints can mark the new checkout's own crates fresh; keep
+# the dependency builds and rebuild only workspace members.
+[[pre-start]]
+cargo = "test -f Cargo.toml || exit 0; cargo clean --workspace"
+
 # A failing pre-start step cancels --execute, so a machine without depop would
 # create the worktree but never launch the agent. Degrade to skipping instead.
 [[pre-start]]
