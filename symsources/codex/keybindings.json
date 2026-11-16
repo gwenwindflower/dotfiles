@@ -41,7 +41,7 @@
   },
   {
     "command": "openAvatarOverlay",
-    "key": null
+    "key": "Alt+Shift+Space"
   },
   {
     "command": "openSideChat",
