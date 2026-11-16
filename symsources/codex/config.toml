@@ -329,26 +329,26 @@ trusted_hash = "sha256:317a07045dfc95aef2e80c55428a2f817e2768be867e3b1ef29a73da8
 enabled = true
 
 [hooks.state."/Users/winnie/.codex/hooks.json:pre_tool_use:0:0"]
-trusted_hash = "sha256:11e9e9790dd39d0be113260f5ddee480f3423df975107dbfe3670ee80dc53b04"
-
+enabled = true
+trusted_hash = "sha256:d340f2675d1df6ba85b244e63fb3694c8846e462df83f61eabf73f630e13ffc1"
 [hooks.state."/Users/winnie/.codex/hooks.json:permission_request:0:0"]
-trusted_hash = "sha256:261c964b1ee7144b8ee35491332b0260614aafe745395e8fe283fa008884d7c2"
-
+enabled = true
+trusted_hash = "sha256:7fb4c3c54bf4b64e94ec9419a803220f30b7e552dfb4a4806d194b439b58f3ca"
 [hooks.state."/Users/winnie/.codex/hooks.json:session_start:1:0"]
-trusted_hash = "sha256:1d35af394dbcd2b93315f3c526a1369dc2c48ebed7e4520ff09999283c78f65b"
-
+enabled = true
+trusted_hash = "sha256:94b4d1a902ec6b5098ba63efae732f362d7348f600f2a83a4a710ea7db4a5545"
 [hooks.state."/Users/winnie/.codex/hooks.json:stop:0:0"]
-trusted_hash = "sha256:b0e6900baf2f28a98190df9a5fe648839e35c19a7b1b41dbf0c4c41bcf89f6a8"
-
+enabled = true
+trusted_hash = "sha256:d54c9f2b224964fbdf3781415e5be68f2d92f0be2d413ef527f679c06559603a"
 [hooks.state."/Users/winnie/.codex/hooks.json:user_prompt_submit:0:0"]
-trusted_hash = "sha256:d4690080fa540c83b9c545ef17189e205ecefb76eb76c929b10760cd29835917"
-
+enabled = true
+trusted_hash = "sha256:8ea1302cbe5790e03a4ef2956313c1dd48a55600551e062ee61c3b629e2a39d1"
 [hooks.state."/Users/winnie/.codex/hooks.json:interrupt:0:0"]
-trusted_hash = "sha256:d853f716353cce1c2662ca6004877fc585c620255eb36169865c0652277a76fe"
-
+enabled = true
+trusted_hash = "sha256:67367d1424906a2466d515df86633a43e3f4c615de479bea4cb72265dd16b56c"
 [hooks.state."/Users/winnie/.codex/hooks.json:post_tool_use:0:0"]
-trusted_hash = "sha256:7112f01891e6085b3ffb8f5b667e955415e8a38ded7f24d1dd70398cf61faf01"
-
+enabled = true
+trusted_hash = "sha256:b0315c94b3f571e1c012f96f440d38fd05623315bd2b4e228ec279d88fbc9497"
 [hooks.state."/Users/winnie/.codex/hooks.json:session_end:0:0"]
 trusted_hash = "sha256:6cd70abe5a4dde730d242560d29b17693ed00601723ea33dc8d113a5b31f93bd"
 
@@ -376,6 +376,30 @@ trusted_content_hash = "sha256:1245fa6dec94d1002e61cba72e62eab0ddcf319aff73eda4d
 [hooks.state."worktrunk@worktrunk:plugin.json#hooks[0]:stop:0:0"]
 trusted_hash = "sha256:350c210fba4996f546f4d0483fc29286d73880ca5ef01fda3583ea2ce676945d"
 trusted_content_hash = "sha256:1245fa6dec94d1002e61cba72e62eab0ddcf319aff73eda4dd7a83f7eb96eddc"
+
+[hooks.state."/Users/winnie/.codex/hooks.json:subagent_start:0:0"]
+enabled = true
+trusted_hash = "sha256:7ef9befd6593a9688b2d7af35fde4c75fad19fcfa18433e29a1d1f0fdff463b8"
+
+[hooks.state."/Users/winnie/.codex/hooks.json:subagent_stop:0:0"]
+enabled = true
+trusted_hash = "sha256:a3ed7e150b979121fb95690f1afd082f04da0281adc1e63af79bf1236fa745bc"
+
+[hooks.state."worktrunk-markers@worktrunk:plugin.json#hooks[0]:permission_request:0:0"]
+trusted_hash = "sha256:b5f6112154fd814298da679652ea096e11434b7f2876d471eb00c790a68045d0"
+trusted_content_hash = "sha256:71ea74f6c706bec1d3fff129ed70e29fd52f2f22d17ce00312341a9126a3479a"
+
+[hooks.state."worktrunk-markers@worktrunk:plugin.json#hooks[0]:session_end:0:0"]
+trusted_hash = "sha256:09b9fff83447c926af5f61010bc3dd3c8f2e6194c7c06b08f8acbf808a51710d"
+trusted_content_hash = "sha256:71ea74f6c706bec1d3fff129ed70e29fd52f2f22d17ce00312341a9126a3479a"
+
+[hooks.state."worktrunk-markers@worktrunk:plugin.json#hooks[0]:user_prompt_submit:0:0"]
+trusted_hash = "sha256:e2ffec558188fd0988ad51768594f675801fd2a1ba2895b5df2aca2650d70c2a"
+trusted_content_hash = "sha256:71ea74f6c706bec1d3fff129ed70e29fd52f2f22d17ce00312341a9126a3479a"
+
+[hooks.state."worktrunk-markers@worktrunk:plugin.json#hooks[0]:stop:0:0"]
+trusted_hash = "sha256:350c210fba4996f546f4d0483fc29286d73880ca5ef01fda3583ea2ce676945d"
+trusted_content_hash = "sha256:71ea74f6c706bec1d3fff129ed70e29fd52f2f22d17ce00312341a9126a3479a"
 
 [marketplaces.openai-bundled]
 source_type = "local"
