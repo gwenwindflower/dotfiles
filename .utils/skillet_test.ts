@@ -5,9 +5,9 @@ import {
   parseSkillMetadata,
   refName,
   setBaseline,
-  tempDirPrefix,
   sharedFileSources,
   stripGhMetadata,
+  tempDirPrefix,
   upstreamStatus,
 } from "./skillet.ts";
 
@@ -184,7 +184,10 @@ Deno.test("refName strips refs/tags and refs/heads prefixes and leaves SHAs alon
 
 Deno.test("tempDirPrefix flattens an exact skill path into one directory name", () => {
   assertEquals(tempDirPrefix("qmd"), "skillet-qmd-");
-  assertEquals(tempDirPrefix("apps/cli/skill/cap"), "skillet-apps-cli-skill-cap-");
+  assertEquals(
+    tempDirPrefix("apps/cli/skill/cap"),
+    "skillet-apps-cli-skill-cap-",
+  );
 });
 
 Deno.test("setBaseline edits an entry in a later spine without touching earlier spines", () => {

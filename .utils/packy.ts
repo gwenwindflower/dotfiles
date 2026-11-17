@@ -406,17 +406,16 @@ function applicableManagers(os: Os, filter?: Manager): Manager[] {
   return filter ? all.filter((m) => m === filter) : all;
 }
 
-// deno-lint-ignore no-explicit-any
 function getMap(
   data: ChezmoiData,
   manager: Manager,
   os: Os,
 ): ProfileMap | undefined {
   const path = SPECS[manager].yamlPath(os);
-  let node: any = data;
+  let node: unknown = data;
   for (const seg of path) {
-    if (node == null) return undefined;
-    node = node[seg];
+    if (node == null || typeof node !== "object") return undefined;
+    node = (node as Record<string, unknown>)[seg];
   }
   return node as ProfileMap | undefined;
 }
