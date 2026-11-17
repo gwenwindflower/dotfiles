@@ -16,8 +16,8 @@
  *   --help      Show this help
  */
 
-import { expandGlob } from "jsr:@std/fs@1/expand-glob";
-import { relative } from "jsr:@std/path@1";
+import { expandGlob } from "@std/fs/expand-glob";
+import { relative } from "@std/path";
 
 // ── Types ──────────────────────────────────────────────────────────────
 
@@ -47,9 +47,13 @@ export function fixTableLine(line: string): string {
   // Split into cells on unescaped pipes only — `\|` is in-cell content
   // (e.g. SQL `||` operators rendered as `\|\|`).
   const inner = trimmed.slice(1, -1);
-  const cells = inner.split(/(?<!\\)\|/);
+  const cells = inner.split(/(?<!\\)\|/).map((cell) => cell.trim());
+  const isSeparator = cells.every((cell) => /^:?-+:?$/.test(cell));
+  const normalized = isSeparator
+    ? cells.map((cell) => cell.replace(/-+/, "---"))
+    : cells;
 
-  const formatted = cells.map((cell) => ` ${cell.trim()} `).join("|");
+  const formatted = normalized.map((cell) => ` ${cell} `).join("|");
   return `|${formatted}|`;
 }
 

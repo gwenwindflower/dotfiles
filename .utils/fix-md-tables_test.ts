@@ -1,4 +1,4 @@
-import { assertEquals } from "jsr:@std/assert@1";
+import { assertEquals } from "@std/assert";
 import { fixTableLine, isTableLine, processContent } from "./fix-md-tables.ts";
 
 // ── isTableLine ────────────────────────────────────────────────────
@@ -28,6 +28,18 @@ Deno.test("fixTableLine is idempotent on already-spaced rows", () => {
 
 Deno.test("fixTableLine preserves alignment markers in separator rows", () => {
   assertEquals(fixTableLine("|:---:|---:|---|"), "| :---: | ---: | --- |");
+});
+
+Deno.test("fixTableLine shortens padded separator dashes to three", () => {
+  assertEquals(
+    fixTableLine("| ------- | :-------: | -------: | :------ |"),
+    "| --- | :---: | ---: | :--- |",
+  );
+});
+
+Deno.test("fixTableLine leaves dash runs in content rows alone", () => {
+  const row = "| ------- | text |";
+  assertEquals(fixTableLine(row), row);
 });
 
 Deno.test("fixTableLine collapses excess internal whitespace", () => {
