@@ -19,7 +19,6 @@ packages:
           - rjyo/moshi
           - rubysolo/tools
           - sassman/tap
-          - stablyai/orca
           - supermodellabs/tap
           - superradcompany/tap
           - szamowski-dev/tap
@@ -248,7 +247,6 @@ packages:
           - secretive
           - spotifast
           - sprites
-          - stablyai/orca/orca
           - tailscale-app
           - zoom
         personal:
