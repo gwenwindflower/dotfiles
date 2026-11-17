@@ -12,6 +12,7 @@ aube = "latest"
 "npm:@zvec/zvec-grep" = "latest"
 "npm:knap" = "latest"
 wrangler = { version = "latest", allow_builds = ["esbuild", "sharp", "workerd"] }
+"npm:pyright" = "latest"
 "npm:@vtsls/language-server" = "latest"
 
 [settings]

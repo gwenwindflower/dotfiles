@@ -286,6 +286,7 @@ packages:
         - modal
         - nbpreview
         - rematter
+        - ruff
       personal:
         - zmk
       work: []
