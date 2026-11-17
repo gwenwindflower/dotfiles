@@ -547,6 +547,7 @@ avatar-overlay-mascot-width-px = 93
 dock-icon-preference = "codex-system"
 realtimeVoiceScreenContextEnabled = true
 migratedFollowUpQueueToSteer = false
+code-review-github-link-target = "github"
 
 [desktop.appearanceLightChromeTheme]
 accent = "#56949f"
