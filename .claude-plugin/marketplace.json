@@ -20,7 +20,7 @@
 		},
 		{
 			"name": "deno-or-ts",
-			"description": "Conditional LSP that auto-routes from workspace files: `deno lsp` if deno.json/deno.jsonc is found at or above the workspace root, with typescript-language-server as fallback. Replaces the official typescript-lsp plugin.",
+			"description": "Conditional LSP that auto-routes from workspace files: `deno lsp` if deno.json/deno.jsonc is found at or above the workspace root, with vtsls as fallback. Replaces the official typescript-lsp plugin.",
 			"version": "0.0.1",
 			"author": {
 				"name": "Gwyneth Windflower"
