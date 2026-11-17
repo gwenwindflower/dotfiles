@@ -24,7 +24,11 @@
 	},
 	"overrides": [
 		{
-			"includes": ["**/hex/settings.json", "symsources/codex/keybindings.json"],
+			"includes": [
+				"**/hex/settings.json",
+				"symsources/codex/keybindings.json",
+				"symsources/claude/settings.json"
+			],
 			"formatter": {
 				"indentStyle": "space",
 				"indentWidth": 2,
