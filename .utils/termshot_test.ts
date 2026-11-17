@@ -66,13 +66,13 @@ Deno.test("addGradientBackground applies gradient direction and custom colors", 
 });
 
 Deno.test("addGradientBackground rejects invalid and processed SVGs", () => {
-  assertRejects(
-    async () => addGradientBackground("not svg", DEFAULT_BACKGROUND),
+  assertThrows(
+    () => addGradientBackground("not svg", DEFAULT_BACKGROUND),
     Error,
     "missing root <svg> tag",
   );
-  assertRejects(
-    async () =>
+  assertThrows(
+    () =>
       addGradientBackground(
         '<svg><defs id="termshot-bg"></defs></svg>',
         DEFAULT_BACKGROUND,
@@ -167,8 +167,8 @@ Deno.test("selectRasterFontFiles keeps only the three rendering families", () =>
 });
 
 Deno.test("selectRasterFontFiles requires every rendering family", () => {
-  assertRejects(
-    async () =>
+  assertThrows(
+    () =>
       selectRasterFontFiles("/fonts", [
         "EllographCFFixedPitch-Regular.otf",
         "IBMPlexMono-Regular.otf",
@@ -295,9 +295,9 @@ Deno.test("captureTerminal runs termframe then resvg and removes transient SVG",
   const calls: Array<{ command: string; args: string[] }> = [];
   const writes: Array<{ path: string; content: string }> = [];
   const removals: string[] = [];
-  const runner: CommandRunner = async (command, args) => {
+  const runner: CommandRunner = (command, args) => {
     calls.push({ command, args });
-    return { code: 0 };
+    return Promise.resolve({ code: 0 });
   };
 
   await captureTerminal(
@@ -316,13 +316,17 @@ Deno.test("captureTerminal runs termframe then resvg and removes transient SVG",
     },
     {
       runner,
-      readTextFile: async () =>
-        '<svg><svg class="terminal" font-family="JetBrains Mono"></svg></svg>',
-      writeTextFile: async (path, content) => {
+      readTextFile: () =>
+        Promise.resolve(
+          '<svg><svg class="terminal" font-family="JetBrains Mono"></svg></svg>',
+        ),
+      writeTextFile: (path, content) => {
         writes.push({ path, content });
+        return Promise.resolve();
       },
-      remove: async (path) => {
+      remove: (path) => {
         removals.push(path);
+        return Promise.resolve();
       },
     },
   );
@@ -346,17 +350,20 @@ Deno.test("captureTerminal renders box glyphs apart from labels", async () => {
       zoom: 2,
     },
     {
-      runner: async () => ({ code: 0 }),
-      readTextFile: async () =>
-        `<svg><svg class="terminal" font-family="JetBrains Mono">${
-          terminalRow(
-            '<text xml:space="preserve" y="1.01em"><tspan>└── </tspan><tspan>git </tspan></text>',
-          )
-        }</svg></svg>`,
-      writeTextFile: async (_path, content) => {
+      runner: () => Promise.resolve({ code: 0 }),
+      readTextFile: () =>
+        Promise.resolve(
+          `<svg><svg class="terminal" font-family="JetBrains Mono">${
+            terminalRow(
+              '<text xml:space="preserve" y="1.01em"><tspan>└── </tspan><tspan>git </tspan></text>',
+            )
+          }</svg></svg>`,
+        ),
+      writeTextFile: (_path, content) => {
         writes.push(content);
+        return Promise.resolve();
       },
-      remove: async () => {},
+      remove: () => Promise.resolve(),
     },
   );
 
@@ -368,7 +375,7 @@ Deno.test("captureTerminal renders box glyphs apart from labels", async () => {
 });
 
 Deno.test("captureTerminal stops when termframe fails", async () => {
-  const runner: CommandRunner = async () => ({ code: 9 });
+  const runner: CommandRunner = () => Promise.resolve({ code: 9 });
 
   await assertRejects(
     () =>
@@ -383,9 +390,9 @@ Deno.test("captureTerminal stops when termframe fails", async () => {
         },
         {
           runner,
-          readTextFile: async () => "",
-          writeTextFile: async () => {},
-          remove: async () => {},
+          readTextFile: () => Promise.resolve(""),
+          writeTextFile: () => Promise.resolve(),
+          remove: () => Promise.resolve(),
         },
       ),
     Error,
