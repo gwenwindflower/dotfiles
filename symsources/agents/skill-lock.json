@@ -87,9 +87,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/lightdash/lightdash.git",
       "skillPath": "skills/developing-in-lightdash/SKILL.md",
-      "skillFolderHash": "8eb90638df12de17d2812df699190cf1c6b559d5",
+      "skillFolderHash": "9cd0e24e3523abee984a0fb6da300d9311061734",
       "installedAt": "2026-10-26T21:41:12Z",
-      "updatedAt": "2026-11-13T00:05:18Z"
+      "updatedAt": "2026-11-17T04:26:40Z"
     },
     "diagramming": {
       "source": "gwenwindflower/dotfiles",
@@ -198,6 +198,15 @@
       "skillFolderHash": "4165bf113e5b4ba88a5e45ceb69b71b82b151fc8",
       "installedAt": "2026-10-29T06:38:06Z",
       "updatedAt": "2026-10-29T06:38:06Z"
+    },
+    "ui-sdk": {
+      "source": "vercel-labs/ui",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vercel-labs/ui.git",
+      "skillPath": "packages/core/skills/ui-sdk/SKILL.md",
+      "skillFolderHash": "5af0ec8a4c4132f82e2680abca41af53ad3e3ccd",
+      "installedAt": "2026-11-17T04:27:46Z",
+      "updatedAt": "2026-11-17T04:28:30Z"
     },
     "ultra-concise-mode": {
       "source": "gwenwindflower/dotfiles",
