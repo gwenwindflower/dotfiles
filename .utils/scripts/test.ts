@@ -26,7 +26,7 @@
  * needed.
  */
 
-import { bold, cyan, dim, green, red } from "@std/fmt/colors";
+import { bold, cyan, dim, green, red, stripAnsiCode } from "@std/fmt/colors";
 
 // ── Constants ──────────────────────────────────────────────────────
 
@@ -56,6 +56,7 @@ interface Result {
   suite: Suite;
   passed: number;
   failed: number;
+  ignored: number;
   duration: number;
   failedTests: string[];
   output: string;
@@ -67,9 +68,6 @@ interface Result {
 const enc = new TextEncoder();
 const write = (s: string) => Deno.stdout.writeSync(enc.encode(s));
 const isTTY = Deno.stdout.isTerminal();
-
-const ANSI_RE = /\x1b\[[0-9;]*m/g;
-const strip = (s: string) => s.replace(ANSI_RE, "");
 
 function fmtDuration(ms: number): string {
   if (ms < 1000) return `${Math.round(ms)}ms`;
@@ -114,10 +112,11 @@ function discoverSuites(): Suite[] {
 
 function parseOutput(
   raw: string,
-): { passed: number; failed: number; failedTests: string[] } {
-  const lines = strip(raw).split("\n");
+): { passed: number; failed: number; ignored: number; failedTests: string[] } {
+  const lines = stripAnsiCode(raw).split("\n");
   let passed = 0;
   let failed = 0;
+  let ignored = 0;
   const failedTests: string[] = [];
 
   for (const line of lines) {
@@ -127,15 +126,21 @@ function parseOutput(
     if (fail) failedTests.push(fail[1]);
 
     const sum = t.match(
-      /(?:ok|FAILED)\s*\|\s*(\d+)\s*passed\s*\|\s*(\d+)\s*failed/,
+      /(?:ok|FAILED)\s*\|\s*(\d+)\s*passed\s*\|\s*(\d+)\s*failed(?:\s*\|\s*(\d+)\s*ignored)?/,
     );
     if (sum) {
       passed += parseInt(sum[1]);
       failed += parseInt(sum[2]);
+      ignored += parseInt(sum[3] ?? "0");
     }
   }
 
-  return { passed, failed, failedTests };
+  return { passed, failed, ignored, failedTests };
+}
+
+function passStats(parsed: { passed: number; ignored: number }): string {
+  const ignored = parsed.ignored > 0 ? `, ${parsed.ignored} ignored` : "";
+  return `${parsed.passed} passed${ignored}`;
 }
 
 // ── Suite Execution ────────────────────────────────────────────────
@@ -165,7 +170,9 @@ async function runSuite(
 function printReport(results: Result[]) {
   const totalPassed = results.reduce((s, r) => s + r.passed, 0);
   const totalFailed = results.reduce((s, r) => s + r.failed, 0);
+  const totalIgnored = results.reduce((s, r) => s + r.ignored, 0);
   const totalTests = totalPassed + totalFailed;
+  const ignoredStr = totalIgnored > 0 ? `, ${totalIgnored} ignored` : "";
   const totalTime = results.reduce((s, r) => s + r.duration, 0);
   const failures = results.filter((r) => r.failed > 0);
 
@@ -175,13 +182,17 @@ function printReport(results: Result[]) {
     write(
       `  ${green(bold(CHECK))} ${
         green(bold(`${totalPassed} tests passed`))
-      } across ${results.length} suites  ${dim(fmtDuration(totalTime))}\n`,
+      }${ignoredStr} across ${results.length} suites  ${
+        dim(fmtDuration(totalTime))
+      }\n`,
     );
   } else {
     write(
       `  ${red(bold(CROSS))} ${bold(`${totalPassed}/${totalTests} passed`)}, ${
         red(bold(`${totalFailed} failed`))
-      } across ${results.length} suites  ${dim(fmtDuration(totalTime))}\n`,
+      }${ignoredStr} across ${results.length} suites  ${
+        dim(fmtDuration(totalTime))
+      }\n`,
     );
   }
 
@@ -267,7 +278,7 @@ async function runVerbose(suites: Suite[], results: Result[]) {
 
     // Print stdout, skipping the "Task test:xxx" preamble line
     for (const line of stdout.split("\n")) {
-      const plain = strip(line).trim();
+      const plain = stripAnsiCode(line).trim();
       if (plain.startsWith("Task test:")) continue;
       if (line.trim()) write(`  ${line}\n`);
     }
@@ -279,7 +290,7 @@ async function runVerbose(suites: Suite[], results: Result[]) {
       parsed.failed = 1;
       parsed.failedTests.push("(process error)");
       for (const line of stderr.split("\n")) {
-        const plain = strip(line).trim();
+        const plain = stripAnsiCode(line).trim();
         if (plain.startsWith("Task test:") || !plain) continue;
         write(`  ${red(line)}\n`);
       }
@@ -328,8 +339,8 @@ async function runCompact(suites: Suite[], results: Result[]) {
     const ok = parsed.failed === 0;
     const icon = ok ? green(CHECK) : red(CROSS);
     const stats = ok
-      ? dim(`${parsed.passed} passed`)
-      : `${red(`${parsed.failed} failed`)}${dim(`, ${parsed.passed} passed`)}`;
+      ? dim(passStats(parsed))
+      : `${red(`${parsed.failed} failed`)}${dim(`, ${passStats(parsed)}`)}`;
 
     // Replace spinner with result, update progress bar
     write(up(2));
@@ -366,7 +377,7 @@ async function runPlain(suites: Suite[], results: Result[]) {
     const icon = ok ? CHECK : CROSS;
     const failStr = parsed.failed > 0 ? `, ${parsed.failed} failed` : "";
     write(
-      `  ${icon} ${suite.label}  ${parsed.passed} passed${failStr}  ${
+      `  ${icon} ${suite.label}  ${passStats(parsed)}${failStr}  ${
         fmtDuration(duration)
       }\n`,
     );
