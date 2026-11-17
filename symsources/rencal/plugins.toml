@@ -1,1 +1,1 @@
-plugins = ["t4t5/rencal-theme-dracula", "gwenwindflower/rencal-theme-catppuccin-frappe", "gwenwindflower/rencal-theme-rose-pine-dawn"]
+plugins = ["t4t5/rencal-theme-dracula", "gwenwindflower/rencal-theme-rose-pine-dawn", "gwenwindflower/rencal-theme-catppuccin-frappe"]

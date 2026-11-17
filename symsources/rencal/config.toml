@@ -6,8 +6,8 @@ show_week_numbers = true
 [theme]
 mode = "system"
 single = "gwenwindflower.catppuccin/frappe"
-light = "gwenwindflower.rose-pine/dawn"
-dark = "gwenwindflower.catppuccin/frappe"
+light = "gwenwindflower.rose-pine-dawn/rose-pine-dawn"
+dark = "gwenwindflower.catppuccin-frappe/catppuccin-frappe"
 
 [groups]
 Work = [
