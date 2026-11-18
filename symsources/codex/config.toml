@@ -3,7 +3,7 @@
 # The upstream schema mistypes some keys, so tombi reports errors on valid
 # config. Known false positives are marked "upstream schema" inline.
 
-model = "gpt-6.1-sol"
+model = "gpt-6.2-sol"
 personality = "friendly"
 approval_policy = "on-request"
 approvals_reviewer = "auto_review"
