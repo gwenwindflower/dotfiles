@@ -50,7 +50,7 @@ The girlOS Obsidian vault is Winnie's knowledge base for deep dives and learning
 
 - Load the `obsidian` skill before saving a note or doing any other work in the vault.
 - Search for an existing note first and append when one already covers the topic.
-- Land a note in `org/_inbox/` by default, `dev/<project>/` when the project already has a folder there, `dev/_seeds` (append) for new project ideas, or `pen/00_ideas/` for writing seeds.
+- Land a note in `org/inbox/` by default, `dev/<project>/` when the project already has a folder there, `dev/seeds.md` (append) for new project ideas, or `pen/00_ideas/` for writing seeds.
 - Link the note in the reply.
 
 ### Herdr
