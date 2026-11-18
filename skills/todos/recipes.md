@@ -63,7 +63,7 @@ Replace the example note path with a discovered exact path. Consume all pages if
 `notesmd-cli create -a` appends; it is not a task-line updater. Use it for checkpoint entries and new tasks only after duplicate checks:
 
 ```bash
-notesmd-cli create -a 'org/_inbox/Task Sync' -c "$sync_checkpoint" --vault "$OBSIDIAN_DEFAULT_VAULT"
+notesmd-cli create -a 'org/inbox/Task Sync' -c "$sync_checkpoint" --vault "$OBSIDIAN_DEFAULT_VAULT"
 ```
 
 Construct `sync_checkpoint` through safe structured input and retain valid JSON inside a fenced block. For initial note creation, first establish the path is absent and omit `-a`. Do not overwrite a whole note to change one task.

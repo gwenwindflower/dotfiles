@@ -2,7 +2,7 @@
 
 ## Identity and durable state
 
-Search for an existing Task Sync record with `notesmd-cli` before creating one. Reuse it; otherwise create `org/_inbox/Task Sync` during an authorized sync. Keep preferences and append-only JSON checkpoints there through `notesmd-cli`, not in the dotfiles repo or the skill. Checkpoints contain a schema version, run ID, timestamp/time zone, scope, completeness, mappings, pending operations, and last successfully verified values for each side. Preserve prior checkpoints for recovery; never treat an incomplete run as a complete baseline.
+Search for an existing Task Sync record with `notesmd-cli` before creating one. Reuse it; otherwise create `org/inbox/Task Sync` during an authorized sync. Keep preferences and append-only JSON checkpoints there through `notesmd-cli`, not in the dotfiles repo or the skill. Checkpoints contain a schema version, run ID, timestamp/time zone, scope, completeness, mappings, pending operations, and last successfully verified values for each side. Preserve prior checkpoints for recovery; never treat an incomplete run as a complete baseline.
 
 For each pair retain:
 
