@@ -503,8 +503,8 @@ BROWSER_USE_TINYSKY_ENABLED = "1"
 NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.1111.21308"
-NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/winnie/.codex/plugins/cache/openai-bundled/browser/26.1111.21308/scripts/browser-service.mjs"}'
+BROWSER_USE_CODEX_APP_VERSION = "26.1111.71025"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/winnie/.codex/plugins/cache/openai-bundled/browser/26.1111.71025/scripts/browser-service.mjs"}'
 CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex"
 
 [mcp_servers.rainbow_machine]
@@ -541,9 +541,9 @@ git-show-sidebar-pr-icons = true
 git-always-force-push = true
 git-branch-prefix = "winnie/"
 appearanceTheme = "dark"
-selected-avatar-id = "pet_6ae4a0012aec8191ba7eb5154fe6fcbe"
+selected-avatar-id = "pet_6afd19a62cb881918fb746db4ce281c7"
 hotkey-window-projectless-default-enabled = true
-avatar-overlay-mascot-width-px = 93
+avatar-overlay-mascot-width-px = 107
 dock-icon-preference = "codex-system"
 realtimeVoiceScreenContextEnabled = true
 migratedFollowUpQueueToSteer = false
@@ -775,6 +775,9 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/Users/winnie/dev/lightdash/lightdash-cloud"]
+trust_level = "trusted"
+
+[projects."/Users/winnie/.codex/pets/espeon-3d"]
 trust_level = "trusted"
 
 [apps._default]
