@@ -265,6 +265,7 @@ packages:
         - cargo-edit
         - cargo-pretty-build
         - cargo-update
+        - ck-search
         - cloudflare-speed-cli
         - iching
         - linear-cli
