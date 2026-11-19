@@ -43,6 +43,7 @@ A workflow change is not finished until `ci-audit` passes. When auditing a repo 
 - Token permissions are read-only by default, with write granted per job only where it uploads or pushes.
 - Checkouts that don't push don't persist credentials.
 - Secrets reach steps, never whole jobs, and are never echoed.
+- Publishing jobs run in the `release` environment. Registry trusted publishers bind the repository, the publishing workflow's filename, and that environment, and only jobs that use OIDC get `id-token: write`.
 - Pipelines that publish artifacts skip the toolchain cache, because a cache hit skips verifying the toolchain that builds user-facing files.
 - Concurrency, matrix, and runner labels follow the rules above.
 

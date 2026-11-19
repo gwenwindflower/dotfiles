@@ -22,18 +22,16 @@ If you find a major unrelated coverage gap, report it before filling it. Use des
 
 ### Projects
 
-Plans live in Linear; specs live in the repo. Load `project-management` before planning work, writing specs, reading or writing an issue, or running work across helpers or parallel sessions.
+Load `project-management` before planning work, reading or writing an issue, or running work across helpers or parallel sessions.
 
-| Home | Holds |
-| --- | --- |
-| Linear | What to do and in what order: issues, sub-issues, projects |
-| `SPEC.md`, `specs/` | Requirements, when the project uses specs; how much to invest is a judgment call per project |
-| `docs/` | How the system works now |
-| PR description | What shipped, the calls made, and `Closes`/`Part of` magic words |
+| Project | Plans live in | Lands as |
+| --- | --- | --- |
+| Lightdash | Linear issues; no GitHub issue unless asked | GitHub PR |
+| Personal and Supermodel | The session's planning tools or a markdown file; Linear only when the project docs name a Linear project or Winnie asks | `wt merge`, unless the project docs or Winnie say PR |
 
-An issue is a task written in plain language; it usually maps to one PR. Parents and projects don't repeat their children. Branch names and commit subjects describe the work, never the planning system.
+An issue is a task written in plain language; it usually maps to one PR. Parents and projects don't repeat their children. Branch names and commit subjects describe the work, never the planning system. `docs/` describes how the system works now; the PR description or merge summary records what shipped and the calls made.
 
-- Specs, requirement IDs, and other personal conventions never appear in Lightdash's Linear workspace; its issues follow the team's own labels, statuses, and wording.
+- Specs are opt-in: write or cite one only when Winnie asks or the project's docs establish specs. Issues never mention specs or requirement IDs otherwise, in any workspace.
 - Make reasonable calls, write them down, and flag them in the PR. Stop for choices with irreversible or external effects, or ones that change what's being built.
 
 #### Issues vs. todos

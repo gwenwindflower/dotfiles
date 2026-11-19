@@ -28,11 +28,11 @@ The script creates the repo from the template with `gh`, clones it, fills every 
 
 Then, in order:
 
-1. Fill the prose placeholders it lists (README tagline, quick start, AGENTS.md summary, SPEC.md goals). `docs/bootstrap.md` in the repo is the checklist; delete it when done.
+1. Fill the prose placeholders it lists (README tagline, quick start, AGENTS.md summary). `docs/bootstrap.md` in the repo is the checklist; delete it when done.
 2. Install the chosen license as `LICENSE` and delete the other option files, following the repo's `docs/bootstrap.md`. The template bundles GPL 3.0 and FSL; AGPL 3.0 comes verbatim from gnu.org. Set the same SPDX identifier in `Cargo.toml`, the Homebrew formula template, and the README notice. `LICENSE` is the only required community file. If the owner has a `.github` repository, ask whether to delete local community files such as `CONTRIBUTING.md` in favor of its defaults. Whether the project needs a `SECURITY.md` is a project decision, not a bootstrap step.
 3. Commit and push `main`.
 4. `mise run repo:settings --description "<one line>" --topics "<a,b>"` (add `--homebrew` for a standalone CLI), `mise run repo:labels`, and `mise run repo:environments`.
-5. Load `project-management`, fill in `SPEC.md` as far as the project's goals are known, and set `LINEAR_CLI_PROFILE` in `mise.toml` so issues land in the right Linear workspace. `specs/dev-release.md` is already real; prune it rather than restating it.
+5. Record how the project plans and lands work in `AGENTS.md`. The default is in-session planning and `wt merge` through the local CI ([project-management](../project-management/working.md)). Only when Winnie wants long-term tracking, name the Linear project there and set `LINEAR_CLI_PROFILE=supermodellabs` in `mise.toml`.
 6. `mise run check`, then push a throwaway branch with a deliberate lint failure to confirm annotations land on the PR diff.
 7. `mise run repo:rulesets` after CI has reported on `main` once.
 8. `mise run release:rehearse`. Hand the steps that need Winnie back to her: the tap PAT when Homebrew is on, and `mise run release` itself.

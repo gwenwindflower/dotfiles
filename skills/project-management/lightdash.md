@@ -2,22 +2,32 @@
 
 Conventions for the `lightdash` Linear workspace (`linear-cli --profile lightdash`), on top of [writing issues](issues.md).
 
-Issues live on two platforms with distinct jobs. GitHub is for customers: they see we understand their problem, check progress, and give feedback there. Linear is for us: prioritizing and executing the work. Synced pairs mirror the shared fields, so title and description serve both audiences at once, while everything surface-specific goes to its surface: customer names, demand records, and exact figures to Linear; public narrative and progress to GitHub. How the sync works: [github-sync](github-sync.md).
+Lightdash work is planned in Linear. Create issues in Linear and stop there; don't open a GitHub issue alongside it. Some Linear teams sync with GitHub repos, which matters only in a few situations: Winnie asks for a public GitHub issue, the task is cleaning up old GitHub issues, or the issue being edited shows a sync banner. Load [github-sync](github-sync.md) for those, and only those.
 
 | Job | Doc |
 | --- | --- |
 | Rewrite an existing issue into the description format | [clarify](clarify.md) |
 | Predict the readiness gate's grade | [compact-rubric](compact-rubric.md) |
-| Create on a synced pair, close, dedupe, unlink | [github-sync](github-sync.md) |
+| Public GitHub issues, old GitHub issue cleanup, synced pairs | [github-sync](github-sync.md) |
 
 ## Customers
 
 - Customer identity stays out of descriptions. Names, support links, and customer screenshots live in customer requests and attachments; never delete those — they are the canonical demand record.
-- Generalize the body: a specific belongs there only when it changes how the problem is solved. Anonymizing a customer's numbers ("a workspace with ~1,800 orphaned schedules") is not generalizing — a detail that matters only for impact goes in a Linear comment, where the customer can be named plainly and the specifics kept exact. "Export fails past 100 columns" stays in the body because it reproduces the bug; "the customer has ~340 affected dashboards" moves to Linear because it only sizes the pain. Customer details are never a reason to keep an issue internal.
-- Customer demand is recorded automatically: sharing the GitHub link in the customer's Slack thread links it as a customer request on the Linear twin. Never attach the thread or write a comment naming the customer or their ask.
-- Flag demand affirmatively in the summary — which customers, how many, the stakes — in generalized form; the customer request link carries the identity. Never write "no customer demand": a missing ask almost always means the link was forgotten. Preserve the customer's exact wording when it is safe and sharper than a paraphrase.
+- Generalize the body: a specific belongs there only when it changes how the problem is solved. "Export fails past 100 columns" stays in the body because it reproduces the bug; "the customer has ~340 affected dashboards" goes in a Linear comment, where the customer can be named plainly and the figure kept exact, because it only sizes the pain.
+- When a Slack thread is the source of the issue or is included with it, add it as a customer request on the Linear issue, never as a comment naming the customer or their ask. Find the customer by name or by the thread's Slack channel, then create the request with the thread as its source:
+
+  ```sh
+  linear-cli --profile lightdash api query -o json '{
+    customers(filter: { name: { containsIgnoreCase: "<name>" } }) { nodes { id name } }
+  }'
+  linear-cli --profile lightdash api query -o json 'mutation($c: String!, $i: String!, $u: String!) {
+    customerNeedCreate(input: { customerId: $c, issueId: $i, attachmentUrl: $u }) { success need { id } }
+  }' -v c=<customer id> -v i=<ENG-123> -v u=<slack thread url>
+  ```
+
+  Filter on `slackChannelId: { eq: "<channel>" }` instead of `name` when the channel is known. `body` adds the ask in the customer's words; `priority: 1` marks it important.
+- Flag demand in the summary — which kind of customers, how many, the stakes — in generalized form; the customer request carries the identity. Never write "no customer demand": a missing ask almost always means the link was forgotten. Keep the customer's exact wording when it is safe and sharper than a paraphrase.
 - Repro from a customer report without a live run is ⚠️ Unreproduced — from customer report.
-- Label sync between GitHub and Linear can re-add a removed duplicate label, so check labels after a synced edit.
 
 ## Readiness labels
 

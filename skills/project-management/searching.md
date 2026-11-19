@@ -1,6 +1,6 @@
 # Searching Issues
 
-Both trackers run server-side semantic/hybrid search — one well-phrased query replaces rounds of varied keyword guessing. For any duplicate check or "are there issues about X?" question, run the semantic paths below on both trackers in parallel before concluding anything is missing.
+Both trackers run server-side semantic/hybrid search — one well-phrased query replaces rounds of varied keyword guessing. For a duplicate check or "are there issues about X?" question, run the semantic path on the tracker the project plans in (Linear for Lightdash) before concluding anything is missing. Add GitHub when the project tracks issues there, or when the task spans a Linear↔GitHub sync ([github-sync](github-sync.md)).
 
 Phrase queries as natural-language problem statements ("value labels missing on grouped bar charts"), not keyword soup. If a first query misses, rephrase once from the user's perspective (symptom, not implementation term) before falling back to lexical filters.
 
@@ -51,7 +51,3 @@ linear-cli --profile lightdash api query -o json 'query($q: String!) {
 - Search family rate limit is ~30 req/min.
 - Set `--profile` to the workspace being searched ([linear](linear.md)); hits from another workspace's teams mean the profile is wrong.
 - `linear-cli` reads run inside the agent sandbox; writes go to the harness reviewer.
-
-## Synced repos
-
-On a Linear↔GitHub synced team, a GitHub-born issue exists in both trackers — matching hits with the same title on both sides are one issue, not two. Search both anyway: Linear-born issues never have a GitHub twin, and unsynced GitHub issues (pre-sync, or unsynced repos) live only on GitHub. See [github-sync](github-sync.md).

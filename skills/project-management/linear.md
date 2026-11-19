@@ -1,6 +1,6 @@
 # Linear
 
-Plans live in Linear: what to do next, how work groups, what blocks what, and what shipped. Specs stay in the repo ([specs](specs.md)).
+Linear holds plans for Lightdash work and for personal or Supermodel projects whose docs point to a Linear project: what to do next, how work groups, what blocks what, and what shipped. Other personal projects plan in-session ([working](working.md#planning)) and open no Linear issues unless Winnie asks.
 
 ## Workspaces
 
@@ -9,7 +9,7 @@ Plans live in Linear: what to do next, how work groups, what blocks what, and wh
 | Profile | Used for | Teams | Conventions |
 | --- | --- | --- | --- |
 | `lightdash` | Lightdash work | Many; read the team's labels and statuses first | [Lightdash workspace](lightdash.md) |
-| `supermodellabs` | Supermodel Labs and personal projects | `WBG` | None yet; build them as the work needs them |
+| `supermodellabs` | Personal and Supermodel projects whose docs name a Linear project, or when Winnie asks | `WBG` | None yet; build them as the work needs them |
 
 Reads run in the sandbox; writes go to the harness reviewer. `linear-cli agent` and `linear-cli common` print agent-oriented usage, and [searching](searching.md) covers relevance search through `linear-cli api`.
 
