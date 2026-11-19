@@ -14,6 +14,7 @@ aube = "latest"
 wrangler = { version = "latest", allow_builds = ["esbuild", "sharp", "workerd"] }
 "npm:pyright" = "latest"
 "npm:@vtsls/language-server" = "latest"
+"npm:@tobilu/qmd" = "latest"
 
 [settings]
 idiomatic_version_file_enable_tools = ["node", "ruby"]
