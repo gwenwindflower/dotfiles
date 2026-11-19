@@ -2,11 +2,11 @@
   {
     "plugin_id": "heraldr",
     "name": "Heraldr",
-    "version": "0.0.2",
+    "version": "0.0.4",
     "min_herdr_version": "0.7.5",
     "description": "Dress herdr tabs as [N] <icon> <program> and feed sidebar rows composable tokens: $jump (workspace jump number) plus $space/$worktree (repo + nested worktree names for agent rows). Labels stay bare for the agents panel and navigator; manual renames win. Icons reload from icons.conf with a compiled fallback.",
-    "manifest_path": "/Users/winnie/dev/herdr/heraldr.feat-agent-labels/herdr-plugin.toml",
-    "plugin_root": "/Users/winnie/dev/herdr/heraldr.feat-agent-labels",
+    "manifest_path": "/Users/winnie/.config/herdr/plugins/github-installations/heraldr-263bee430f10/91714-0/checkout/herdr-plugin.toml",
+    "plugin_root": "/Users/winnie/.config/herdr/plugins/github-installations/heraldr-263bee430f10/91714-0/checkout",
     "enabled": true,
     "platforms": [
       "linux",
@@ -22,25 +22,69 @@
     ],
     "actions": [
       {
-        "id": "clear",
-        "title": "Heraldr: strip all chrome",
+        "id": "relabel-all",
+        "title": "Heraldr: relabel every tab",
+        "description": "Return every tab in the session to automatic naming, replacing manual names",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "heraldr",
+          "relabel",
+          "--scope",
+          "all"
+        ]
+      },
+      {
+        "id": "relabel-tab",
+        "title": "Heraldr: relabel this tab",
+        "description": "Return this tab to automatic naming, replacing a manual name",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "heraldr",
+          "relabel",
+          "--scope",
+          "tab"
+        ]
+      },
+      {
+        "id": "relabel-workspace",
+        "title": "Heraldr: relabel tabs in this workspace",
+        "description": "Return every tab in this workspace to automatic naming, replacing manual names",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "heraldr",
+          "relabel",
+          "--scope",
+          "workspace"
+        ]
+      },
+      {
+        "id": "restart",
+        "title": "Heraldr: restart the label watcher",
+        "description": "Replace a stuck or outdated watcher with a fresh one, keeping labels and manual names",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "heraldr",
+          "restart"
+        ]
+      },
+      {
+        "id": "stop-clear-all",
+        "title": "Heraldr: stop and remove all labels",
+        "description": "Stop the watcher and strip jump numbers, icons, and sidebar tokens until the next tab or pane event",
         "contexts": [
           "global"
         ],
         "command": [
           "heraldr",
           "clear"
-        ]
-      },
-      {
-        "id": "reset",
-        "title": "Heraldr: reset tab to automatic naming",
-        "contexts": [
-          "global"
-        ],
-        "command": [
-          "heraldr",
-          "reset"
         ]
       }
     ],
@@ -82,7 +126,12 @@
       }
     ],
     "source": {
-      "kind": "local"
+      "kind": "github",
+      "owner": "gwenwindflower",
+      "repo": "heraldr",
+      "resolved_commit": "aec534d46fc77ebdde48149254e51d921ed05976",
+      "managed_path": "/Users/winnie/.config/herdr/plugins/github-installations/heraldr-263bee430f10/91714-0/checkout",
+      "installed_unix_ms": 1794883675273
     }
   },
   {
@@ -344,8 +393,8 @@
     "version": "0.0.4",
     "min_herdr_version": "0.7.5",
     "description": "Run Worktrunk's native worktree workflows in Herdr popups and keep nested workspaces in sync.",
-    "manifest_path": "/Users/winnie/.config/herdr/plugins/github-installations/wtherdr-0a1b0bff4c46/80357-0/checkout/herdr-plugin.toml",
-    "plugin_root": "/Users/winnie/.config/herdr/plugins/github-installations/wtherdr-0a1b0bff4c46/80357-0/checkout",
+    "manifest_path": "/Users/winnie/.config/herdr/plugins/github-installations/wtherdr-0a1b0bff4c46/82985-0/checkout/herdr-plugin.toml",
+    "plugin_root": "/Users/winnie/.config/herdr/plugins/github-installations/wtherdr-0a1b0bff4c46/82985-0/checkout",
     "enabled": true,
     "platforms": [
       "linux",
@@ -618,9 +667,9 @@
       "kind": "github",
       "owner": "gwenwindflower",
       "repo": "wtherdr",
-      "resolved_commit": "a635a97cf648283853a060a5418842099b4a686c",
-      "managed_path": "/Users/winnie/.config/herdr/plugins/github-installations/wtherdr-0a1b0bff4c46/80357-0/checkout",
-      "installed_unix_ms": 1794797548429
+      "resolved_commit": "1bf7ba6de88631b58d8643e7a83b29c05ac68111",
+      "managed_path": "/Users/winnie/.config/herdr/plugins/github-installations/wtherdr-0a1b0bff4c46/82985-0/checkout",
+      "installed_unix_ms": 1794873583044
     }
   }
 ]
