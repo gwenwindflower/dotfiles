@@ -14,3 +14,8 @@ Work = [
     "lightdash",
     "holidays-in-united-states",
 ]
+default = [
+    "personal",
+    "holidays-in-the-united-states",
+    "lightdash",
+]
