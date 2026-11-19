@@ -10,3 +10,9 @@ id = "gwenwindflower.rose-pine-dawn"
 repo = "gwenwindflower/rencal-theme-rose-pine-dawn"
 commit = "8981215f21ae3c041dc6df19a7978dffa95f1833"
 tag = "v0.0.3"
+
+[[plugins]]
+id = "gwenwindflower.catppuccin-frappe"
+repo = "gwenwindflower/rencal-theme-catppuccin-frappe"
+commit = "c6862b4a786ffcf1672ac866672dd48d1ce9b30b"
+tag = "v0.0.4"
