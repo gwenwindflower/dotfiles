@@ -32,7 +32,7 @@ error\t''"
 complete -c cap -n "__fish_cap_needs_command" -l json -d 'Emit machine-readable JSON to stdout (overrides each command\'s --format)'
 complete -c cap -n "__fish_cap_needs_command" -s h -l help -d 'Print help (see more with \'--help\')'
 complete -c cap -n "__fish_cap_needs_command" -s V -l version -d 'Print version'
-complete -c cap -n "__fish_cap_needs_command" -f -a "export" -d 'Export a \'.cap\' project to a video file'
+complete -c cap -n "__fish_cap_needs_command" -f -a "export" -d 'Export one or more \'.cap\' projects to video files'
 complete -c cap -n "__fish_cap_needs_command" -f -a "export-preview" -d 'Render an export preview frame'
 complete -c cap -n "__fish_cap_needs_command" -f -a "project" -d 'Inspect or validate a \'.cap\' project'
 complete -c cap -n "__fish_cap_needs_command" -f -a "record" -d 'Start a recording or list available capture targets and devices'
@@ -60,7 +60,7 @@ complete -c cap -n "__fish_cap_needs_command" -f -a "guide" -d 'Print the machin
 complete -c cap -n "__fish_cap_needs_command" -f -a "automations" -d 'List automation rules shared with Cap Desktop'
 complete -c cap -n "__fish_cap_needs_command" -f -a "completions" -d 'Generate shell completion scripts'
 complete -c cap -n "__fish_cap_needs_command" -f -a "help" -d 'Print this message or the help of the given subcommand(s)'
-complete -c cap -n "__fish_cap_using_subcommand export" -s o -l output -d 'Output file to write the export to' -r -F
+complete -c cap -n "__fish_cap_using_subcommand export" -s o -l output -d 'Output file for a single project, or directory for several' -r -F
 complete -c cap -n "__fish_cap_using_subcommand export" -l format -d 'Container to export: mp4 (default), gif, or mov. NOT the output mode — use --json for JSON' -r -f -a "mp4\t''
 gif\t''
 mov\t''"
@@ -1507,7 +1507,7 @@ warn\t''
 error\t''"
 complete -c cap -n "__fish_cap_using_subcommand completions" -l json -d 'Emit machine-readable JSON to stdout (overrides each command\'s --format)'
 complete -c cap -n "__fish_cap_using_subcommand completions" -s h -l help -d 'Print help'
-complete -c cap -n "__fish_cap_using_subcommand help; and not __fish_seen_subcommand_from export export-preview project record screenshot recordings upload update auth caps account organizations library notifications analytics developers jobs mcp agents targets doctor selftest version desktop guide automations completions help" -f -a "export" -d 'Export a \'.cap\' project to a video file'
+complete -c cap -n "__fish_cap_using_subcommand help; and not __fish_seen_subcommand_from export export-preview project record screenshot recordings upload update auth caps account organizations library notifications analytics developers jobs mcp agents targets doctor selftest version desktop guide automations completions help" -f -a "export" -d 'Export one or more \'.cap\' projects to video files'
 complete -c cap -n "__fish_cap_using_subcommand help; and not __fish_seen_subcommand_from export export-preview project record screenshot recordings upload update auth caps account organizations library notifications analytics developers jobs mcp agents targets doctor selftest version desktop guide automations completions help" -f -a "export-preview" -d 'Render an export preview frame'
 complete -c cap -n "__fish_cap_using_subcommand help; and not __fish_seen_subcommand_from export export-preview project record screenshot recordings upload update auth caps account organizations library notifications analytics developers jobs mcp agents targets doctor selftest version desktop guide automations completions help" -f -a "project" -d 'Inspect or validate a \'.cap\' project'
 complete -c cap -n "__fish_cap_using_subcommand help; and not __fish_seen_subcommand_from export export-preview project record screenshot recordings upload update auth caps account organizations library notifications analytics developers jobs mcp agents targets doctor selftest version desktop guide automations completions help" -f -a "record" -d 'Start a recording or list available capture targets and devices'
