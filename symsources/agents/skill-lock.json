@@ -199,15 +199,6 @@
       "installedAt": "2026-10-29T06:38:06Z",
       "updatedAt": "2026-10-29T06:38:06Z"
     },
-    "ui-sdk": {
-      "source": "vercel-labs/ui",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/vercel-labs/ui.git",
-      "skillPath": "packages/core/skills/ui-sdk/SKILL.md",
-      "skillFolderHash": "5af0ec8a4c4132f82e2680abca41af53ad3e3ccd",
-      "installedAt": "2026-11-17T04:27:46Z",
-      "updatedAt": "2026-11-17T04:28:30Z"
-    },
     "ultra-concise-mode": {
       "source": "gwenwindflower/dotfiles",
       "sourceType": "github",
